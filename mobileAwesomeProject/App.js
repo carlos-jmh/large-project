@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { API } from 'aws-amplify';
 import { useEffect, useState } from 'react';
 import { Amplify } from 'aws-amplify';
-import awsconfig from './app/src/main/res/raw/amplifyconfiguration.json';
+import awsconfig from './src/aws-exports';
 
 Amplify.configure(awsconfig);
 

@@ -4,10 +4,14 @@
   ],
   "projectName": "largeproject",
   "version": "3.1",
-  "frontend": "android",
-  "android": {
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react-native",
     "config": {
-      "ResDir": "app/src/main/res"
+      "SourceDir": "src",
+      "DistributionDir": "/",
+      "BuildCommand": "npm.cmd run-script build",
+      "StartCommand": "npm.cmd run-script start"
     }
   }
 }
