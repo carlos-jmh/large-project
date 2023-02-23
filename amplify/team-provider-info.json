@@ -12,9 +12,6 @@
       "AmplifyAppId": "d16odqgz0vtejq"
     },
     "categories": {
-      "auth": {
-        "largeproject": {}
-      },
       "function": {
         "sayHelloWorld": {
           "deploymentBucketName": "amplify-amplifyee0a994c714a4-staging-02140-deployment",
