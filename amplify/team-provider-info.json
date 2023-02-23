@@ -1,0 +1,29 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifyee0a994c714a4-staging-02140-authRole",
+      "UnauthRoleArn": "arn:aws:iam::737064277081:role/amplify-amplifyee0a994c714a4-staging-02140-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::737064277081:role/amplify-amplifyee0a994c714a4-staging-02140-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-amplifyee0a994c714a4-staging-02140-deployment",
+      "UnauthRoleName": "amplify-amplifyee0a994c714a4-staging-02140-unauthRole",
+      "StackName": "amplify-amplifyee0a994c714a4-staging-02140",
+      "StackId": "arn:aws:cloudformation:us-east-2:737064277081:stack/amplify-amplifyee0a994c714a4-staging-02140/0b567ee0-b310-11ed-a42b-0a74f296a8f6",
+      "AmplifyAppId": "d16odqgz0vtejq"
+    },
+    "categories": {
+      "auth": {
+        "largeproject": {}
+      },
+      "function": {
+        "sayHelloWorld": {
+          "deploymentBucketName": "amplify-amplifyee0a994c714a4-staging-02140-deployment",
+          "s3Key": "amplify-builds/sayHelloWorld-3335764b30616b575a52-build.zip"
+        }
+      },
+      "api": {
+        "helloWorldApi": {}
+      }
+    }
+  }
+}
