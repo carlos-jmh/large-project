@@ -2,7 +2,7 @@
 
 In the project directory, you can run:
 
-### `npm ci`
+### `npm install`
 
 Also make sure you have the amplify-cli installed:
 ### `npm install -g @aws-amplify/cli`
@@ -58,4 +58,4 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ## Troubleshooting
 ### Amplify Issues
-If you haven't made any changes to Amplify and it's acting up, the surest way to resolve it is to delete the `amplify` folder, and run `amplify pull --appId **** --envName ****`.
+If you haven't made any changes to Amplify and it's acting up, the surest way to resolve it is to delete the `amplify` folder, and run `amplify pull --appId **** --envName ****` again.

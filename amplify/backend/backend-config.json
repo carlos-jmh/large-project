@@ -13,10 +13,54 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
+    },
+    "mainApi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "authHelloFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
-  "auth": {},
+  "auth": {
+    "largeproject9e7232c0": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
   "function": {
+    "authHelloFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "sayHelloWorld": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -24,6 +68,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_authHelloFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "authHelloFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_authHelloFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "authHelloFunction"
+        }
+      ]
+    },
     "AMPLIFY_function_sayHelloWorld_deploymentBucketName": {
       "usedBy": [
         {
