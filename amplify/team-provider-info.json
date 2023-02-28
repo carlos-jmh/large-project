@@ -16,19 +16,7 @@
       "auth": {
         "largeproject9e7232c0": {}
       },
-      "function": {
-        "authHelloFunction": {
-          "deploymentBucketName": "amplify-amplifyee0a994c714a4-staging-02140-deployment",
-          "s3Key": "amplify-builds/authHelloFunction-756e384b4f6a51466c39-build.zip"
-        },
-        "sayHelloWorld": {
-          "deploymentBucketName": "amplify-amplifyee0a994c714a4-staging-02140-deployment",
-          "s3Key": "amplify-builds/sayHelloWorld-3335764b30616b575a52-build.zip"
-        }
-      },
       "api": {
-        "helloWorldApi": {},
-        "mainApi": {},
         "householdapp": {}
       }
     }

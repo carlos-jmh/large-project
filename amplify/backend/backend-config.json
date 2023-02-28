@@ -1,19 +1,5 @@
 {
   "api": {
-    "helloWorldApi": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "sayHelloWorld"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "API Gateway"
-    },
     "householdapp": {
       "dependsOn": [
         {
@@ -41,20 +27,6 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
-    },
-    "mainApi": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "authHelloFunction"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "API Gateway"
     }
   },
   "auth": {
@@ -83,50 +55,5 @@
       "service": "Cognito"
     }
   },
-  "function": {
-    "authHelloFunction": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "sayHelloWorld": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_authHelloFunction_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "authHelloFunction"
-        }
-      ]
-    },
-    "AMPLIFY_function_authHelloFunction_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "authHelloFunction"
-        }
-      ]
-    },
-    "AMPLIFY_function_sayHelloWorld_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "sayHelloWorld"
-        }
-      ]
-    },
-    "AMPLIFY_function_sayHelloWorld_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "sayHelloWorld"
-        }
-      ]
-    }
-  }
+  "function": {}
 }
