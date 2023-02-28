@@ -5,6 +5,10 @@ export type AmplifyDependentResourcesAttributes = {
       "ApiName": "string",
       "RootUrl": "string"
     },
+    "householdapp": {
+      "GraphQLAPIEndpointOutput": "string",
+      "GraphQLAPIIdOutput": "string"
+    },
     "mainApi": {
       "ApiId": "string",
       "ApiName": "string",

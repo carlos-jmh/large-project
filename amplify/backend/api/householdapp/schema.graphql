@@ -1,0 +1,43 @@
+type EventHandler @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  frequency: String
+  sourceDate: AWSDateTime
+  Events: [Event] @hasMany(indexName: "byEventHandler", fields: ["id"])
+}
+
+type Event @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  date: AWSDateTime
+  author: String
+  eventhandlerID: ID! @index(name: "byEventHandler")
+  calendarID: ID! @index(name: "byCalendar")
+}
+
+type Calendar @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  Events: [Event] @hasMany(indexName: "byCalendar", fields: ["id"])
+}
+
+type HouseHold @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  Lists: [List] @hasMany(indexName: "byHouseHold", fields: ["id"])
+  Calendar: Calendar @hasOne
+}
+
+type Item @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  title: String
+  description: String
+  EventHandler: EventHandler @hasOne
+  listID: ID! @index(name: "byList")
+}
+
+type List @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  title: String
+  description: String
+  householdID: ID! @index(name: "byHouseHold")
+  Items: [Item] @hasMany(indexName: "byList", fields: ["id"])
+  EventHandler: EventHandler @hasOne
+}
+ 
