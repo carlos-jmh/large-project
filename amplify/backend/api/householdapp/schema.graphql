@@ -40,4 +40,4 @@ type List @model @auth(rules: [{allow: private}]) {
   Items: [Item] @hasMany(indexName: "byList", fields: ["id"])
   EventHandler: EventHandler @hasOne
 }
- 
+  
