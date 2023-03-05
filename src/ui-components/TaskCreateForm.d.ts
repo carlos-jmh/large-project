@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 export declare type ValidationResponse = {
     hasError: boolean;
@@ -14,20 +14,26 @@ export declare type ValidationResponse = {
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type TaskCreateFormInputValues = {
     title?: string;
-    description?: string;
-    status?: string;
+    foreverTask?: boolean;
+    deleteSourceOnComplete?: boolean;
+    completed?: boolean;
+    pointValue?: number;
 };
 export declare type TaskCreateFormValidationValues = {
     title?: ValidationFunction<string>;
-    description?: ValidationFunction<string>;
-    status?: ValidationFunction<string>;
+    foreverTask?: ValidationFunction<boolean>;
+    deleteSourceOnComplete?: ValidationFunction<boolean>;
+    completed?: ValidationFunction<boolean>;
+    pointValue?: ValidationFunction<number>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TaskCreateFormOverridesProps = {
     TaskCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     title?: PrimitiveOverrideProps<TextFieldProps>;
-    description?: PrimitiveOverrideProps<TextFieldProps>;
-    status?: PrimitiveOverrideProps<TextFieldProps>;
+    foreverTask?: PrimitiveOverrideProps<SwitchFieldProps>;
+    deleteSourceOnComplete?: PrimitiveOverrideProps<SwitchFieldProps>;
+    completed?: PrimitiveOverrideProps<SwitchFieldProps>;
+    pointValue?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TaskCreateFormProps = React.PropsWithChildren<{
     overrides?: TaskCreateFormOverridesProps | undefined | null;

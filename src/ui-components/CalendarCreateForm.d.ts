@@ -5,18 +5,23 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps } from "@aws-amplify/ui-react";
+import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type CalendarCreateFormInputValues = {};
-export declare type CalendarCreateFormValidationValues = {};
+export declare type CalendarCreateFormInputValues = {
+    owners?: string[];
+};
+export declare type CalendarCreateFormValidationValues = {
+    owners?: ValidationFunction<string>;
+};
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type CalendarCreateFormOverridesProps = {
     CalendarCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    owners?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type CalendarCreateFormProps = React.PropsWithChildren<{
     overrides?: CalendarCreateFormOverridesProps | undefined | null;

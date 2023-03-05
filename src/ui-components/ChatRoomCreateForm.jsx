@@ -19,7 +19,7 @@ import {
   useTheme,
 } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Calendar } from "../models";
+import { ChatRoom } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 function ArrayField({
@@ -169,7 +169,7 @@ function ArrayField({
     </React.Fragment>
   );
 }
-export default function CalendarCreateForm(props) {
+export default function ChatRoomCreateForm(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -250,7 +250,7 @@ export default function CalendarCreateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new Calendar(modelFields));
+          await DataStore.save(new ChatRoom(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
           }
@@ -263,7 +263,7 @@ export default function CalendarCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "CalendarCreateForm")}
+      {...getOverrideProps(overrides, "ChatRoomCreateForm")}
       {...rest}
     >
       <ArrayField

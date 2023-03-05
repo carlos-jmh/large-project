@@ -55,5 +55,59 @@
       "service": "Cognito"
     }
   },
-  "function": {}
+  "function": {
+    "createNewHouseHold": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "largeprojectCommonLayer": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_createNewHouseHold_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createNewHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_createNewHouseHold_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createNewHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeprojectCommonLayer_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeprojectCommonLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeprojectCommonLayer_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeprojectCommonLayer"
+        }
+      ]
+    }
+  }
 }

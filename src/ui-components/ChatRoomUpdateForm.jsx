@@ -19,7 +19,7 @@ import {
   useTheme,
 } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Calendar } from "../models";
+import { ChatRoom } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 function ArrayField({
@@ -169,9 +169,10 @@ function ArrayField({
     </React.Fragment>
   );
 }
-export default function CalendarCreateForm(props) {
+export default function ChatRoomUpdateForm(props) {
   const {
-    clearOnSuccess = true,
+    id: idProp,
+    chatRoom,
     onSuccess,
     onError,
     onSubmit,
@@ -186,10 +187,24 @@ export default function CalendarCreateForm(props) {
   const [owners, setOwners] = React.useState(initialValues.owners);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setOwners(initialValues.owners);
+    const cleanValues = chatRoomRecord
+      ? { ...initialValues, ...chatRoomRecord }
+      : initialValues;
+    setOwners(cleanValues.owners ?? []);
     setCurrentOwnersValue("");
     setErrors({});
   };
+  const [chatRoomRecord, setChatRoomRecord] = React.useState(chatRoom);
+  React.useEffect(() => {
+    const queryData = async () => {
+      const record = idProp
+        ? await DataStore.query(ChatRoom, idProp)
+        : chatRoom;
+      setChatRoomRecord(record);
+    };
+    queryData();
+  }, [idProp, chatRoom]);
+  React.useEffect(resetStateValues, [chatRoomRecord]);
   const [currentOwnersValue, setCurrentOwnersValue] = React.useState("");
   const ownersRef = React.createRef();
   const validations = {
@@ -250,12 +265,13 @@ export default function CalendarCreateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new Calendar(modelFields));
+          await DataStore.save(
+            ChatRoom.copyOf(chatRoomRecord, (updated) => {
+              Object.assign(updated, modelFields);
+            })
+          );
           if (onSuccess) {
             onSuccess(modelFields);
-          }
-          if (clearOnSuccess) {
-            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -263,7 +279,7 @@ export default function CalendarCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "CalendarCreateForm")}
+      {...getOverrideProps(overrides, "ChatRoomUpdateForm")}
       {...rest}
     >
       <ArrayField
@@ -312,13 +328,14 @@ export default function CalendarCreateForm(props) {
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Clear"
+          children="Reset"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          {...getOverrideProps(overrides, "ClearButton")}
+          isDisabled={!(idProp || chatRoom)}
+          {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -328,7 +345,10 @@ export default function CalendarCreateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={Object.values(errors).some((e) => e?.hasError)}
+            isDisabled={
+              !(idProp || chatRoom) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

@@ -7,32 +7,30 @@
 import * as React from "react";
 import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
-import { Calendar } from "../models";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type CalendarUpdateFormInputValues = {
+export declare type ChatRoomCreateFormInputValues = {
     owners?: string[];
 };
-export declare type CalendarUpdateFormValidationValues = {
+export declare type ChatRoomCreateFormValidationValues = {
     owners?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type CalendarUpdateFormOverridesProps = {
-    CalendarUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type ChatRoomCreateFormOverridesProps = {
+    ChatRoomCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     owners?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
-export declare type CalendarUpdateFormProps = React.PropsWithChildren<{
-    overrides?: CalendarUpdateFormOverridesProps | undefined | null;
+export declare type ChatRoomCreateFormProps = React.PropsWithChildren<{
+    overrides?: ChatRoomCreateFormOverridesProps | undefined | null;
 } & {
-    id?: string;
-    calendar?: Calendar;
-    onSubmit?: (fields: CalendarUpdateFormInputValues) => CalendarUpdateFormInputValues;
-    onSuccess?: (fields: CalendarUpdateFormInputValues) => void;
-    onError?: (fields: CalendarUpdateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: CalendarUpdateFormInputValues) => CalendarUpdateFormInputValues;
-    onValidate?: CalendarUpdateFormValidationValues;
+    clearOnSuccess?: boolean;
+    onSubmit?: (fields: ChatRoomCreateFormInputValues) => ChatRoomCreateFormInputValues;
+    onSuccess?: (fields: ChatRoomCreateFormInputValues) => void;
+    onError?: (fields: ChatRoomCreateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: ChatRoomCreateFormInputValues) => ChatRoomCreateFormInputValues;
+    onValidate?: ChatRoomCreateFormValidationValues;
 } & React.CSSProperties>;
-export default function CalendarUpdateForm(props: CalendarUpdateFormProps): React.ReactElement;
+export default function ChatRoomCreateForm(props: ChatRoomCreateFormProps): React.ReactElement;

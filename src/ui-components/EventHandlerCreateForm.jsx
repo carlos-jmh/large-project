@@ -6,11 +6,169 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Badge,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Icon,
+  ScrollView,
+  Text,
+  TextField,
+  useTheme,
+} from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { EventHandler } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const { tokens } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button
+            size="small"
+            variation="link"
+            color={tokens.colors.brand.primary[80]}
+            isDisabled={hasError}
+            onClick={addItem}
+          >
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function EventHandlerCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -24,19 +182,30 @@ export default function EventHandlerCreateForm(props) {
   } = props;
   const initialValues = {
     frequency: "",
+    owners: [],
     sourceDate: "",
+    endDate: "",
   };
   const [frequency, setFrequency] = React.useState(initialValues.frequency);
+  const [owners, setOwners] = React.useState(initialValues.owners);
   const [sourceDate, setSourceDate] = React.useState(initialValues.sourceDate);
+  const [endDate, setEndDate] = React.useState(initialValues.endDate);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setFrequency(initialValues.frequency);
+    setOwners(initialValues.owners);
+    setCurrentOwnersValue("");
     setSourceDate(initialValues.sourceDate);
+    setEndDate(initialValues.endDate);
     setErrors({});
   };
+  const [currentOwnersValue, setCurrentOwnersValue] = React.useState("");
+  const ownersRef = React.createRef();
   const validations = {
-    frequency: [],
-    sourceDate: [],
+    frequency: [{ type: "Required" }],
+    owners: [],
+    sourceDate: [{ type: "Required" }],
+    endDate: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -81,7 +250,9 @@ export default function EventHandlerCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           frequency,
+          owners,
           sourceDate,
+          endDate,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -129,7 +300,7 @@ export default function EventHandlerCreateForm(props) {
     >
       <TextField
         label="Frequency"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         value={frequency}
         onChange={(e) => {
@@ -137,7 +308,9 @@ export default function EventHandlerCreateForm(props) {
           if (onChange) {
             const modelFields = {
               frequency: value,
+              owners,
               sourceDate,
+              endDate,
             };
             const result = onChange(modelFields);
             value = result?.frequency ?? value;
@@ -152,9 +325,53 @@ export default function EventHandlerCreateForm(props) {
         hasError={errors.frequency?.hasError}
         {...getOverrideProps(overrides, "frequency")}
       ></TextField>
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
+          if (onChange) {
+            const modelFields = {
+              frequency,
+              owners: values,
+              sourceDate,
+              endDate,
+            };
+            const result = onChange(modelFields);
+            values = result?.owners ?? values;
+          }
+          setOwners(values);
+          setCurrentOwnersValue("");
+        }}
+        currentFieldValue={currentOwnersValue}
+        label={"Owners"}
+        items={owners}
+        hasError={errors.owners?.hasError}
+        setFieldValue={setCurrentOwnersValue}
+        inputFieldRef={ownersRef}
+        defaultFieldValue={""}
+      >
+        <TextField
+          label="Owners"
+          isRequired={false}
+          isReadOnly={false}
+          value={currentOwnersValue}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.owners?.hasError) {
+              runValidationTasks("owners", value);
+            }
+            setCurrentOwnersValue(value);
+          }}
+          onBlur={() => runValidationTasks("owners", currentOwnersValue)}
+          errorMessage={errors.owners?.errorMessage}
+          hasError={errors.owners?.hasError}
+          ref={ownersRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "owners")}
+        ></TextField>
+      </ArrayField>
       <TextField
         label="Source date"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="datetime-local"
         value={sourceDate && convertToLocal(new Date(sourceDate))}
@@ -164,7 +381,9 @@ export default function EventHandlerCreateForm(props) {
           if (onChange) {
             const modelFields = {
               frequency,
+              owners,
               sourceDate: value,
+              endDate,
             };
             const result = onChange(modelFields);
             value = result?.sourceDate ?? value;
@@ -178,6 +397,35 @@ export default function EventHandlerCreateForm(props) {
         errorMessage={errors.sourceDate?.errorMessage}
         hasError={errors.sourceDate?.hasError}
         {...getOverrideProps(overrides, "sourceDate")}
+      ></TextField>
+      <TextField
+        label="End date"
+        isRequired={true}
+        isReadOnly={false}
+        type="datetime-local"
+        value={endDate && convertToLocal(new Date(endDate))}
+        onChange={(e) => {
+          let value =
+            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
+          if (onChange) {
+            const modelFields = {
+              frequency,
+              owners,
+              sourceDate,
+              endDate: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.endDate ?? value;
+          }
+          if (errors.endDate?.hasError) {
+            runValidationTasks("endDate", value);
+          }
+          setEndDate(value);
+        }}
+        onBlur={() => runValidationTasks("endDate", endDate)}
+        errorMessage={errors.endDate?.errorMessage}
+        hasError={errors.endDate?.hasError}
+        {...getOverrideProps(overrides, "endDate")}
       ></TextField>
       <Flex
         justifyContent="space-between"

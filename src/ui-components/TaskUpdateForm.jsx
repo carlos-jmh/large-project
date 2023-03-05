@@ -6,7 +6,13 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Button,
+  Flex,
+  Grid,
+  SwitchField,
+  TextField,
+} from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Task } from "../models";
 import { fetchByPath, validateField } from "./utils";
@@ -25,22 +31,30 @@ export default function TaskUpdateForm(props) {
   } = props;
   const initialValues = {
     title: "",
-    description: "",
-    status: "",
+    foreverTask: false,
+    deleteSourceOnComplete: false,
+    completed: false,
+    pointValue: "",
   };
   const [title, setTitle] = React.useState(initialValues.title);
-  const [description, setDescription] = React.useState(
-    initialValues.description
+  const [foreverTask, setForeverTask] = React.useState(
+    initialValues.foreverTask
   );
-  const [status, setStatus] = React.useState(initialValues.status);
+  const [deleteSourceOnComplete, setDeleteSourceOnComplete] = React.useState(
+    initialValues.deleteSourceOnComplete
+  );
+  const [completed, setCompleted] = React.useState(initialValues.completed);
+  const [pointValue, setPointValue] = React.useState(initialValues.pointValue);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = taskRecord
       ? { ...initialValues, ...taskRecord }
       : initialValues;
     setTitle(cleanValues.title);
-    setDescription(cleanValues.description);
-    setStatus(cleanValues.status);
+    setForeverTask(cleanValues.foreverTask);
+    setDeleteSourceOnComplete(cleanValues.deleteSourceOnComplete);
+    setCompleted(cleanValues.completed);
+    setPointValue(cleanValues.pointValue);
     setErrors({});
   };
   const [taskRecord, setTaskRecord] = React.useState(task);
@@ -54,8 +68,10 @@ export default function TaskUpdateForm(props) {
   React.useEffect(resetStateValues, [taskRecord]);
   const validations = {
     title: [{ type: "Required" }],
-    description: [],
-    status: [],
+    foreverTask: [],
+    deleteSourceOnComplete: [],
+    completed: [],
+    pointValue: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -83,8 +99,10 @@ export default function TaskUpdateForm(props) {
         event.preventDefault();
         let modelFields = {
           title,
-          description,
-          status,
+          foreverTask,
+          deleteSourceOnComplete,
+          completed,
+          pointValue,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -141,8 +159,10 @@ export default function TaskUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               title: value,
-              description,
-              status,
+              foreverTask,
+              deleteSourceOnComplete,
+              completed,
+              pointValue,
             };
             const result = onChange(modelFields);
             value = result?.title ?? value;
@@ -157,57 +177,123 @@ export default function TaskUpdateForm(props) {
         hasError={errors.title?.hasError}
         {...getOverrideProps(overrides, "title")}
       ></TextField>
-      <TextField
-        label="Description"
-        isRequired={false}
-        isReadOnly={false}
-        value={description}
+      <SwitchField
+        label="Forever task"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={foreverTask}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = e.target.checked;
           if (onChange) {
             const modelFields = {
               title,
-              description: value,
-              status,
+              foreverTask: value,
+              deleteSourceOnComplete,
+              completed,
+              pointValue,
             };
             const result = onChange(modelFields);
-            value = result?.description ?? value;
+            value = result?.foreverTask ?? value;
           }
-          if (errors.description?.hasError) {
-            runValidationTasks("description", value);
+          if (errors.foreverTask?.hasError) {
+            runValidationTasks("foreverTask", value);
           }
-          setDescription(value);
+          setForeverTask(value);
         }}
-        onBlur={() => runValidationTasks("description", description)}
-        errorMessage={errors.description?.errorMessage}
-        hasError={errors.description?.hasError}
-        {...getOverrideProps(overrides, "description")}
-      ></TextField>
-      <TextField
-        label="Status"
-        isRequired={false}
-        isReadOnly={false}
-        value={status}
+        onBlur={() => runValidationTasks("foreverTask", foreverTask)}
+        errorMessage={errors.foreverTask?.errorMessage}
+        hasError={errors.foreverTask?.hasError}
+        {...getOverrideProps(overrides, "foreverTask")}
+      ></SwitchField>
+      <SwitchField
+        label="Delete source on complete"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={deleteSourceOnComplete}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = e.target.checked;
           if (onChange) {
             const modelFields = {
               title,
-              description,
-              status: value,
+              foreverTask,
+              deleteSourceOnComplete: value,
+              completed,
+              pointValue,
             };
             const result = onChange(modelFields);
-            value = result?.status ?? value;
+            value = result?.deleteSourceOnComplete ?? value;
           }
-          if (errors.status?.hasError) {
-            runValidationTasks("status", value);
+          if (errors.deleteSourceOnComplete?.hasError) {
+            runValidationTasks("deleteSourceOnComplete", value);
           }
-          setStatus(value);
+          setDeleteSourceOnComplete(value);
         }}
-        onBlur={() => runValidationTasks("status", status)}
-        errorMessage={errors.status?.errorMessage}
-        hasError={errors.status?.hasError}
-        {...getOverrideProps(overrides, "status")}
+        onBlur={() =>
+          runValidationTasks("deleteSourceOnComplete", deleteSourceOnComplete)
+        }
+        errorMessage={errors.deleteSourceOnComplete?.errorMessage}
+        hasError={errors.deleteSourceOnComplete?.hasError}
+        {...getOverrideProps(overrides, "deleteSourceOnComplete")}
+      ></SwitchField>
+      <SwitchField
+        label="Completed"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={completed}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              title,
+              foreverTask,
+              deleteSourceOnComplete,
+              completed: value,
+              pointValue,
+            };
+            const result = onChange(modelFields);
+            value = result?.completed ?? value;
+          }
+          if (errors.completed?.hasError) {
+            runValidationTasks("completed", value);
+          }
+          setCompleted(value);
+        }}
+        onBlur={() => runValidationTasks("completed", completed)}
+        errorMessage={errors.completed?.errorMessage}
+        hasError={errors.completed?.hasError}
+        {...getOverrideProps(overrides, "completed")}
+      ></SwitchField>
+      <TextField
+        label="Point value"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={pointValue}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              title,
+              foreverTask,
+              deleteSourceOnComplete,
+              completed,
+              pointValue: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.pointValue ?? value;
+          }
+          if (errors.pointValue?.hasError) {
+            runValidationTasks("pointValue", value);
+          }
+          setPointValue(value);
+        }}
+        onBlur={() => runValidationTasks("pointValue", pointValue)}
+        errorMessage={errors.pointValue?.errorMessage}
+        hasError={errors.pointValue?.hasError}
+        {...getOverrideProps(overrides, "pointValue")}
       ></TextField>
       <Flex
         justifyContent="space-between"
