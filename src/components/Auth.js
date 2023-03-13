@@ -10,7 +10,7 @@ function Auth(props) {
 
   if (authMode === "signin") {
     return (
-      <div className="Auth-form-container">
+      <div className="Auth-form-container1">
         <form className="Auth-form">
           <div className="Auth-form-content">
             <h3 className="Auth-form-title">Sign In</h3>
@@ -51,10 +51,10 @@ function Auth(props) {
   }
 
   return (
-    <div className="Auth-form-container">
+    <div className="Auth-form-container2">
       <form className="Auth-form">
         <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign In</h3>
+          <h3 className="Auth-form-title">Sign Up</h3>
           <div className="text-center">
             Already registered?{" "}
             <span className="link-primary" onClick={changeAuthMode}>
