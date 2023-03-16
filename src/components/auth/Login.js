@@ -1,11 +1,13 @@
-import { useState } from "react";
 import { Text, View } from "react-native";
+
+import CustomButton from "../CustomButton";
+import LabeledInput from "../LabeledInput";
+import { getStyles } from "../styles";
+import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
 
-import { getStyles } from "../styles";
-import LabeledInput from "./LabeledInput";
-import CustomButton from "../CustomButton";
-
+/* Login page */
+// TODO: Connect to backend
 export default function Login({ navigation }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);

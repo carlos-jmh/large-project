@@ -1,10 +1,11 @@
-import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
-import { useTheme } from "@react-navigation/native";
+
 import { FontAwesome5 } from "@expo/vector-icons";
+import { getStyles } from "./styles";
+import { useState } from "react";
+import { useTheme } from "@react-navigation/native";
 
-import { getStyles } from "../styles";
-
+/* Text input with label and optional help text/callback */
 export default function LabeledInput({
   value,
   onChangeText,
@@ -18,6 +19,7 @@ export default function LabeledInput({
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
+  // Whether characters are obscured by dots
   const [isHidden, setIsHidden] = useState(true);
 
   return (
@@ -66,6 +68,7 @@ export default function LabeledInput({
   );
 }
 
+/* Show/hide password button */
 function PasswordVisibilityButton({ isHidden, setIsHidden, colors }) {
   return (
     <Pressable

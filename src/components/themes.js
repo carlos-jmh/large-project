@@ -1,3 +1,4 @@
+/* Light mode colors */
 const LightTheme = {
   dark: false,
   colors: {
@@ -14,6 +15,7 @@ const LightTheme = {
   },
 };
 
+/* Dark mode colors */
 const DarkTheme = {
   dark: true,
   colors: {

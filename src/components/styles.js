@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+/* Returns StyleSheet object for given theme colors */
+// TODO: figure out better solution and implement constants for common values
 export function getStyles(colors) {
   return StyleSheet.create({
     container: {
