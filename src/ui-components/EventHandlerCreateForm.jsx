@@ -203,7 +203,7 @@ export default function EventHandlerCreateForm(props) {
   const ownersRef = React.createRef();
   const validations = {
     frequency: [{ type: "Required" }],
-    owners: [],
+    owners: [{ type: "Required" }],
     sourceDate: [{ type: "Required" }],
     endDate: [{ type: "Required" }],
   };
@@ -351,7 +351,7 @@ export default function EventHandlerCreateForm(props) {
       >
         <TextField
           label="Owners"
-          isRequired={false}
+          isRequired={true}
           isReadOnly={false}
           value={currentOwnersValue}
           onChange={(e) => {

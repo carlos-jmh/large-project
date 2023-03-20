@@ -37,7 +37,7 @@ export default function UserProfileCreateForm(props) {
     setErrors({});
   };
   const validations = {
-    owner: [],
+    owner: [{ type: "Required" }],
     preferredName: [],
   };
   const runValidationTasks = async (
@@ -114,7 +114,7 @@ export default function UserProfileCreateForm(props) {
     >
       <TextField
         label="Owner"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         value={owner}
         onChange={(e) => {
