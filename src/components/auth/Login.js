@@ -41,7 +41,7 @@ export default function Login({ navigation }) {
         <View style={{ height: 24 }}></View>
         <CustomButton
           title={"SIGN IN"}
-          onPress={() => console.log("Sign In")}
+          onPress={() => navigation.navigate("InitialPage")}
         />
       </View>
       <Text style={[styles.text, { color: colors.textFaded }]}>

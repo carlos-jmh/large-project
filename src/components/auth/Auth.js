@@ -2,6 +2,7 @@ import Login from "./Login";
 import { NavigationContainer } from "@react-navigation/native";
 import Register from "./Register";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import InitialPage from "../InitialPage";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,11 @@ export default function Auth({ theme }) {
         <Stack.Screen
           name="Login"
           component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="InitialPage"
+          component={InitialPage}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
