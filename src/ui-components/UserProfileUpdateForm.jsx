@@ -52,7 +52,7 @@ export default function UserProfileUpdateForm(props) {
   }, [idProp, userProfile]);
   React.useEffect(resetStateValues, [userProfileRecord]);
   const validations = {
-    owner: [],
+    owner: [{ type: "Required" }],
     preferredName: [],
   };
   const runValidationTasks = async (
@@ -130,7 +130,7 @@ export default function UserProfileUpdateForm(props) {
     >
       <TextField
         label="Owner"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         value={owner}
         onChange={(e) => {

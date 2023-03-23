@@ -212,7 +212,7 @@ export default function HouseHoldUpdateForm(props) {
   const ownersRef = React.createRef();
   const validations = {
     name: [{ type: "Required" }],
-    owners: [],
+    owners: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -336,7 +336,7 @@ export default function HouseHoldUpdateForm(props) {
       >
         <TextField
           label="Owners"
-          isRequired={false}
+          isRequired={true}
           isReadOnly={false}
           value={currentOwnersValue}
           onChange={(e) => {

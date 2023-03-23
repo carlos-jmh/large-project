@@ -208,7 +208,7 @@ export default function CalendarUpdateForm(props) {
   const [currentOwnersValue, setCurrentOwnersValue] = React.useState("");
   const ownersRef = React.createRef();
   const validations = {
-    owners: [],
+    owners: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -305,7 +305,7 @@ export default function CalendarUpdateForm(props) {
       >
         <TextField
           label="Owners"
-          isRequired={false}
+          isRequired={true}
           isReadOnly={false}
           value={currentOwnersValue}
           onChange={(e) => {
