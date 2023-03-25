@@ -32,9 +32,19 @@
   "auth": {
     "largeproject9e7232c0": {
       "customAuth": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "largeproject9e7232c0PostConfirmation",
+          "triggerProvider": "Cognito"
+        }
+      ],
       "frontendAuthConfig": {
-        "mfaConfiguration": "OFF",
+        "mfaConfiguration": "OPTIONAL",
         "mfaTypes": [
           "SMS"
         ],
@@ -70,6 +80,27 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "largeproject9e7232c0PostConfirmation": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "largeprojectCommonLayer"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "largeprojectCommonLayer": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -90,6 +121,22 @@
         {
           "category": "function",
           "resourceName": "createNewHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeproject9e7232c0PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeproject9e7232c0PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeproject9e7232c0PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeproject9e7232c0PostConfirmation"
         }
       ]
     },
