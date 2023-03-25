@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import Register from "./Register";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import InitialPage from "../InitialPage";
+import ConfirmRegister from "./ConfirmRegister";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,11 @@ export default function Auth({ theme }) {
         <Stack.Screen
           name="Register"
           component={Register}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ConfirmRegister"
+          component={ConfirmRegister}
           options={{ headerShown: false }}
         />
         <Stack.Screen
