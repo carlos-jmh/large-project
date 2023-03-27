@@ -2,10 +2,16 @@
     font-size: 18px;
 }
 
-.nav-brand {
+.navbar-brand {
     font-size: 20px;
+    padding: 0px 10px 0px;
 }
 
 .navbar {
-    background-color: hsl(273, 81%, 48%);
+    background-color: rgb(101, 1, 148);
+}
+
+#navbarNavAltMarkup
+{
+    padding: 0px 10px 0px;
 }
