@@ -1,6 +1,8 @@
 
 import React, { useState } from "react"
 
+import './auth.css'
+
 import { Auth as CognitoAuth } from 'aws-amplify';
 
 function Auth(props) {
