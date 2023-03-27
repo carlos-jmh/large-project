@@ -1,0 +1,11 @@
+.nav-item {
+    font-size: 18px;
+}
+
+.nav-brand {
+    font-size: 20px;
+}
+
+.navbar {
+    background-color: hsl(189, 78%, 45%);
+}
