@@ -3,11 +3,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Auth from '../components/Auth'
 import Navbar from '../components/navbar/Navbar'
 
-function LoginSignup() {
+const LoginSignup = (props) => {
   return (
     <div className='wrapper'>
         <Navbar/>
-        <Auth/>
+        <Auth auth={props.auth}/>
     </div>
   );
 }

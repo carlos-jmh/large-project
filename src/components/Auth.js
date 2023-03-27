@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import { Auth as CognitoAuth } from 'aws-amplify';
 
 function Auth(props) {
-  const [authMode, setAuthMode] = useState("signIn");
+  const [authMode, setAuthMode] = useState(props.auth);
   const [formInput, setFormInput] = useState({ username: '', password: '', email: '', verificationCode: '' })
 
   const onFormChange = (event) => {
