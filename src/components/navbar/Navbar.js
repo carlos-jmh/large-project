@@ -17,8 +17,8 @@ function Navbar() {
       <div className="collapse navbar-collapse flex-grow-0" id="navbarNavAltMarkup">
         <div className="navbar-nav">
           <a className="nav-item nav-link" href="/">Home</a>
-          <a className="nav-item nav-link" href="/signup">Sign Up</a>
-          <a className="nav-item nav-link" href="/login">Login</a>
+          <a className="nav-item nav-link" href="/register">Sign Up</a>
+          <a className="nav-item nav-link" href="/register">Login</a>
         </div>
       </div>
     </nav>

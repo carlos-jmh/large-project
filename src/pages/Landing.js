@@ -1,13 +1,11 @@
 import React from 'react'
-
-import Auth from '../components/Auth'
-import Navbar from '../components/navbar/Navbar'
+import Navbar from '../components/navbar/Navbar';
 
 function Landing() {
   return (
     <div>
         <Navbar/>
-        <Auth/>
+        <h2>Landing</h2>
     </div>
   )
 }
