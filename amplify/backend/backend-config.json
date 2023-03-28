@@ -129,6 +129,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_addUserToHouseHold_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addUserToHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_addUserToHouseHold_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addUserToHouseHold"
+        }
+      ]
+    },
     "AMPLIFY_function_createNewHouseHold_deploymentBucketName": {
       "usedBy": [
         {
