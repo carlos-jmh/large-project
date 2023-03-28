@@ -66,6 +66,27 @@
     }
   },
   "function": {
+    "addUserToHouseHold": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "largeproject9e7232c0"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createNewHouseHold": {
       "build": true,
       "dependsOn": [
