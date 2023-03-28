@@ -1,12 +1,11 @@
 import { Text, View } from "react-native";
 
+import { Auth as CognitoAuth } from "aws-amplify";
 import CustomButton from "../CustomButton";
 import LabeledInput from "../LabeledInput";
 import { getStyles } from "../styles";
 import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
-
-import { Auth as CognitoAuth } from "aws-amplify";
 
 /* ConfirmRegister page */
 // TODO: Connect to backend
@@ -18,7 +17,10 @@ export default function ConfirmRegister({ navigation, route }) {
 
   async function confirmSignUp() {
     try {
-      const user = await CognitoAuth.confirmSignUp(route.params.username, verificationCode);
+      const user = await CognitoAuth.confirmSignUp(
+        route.params.username,
+        verificationCode
+      );
       navigation.navigate("InitialPage");
     } catch (error) {
       console.log("Error confirming sign up:", error);
@@ -37,7 +39,7 @@ export default function ConfirmRegister({ navigation, route }) {
           value={verificationCode}
           label={"VERIFICATION CODE"}
           onChangeText={setVerificationCode}
-          placeholder={"Enter verification code sent to your email"}
+          placeholder={"Enter verification code"}
         />
         <View style={{ height: 24 }}></View>
         <CustomButton
@@ -45,6 +47,9 @@ export default function ConfirmRegister({ navigation, route }) {
           onPress={async () => await confirmSignUp()}
         />
       </View>
+      <Text style={styles.text}>
+        Check your email for your account verification code and enter it here.
+      </Text>
     </View>
   );
 }

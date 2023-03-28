@@ -19,13 +19,13 @@ export function getStyles(colors) {
       color: colors.text,
       fontFamily: "Inter_600SemiBold",
       fontSize: 14,
-      textAlign: "center"
+      textAlign: "center",
     },
     p: {
       color: colors.text,
       fontFamily: "Inter_400Regular",
       fontSize: 18,
-      textAlign: "center"
+      textAlign: "center",
     },
     label: {
       color: colors.textFaded,
@@ -62,12 +62,6 @@ export function getStyles(colors) {
       backgroundColor: colors.card,
       height: 72,
       borderRadius: 30,
-      width: 240,
-    },
-    titleContainer: {
-      height: 72,
-      alignContent: "flex-start",
-      width: 290,
     },
     buttonText: {
       color: colors.primaryText,
@@ -75,27 +69,19 @@ export function getStyles(colors) {
       fontSize: 14,
     },
     householdButtonText: {
-      color: colors.primaryText,
+      color: colors.text,
       fontFamily: "Roboto_500Medium",
       fontSize: 30,
     },
-    circleButton:{
-      borderRadius:100,
+    circleButton: {
+      borderRadius: 100,
       justifyContent: "center",
-      alignSelf:"center",
-      alignItems:"center",
-      textAlign:"center",
+      alignSelf: "center",
+      alignItems: "center",
       backgroundColor: colors.primary,
       height: 75,
-      width:75,
+      width: 75,
       borderRadius: 100,
     },
-    circlePlus:{
-      fontFamily: "Inter_600SemiBold",
-      color:"white",
-      fontSize: 50,
-      textAlign:"center",
-      alignContent:"center"
-    }
   });
 }
