@@ -90,134 +90,6 @@ export declare const ChatRoom: (new (init: ModelInit<ChatRoom>) => ChatRoom) & {
   copyOf(source: ChatRoom, mutator: (draft: MutableModel<ChatRoom>) => MutableModel<ChatRoom> | void): ChatRoom;
 }
 
-type EagerHouseHold = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<HouseHold, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly name: string;
-  readonly owners: string[];
-  readonly Lists?: (List | null)[] | null;
-  readonly Tasks?: (Task | null)[] | null;
-  readonly HouseHoldMembers?: (HouseHoldMember | null)[] | null;
-  readonly Calendar?: Calendar | null;
-  readonly ChatRoom?: ChatRoom | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly houseHoldCalendarId?: string | null;
-  readonly houseHoldChatRoomId?: string | null;
-}
-
-type LazyHouseHold = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<HouseHold, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly name: string;
-  readonly owners: string[];
-  readonly Lists: AsyncCollection<List>;
-  readonly Tasks: AsyncCollection<Task>;
-  readonly HouseHoldMembers: AsyncCollection<HouseHoldMember>;
-  readonly Calendar: AsyncItem<Calendar | undefined>;
-  readonly ChatRoom: AsyncItem<ChatRoom | undefined>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly houseHoldCalendarId?: string | null;
-  readonly houseHoldChatRoomId?: string | null;
-}
-
-export declare type HouseHold = LazyLoading extends LazyLoadingDisabled ? EagerHouseHold : LazyHouseHold
-
-export declare const HouseHold: (new (init: ModelInit<HouseHold>) => HouseHold) & {
-  copyOf(source: HouseHold, mutator: (draft: MutableModel<HouseHold>) => MutableModel<HouseHold> | void): HouseHold;
-}
-
-type EagerList = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<List, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly title: string;
-  readonly description?: string | null;
-  readonly owners: string[];
-  readonly householdID: string;
-  readonly Items?: (Item | null)[] | null;
-  readonly Task?: Task | null;
-  readonly HouseHold?: HouseHold | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly listTaskId?: string | null;
-}
-
-type LazyList = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<List, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly title: string;
-  readonly description?: string | null;
-  readonly owners: string[];
-  readonly householdID: string;
-  readonly Items: AsyncCollection<Item>;
-  readonly Task: AsyncItem<Task | undefined>;
-  readonly HouseHold: AsyncItem<HouseHold | undefined>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly listTaskId?: string | null;
-}
-
-export declare type List = LazyLoading extends LazyLoadingDisabled ? EagerList : LazyList
-
-export declare const List: (new (init: ModelInit<List>) => List) & {
-  copyOf(source: List, mutator: (draft: MutableModel<List>) => MutableModel<List> | void): List;
-}
-
-type EagerItem = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Item, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly title: string;
-  readonly description?: string | null;
-  readonly owners: string[];
-  readonly completed?: boolean | null;
-  readonly listID: string;
-  readonly Task?: Task | null;
-  readonly List?: List | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly itemTaskId?: string | null;
-}
-
-type LazyItem = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Item, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly title: string;
-  readonly description?: string | null;
-  readonly owners: string[];
-  readonly completed?: boolean | null;
-  readonly listID: string;
-  readonly Task: AsyncItem<Task | undefined>;
-  readonly List: AsyncItem<List | undefined>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly itemTaskId?: string | null;
-}
-
-export declare type Item = LazyLoading extends LazyLoadingDisabled ? EagerItem : LazyItem
-
-export declare const Item: (new (init: ModelInit<Item>) => Item) & {
-  copyOf(source: Item, mutator: (draft: MutableModel<Item>) => MutableModel<Item> | void): Item;
-}
-
 type EagerTask = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Task, 'id'>;
@@ -262,6 +134,82 @@ export declare type Task = LazyLoading extends LazyLoadingDisabled ? EagerTask :
 
 export declare const Task: (new (init: ModelInit<Task>) => Task) & {
   copyOf(source: Task, mutator: (draft: MutableModel<Task>) => MutableModel<Task> | void): Task;
+}
+
+type EagerUserProfile = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserProfile, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly owner: string;
+  readonly preferredName?: string | null;
+  readonly HouseHoldMembers?: (HouseHoldMember | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyUserProfile = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserProfile, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly owner: string;
+  readonly preferredName?: string | null;
+  readonly HouseHoldMembers: AsyncCollection<HouseHoldMember>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type UserProfile = LazyLoading extends LazyLoadingDisabled ? EagerUserProfile : LazyUserProfile
+
+export declare const UserProfile: (new (init: ModelInit<UserProfile>) => UserProfile) & {
+  copyOf(source: UserProfile, mutator: (draft: MutableModel<UserProfile>) => MutableModel<UserProfile> | void): UserProfile;
+}
+
+type EagerHouseHoldMember = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<HouseHoldMember, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly points?: number | null;
+  readonly owner: string;
+  readonly UserProfile?: UserProfile | null;
+  readonly userprofileID: string;
+  readonly HouseHold?: HouseHold | null;
+  readonly householdID: string;
+  readonly completedTasks?: (ArchivedTask | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly userProfileHouseHoldMembersId?: string | null;
+  readonly houseHoldHouseHoldMembersId?: string | null;
+}
+
+type LazyHouseHoldMember = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<HouseHoldMember, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly points?: number | null;
+  readonly owner: string;
+  readonly UserProfile: AsyncItem<UserProfile | undefined>;
+  readonly userprofileID: string;
+  readonly HouseHold: AsyncItem<HouseHold | undefined>;
+  readonly householdID: string;
+  readonly completedTasks?: (ArchivedTask | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly userProfileHouseHoldMembersId?: string | null;
+  readonly houseHoldHouseHoldMembersId?: string | null;
+}
+
+export declare type HouseHoldMember = LazyLoading extends LazyLoadingDisabled ? EagerHouseHoldMember : LazyHouseHoldMember
+
+export declare const HouseHoldMember: (new (init: ModelInit<HouseHoldMember>) => HouseHoldMember) & {
+  copyOf(source: HouseHoldMember, mutator: (draft: MutableModel<HouseHoldMember>) => MutableModel<HouseHoldMember> | void): HouseHoldMember;
 }
 
 type EagerEventHandler = {
@@ -376,78 +324,130 @@ export declare const Calendar: (new (init: ModelInit<Calendar>) => Calendar) & {
   copyOf(source: Calendar, mutator: (draft: MutableModel<Calendar>) => MutableModel<Calendar> | void): Calendar;
 }
 
-type EagerHouseHoldMember = {
+type EagerHouseHold = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<HouseHoldMember, 'id'>;
+    identifier: ManagedIdentifier<HouseHold, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly points?: number | null;
-  readonly owner: string;
-  readonly UserProfile?: UserProfile | null;
-  readonly userprofileID: string;
-  readonly HouseHold?: HouseHold | null;
-  readonly householdID: string;
-  readonly completedTasks?: (ArchivedTask | null)[] | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly userProfileHouseHoldMembersId?: string | null;
-  readonly houseHoldHouseHoldMembersId?: string | null;
-}
-
-type LazyHouseHoldMember = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<HouseHoldMember, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly points?: number | null;
-  readonly owner: string;
-  readonly UserProfile: AsyncItem<UserProfile | undefined>;
-  readonly userprofileID: string;
-  readonly HouseHold: AsyncItem<HouseHold | undefined>;
-  readonly householdID: string;
-  readonly completedTasks?: (ArchivedTask | null)[] | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly userProfileHouseHoldMembersId?: string | null;
-  readonly houseHoldHouseHoldMembersId?: string | null;
-}
-
-export declare type HouseHoldMember = LazyLoading extends LazyLoadingDisabled ? EagerHouseHoldMember : LazyHouseHoldMember
-
-export declare const HouseHoldMember: (new (init: ModelInit<HouseHoldMember>) => HouseHoldMember) & {
-  copyOf(source: HouseHoldMember, mutator: (draft: MutableModel<HouseHoldMember>) => MutableModel<HouseHoldMember> | void): HouseHoldMember;
-}
-
-type EagerUserProfile = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<UserProfile, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly owner: string;
-  readonly preferredName?: string | null;
+  readonly name: string;
+  readonly owners: string[];
+  readonly Lists?: (List | null)[] | null;
+  readonly Tasks?: (Task | null)[] | null;
   readonly HouseHoldMembers?: (HouseHoldMember | null)[] | null;
+  readonly Calendar?: Calendar | null;
+  readonly ChatRoom?: ChatRoom | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly houseHoldCalendarId?: string | null;
+  readonly houseHoldChatRoomId?: string | null;
 }
 
-type LazyUserProfile = {
+type LazyHouseHold = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<UserProfile, 'id'>;
+    identifier: ManagedIdentifier<HouseHold, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly owner: string;
-  readonly preferredName?: string | null;
+  readonly name: string;
+  readonly owners: string[];
+  readonly Lists: AsyncCollection<List>;
+  readonly Tasks: AsyncCollection<Task>;
   readonly HouseHoldMembers: AsyncCollection<HouseHoldMember>;
+  readonly Calendar: AsyncItem<Calendar | undefined>;
+  readonly ChatRoom: AsyncItem<ChatRoom | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly houseHoldCalendarId?: string | null;
+  readonly houseHoldChatRoomId?: string | null;
 }
 
-export declare type UserProfile = LazyLoading extends LazyLoadingDisabled ? EagerUserProfile : LazyUserProfile
+export declare type HouseHold = LazyLoading extends LazyLoadingDisabled ? EagerHouseHold : LazyHouseHold
 
-export declare const UserProfile: (new (init: ModelInit<UserProfile>) => UserProfile) & {
-  copyOf(source: UserProfile, mutator: (draft: MutableModel<UserProfile>) => MutableModel<UserProfile> | void): UserProfile;
+export declare const HouseHold: (new (init: ModelInit<HouseHold>) => HouseHold) & {
+  copyOf(source: HouseHold, mutator: (draft: MutableModel<HouseHold>) => MutableModel<HouseHold> | void): HouseHold;
+}
+
+type EagerItem = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Item, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly description?: string | null;
+  readonly owners: string[];
+  readonly completed?: boolean | null;
+  readonly listID: string;
+  readonly Task?: Task | null;
+  readonly List?: List | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly itemTaskId?: string | null;
+}
+
+type LazyItem = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Item, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly description?: string | null;
+  readonly owners: string[];
+  readonly completed?: boolean | null;
+  readonly listID: string;
+  readonly Task: AsyncItem<Task | undefined>;
+  readonly List: AsyncItem<List | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly itemTaskId?: string | null;
+}
+
+export declare type Item = LazyLoading extends LazyLoadingDisabled ? EagerItem : LazyItem
+
+export declare const Item: (new (init: ModelInit<Item>) => Item) & {
+  copyOf(source: Item, mutator: (draft: MutableModel<Item>) => MutableModel<Item> | void): Item;
+}
+
+type EagerList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<List, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly description?: string | null;
+  readonly owners: string[];
+  readonly householdID: string;
+  readonly Items?: (Item | null)[] | null;
+  readonly Task?: Task | null;
+  readonly HouseHold?: HouseHold | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly listTaskId?: string | null;
+}
+
+type LazyList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<List, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly description?: string | null;
+  readonly owners: string[];
+  readonly householdID: string;
+  readonly Items: AsyncCollection<Item>;
+  readonly Task: AsyncItem<Task | undefined>;
+  readonly HouseHold: AsyncItem<HouseHold | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly listTaskId?: string | null;
+}
+
+export declare type List = LazyLoading extends LazyLoadingDisabled ? EagerList : LazyList
+
+export declare const List: (new (init: ModelInit<List>) => List) & {
+  copyOf(source: List, mutator: (draft: MutableModel<List>) => MutableModel<List> | void): List;
 }
