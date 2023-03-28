@@ -1,24 +1,56 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"10.7.3\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"11.0.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
-    "CloudWatchRule": {
+    "GROUP": {
       "Type": "String",
-      "Default": "NONE",
-      "Description": " Schedule Expression"
+      "Default": ""
     },
-    "deploymentBucketName": {
-      "Type": "String"
+    "modules": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Comma-delimited list of modules to be executed by a lambda trigger. Sent to resource as an env variable."
+    },
+    "resourceName": {
+      "Type": "String",
+      "Default": ""
+    },
+    "trigger": {
+      "Type": "String",
+      "Default": "true"
+    },
+    "functionName": {
+      "Type": "String",
+      "Default": ""
+    },
+    "roleName": {
+      "Type": "String",
+      "Default": ""
+    },
+    "parentResource": {
+      "Type": "String",
+      "Default": ""
+    },
+    "parentStack": {
+      "Type": "String",
+      "Default": ""
     },
     "env": {
-      "Type": "String"
-    },
-    "s3Key": {
       "Type": "String"
     },
     "apihouseholdappGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apihouseholdappGraphQLAPIIdOutput"
+    },
+    "functionlargeprojectCommonLayerArn": {
+      "Type": "String",
+      "Default": "functionlargeprojectCommonLayerArn"
+    },
+    "deploymentBucketName": {
+      "Type": "String"
+    },
+    "s3Key": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -39,24 +71,16 @@
         "aws:asset:property": "Code"
       },
       "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "deploymentBucketName"
-          },
-          "S3Key": {
-            "Ref": "s3Key"
-          }
-        },
         "Handler": "index.handler",
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "addUserToHouseHold",
+            "largeproject9e7232c0PostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "addUserToHouseHold",
+                  "largeproject9e7232c0PostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -71,8 +95,14 @@
             "ENV": {
               "Ref": "env"
             },
+            "MODULES": {
+              "Ref": "modules"
+            },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "GROUP": {
+              "Ref": "GROUP"
             },
             "API_HOUSEHOLDAPP_USERPROFILETABLE_NAME": {
               "Fn::ImportValue": {
@@ -102,58 +132,6 @@
             },
             "API_HOUSEHOLDAPP_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apihouseholdappGraphQLAPIIdOutput"
-            },
-            "API_HOUSEHOLDAPP_HOUSEHOLDMEMBERTABLE_NAME": {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:HouseHoldMemberTable:Name"
-              }
-            },
-            "API_HOUSEHOLDAPP_HOUSEHOLDMEMBERTABLE_ARN": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:dynamodb:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":table/",
-                  {
-                    "Fn::ImportValue": {
-                      "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:HouseHoldMemberTable:Name"
-                    }
-                  }
-                ]
-              ]
-            },
-            "API_HOUSEHOLDAPP_HOUSEHOLDTABLE_NAME": {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:HouseHoldTable:Name"
-              }
-            },
-            "API_HOUSEHOLDAPP_HOUSEHOLDTABLE_ARN": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:dynamodb:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":table/",
-                  {
-                    "Fn::ImportValue": {
-                      "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:HouseHoldTable:Name"
-                    }
-                  }
-                ]
-              ]
             }
           }
         },
@@ -163,9 +141,21 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
-        "Layers": [],
-        "Timeout": 25
+        "Runtime": "nodejs16.x",
+        "Timeout": 25,
+        "Layers": [
+          {
+            "Ref": "functionlargeprojectCommonLayerArn"
+          }
+        ],
+        "Code": {
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": {
+            "Ref": "s3Key"
+          }
+        }
       }
     },
     "LambdaExecutionRole": {
@@ -174,12 +164,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "largeprojectLambdaRole8859f1aa",
+            "largeproject9e7232c0PostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "largeprojectLambdaRole8859f1aa",
+                  "largeproject9e7232c0PostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -268,121 +258,9 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
                 "dynamodb:Put*",
                 "dynamodb:Create*",
                 "dynamodb:BatchWriteItem",
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:HouseHoldMemberTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:HouseHoldMemberTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
                 "dynamodb:Get*",
                 "dynamodb:BatchGetItem",
                 "dynamodb:List*",
@@ -408,7 +286,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:HouseHoldTable:Name"
+                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
                         }
                       }
                     ]
@@ -429,7 +307,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:HouseHoldTable:Name"
+                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
                         }
                       },
                       "/index/*"
@@ -457,11 +335,6 @@
         ]
       }
     },
-    "Region": {
-      "Value": {
-        "Ref": "AWS::Region"
-      }
-    },
     "LambdaExecutionRole": {
       "Value": {
         "Ref": "LambdaExecutionRole"
@@ -473,6 +346,11 @@
           "LambdaExecutionRole",
           "Arn"
         ]
+      }
+    },
+    "Region": {
+      "Value": {
+        "Ref": "AWS::Region"
       }
     }
   }
