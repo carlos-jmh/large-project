@@ -146,5 +146,6 @@ type List @model @auth(rules: [
 
 type Mutation {
   createNewHouseHold(userprofileID: String!, houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
+  addUserToHouseHold(cognitoUsername: String!, houseHoldID: String!): String @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: private }])
 }
-       
+              

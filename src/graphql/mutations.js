@@ -2781,3 +2781,14 @@ export const createNewHouseHold = /* GraphQL */ `
     )
   }
 `;
+export const addUserToHouseHold = /* GraphQL */ `
+  mutation AddUserToHouseHold(
+    $cognitoUsername: String!
+    $houseHoldID: String!
+  ) {
+    addUserToHouseHold(
+      cognitoUsername: $cognitoUsername
+      houseHoldID: $houseHoldID
+    )
+  }
+`;

@@ -66,6 +66,27 @@
     }
   },
   "function": {
+    "addUserToHouseHold": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "largeproject9e7232c0"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createNewHouseHold": {
       "build": true,
       "dependsOn": [
@@ -108,6 +129,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_addUserToHouseHold_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addUserToHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_addUserToHouseHold_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addUserToHouseHold"
+        }
+      ]
+    },
     "AMPLIFY_function_createNewHouseHold_deploymentBucketName": {
       "usedBy": [
         {
