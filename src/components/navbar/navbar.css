@@ -1,11 +1,6 @@
 .nav-item {
     font-size: 18px;
-    font-weight: bold;
-    color: rgb(108, 0, 158);
-}
-
-.nav-item:hover {
-    color: rgb(30, 9, 39);
+    font-weight: 500;
 }
 
 .navbar-brand {
@@ -14,7 +9,7 @@
 }
 
 .navbar {
-    background-color: white;
+    background-color: rgb(108, 0, 158);
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
 }
 
