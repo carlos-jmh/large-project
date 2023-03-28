@@ -31,9 +31,9 @@ export default function Navbar({ navigation, screenName, household }) {
         colors={colors}
         navigation={navigation}
         household={household}
-        icon={
-          <FontAwesome5 name="calendar-alt" size={24} color={colors.text} />
-        }
+        icon={({ size, color }) => (
+          <FontAwesome5 name="calendar-alt" size={size} color={color} />
+        )}
       />
       <NavbarButton
         screenName="Tasks"
@@ -41,13 +41,13 @@ export default function Navbar({ navigation, screenName, household }) {
         colors={colors}
         navigation={navigation}
         household={household}
-        icon={
+        icon={({ size, color }) => (
           <MaterialCommunityIcons
             name="checkbox-outline"
-            size={24}
-            color={colors.text}
+            size={size}
+            color={color}
           />
-        }
+        )}
       />
       <Pressable
         style={{
@@ -69,13 +69,13 @@ export default function Navbar({ navigation, screenName, household }) {
         colors={colors}
         navigation={navigation}
         household={household}
-        icon={
+        icon={({ size, color }) => (
           <MaterialCommunityIcons
             name="clipboard-list-outline"
-            size={24}
-            color={colors.text}
+            size={size}
+            color={color}
           />
-        }
+        )}
       />
       <NavbarButton
         screenName="Chat"
@@ -83,13 +83,13 @@ export default function Navbar({ navigation, screenName, household }) {
         colors={colors}
         navigation={navigation}
         household={household}
-        icon={
+        icon={({ size, color }) => (
           <Ionicons
             name="md-chatbox-ellipses-outline"
-            size={24}
-            color={colors.text}
+            size={size}
+            color={color}
           />
-        }
+        )}
       />
     </View>
   );
@@ -105,6 +105,8 @@ function NavbarButton({
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
+  const isCurrentScreen = currentScreenName == screenName;
+
   return (
     <Pressable
       onPress={() => navigation.navigate(screenName, { household: household })}
@@ -114,13 +116,22 @@ function NavbarButton({
         padding: 6,
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor:
-          currentScreenName == screenName ? colors.border : colors.card,
+        backgroundColor: isCurrentScreen ? colors.border : colors.card,
         borderRadius: 8,
       }}
     >
-      {icon}
-      <Text style={styles.navbarText}>{screenName}</Text>
+      {icon({
+        size: 24,
+        color: isCurrentScreen ? colors.text : colors.textFaded,
+      })}
+      <Text
+        style={[
+          styles.navbarText,
+          { color: isCurrentScreen ? colors.text : colors.textFaded },
+        ]}
+      >
+        {screenName}
+      </Text>
     </Pressable>
   );
 }
