@@ -4,11 +4,15 @@
 
 .navbar-brand {
     font-size: 20px;
-    padding: 0px 10px 0px;
+    padding: 5px;
 }
 
 .navbar {
     background-color: rgb(101, 1, 148);
+}
+
+.navbar-brand img {
+    height: 150px;
 }
 
 #navbarNavAltMarkup
