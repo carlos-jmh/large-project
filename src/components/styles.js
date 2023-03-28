@@ -21,9 +21,21 @@ export function getStyles(colors) {
       fontSize: 14,
       textAlign: "center",
     },
+    navbarText: {
+      color: colors.text,
+      fontFamily: "Inter_600SemiBold",
+      fontSize: 12,
+      textAlign: "center",
+    },
     p: {
       color: colors.text,
       fontFamily: "Inter_400Regular",
+      fontSize: 18,
+      textAlign: "center",
+    },
+    textTitle: {
+      color: colors.text,
+      fontFamily: "Inter_600SemiBold",
       fontSize: 18,
       textAlign: "center",
     },

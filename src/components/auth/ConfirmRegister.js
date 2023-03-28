@@ -47,7 +47,7 @@ export default function ConfirmRegister({ navigation, route }) {
           onPress={async () => await confirmSignUp()}
         />
       </View>
-      <Text style={styles.text}>
+      <Text style={styles.p}>
         Check your email for your account verification code and enter it here.
       </Text>
     </View>

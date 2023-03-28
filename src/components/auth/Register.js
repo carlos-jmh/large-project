@@ -1,12 +1,11 @@
 import { Text, View } from "react-native";
 
+import { Auth as CognitoAuth } from "aws-amplify";
 import CustomButton from "../CustomButton";
 import LabeledInput from "../LabeledInput";
 import { getStyles } from "../styles";
 import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
-
-import { Auth as CognitoAuth } from "aws-amplify";
 
 /* Register page */
 // TODO: Connect to backend
@@ -32,8 +31,7 @@ export default function Register({ navigation }) {
 
       console.log(user);
 
-      navigation.navigate("ConfirmRegister", {username: username});
-
+      navigation.navigate("ConfirmRegister", { username: username });
     } catch (error) {
       console.log("Error signing up:", error);
     }
@@ -77,10 +75,7 @@ export default function Register({ navigation }) {
           isPassword={true}
         />
         <View style={{ height: 24 }}></View>
-        <CustomButton
-          title={"SIGN UP"}
-          onPress={async () => await signUp()}
-        />
+        <CustomButton title={"SIGN UP"} onPress={async () => await signUp()} />
       </View>
       <Text style={[styles.text, { color: colors.textFaded }]}>
         Already have an account?
