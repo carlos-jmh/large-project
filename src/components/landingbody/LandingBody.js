@@ -1,5 +1,8 @@
 import React from 'react'
 import './landingbody.css'
+import Dinner from '../../images/dinner_party.jpeg';
+import Cleaning from '../../images/cleaning.jpeg';
+import Groceries from '../../images/grocery_store.jpeg';
 
 function LandingBody()
 {
@@ -21,6 +24,18 @@ return(
                 <button> Start now for free! </button>
             </a>
         </span>
+        <br />
+        <div className = "wrapper1">
+            <div className="child">
+                <p>Div 1</p>
+            </div>
+            <div className="child">
+                <p>Div 2</p>
+            </div>
+            <div className="child">
+                <p>Div 3</p>
+            </div>
+        </div>
     </div>
 )
 }
