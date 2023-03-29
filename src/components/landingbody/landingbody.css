@@ -2,5 +2,20 @@
 {
     padding: 50px;
     text-align: center;
+    font-size: 30px;
+}
+
+.main-title
+{
     font-size: 50px;
+}
+
+button
+{
+    background-color: rgb(101, 1, 148);
+    color: white;
+    border: none;
+    font-size: 30px;
+    padding: 0px 15px 0px 15px;
+    border-radius: 10px;
 }
