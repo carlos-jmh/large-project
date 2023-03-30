@@ -4,8 +4,9 @@
     "apiName": "householdapp",
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "AMAZON_COGNITO_USER_POOLS",
-      "cognitoUserPoolId": "authlargeproject9e7232c0"
+      "mode": "AWS_LAMBDA",
+      "lambdaFunction": "graphQlLambdaAuthorizerc6ebb49e",
+      "ttlSeconds": "300"
     },
     "conflictResolution": {
       "defaultResolutionStrategy": {
@@ -13,6 +14,10 @@
       }
     },
     "additionalAuthTypes": [
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authlargeproject9e7232c0"
+      },
       {
         "mode": "AWS_IAM"
       }

@@ -21,15 +21,15 @@ const { v4: uuidv4 } = require('uuid');
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-	const { userprofileID, houseHoldName } = event.arguments;
+	const { userProfileId, houseHoldName } = event.arguments;
 	const identity = event.identity;
 	const ownerID = `${identity.sub}`;
 
 	// generate IDs
-	const houseHoldID = uuidv4();
-	const houseHoldMemberID = uuidv4();
-	const calendarID = uuidv4();
-	const chatRoomID = uuidv4();
+	const houseHoldId = uuidv4();
+	const houseHoldMemberId = uuidv4();
+	const calendarId = uuidv4();
+	const chatRoomId = uuidv4();
 
 	// get current date
 	const date = new Date();
@@ -38,23 +38,23 @@ exports.handler = async (event) => {
 
 	const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-	// validate userprofileID
+	// validate userProfileId
 	try {
 		const userProfile = await dynamoDb
 			.get({
 				TableName: process.env.API_HOUSEHOLDAPP_USERPROFILETABLE_NAME,
 				Key: {
-					id: userprofileID,
+					id: userProfileId,
 				},
 			})
 			.promise();
 
 		if (!userProfile.Item) {
-			return new Error('Invalid userprofileID');
+			return new Error('Invalid userProfileId');
 		}
 	} catch (error) {
 		console.log(error);
-		return new Error('Invalid userprofileID');
+		return new Error('Invalid userProfileId');
 	}
 
 	// create new houseHoldmember
@@ -63,12 +63,13 @@ exports.handler = async (event) => {
 			.put({
 				TableName: process.env.API_HOUSEHOLDAPP_HOUSEHOLDMEMBERTABLE_NAME,
 				Item: {
-					id: houseHoldMemberID,
-					householdID: houseHoldID,
-					userprofileID,
+					id: houseHoldMemberId,
 					points: 0,
 					owner: ownerID,
-					createdAt,
+					userProfileId: userProfileId,
+					houseHoldId: houseHoldId,
+					
+					createdAt: createdAt,
 					updatedAt: createdAt,
 
 					__typename: 'HouseHoldMember',
@@ -88,10 +89,10 @@ exports.handler = async (event) => {
 			.put({
 				TableName: process.env.API_HOUSEHOLDAPP_CHATROOMTABLE_NAME,
 				Item: {
-					id: chatRoomID,
-					householdID: houseHoldID,
-					owners: [ownerID],
-					createdAt,
+					id: chatRoomId,
+					houseHoldId: houseHoldId,
+
+					createdAt: createdAt,
 					updatedAt: createdAt,
 
 					__typename: 'ChatRoom',
@@ -111,10 +112,10 @@ exports.handler = async (event) => {
 			.put({
 				TableName: process.env.API_HOUSEHOLDAPP_CALENDARTABLE_NAME,
 				Item: {
-					id: calendarID,
-					householdID: houseHoldID,
-					owners: [ownerID],
-					createdAt,
+					id: calendarId,
+					houseHoldId: houseHoldId,
+
+					createdAt: createdAt,
 					updatedAt: createdAt,
 
 					__typename: 'Calendar',
@@ -134,12 +135,12 @@ exports.handler = async (event) => {
 			.put({
 				TableName: process.env.API_HOUSEHOLDAPP_HOUSEHOLDTABLE_NAME,
 				Item: {
-					id: houseHoldID,
+					id: houseHoldId,
 					name: houseHoldName,
 					owners: [ownerID],
-					chatRoomID,
-					calendarID,
-					createdAt,
+					chatRoomId: chatRoomId,
+					calendarId: calendarId,
+					createdAt: createdAt,
 					updatedAt: createdAt,
 
 					__typename: 'HouseHold',
@@ -153,5 +154,5 @@ exports.handler = async (event) => {
 		return new Error('Error creating houseHold');
 	}
 
-	return houseHoldID;
+	return houseHoldId;
 };

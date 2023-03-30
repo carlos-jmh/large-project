@@ -4,110 +4,145 @@ type ArchivedTask {
   completedBy: String!
 }
 
-type Message @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owner" }
-]) {
+type Message
+  @model(
+    mutations: { create: null, delete: null, update: null },
+  )
+  @auth(rules: [
+    { allow: custom },
+  ])
+{
   id: ID!
   message: String!
-  author: String!
-  owner: String!
-  ChatRoom: ChatRoom @belongsTo(fields: ["chatroomID"])
-  chatroomID: ID! @index(name: "byChatRoom")
+  authorHouseHoldMemberId: String!
+  ChatRoom: ChatRoom @belongsTo(fields: ["chatRoomId"])
+  chatRoomId: ID! @index(name: "byChatRoom")
 }
 
-type ChatRoom @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owners" },
-]) {
+type ChatRoom
+  @model(
+    mutations: { create: null, delete: null, update: null },
+  )
+  @auth(rules: [
+    { allow: custom},
+  ])
+{
   id: ID!
-  owners: [String!]!
   Messages: [Message] @hasMany(indexName: "byChatRoom", fields: ["id"])
-  HouseHold: HouseHold @belongsTo
+  houseHoldId: ID!
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
 }
 
 type Task @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owners" },
+  { allow: custom },
 ]) {
   id: ID!
   title: String!
-  owners: [String!]!
-  householdID: ID! @index(name: "byHouseHold")
+  houseHoldId: ID! @index(name: "byHouseHold")
   foreverTask: Boolean
+  listId: ID
+  List: List @belongsTo(fields: ["listId"])
+  itemId: ID
+  Item: Item @belongsTo(fields: ["itemId"])
   deleteSourceOnComplete: Boolean
-  EventHandler: EventHandler @hasOne
+  eventHandlerId: ID
+  EventHandler: EventHandler @belongsTo(fields: ["eventHandlerId"])
   completed: Boolean
   pointValue: Int
-  HouseHold: HouseHold @belongsTo(fields: ["householdID"])
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
 }
 
-type UserProfile @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owner" operations: [read, update] },
-]) {
+type UserProfile
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: owner, ownerField: "owner" operations: [read] },
+  ])
+{
   id: ID!
-  owner: String! @index(name: "byOwner")
-  preferredName: String
+  owner: String! @index(name: "byOwner", queryField: "userProfileByOwner", sortKeyFields: ["id"])
+  preferredName: String @auth(rules: [{ allow: owner, ownerField: "owner", operations: [read, update] }])
   HouseHoldMembers: [HouseHoldMember] @hasMany(indexName: "byUserProfile", fields: ["id"])
 }
 
-type HouseHoldMember @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owner" },
-]) {
+type HouseHoldMember
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: owner, ownerField: "owner", operations: [read] },
+  ])
+{
   id: ID!
   points: Int
   owner: String!
-  UserProfile: UserProfile @belongsTo
-  userprofileID: ID! @index(name: "byUserProfile")
-  HouseHold: HouseHold @belongsTo
-  householdID: ID! @index(name: "byHouseHold")
-  completedTasks: [ArchivedTask]
+  userProfileId: ID! @index(name: "byUserProfile")
+  UserProfile: UserProfile @belongsTo(fields: ["userProfileId"])
+  houseHoldId: ID! @index(name: "byHouseHold")
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
 }
 
-type EventHandler @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owners" },
-]) {
+type EventHandler
+  @model(
+    mutations: { create: null, update: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: custom },
+  ])
+{
   id: ID!
   frequency: String!
-  owners: [String!]!
+  calendarId: ID! @index(name: "byCalendar")
+  Calendar: Calendar @belongsTo(fields: ["calendarId"])
   Events: [Event] @hasMany(indexName: "byEventHandler", fields: ["id"])
+  Task: Task @hasOne
   sourceDate: AWSDateTime!
   endDate: AWSDateTime!
-  Task: Task @belongsTo
 }
 
-type Event @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owners" },
-]) {
+type Event
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: custom },
+  ])
+{
   id: ID!
   date: AWSDateTime
-  owners: [String!]!
-  eventhandlerID: ID! @index(name: "byEventHandler")
-  calendarID: ID! @index(name: "byCalendar")
-  EventHandler: EventHandler @belongsTo(fields: ["eventhandlerID"])
-  Calendar: Calendar @belongsTo(fields: ["calendarID"])
+  eventHandlerId: ID! @index(name: "byEventHandler")
+  calendarId: ID! @index(name: "byCalendar")
+  EventHandler: EventHandler @belongsTo(fields: ["eventHandlerId"])
+  Calendar: Calendar @belongsTo(fields: ["calendarId"])
 }
 
-type Calendar @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owners" },
-]) {
+type Calendar
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: custom },
+  ])
+{
   id: ID!
-  owners: [String!]!
   Events: [Event] @hasMany(indexName: "byCalendar", fields: ["id"])
-  HouseHold: HouseHold @belongsTo
+  EventHandler: [EventHandler] @hasMany(indexName: "byCalendar", fields: ["id"])
+  houseHoldId: ID!
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
 }
 
-type HouseHold @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owners" }
-]) {
+type HouseHold
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "owners", operations: [read] }
+  ])
+{
   id: ID!
-  name: String!
+  name: String! @auth(rules: [{ allow: owner, ownerField: "owners", operations: [read, update] }])
   owners: [String!]!
   Lists: [List] @hasMany(indexName: "byHouseHold", fields: ["id"])
   Tasks: [Task] @hasMany(indexName: "byHouseHold", fields: ["id"])
@@ -117,35 +152,33 @@ type HouseHold @model @auth(rules: [
 }
 
 type Item @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owners" }
+  { allow: custom },
 ]) {
   id: ID!
   title: String!
   description: String
-  owners: [String!]!
   completed: Boolean
-  listID: ID! @index(name: "byList")
+  listId: ID! @index(name: "byList")
+  List: List @belongsTo(fields: ["listId"])
   Task: Task @hasOne
-  List: List @belongsTo(fields: ["listID"])
 }
 
 type List @model @auth(rules: [
-  { allow: private, operations: [create] },
-  { allow: owner, ownerField: "owners" }
+  { allow: custom },
 ]) {
   id: ID!
   title: String!
   description: String
-  owners: [String!]!
-  householdID: ID! @index(name: "byHouseHold")
+  houseHoldId: ID! @index(name: "byHouseHold")
   Items: [Item] @hasMany(indexName: "byList", fields: ["id"])
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
   Task: Task @hasOne
-  HouseHold: HouseHold @belongsTo(fields: ["householdID"])
 }
 
 type Mutation {
-  createNewHouseHold(userprofileID: String!, houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
+  createNewHouseHold(userProfileId: String!, houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
   addUserToHouseHold(cognitoUsername: String!, houseHoldID: String!): String @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: private }])
 }
-              
+                                           
+
+   
