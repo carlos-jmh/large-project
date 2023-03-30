@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 
+import { Auth as CognitoAuth } from "aws-amplify";
 import CustomButton from "../CustomButton";
 import LabeledInput from "../LabeledInput";
 import { getStyles } from "../styles";
@@ -12,10 +13,29 @@ export default function Register({ navigation }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  async function signUp() {
+    try {
+      const user = await CognitoAuth.signUp({
+        username,
+        password,
+        attributes: {
+          email,
+        },
+        autoSignIn: true,
+      });
+
+      console.log(user);
+
+      navigation.navigate("ConfirmRegister", { username: username });
+    } catch (error) {
+      console.log("Error signing up:", error);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -26,10 +46,10 @@ export default function Register({ navigation }) {
         }}
       >
         <LabeledInput
-          value={name}
-          label={"NAME"}
-          onChangeText={setName}
-          placeholder={"Enter full name"}
+          value={username}
+          label={"USERNAME"}
+          onChangeText={setUsername}
+          placeholder={"Enter Username"}
         />
         <View style={{ height: 18 }}></View>
         <LabeledInput
@@ -55,10 +75,7 @@ export default function Register({ navigation }) {
           isPassword={true}
         />
         <View style={{ height: 24 }}></View>
-        <CustomButton
-          title={"SIGN UP"}
-          onPress={() => console.log("Sign Up")}
-        />
+        <CustomButton title={"SIGN UP"} onPress={async () => await signUp()} />
       </View>
       <Text style={[styles.text, { color: colors.textFaded }]}>
         Already have an account?

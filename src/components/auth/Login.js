@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 
+import { Auth as CognitoAuth } from "aws-amplify";
 import CustomButton from "../CustomButton";
 import LabeledInput from "../LabeledInput";
 import { getStyles } from "../styles";
@@ -12,8 +13,17 @@ export default function Login({ navigation }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  async function signIn() {
+    try {
+      const user = await CognitoAuth.signIn(username, password);
+      navigation.navigate("InitialPage");
+    } catch (error) {
+      console.log("Error signing in:", error);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -24,10 +34,10 @@ export default function Login({ navigation }) {
         }}
       >
         <LabeledInput
-          value={email}
-          label={"EMAIL"}
-          onChangeText={setEmail}
-          placeholder={"Enter email address"}
+          value={username}
+          label={"USERNAME"}
+          onChangeText={setUsername}
+          placeholder={"Enter username"}
         />
         <View style={{ height: 18 }}></View>
         <LabeledInput
@@ -39,10 +49,7 @@ export default function Login({ navigation }) {
           helpLabel={"Forgot password?"}
         />
         <View style={{ height: 24 }}></View>
-        <CustomButton
-          title={"SIGN IN"}
-          onPress={() => console.log("Sign In")}
-        />
+        <CustomButton title={"SIGN IN"} onPress={async () => await signIn()} />
       </View>
       <Text style={[styles.text, { color: colors.textFaded }]}>
         Don't have an account?
