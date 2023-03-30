@@ -197,6 +197,13 @@ async function checkAuthorization(ast, sub) {
       }
 
       // Mutations
+      case "addUserToHouseHold": {
+        const houseHoldId = retrieveArgument("houseHoldId", selection.arguments);
+        if (!await isAuthorizedForHouseHold(dynamo, houseHoldId, sub)) {
+          return false;
+        }
+        break;
+      }
       case "createItem": {
         const listId = retrieveInputArgument("listId", selection.arguments);
         if (!await isAuthorizedForList(dynamo, listId, sub)) {

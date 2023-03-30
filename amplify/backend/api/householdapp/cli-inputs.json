@@ -6,7 +6,7 @@
     "defaultAuthType": {
       "mode": "AWS_LAMBDA",
       "lambdaFunction": "graphQlLambdaAuthorizerc6ebb49e",
-      "ttlSeconds": "300"
+      "ttlSeconds": "0"
     },
     "conflictResolution": {
       "defaultResolutionStrategy": {

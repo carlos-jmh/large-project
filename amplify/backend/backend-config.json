@@ -27,7 +27,7 @@
             "authenticationType": "AWS_LAMBDA",
             "lambdaAuthorizerConfig": {
               "lambdaFunction": "graphQlLambdaAuthorizerc6ebb49e",
-              "ttlSeconds": "300"
+              "ttlSeconds": "0"
             }
           }
         }
@@ -179,22 +179,6 @@
         {
           "category": "function",
           "resourceName": "createNewHouseHold"
-        }
-      ]
-    },
-    "AMPLIFY_function_graphQlLambdaAuthorizerc6ebb49e_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "graphQlLambdaAuthorizerc6ebb49e"
-        }
-      ]
-    },
-    "AMPLIFY_function_graphQlLambdaAuthorizerc6ebb49e_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "graphQlLambdaAuthorizerc6ebb49e"
         }
       ]
     },

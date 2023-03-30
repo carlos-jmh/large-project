@@ -1421,24 +1421,18 @@ export const deleteList = /* GraphQL */ `
   }
 `;
 export const createNewHouseHold = /* GraphQL */ `
-  mutation CreateNewHouseHold(
-    $userProfileId: String!
-    $houseHoldName: String!
-  ) {
-    createNewHouseHold(
-      userProfileId: $userProfileId
-      houseHoldName: $houseHoldName
-    )
+  mutation CreateNewHouseHold($houseHoldName: String!) {
+    createNewHouseHold(houseHoldName: $houseHoldName)
   }
 `;
 export const addUserToHouseHold = /* GraphQL */ `
   mutation AddUserToHouseHold(
     $cognitoUsername: String!
-    $houseHoldID: String!
+    $houseHoldId: String!
   ) {
     addUserToHouseHold(
       cognitoUsername: $cognitoUsername
-      houseHoldID: $houseHoldID
+      houseHoldId: $houseHoldId
     )
   }
 `;

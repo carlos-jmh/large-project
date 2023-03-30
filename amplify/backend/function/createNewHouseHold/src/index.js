@@ -21,9 +21,9 @@ const { v4: uuidv4 } = require('uuid');
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-	const { userProfileId, houseHoldName } = event.arguments;
+	const { houseHoldName } = event.arguments;
 	const identity = event.identity;
-	const ownerID = `${identity.sub}`;
+	const ownerId = `${identity.sub}`;
 
 	// generate IDs
 	const houseHoldId = uuidv4();
@@ -39,23 +39,7 @@ exports.handler = async (event) => {
 	const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 	// validate userProfileId
-	try {
-		const userProfile = await dynamoDb
-			.get({
-				TableName: process.env.API_HOUSEHOLDAPP_USERPROFILETABLE_NAME,
-				Key: {
-					id: userProfileId,
-				},
-			})
-			.promise();
-
-		if (!userProfile.Item) {
-			return new Error('Invalid userProfileId');
-		}
-	} catch (error) {
-		console.log(error);
-		return new Error('Invalid userProfileId');
-	}
+	const userProfileId = await validateUserProfile(dynamoDb, ownerId);
 
 	// create new houseHoldmember
 	try {
@@ -65,7 +49,7 @@ exports.handler = async (event) => {
 				Item: {
 					id: houseHoldMemberId,
 					points: 0,
-					owner: ownerID,
+					owner: ownerId,
 					userProfileId: userProfileId,
 					houseHoldId: houseHoldId,
 					
@@ -137,7 +121,7 @@ exports.handler = async (event) => {
 				Item: {
 					id: houseHoldId,
 					name: houseHoldName,
-					owners: [ownerID],
+					owners: [ownerId],
 					chatRoomId: chatRoomId,
 					calendarId: calendarId,
 					createdAt: createdAt,
@@ -156,3 +140,26 @@ exports.handler = async (event) => {
 
 	return houseHoldId;
 };
+
+async function validateUserProfile(dynamoDb, sub) {
+	// validate userProfileId
+	const userProfileQuery = {
+		TableName: process.env.API_HOUSEHOLDAPP_USERPROFILETABLE_NAME,
+		IndexName: "byOwner",
+		KeyConditionExpression: "#owner_id = :user_sub",
+		ExpressionAttributeValues: {
+			":user_sub": sub
+		},
+		ExpressionAttributeNames: {
+			"#owner_id" : "owner"
+		},
+		ProjectionExpression: "id"
+	};
+
+	const userProfile = await dynamoDb.get(userProfileQuery).promise();
+	if (!userProfile.Item) {
+		throw new Error('Invalid userProfileId');
+	}
+
+	return userProfile.Item.id;
+}
