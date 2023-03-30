@@ -1,12 +1,11 @@
 import { Text, View } from "react-native";
 
+import { Auth as CognitoAuth } from "aws-amplify";
 import CustomButton from "../CustomButton";
 import LabeledInput from "../LabeledInput";
 import { getStyles } from "../styles";
 import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
-
-import { Auth as CognitoAuth } from "aws-amplify";
 
 /* Login page */
 // TODO: Connect to backend
@@ -50,10 +49,7 @@ export default function Login({ navigation }) {
           helpLabel={"Forgot password?"}
         />
         <View style={{ height: 24 }}></View>
-        <CustomButton
-          title={"SIGN IN"}
-          onPress={async () => await signIn()}
-        />
+        <CustomButton title={"SIGN IN"} onPress={async () => await signIn()} />
       </View>
       <Text style={[styles.text, { color: colors.textFaded }]}>
         Don't have an account?

@@ -1,8 +1,8 @@
+import { Amplify } from "aws-amplify";
+import App from "./components/App";
+import awsconfig from "./aws-exports";
 import { registerRootComponent } from "expo";
 
-import { Amplify } from "aws-amplify";
-import awsconfig from "./aws-exports";
 Amplify.configure(awsconfig);
 
-import App from "./components/App";
 registerRootComponent(App);
