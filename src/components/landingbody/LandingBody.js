@@ -27,13 +27,16 @@ return(
         <br />
         <div className = "wrapper1">
             <div className="child">
-                <p>Div 1</p>
+                <img src={Dinner} 
+            alt="Group of friends eating dinner"/>
             </div>
             <div className="child">
-                <p>Div 2</p>
+                <img src={Cleaning} 
+                alt="Roommates cleaning together"/>
             </div>
             <div className="child">
-                <p>Div 3</p>
+                <img src={Groceries} 
+                    alt="Couple buying groceries together"/>
             </div>
         </div>
     </div>

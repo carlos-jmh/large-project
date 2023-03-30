@@ -26,11 +26,22 @@ button
 
 .child
 {
-    width: 20%;
-    padding: 10px;
+    width: 250px;
     margin: 50px;
+    padding: 15px;
     display: inline-block;
     background: white;
     border-radius: 10px;
     height: 300px;
+}
+
+.wrapper1 img
+{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.child img{
+    object-fit: cover;
 }
