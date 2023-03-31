@@ -6,15 +6,14 @@ export const getMessage = /* GraphQL */ `
     getMessage(id: $id) {
       id
       message
-      author
-      owner
+      authorHouseHoldMemberId
       ChatRoom {
         id
-        owners
         Messages {
           nextToken
           startedAt
         }
+        houseHoldId
         HouseHold {
           id
           name
@@ -32,9 +31,8 @@ export const getMessage = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        chatRoomHouseHoldId
       }
-      chatroomID
+      chatRoomId
       createdAt
       updatedAt
       _version
@@ -53,19 +51,17 @@ export const listMessages = /* GraphQL */ `
       items {
         id
         message
-        author
-        owner
+        authorHouseHoldMemberId
         ChatRoom {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          chatRoomHouseHoldId
         }
-        chatroomID
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -93,19 +89,17 @@ export const syncMessages = /* GraphQL */ `
       items {
         id
         message
-        author
-        owner
+        authorHouseHoldMemberId
         ChatRoom {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          chatRoomHouseHoldId
         }
-        chatroomID
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -117,16 +111,16 @@ export const syncMessages = /* GraphQL */ `
     }
   }
 `;
-export const messagesByChatroomID = /* GraphQL */ `
-  query MessagesByChatroomID(
-    $chatroomID: ID!
+export const messagesByChatRoomId = /* GraphQL */ `
+  query MessagesByChatRoomId(
+    $chatRoomId: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelMessageFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    messagesByChatroomID(
-      chatroomID: $chatroomID
+    messagesByChatRoomId(
+      chatRoomId: $chatRoomId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -135,19 +129,17 @@ export const messagesByChatroomID = /* GraphQL */ `
       items {
         id
         message
-        author
-        owner
+        authorHouseHoldMemberId
         ChatRoom {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          chatRoomHouseHoldId
         }
-        chatroomID
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -163,14 +155,12 @@ export const getChatRoom = /* GraphQL */ `
   query GetChatRoom($id: ID!) {
     getChatRoom(id: $id) {
       id
-      owners
       Messages {
         items {
           id
           message
-          author
-          owner
-          chatroomID
+          authorHouseHoldMemberId
+          chatRoomId
           createdAt
           updatedAt
           _version
@@ -180,6 +170,7 @@ export const getChatRoom = /* GraphQL */ `
         nextToken
         startedAt
       }
+      houseHoldId
       HouseHold {
         id
         name
@@ -198,23 +189,21 @@ export const getChatRoom = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         ChatRoom {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          chatRoomHouseHoldId
         }
         createdAt
         updatedAt
@@ -229,7 +218,6 @@ export const getChatRoom = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      chatRoomHouseHoldId
     }
   }
 `;
@@ -242,11 +230,11 @@ export const listChatRooms = /* GraphQL */ `
     listChatRooms(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        owners
         Messages {
           nextToken
           startedAt
         }
+        houseHoldId
         HouseHold {
           id
           name
@@ -264,7 +252,6 @@ export const listChatRooms = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        chatRoomHouseHoldId
       }
       nextToken
       startedAt
@@ -286,11 +273,11 @@ export const syncChatRooms = /* GraphQL */ `
     ) {
       items {
         id
-        owners
         Messages {
           nextToken
           startedAt
         }
+        houseHoldId
         HouseHold {
           id
           name
@@ -308,7 +295,6 @@ export const syncChatRooms = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        chatRoomHouseHoldId
       }
       nextToken
       startedAt
@@ -320,27 +306,39 @@ export const getTask = /* GraphQL */ `
     getTask(id: $id) {
       id
       title
-      owners
-      householdID
+      houseHoldId
       foreverTask
-      deleteSourceOnComplete
-      EventHandler {
+      listId
+      List {
         id
-        frequency
-        owners
-        Events {
+        title
+        description
+        houseHoldId
+        Items {
           nextToken
           startedAt
         }
-        sourceDate
-        endDate
+        HouseHold {
+          id
+          name
+          owners
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          houseHoldCalendarId
+          houseHoldChatRoomId
+        }
         Task {
           id
           title
-          owners
-          householdID
+          houseHoldId
           foreverTask
+          listId
+          itemId
           deleteSourceOnComplete
+          eventHandlerId
           completed
           pointValue
           createdAt
@@ -348,8 +346,95 @@ export const getTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          taskEventHandlerId
         }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        listTaskId
+      }
+      itemId
+      Item {
+        id
+        title
+        description
+        completed
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          deleteSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        itemTaskId
+      }
+      deleteSourceOnComplete
+      eventHandlerId
+      EventHandler {
+        id
+        frequency
+        calendarId
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        Events {
+          nextToken
+          startedAt
+        }
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          deleteSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        sourceDate
+        endDate
         createdAt
         updatedAt
         _version
@@ -377,23 +462,21 @@ export const getTask = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         ChatRoom {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          chatRoomHouseHoldId
         }
         createdAt
         updatedAt
@@ -408,7 +491,6 @@ export const getTask = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      taskEventHandlerId
     }
   }
 `;
@@ -422,14 +504,41 @@ export const listTasks = /* GraphQL */ `
       items {
         id
         title
-        owners
-        householdID
+        houseHoldId
         foreverTask
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
+        itemId
+        Item {
+          id
+          title
+          description
+          completed
+          listId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          itemTaskId
+        }
         deleteSourceOnComplete
+        eventHandlerId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -458,7 +567,6 @@ export const listTasks = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        taskEventHandlerId
       }
       nextToken
       startedAt
@@ -481,14 +589,41 @@ export const syncTasks = /* GraphQL */ `
       items {
         id
         title
-        owners
-        householdID
+        houseHoldId
         foreverTask
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
+        itemId
+        Item {
+          id
+          title
+          description
+          completed
+          listId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          itemTaskId
+        }
         deleteSourceOnComplete
+        eventHandlerId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -517,23 +652,22 @@ export const syncTasks = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        taskEventHandlerId
       }
       nextToken
       startedAt
     }
   }
 `;
-export const tasksByHouseholdID = /* GraphQL */ `
-  query TasksByHouseholdID(
-    $householdID: ID!
+export const tasksByHouseHoldId = /* GraphQL */ `
+  query TasksByHouseHoldId(
+    $houseHoldId: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelTaskFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    tasksByHouseholdID(
-      householdID: $householdID
+    tasksByHouseHoldId(
+      houseHoldId: $houseHoldId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -542,14 +676,41 @@ export const tasksByHouseholdID = /* GraphQL */ `
       items {
         id
         title
-        owners
-        householdID
+        houseHoldId
         foreverTask
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
+        itemId
+        Item {
+          id
+          title
+          description
+          completed
+          listId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          itemTaskId
+        }
         deleteSourceOnComplete
+        eventHandlerId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -578,7 +739,6 @@ export const tasksByHouseholdID = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        taskEventHandlerId
       }
       nextToken
       startedAt
@@ -596,8 +756,8 @@ export const getUserProfile = /* GraphQL */ `
           id
           points
           owner
-          userprofileID
-          householdID
+          userProfileId
+          houseHoldId
           createdAt
           updatedAt
           _version
@@ -673,16 +833,18 @@ export const syncUserProfiles = /* GraphQL */ `
     }
   }
 `;
-export const userProfilesByOwner = /* GraphQL */ `
-  query UserProfilesByOwner(
+export const userProfileByOwner = /* GraphQL */ `
+  query UserProfileByOwner(
     $owner: String!
+    $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelUserProfileFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    userProfilesByOwner(
+    userProfileByOwner(
       owner: $owner
+      id: $id
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -713,6 +875,7 @@ export const getHouseHoldMember = /* GraphQL */ `
       id
       points
       owner
+      userProfileId
       UserProfile {
         id
         owner
@@ -727,7 +890,7 @@ export const getHouseHoldMember = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      userprofileID
+      houseHoldId
       HouseHold {
         id
         name
@@ -746,23 +909,21 @@ export const getHouseHoldMember = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         ChatRoom {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          chatRoomHouseHoldId
         }
         createdAt
         updatedAt
@@ -771,12 +932,6 @@ export const getHouseHoldMember = /* GraphQL */ `
         _lastChangedAt
         houseHoldCalendarId
         houseHoldChatRoomId
-      }
-      householdID
-      completedTasks {
-        title
-        points
-        completedBy
       }
       createdAt
       updatedAt
@@ -801,6 +956,7 @@ export const listHouseHoldMembers = /* GraphQL */ `
         id
         points
         owner
+        userProfileId
         UserProfile {
           id
           owner
@@ -811,7 +967,7 @@ export const listHouseHoldMembers = /* GraphQL */ `
           _deleted
           _lastChangedAt
         }
-        userprofileID
+        houseHoldId
         HouseHold {
           id
           name
@@ -823,12 +979,6 @@ export const listHouseHoldMembers = /* GraphQL */ `
           _lastChangedAt
           houseHoldCalendarId
           houseHoldChatRoomId
-        }
-        householdID
-        completedTasks {
-          title
-          points
-          completedBy
         }
         createdAt
         updatedAt
@@ -858,6 +1008,7 @@ export const syncHouseHoldMembers = /* GraphQL */ `
         id
         points
         owner
+        userProfileId
         UserProfile {
           id
           owner
@@ -868,7 +1019,7 @@ export const syncHouseHoldMembers = /* GraphQL */ `
           _deleted
           _lastChangedAt
         }
-        userprofileID
+        houseHoldId
         HouseHold {
           id
           name
@@ -880,12 +1031,6 @@ export const syncHouseHoldMembers = /* GraphQL */ `
           _lastChangedAt
           houseHoldCalendarId
           houseHoldChatRoomId
-        }
-        householdID
-        completedTasks {
-          title
-          points
-          completedBy
         }
         createdAt
         updatedAt
@@ -898,16 +1043,16 @@ export const syncHouseHoldMembers = /* GraphQL */ `
     }
   }
 `;
-export const houseHoldMembersByUserprofileID = /* GraphQL */ `
-  query HouseHoldMembersByUserprofileID(
-    $userprofileID: ID!
+export const houseHoldMembersByUserProfileId = /* GraphQL */ `
+  query HouseHoldMembersByUserProfileId(
+    $userProfileId: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelHouseHoldMemberFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    houseHoldMembersByUserprofileID(
-      userprofileID: $userprofileID
+    houseHoldMembersByUserProfileId(
+      userProfileId: $userProfileId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -917,6 +1062,7 @@ export const houseHoldMembersByUserprofileID = /* GraphQL */ `
         id
         points
         owner
+        userProfileId
         UserProfile {
           id
           owner
@@ -927,7 +1073,7 @@ export const houseHoldMembersByUserprofileID = /* GraphQL */ `
           _deleted
           _lastChangedAt
         }
-        userprofileID
+        houseHoldId
         HouseHold {
           id
           name
@@ -939,12 +1085,6 @@ export const houseHoldMembersByUserprofileID = /* GraphQL */ `
           _lastChangedAt
           houseHoldCalendarId
           houseHoldChatRoomId
-        }
-        householdID
-        completedTasks {
-          title
-          points
-          completedBy
         }
         createdAt
         updatedAt
@@ -957,16 +1097,16 @@ export const houseHoldMembersByUserprofileID = /* GraphQL */ `
     }
   }
 `;
-export const houseHoldMembersByHouseholdID = /* GraphQL */ `
-  query HouseHoldMembersByHouseholdID(
-    $householdID: ID!
+export const houseHoldMembersByHouseHoldId = /* GraphQL */ `
+  query HouseHoldMembersByHouseHoldId(
+    $houseHoldId: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelHouseHoldMemberFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    houseHoldMembersByHouseholdID(
-      householdID: $householdID
+    houseHoldMembersByHouseHoldId(
+      houseHoldId: $houseHoldId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -976,6 +1116,7 @@ export const houseHoldMembersByHouseholdID = /* GraphQL */ `
         id
         points
         owner
+        userProfileId
         UserProfile {
           id
           owner
@@ -986,7 +1127,7 @@ export const houseHoldMembersByHouseholdID = /* GraphQL */ `
           _deleted
           _lastChangedAt
         }
-        userprofileID
+        houseHoldId
         HouseHold {
           id
           name
@@ -998,12 +1139,6 @@ export const houseHoldMembersByHouseholdID = /* GraphQL */ `
           _lastChangedAt
           houseHoldCalendarId
           houseHoldChatRoomId
-        }
-        householdID
-        completedTasks {
-          title
-          points
-          completedBy
         }
         createdAt
         updatedAt
@@ -1021,14 +1156,42 @@ export const getEventHandler = /* GraphQL */ `
     getEventHandler(id: $id) {
       id
       frequency
-      owners
+      calendarId
+      Calendar {
+        id
+        Events {
+          nextToken
+          startedAt
+        }
+        EventHandler {
+          nextToken
+          startedAt
+        }
+        houseHoldId
+        HouseHold {
+          id
+          name
+          owners
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          houseHoldCalendarId
+          houseHoldChatRoomId
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       Events {
         items {
           id
           date
-          owners
-          eventhandlerID
-          calendarID
+          eventHandlerId
+          calendarId
           createdAt
           updatedAt
           _version
@@ -1038,19 +1201,44 @@ export const getEventHandler = /* GraphQL */ `
         nextToken
         startedAt
       }
-      sourceDate
-      endDate
       Task {
         id
         title
-        owners
-        householdID
+        houseHoldId
         foreverTask
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
+        itemId
+        Item {
+          id
+          title
+          description
+          completed
+          listId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          itemTaskId
+        }
         deleteSourceOnComplete
+        eventHandlerId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -1079,8 +1267,9 @@ export const getEventHandler = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        taskEventHandlerId
       }
+      sourceDate
+      endDate
       createdAt
       updatedAt
       _version
@@ -1100,20 +1289,29 @@ export const listEventHandlers = /* GraphQL */ `
       items {
         id
         frequency
-        owners
+        calendarId
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         Events {
           nextToken
           startedAt
         }
-        sourceDate
-        endDate
         Task {
           id
           title
-          owners
-          householdID
+          houseHoldId
           foreverTask
+          listId
+          itemId
           deleteSourceOnComplete
+          eventHandlerId
           completed
           pointValue
           createdAt
@@ -1121,8 +1319,9 @@ export const listEventHandlers = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          taskEventHandlerId
         }
+        sourceDate
+        endDate
         createdAt
         updatedAt
         _version
@@ -1151,20 +1350,29 @@ export const syncEventHandlers = /* GraphQL */ `
       items {
         id
         frequency
-        owners
+        calendarId
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         Events {
           nextToken
           startedAt
         }
-        sourceDate
-        endDate
         Task {
           id
           title
-          owners
-          householdID
+          houseHoldId
           foreverTask
+          listId
+          itemId
           deleteSourceOnComplete
+          eventHandlerId
           completed
           pointValue
           createdAt
@@ -1172,8 +1380,72 @@ export const syncEventHandlers = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          taskEventHandlerId
         }
+        sourceDate
+        endDate
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        eventHandlerTaskId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const eventHandlersByCalendarId = /* GraphQL */ `
+  query EventHandlersByCalendarId(
+    $calendarId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelEventHandlerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    eventHandlersByCalendarId(
+      calendarId: $calendarId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        frequency
+        calendarId
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        Events {
+          nextToken
+          startedAt
+        }
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          deleteSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        sourceDate
+        endDate
         createdAt
         updatedAt
         _version
@@ -1191,26 +1463,34 @@ export const getEvent = /* GraphQL */ `
     getEvent(id: $id) {
       id
       date
-      owners
-      eventhandlerID
-      calendarID
+      eventHandlerId
+      calendarId
       EventHandler {
         id
         frequency
-        owners
+        calendarId
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         Events {
           nextToken
           startedAt
         }
-        sourceDate
-        endDate
         Task {
           id
           title
-          owners
-          householdID
+          houseHoldId
           foreverTask
+          listId
+          itemId
           deleteSourceOnComplete
+          eventHandlerId
           completed
           pointValue
           createdAt
@@ -1218,8 +1498,9 @@ export const getEvent = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          taskEventHandlerId
         }
+        sourceDate
+        endDate
         createdAt
         updatedAt
         _version
@@ -1229,11 +1510,15 @@ export const getEvent = /* GraphQL */ `
       }
       Calendar {
         id
-        owners
         Events {
           nextToken
           startedAt
         }
+        EventHandler {
+          nextToken
+          startedAt
+        }
+        houseHoldId
         HouseHold {
           id
           name
@@ -1251,7 +1536,6 @@ export const getEvent = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        calendarHouseHoldId
       }
       createdAt
       updatedAt
@@ -1271,13 +1555,12 @@ export const listEvents = /* GraphQL */ `
       items {
         id
         date
-        owners
-        eventhandlerID
-        calendarID
+        eventHandlerId
+        calendarId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -1289,13 +1572,12 @@ export const listEvents = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         createdAt
         updatedAt
@@ -1324,13 +1606,12 @@ export const syncEvents = /* GraphQL */ `
       items {
         id
         date
-        owners
-        eventhandlerID
-        calendarID
+        eventHandlerId
+        calendarId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -1342,13 +1623,12 @@ export const syncEvents = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         createdAt
         updatedAt
@@ -1361,16 +1641,16 @@ export const syncEvents = /* GraphQL */ `
     }
   }
 `;
-export const eventsByEventhandlerID = /* GraphQL */ `
-  query EventsByEventhandlerID(
-    $eventhandlerID: ID!
+export const eventsByEventHandlerId = /* GraphQL */ `
+  query EventsByEventHandlerId(
+    $eventHandlerId: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelEventFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    eventsByEventhandlerID(
-      eventhandlerID: $eventhandlerID
+    eventsByEventHandlerId(
+      eventHandlerId: $eventHandlerId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -1379,13 +1659,12 @@ export const eventsByEventhandlerID = /* GraphQL */ `
       items {
         id
         date
-        owners
-        eventhandlerID
-        calendarID
+        eventHandlerId
+        calendarId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -1397,13 +1676,12 @@ export const eventsByEventhandlerID = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         createdAt
         updatedAt
@@ -1416,16 +1694,16 @@ export const eventsByEventhandlerID = /* GraphQL */ `
     }
   }
 `;
-export const eventsByCalendarID = /* GraphQL */ `
-  query EventsByCalendarID(
-    $calendarID: ID!
+export const eventsByCalendarId = /* GraphQL */ `
+  query EventsByCalendarId(
+    $calendarId: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelEventFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    eventsByCalendarID(
-      calendarID: $calendarID
+    eventsByCalendarId(
+      calendarId: $calendarId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -1434,13 +1712,12 @@ export const eventsByCalendarID = /* GraphQL */ `
       items {
         id
         date
-        owners
-        eventhandlerID
-        calendarID
+        eventHandlerId
+        calendarId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -1452,13 +1729,12 @@ export const eventsByCalendarID = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         createdAt
         updatedAt
@@ -1475,14 +1751,12 @@ export const getCalendar = /* GraphQL */ `
   query GetCalendar($id: ID!) {
     getCalendar(id: $id) {
       id
-      owners
       Events {
         items {
           id
           date
-          owners
-          eventhandlerID
-          calendarID
+          eventHandlerId
+          calendarId
           createdAt
           updatedAt
           _version
@@ -1492,6 +1766,24 @@ export const getCalendar = /* GraphQL */ `
         nextToken
         startedAt
       }
+      EventHandler {
+        items {
+          id
+          frequency
+          calendarId
+          sourceDate
+          endDate
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          eventHandlerTaskId
+        }
+        nextToken
+        startedAt
+      }
+      houseHoldId
       HouseHold {
         id
         name
@@ -1510,23 +1802,21 @@ export const getCalendar = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         ChatRoom {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          chatRoomHouseHoldId
         }
         createdAt
         updatedAt
@@ -1541,7 +1831,6 @@ export const getCalendar = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
-      calendarHouseHoldId
     }
   }
 `;
@@ -1554,11 +1843,15 @@ export const listCalendars = /* GraphQL */ `
     listCalendars(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        owners
         Events {
           nextToken
           startedAt
         }
+        EventHandler {
+          nextToken
+          startedAt
+        }
+        houseHoldId
         HouseHold {
           id
           name
@@ -1576,7 +1869,6 @@ export const listCalendars = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        calendarHouseHoldId
       }
       nextToken
       startedAt
@@ -1598,11 +1890,15 @@ export const syncCalendars = /* GraphQL */ `
     ) {
       items {
         id
-        owners
         Events {
           nextToken
           startedAt
         }
+        EventHandler {
+          nextToken
+          startedAt
+        }
+        houseHoldId
         HouseHold {
           id
           name
@@ -1620,7 +1916,6 @@ export const syncCalendars = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        calendarHouseHoldId
       }
       nextToken
       startedAt
@@ -1638,8 +1933,7 @@ export const getHouseHold = /* GraphQL */ `
           id
           title
           description
-          owners
-          householdID
+          houseHoldId
           createdAt
           updatedAt
           _version
@@ -1654,10 +1948,12 @@ export const getHouseHold = /* GraphQL */ `
         items {
           id
           title
-          owners
-          householdID
+          houseHoldId
           foreverTask
+          listId
+          itemId
           deleteSourceOnComplete
+          eventHandlerId
           completed
           pointValue
           createdAt
@@ -1665,7 +1961,6 @@ export const getHouseHold = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          taskEventHandlerId
         }
         nextToken
         startedAt
@@ -1675,8 +1970,8 @@ export const getHouseHold = /* GraphQL */ `
           id
           points
           owner
-          userprofileID
-          householdID
+          userProfileId
+          houseHoldId
           createdAt
           updatedAt
           _version
@@ -1688,11 +1983,15 @@ export const getHouseHold = /* GraphQL */ `
       }
       Calendar {
         id
-        owners
         Events {
           nextToken
           startedAt
         }
+        EventHandler {
+          nextToken
+          startedAt
+        }
+        houseHoldId
         HouseHold {
           id
           name
@@ -1710,15 +2009,14 @@ export const getHouseHold = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        calendarHouseHoldId
       }
       ChatRoom {
         id
-        owners
         Messages {
           nextToken
           startedAt
         }
+        houseHoldId
         HouseHold {
           id
           name
@@ -1736,7 +2034,6 @@ export const getHouseHold = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        chatRoomHouseHoldId
       }
       createdAt
       updatedAt
@@ -1773,23 +2070,21 @@ export const listHouseHolds = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         ChatRoom {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          chatRoomHouseHoldId
         }
         createdAt
         updatedAt
@@ -1835,23 +2130,21 @@ export const syncHouseHolds = /* GraphQL */ `
         }
         Calendar {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          calendarHouseHoldId
         }
         ChatRoom {
           id
-          owners
+          houseHoldId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
-          chatRoomHouseHoldId
         }
         createdAt
         updatedAt
@@ -1872,20 +2165,91 @@ export const getItem = /* GraphQL */ `
       id
       title
       description
-      owners
       completed
-      listID
+      listId
+      List {
+        id
+        title
+        description
+        houseHoldId
+        Items {
+          nextToken
+          startedAt
+        }
+        HouseHold {
+          id
+          name
+          owners
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          houseHoldCalendarId
+          houseHoldChatRoomId
+        }
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          deleteSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        listTaskId
+      }
       Task {
         id
         title
-        owners
-        householdID
+        houseHoldId
         foreverTask
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
+        itemId
+        Item {
+          id
+          title
+          description
+          completed
+          listId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          itemTaskId
+        }
         deleteSourceOnComplete
+        eventHandlerId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -1914,52 +2278,6 @@ export const getItem = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        taskEventHandlerId
-      }
-      List {
-        id
-        title
-        description
-        owners
-        householdID
-        Items {
-          nextToken
-          startedAt
-        }
-        Task {
-          id
-          title
-          owners
-          householdID
-          foreverTask
-          deleteSourceOnComplete
-          completed
-          pointValue
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          taskEventHandlerId
-        }
-        HouseHold {
-          id
-          name
-          owners
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          houseHoldCalendarId
-          houseHoldChatRoomId
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        listTaskId
       }
       createdAt
       updatedAt
@@ -1981,16 +2299,29 @@ export const listItems = /* GraphQL */ `
         id
         title
         description
-        owners
         completed
-        listID
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
         Task {
           id
           title
-          owners
-          householdID
+          houseHoldId
           foreverTask
+          listId
+          itemId
           deleteSourceOnComplete
+          eventHandlerId
           completed
           pointValue
           createdAt
@@ -1998,20 +2329,6 @@ export const listItems = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          taskEventHandlerId
-        }
-        List {
-          id
-          title
-          description
-          owners
-          householdID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          listTaskId
         }
         createdAt
         updatedAt
@@ -2042,16 +2359,29 @@ export const syncItems = /* GraphQL */ `
         id
         title
         description
-        owners
         completed
-        listID
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
         Task {
           id
           title
-          owners
-          householdID
+          houseHoldId
           foreverTask
+          listId
+          itemId
           deleteSourceOnComplete
+          eventHandlerId
           completed
           pointValue
           createdAt
@@ -2059,20 +2389,6 @@ export const syncItems = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          taskEventHandlerId
-        }
-        List {
-          id
-          title
-          description
-          owners
-          householdID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          listTaskId
         }
         createdAt
         updatedAt
@@ -2086,16 +2402,16 @@ export const syncItems = /* GraphQL */ `
     }
   }
 `;
-export const itemsByListID = /* GraphQL */ `
-  query ItemsByListID(
-    $listID: ID!
+export const itemsByListId = /* GraphQL */ `
+  query ItemsByListId(
+    $listId: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelItemFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    itemsByListID(
-      listID: $listID
+    itemsByListId(
+      listId: $listId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -2105,16 +2421,29 @@ export const itemsByListID = /* GraphQL */ `
         id
         title
         description
-        owners
         completed
-        listID
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
         Task {
           id
           title
-          owners
-          householdID
+          houseHoldId
           foreverTask
+          listId
+          itemId
           deleteSourceOnComplete
+          eventHandlerId
           completed
           pointValue
           createdAt
@@ -2122,20 +2451,6 @@ export const itemsByListID = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
-          taskEventHandlerId
-        }
-        List {
-          id
-          title
-          description
-          owners
-          householdID
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          listTaskId
         }
         createdAt
         updatedAt
@@ -2155,16 +2470,14 @@ export const getList = /* GraphQL */ `
       id
       title
       description
-      owners
-      householdID
+      houseHoldId
       Items {
         items {
           id
           title
           description
-          owners
           completed
-          listID
+          listId
           createdAt
           updatedAt
           _version
@@ -2175,17 +2488,86 @@ export const getList = /* GraphQL */ `
         nextToken
         startedAt
       }
+      HouseHold {
+        id
+        name
+        owners
+        Lists {
+          nextToken
+          startedAt
+        }
+        Tasks {
+          nextToken
+          startedAt
+        }
+        HouseHoldMembers {
+          nextToken
+          startedAt
+        }
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        ChatRoom {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        houseHoldCalendarId
+        houseHoldChatRoomId
+      }
       Task {
         id
         title
-        owners
-        householdID
+        houseHoldId
         foreverTask
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
+        itemId
+        Item {
+          id
+          title
+          description
+          completed
+          listId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          itemTaskId
+        }
         deleteSourceOnComplete
+        eventHandlerId
         EventHandler {
           id
           frequency
-          owners
+          calendarId
           sourceDate
           endDate
           createdAt
@@ -2214,51 +2596,6 @@ export const getList = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        taskEventHandlerId
-      }
-      HouseHold {
-        id
-        name
-        owners
-        Lists {
-          nextToken
-          startedAt
-        }
-        Tasks {
-          nextToken
-          startedAt
-        }
-        HouseHoldMembers {
-          nextToken
-          startedAt
-        }
-        Calendar {
-          id
-          owners
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          calendarHouseHoldId
-        }
-        ChatRoom {
-          id
-          owners
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          chatRoomHouseHoldId
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        houseHoldCalendarId
-        houseHoldChatRoomId
       }
       createdAt
       updatedAt
@@ -2280,27 +2617,10 @@ export const listLists = /* GraphQL */ `
         id
         title
         description
-        owners
-        householdID
+        houseHoldId
         Items {
           nextToken
           startedAt
-        }
-        Task {
-          id
-          title
-          owners
-          householdID
-          foreverTask
-          deleteSourceOnComplete
-          completed
-          pointValue
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          taskEventHandlerId
         }
         HouseHold {
           id
@@ -2313,6 +2633,23 @@ export const listLists = /* GraphQL */ `
           _lastChangedAt
           houseHoldCalendarId
           houseHoldChatRoomId
+        }
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          deleteSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         createdAt
         updatedAt
@@ -2343,27 +2680,10 @@ export const syncLists = /* GraphQL */ `
         id
         title
         description
-        owners
-        householdID
+        houseHoldId
         Items {
           nextToken
           startedAt
-        }
-        Task {
-          id
-          title
-          owners
-          householdID
-          foreverTask
-          deleteSourceOnComplete
-          completed
-          pointValue
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          taskEventHandlerId
         }
         HouseHold {
           id
@@ -2376,6 +2696,23 @@ export const syncLists = /* GraphQL */ `
           _lastChangedAt
           houseHoldCalendarId
           houseHoldChatRoomId
+        }
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          deleteSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         createdAt
         updatedAt
@@ -2389,16 +2726,16 @@ export const syncLists = /* GraphQL */ `
     }
   }
 `;
-export const listsByHouseholdID = /* GraphQL */ `
-  query ListsByHouseholdID(
-    $householdID: ID!
+export const listsByHouseHoldId = /* GraphQL */ `
+  query ListsByHouseHoldId(
+    $houseHoldId: ID!
     $sortDirection: ModelSortDirection
     $filter: ModelListFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listsByHouseholdID(
-      householdID: $householdID
+    listsByHouseHoldId(
+      houseHoldId: $houseHoldId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -2408,27 +2745,10 @@ export const listsByHouseholdID = /* GraphQL */ `
         id
         title
         description
-        owners
-        householdID
+        houseHoldId
         Items {
           nextToken
           startedAt
-        }
-        Task {
-          id
-          title
-          owners
-          householdID
-          foreverTask
-          deleteSourceOnComplete
-          completed
-          pointValue
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          taskEventHandlerId
         }
         HouseHold {
           id
@@ -2441,6 +2761,23 @@ export const listsByHouseholdID = /* GraphQL */ `
           _lastChangedAt
           houseHoldCalendarId
           houseHoldChatRoomId
+        }
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          deleteSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
         }
         createdAt
         updatedAt

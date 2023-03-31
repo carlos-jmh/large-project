@@ -28,7 +28,7 @@
       "resourceName": "largeprojectCommonLayer",
       "version": "Always choose latest version",
       "isLatestVersionSelected": true,
-      "env": "chrisdev"
+      "env": "staging"
     }
   ]
 }

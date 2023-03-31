@@ -14,13 +14,20 @@
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authlargeproject9e7232c0"
+              }
+            },
+            {
               "authenticationType": "AWS_IAM"
             }
           ],
           "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authlargeproject9e7232c0"
+            "authenticationType": "AWS_LAMBDA",
+            "lambdaAuthorizerConfig": {
+              "lambdaFunction": "graphQlLambdaAuthorizerc6ebb49e",
+              "ttlSeconds": "0"
             }
           }
         }
@@ -88,6 +95,20 @@
       "service": "Lambda"
     },
     "createNewHouseHold": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "graphQlLambdaAuthorizerc6ebb49e": {
       "build": true,
       "dependsOn": [
         {

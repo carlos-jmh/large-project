@@ -4,19 +4,19 @@ import { schema } from './schema';
 
 
 
-const { Message, ChatRoom, HouseHold, List, Item, Task, EventHandler, Event, Calendar, HouseHoldMember, UserProfile, ArchivedTask } = initSchema(schema);
+const { Message, ChatRoom, Task, UserProfile, HouseHoldMember, EventHandler, Event, Calendar, HouseHold, Item, List, ArchivedTask } = initSchema(schema);
 
 export {
   Message,
   ChatRoom,
-  HouseHold,
-  List,
-  Item,
   Task,
+  UserProfile,
+  HouseHoldMember,
   EventHandler,
   Event,
   Calendar,
-  HouseHoldMember,
-  UserProfile,
+  HouseHold,
+  Item,
+  List,
   ArchivedTask
 };
