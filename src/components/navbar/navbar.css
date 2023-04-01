@@ -1,16 +1,22 @@
 .nav-item {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 400;
+    font-family: 'PT Sans';
+
 }
 
 .navbar-brand {
     font-size: 20px;
-    padding: 0px 10px 0px;
+    padding: 5px;
 }
 
 .navbar {
     background-color: rgb(108, 0, 158);
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+}
+
+.navbar-brand img {
+    height: 150px;
 }
 
 #navbarNavAltMarkup
