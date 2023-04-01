@@ -1,9 +1,11 @@
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import { Entypo } from "@expo/vector-icons";
 import HouseholdButton from "./HouseholdButton";
 import { getStyles } from "../styles";
 import { useTheme } from "@react-navigation/native";
+import CreateHousehold from "./CreateHousehold"
+import { Button } from "react-native-web";
 
 /* Login page */
 // TODO: Connect to backend
@@ -50,9 +52,9 @@ export default function InitialPage({ navigation }) {
             );
           })}
         </View>
-        <View style={styles.circleButton}>
-          <Entypo name="plus" size={36} color={colors.primaryText} />
-        </View>
+        <Pressable style={styles.circleButton} onPress={() => navigation.navigate("CreateHousehold")} >
+            <Entypo name="plus" size={36} color={colors.primaryText}  />
+        </Pressable>
       </View>
     </View>
   );

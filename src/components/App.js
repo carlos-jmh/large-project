@@ -14,6 +14,7 @@ import Chat from "./home/Chat";
 import ConfirmRegister from "./auth/ConfirmRegister.js";
 import Events from "./home/Events";
 import InitialPage from "./households/InitialPage";
+import CreateHousehold from "./households/CreateHousehold"
 import Lists from "./home/Lists";
 import Login from "./auth/Login.js";
 import { NavigationContainer } from "@react-navigation/native";
@@ -84,6 +85,11 @@ export default function App() {
               <Stack.Screen
                 name="InitialPage"
                 component={InitialPage}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CreateHousehold"
+                component={CreateHousehold}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
