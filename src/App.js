@@ -5,7 +5,7 @@ import "./App.css"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import LoginSignup from './pages/LoginSignup'
 import Landing from './pages/Landing'
-import Dashboard from './pages/Dashboard'
+import Dashboard from './pages/dashboard/Dashboard'
 
 function App() {
   return (

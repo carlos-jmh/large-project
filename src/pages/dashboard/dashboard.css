@@ -1,0 +1,10 @@
+.content {
+
+}
+
+.sidebar {
+    width: 20%;
+    height: 100vh;
+    border: solid;
+    border-radius: 3px;
+}
