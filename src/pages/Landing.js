@@ -11,6 +11,8 @@ function Landing() {
         <LandingBody/>
         <LandingAbout/>
         <Footer />
+        <h2>Landing</h2>
+        <Footer/>
     </div>
   )
 }

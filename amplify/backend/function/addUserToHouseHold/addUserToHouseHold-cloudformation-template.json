@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"11.0.0\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"11.0.3\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -15,6 +15,10 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "authlargeproject9e7232c0UserPoolId": {
+      "Type": "String",
+      "Default": "authlargeproject9e7232c0UserPoolId"
     },
     "apihouseholdappGraphQLAPIIdOutput": {
       "Type": "String",
@@ -51,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "createNewHouseHold",
+            "addUserToHouseHold",
             {
               "Fn::Join": [
                 "",
                 [
-                  "createNewHouseHold",
+                  "addUserToHouseHold",
                   "-",
                   {
                     "Ref": "env"
@@ -74,15 +78,15 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_HOUSEHOLDAPP_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apihouseholdappGraphQLAPIIdOutput"
+            "AUTH_LARGEPROJECT9E7232C0_USERPOOLID": {
+              "Ref": "authlargeproject9e7232c0UserPoolId"
             },
-            "API_HOUSEHOLDAPP_CHATROOMTABLE_NAME": {
+            "API_HOUSEHOLDAPP_USERPROFILETABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:ChatRoomTable:Name"
+                "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
               }
             },
-            "API_HOUSEHOLDAPP_CHATROOMTABLE_ARN": {
+            "API_HOUSEHOLDAPP_USERPROFILETABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -97,11 +101,14 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:ChatRoomTable:Name"
+                      "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
                     }
                   }
                 ]
               ]
+            },
+            "API_HOUSEHOLDAPP_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apihouseholdappGraphQLAPIIdOutput"
             },
             "API_HOUSEHOLDAPP_HOUSEHOLDMEMBERTABLE_NAME": {
               "Fn::ImportValue": {
@@ -124,32 +131,6 @@
                   {
                     "Fn::ImportValue": {
                       "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:HouseHoldMemberTable:Name"
-                    }
-                  }
-                ]
-              ]
-            },
-            "API_HOUSEHOLDAPP_CALENDARTABLE_NAME": {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:CalendarTable:Name"
-              }
-            },
-            "API_HOUSEHOLDAPP_CALENDARTABLE_ARN": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:dynamodb:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":table/",
-                  {
-                    "Fn::ImportValue": {
-                      "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:CalendarTable:Name"
                     }
                   }
                 ]
@@ -180,32 +161,6 @@
                   }
                 ]
               ]
-            },
-            "API_HOUSEHOLDAPP_USERPROFILETABLE_NAME": {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
-              }
-            },
-            "API_HOUSEHOLDAPP_USERPROFILETABLE_ARN": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:dynamodb:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":table/",
-                  {
-                    "Fn::ImportValue": {
-                      "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
-                    }
-                  }
-                ]
-              ]
             }
           }
         },
@@ -226,12 +181,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "largeprojectLambdaRole9944805c",
+            "largeprojectLambdaRole9b6497db",
             {
               "Fn::Join": [
                 "",
                 [
-                  "largeprojectLambdaRole9944805c",
+                  "largeprojectLambdaRole9b6497db",
                   "-",
                   {
                     "Ref": "env"
@@ -320,22 +275,27 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query"
+                "cognito-identity:Describe*",
+                "cognito-identity:Get*",
+                "cognito-identity:List*",
+                "cognito-idp:Describe*",
+                "cognito-idp:AdminGetDevice",
+                "cognito-idp:AdminGetUser",
+                "cognito-idp:AdminList*",
+                "cognito-idp:List*",
+                "cognito-sync:Describe*",
+                "cognito-sync:Get*",
+                "cognito-sync:List*",
+                "iam:ListOpenIdConnectProviders",
+                "iam:ListRoles",
+                "sns:ListPlatformApplications"
               ],
               "Resource": [
                 {
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:dynamodb:",
+                      "arn:aws:cognito-idp:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -343,34 +303,10 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":table/",
+                      ":userpool/",
                       {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:ChatRoomTable:Name"
-                        }
+                        "Ref": "authlargeproject9e7232c0UserPoolId"
                       }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:ChatRoomTable:Name"
-                        }
-                      },
-                      "/index/*"
                     ]
                   ]
                 }
@@ -379,9 +315,6 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
                 "dynamodb:Get*",
                 "dynamodb:BatchGetItem",
                 "dynamodb:List*",
@@ -497,74 +430,14 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
                 "dynamodb:Get*",
                 "dynamodb:BatchGetItem",
                 "dynamodb:List*",
                 "dynamodb:Describe*",
                 "dynamodb:Scan",
-                "dynamodb:Query"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:CalendarTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:CalendarTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query"
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*"
               ],
               "Resource": [
                 {

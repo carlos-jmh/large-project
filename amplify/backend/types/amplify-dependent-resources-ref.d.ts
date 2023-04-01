@@ -18,7 +18,21 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "addUserToHouseHold": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "createNewHouseHold": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "graphQlLambdaAuthorizerc6ebb49e": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

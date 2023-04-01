@@ -17,15 +17,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "author": {
-                    "name": "author",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "owner": {
-                    "name": "owner",
+                "authorHouseHoldMemberId": {
+                    "name": "authorHouseHoldMemberId",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -42,12 +35,12 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "chatroomID"
+                            "chatRoomId"
                         ]
                     }
                 },
-                "chatroomID": {
-                    "name": "chatroomID",
+                "chatRoomId": {
+                    "name": "chatRoomId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -75,14 +68,20 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "delete": null,
+                            "update": null
+                        }
+                    }
                 },
                 {
                     "type": "key",
                     "properties": {
                         "name": "byChatRoom",
                         "fields": [
-                            "chatroomID"
+                            "chatRoomId"
                         ]
                     }
                 },
@@ -91,16 +90,7 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
+                                "allow": "custom",
                                 "operations": [
                                     "create",
                                     "update",
@@ -123,14 +113,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "owners": {
-                    "name": "owners",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": false
-                },
                 "Messages": {
                     "name": "Messages",
                     "isArray": true,
@@ -147,6 +129,13 @@ export const schema = {
                         ]
                     }
                 },
+                "houseHoldId": {
+                    "name": "houseHoldId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "HouseHold": {
                     "name": "HouseHold",
                     "isArray": false,
@@ -158,7 +147,7 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "chatRoomHouseHoldId"
+                            "houseHoldId"
                         ]
                     }
                 },
@@ -177,13 +166,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "chatRoomHouseHoldId": {
-                    "name": "chatRoomHouseHoldId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -191,23 +173,20 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "delete": null,
+                            "update": null
+                        }
+                    }
                 },
                 {
                     "type": "auth",
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owners",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
+                                "allow": "custom",
                                 "operations": [
                                     "create",
                                     "update",
@@ -237,16 +216,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "owners": {
-                    "name": "owners",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": false
-                },
-                "householdID": {
-                    "name": "householdID",
+                "houseHoldId": {
+                    "name": "houseHoldId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -259,10 +230,61 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "listId": {
+                    "name": "listId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "List": {
+                    "name": "List",
+                    "isArray": false,
+                    "type": {
+                        "model": "List"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "listId"
+                        ]
+                    }
+                },
+                "itemId": {
+                    "name": "itemId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Item": {
+                    "name": "Item",
+                    "isArray": false,
+                    "type": {
+                        "model": "Item"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "itemId"
+                        ]
+                    }
+                },
                 "deleteSourceOnComplete": {
                     "name": "deleteSourceOnComplete",
                     "isArray": false,
                     "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "eventHandlerId": {
+                    "name": "eventHandlerId",
+                    "isArray": false,
+                    "type": "ID",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -275,12 +297,9 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
+                        "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "taskEventHandlerId"
+                            "eventHandlerId"
                         ]
                     }
                 },
@@ -309,7 +328,7 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "householdID"
+                            "houseHoldId"
                         ]
                     }
                 },
@@ -328,13 +347,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "taskEventHandlerId": {
-                    "name": "taskEventHandlerId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -349,7 +361,7 @@ export const schema = {
                     "properties": {
                         "name": "byHouseHold",
                         "fields": [
-                            "householdID"
+                            "houseHoldId"
                         ]
                     }
                 },
@@ -358,16 +370,7 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owners",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
+                                "allow": "custom",
                                 "operations": [
                                     "create",
                                     "update",
@@ -416,7 +419,7 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "userprofileID"
+                            "UserProfile"
                         ]
                     }
                 },
@@ -442,14 +445,21 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "delete": null
+                        }
+                    }
                 },
                 {
                     "type": "key",
                     "properties": {
                         "name": "byOwner",
+                        "queryField": "userProfileByOwner",
                         "fields": [
-                            "owner"
+                            "owner",
+                            "id"
                         ]
                     }
                 },
@@ -458,18 +468,11 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
                                 "provider": "userPools",
                                 "ownerField": "owner",
                                 "allow": "owner",
                                 "operations": [
-                                    "read",
-                                    "update"
+                                    "read"
                                 ],
                                 "identityClaim": "cognito:username"
                             }
@@ -502,6 +505,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "userProfileId": {
+                    "name": "userProfileId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "UserProfile": {
                     "name": "UserProfile",
                     "isArray": false,
@@ -513,12 +523,12 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "userProfileHouseHoldMembersId"
+                            "userProfileId"
                         ]
                     }
                 },
-                "userprofileID": {
-                    "name": "userprofileID",
+                "houseHoldId": {
+                    "name": "houseHoldId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -535,26 +545,9 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "houseHoldHouseHoldMembersId"
+                            "houseHoldId"
                         ]
                     }
-                },
-                "householdID": {
-                    "name": "householdID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "completedTasks": {
-                    "name": "completedTasks",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "ArchivedTask"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -571,20 +564,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "userProfileHouseHoldMembersId": {
-                    "name": "userProfileHouseHoldMembersId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "houseHoldHouseHoldMembersId": {
-                    "name": "houseHoldHouseHoldMembersId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -592,14 +571,19 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "delete": null
+                        }
+                    }
                 },
                 {
                     "type": "key",
                     "properties": {
                         "name": "byUserProfile",
                         "fields": [
-                            "userprofileID"
+                            "userProfileId"
                         ]
                     }
                 },
@@ -608,7 +592,7 @@ export const schema = {
                     "properties": {
                         "name": "byHouseHold",
                         "fields": [
-                            "householdID"
+                            "houseHoldId"
                         ]
                     }
                 },
@@ -617,22 +601,13 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
                                 "provider": "userPools",
                                 "ownerField": "owner",
                                 "allow": "owner",
-                                "identityClaim": "cognito:username",
                                 "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
                                     "read"
-                                ]
+                                ],
+                                "identityClaim": "cognito:username"
                             }
                         ]
                     }
@@ -656,13 +631,27 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "owners": {
-                    "name": "owners",
-                    "isArray": true,
-                    "type": "String",
+                "calendarId": {
+                    "name": "calendarId",
+                    "isArray": false,
+                    "type": "ID",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "Calendar": {
+                    "name": "Calendar",
+                    "isArray": false,
+                    "type": {
+                        "model": "Calendar"
+                    },
+                    "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": false
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "calendarId"
+                        ]
+                    }
                 },
                 "Events": {
                     "name": "Events",
@@ -680,6 +669,24 @@ export const schema = {
                         ]
                     }
                 },
+                "Task": {
+                    "name": "Task",
+                    "isArray": false,
+                    "type": {
+                        "model": "Task"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "eventHandlerTaskId"
+                        ]
+                    }
+                },
                 "sourceDate": {
                     "name": "sourceDate",
                     "isArray": false,
@@ -693,21 +700,6 @@ export const schema = {
                     "type": "AWSDateTime",
                     "isRequired": true,
                     "attributes": []
-                },
-                "Task": {
-                    "name": "Task",
-                    "isArray": false,
-                    "type": {
-                        "model": "Task"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "eventHandlerTaskId"
-                        ]
-                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -738,23 +730,29 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "update": null,
+                            "delete": null
+                        }
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byCalendar",
+                        "fields": [
+                            "calendarId"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owners",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
+                                "allow": "custom",
                                 "operations": [
                                     "create",
                                     "update",
@@ -784,23 +782,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "owners": {
-                    "name": "owners",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": false
-                },
-                "eventhandlerID": {
-                    "name": "eventhandlerID",
+                "eventHandlerId": {
+                    "name": "eventHandlerId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
                 },
-                "calendarID": {
-                    "name": "calendarID",
+                "calendarId": {
+                    "name": "calendarId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -817,7 +807,7 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "eventhandlerID"
+                            "eventHandlerId"
                         ]
                     }
                 },
@@ -832,7 +822,7 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "calendarID"
+                            "calendarId"
                         ]
                     }
                 },
@@ -858,14 +848,19 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "delete": null
+                        }
+                    }
                 },
                 {
                     "type": "key",
                     "properties": {
                         "name": "byEventHandler",
                         "fields": [
-                            "eventhandlerID"
+                            "eventHandlerId"
                         ]
                     }
                 },
@@ -874,7 +869,7 @@ export const schema = {
                     "properties": {
                         "name": "byCalendar",
                         "fields": [
-                            "calendarID"
+                            "calendarId"
                         ]
                     }
                 },
@@ -883,16 +878,7 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owners",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
+                                "allow": "custom",
                                 "operations": [
                                     "create",
                                     "update",
@@ -915,14 +901,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "owners": {
-                    "name": "owners",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": false
-                },
                 "Events": {
                     "name": "Events",
                     "isArray": true,
@@ -939,6 +917,29 @@ export const schema = {
                         ]
                     }
                 },
+                "EventHandler": {
+                    "name": "EventHandler",
+                    "isArray": true,
+                    "type": {
+                        "model": "EventHandler"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "Calendar"
+                        ]
+                    }
+                },
+                "houseHoldId": {
+                    "name": "houseHoldId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "HouseHold": {
                     "name": "HouseHold",
                     "isArray": false,
@@ -950,7 +951,7 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "calendarHouseHoldId"
+                            "houseHoldId"
                         ]
                     }
                 },
@@ -969,13 +970,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "calendarHouseHoldId": {
-                    "name": "calendarHouseHoldId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -983,23 +977,19 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "delete": null
+                        }
+                    }
                 },
                 {
                     "type": "auth",
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owners",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
+                                "allow": "custom",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1081,7 +1071,7 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "householdID"
+                            "HouseHold"
                         ]
                     }
                 },
@@ -1157,29 +1147,25 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "delete": null
+                        }
+                    }
                 },
                 {
                     "type": "auth",
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
                                 "provider": "userPools",
                                 "ownerField": "owners",
                                 "allow": "owner",
-                                "identityClaim": "cognito:username",
                                 "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
                                     "read"
-                                ]
+                                ],
+                                "identityClaim": "cognito:username"
                             }
                         ]
                     }
@@ -1210,14 +1196,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "owners": {
-                    "name": "owners",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": false
-                },
                 "completed": {
                     "name": "completed",
                     "isArray": false,
@@ -1225,12 +1203,27 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "listID": {
-                    "name": "listID",
+                "listId": {
+                    "name": "listId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
+                },
+                "List": {
+                    "name": "List",
+                    "isArray": false,
+                    "type": {
+                        "model": "List"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "listId"
+                        ]
+                    }
                 },
                 "Task": {
                     "name": "Task",
@@ -1247,21 +1240,6 @@ export const schema = {
                         ],
                         "targetNames": [
                             "itemTaskId"
-                        ]
-                    }
-                },
-                "List": {
-                    "name": "List",
-                    "isArray": false,
-                    "type": {
-                        "model": "List"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "listID"
                         ]
                     }
                 },
@@ -1301,7 +1279,7 @@ export const schema = {
                     "properties": {
                         "name": "byList",
                         "fields": [
-                            "listID"
+                            "listId"
                         ]
                     }
                 },
@@ -1310,16 +1288,7 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owners",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
+                                "allow": "custom",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1356,16 +1325,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "owners": {
-                    "name": "owners",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": false
-                },
-                "householdID": {
-                    "name": "householdID",
+                "houseHoldId": {
+                    "name": "houseHoldId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -1387,6 +1348,21 @@ export const schema = {
                         ]
                     }
                 },
+                "HouseHold": {
+                    "name": "HouseHold",
+                    "isArray": false,
+                    "type": {
+                        "model": "HouseHold"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "houseHoldId"
+                        ]
+                    }
+                },
                 "Task": {
                     "name": "Task",
                     "isArray": false,
@@ -1402,21 +1378,6 @@ export const schema = {
                         ],
                         "targetNames": [
                             "listTaskId"
-                        ]
-                    }
-                },
-                "HouseHold": {
-                    "name": "HouseHold",
-                    "isArray": false,
-                    "type": {
-                        "model": "HouseHold"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "householdID"
                         ]
                     }
                 },
@@ -1456,7 +1417,7 @@ export const schema = {
                     "properties": {
                         "name": "byHouseHold",
                         "fields": [
-                            "householdID"
+                            "houseHoldId"
                         ]
                     }
                 },
@@ -1465,16 +1426,7 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "private",
-                                "operations": [
-                                    "create"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owners",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
+                                "allow": "custom",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1518,5 +1470,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "ba981705dc81c44bab0183a037fc984f"
+    "version": "1b907ce0681f317d3a6a9b1be55fecc4"
 };
