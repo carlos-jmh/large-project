@@ -64,10 +64,10 @@ function Auth(props) {
 
   if (authMode === "signIn") {
     return (
-      <div className="Auth-form-container1">
-        <div className="Auth-form">
-          <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Sign In</h3>
+      <div className="signinContainer">
+        <div className="form">
+          <div className="form-content">
+            <h3 className="form-title">Sign In</h3>
             <div className="text-center">
               Not registered yet?{" "}
               <span className="link-primary" onClick={() => setAuthMode("signUp")}>
@@ -110,10 +110,10 @@ function Auth(props) {
 
   if (authMode === "signUp") {
     return (
-      <div className="Auth-form-container2">
-        <div className="Auth-form">
-          <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Sign Up</h3>
+      <div className="signupContainer">
+        <div className="form">
+          <div className="form-content">
+            <h3 className="form-title">Sign Up</h3>
             <div className="text-center">
               Already registered?{" "}
               <span className="link-primary" onClick={() => setAuthMode("signIn")}>
@@ -184,19 +184,11 @@ function Auth(props) {
   }
 
   if (authMode === "confirmedSignUp") {
-    return (
-      <div>
-        <p>Confirmed: { formInput.email }</p>
-      </div>
-    )
+    window.location.href = "/dashboard"
   }
 
   if (authMode === "signedIn") {
-    return (
-      <div>
-        <p>You are signed in: { formInput.username }</p>
-      </div>
-    )
+    window.location.href = "/dashboard"
   }
 }
 
