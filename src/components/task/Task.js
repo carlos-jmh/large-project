@@ -10,7 +10,7 @@ import Itask from '../../components/itask/Itask';
 const Task = (props) => {
   return (
     <div className="task">
-        <h2>Household Name</h2>
+        <h2>{props.name}</h2>
         <div className="taskList">
             <Itask/>
             <Itask/>
