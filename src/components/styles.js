@@ -10,6 +10,12 @@ export function getStyles(colors) {
       justifyContent: "space-evenly",
       margin: 32,
     },
+    createHouseholdContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      margin: 32,
+    },
     header: {
       color: colors.text,
       fontFamily: "Inter_600SemiBold",
@@ -68,6 +74,15 @@ export function getStyles(colors) {
       height: 40,
       borderRadius: 8,
     },
+    createHouseholdButtonContainer: {
+      justifyContent: 'center',
+      alignItems: "center",
+      backgroundColor: colors.primary,
+      height: 40,
+      width:80,
+      marginTop:20,
+      borderRadius: 8,
+    },
     householdButtonContainer: {
       justifyContent: "center",
       alignItems: "center",
@@ -94,6 +109,43 @@ export function getStyles(colors) {
       height: 75,
       width: 75,
       borderRadius: 100,
+    },
+    profileIcon: {
+      borderRadius: 100,
+      height: 60,
+      width: 60,
+      borderRadius: 100,
+      justifyContent:'center',
+      alignItems:'center',
+      marginRight: 30,
+      marginBottom: 20,
+    },
+    iconText: {
+      fontFamily: "Inter_600SemiBold",
+      fontSize: 30,
+      textAlign:'center',
+      justifyContent:'center',
+      alignItems:'center',
+    },
+    modalContainer: {
+      flex:1,
+      justifyContent:'center',
+      alignItems: "center",
+    },
+    modalView:{
+      maring:20,
+      backgroundColor: colors.card,
+      borderRadius:20,
+      padding:35,
+      alignItems:'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0 ,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
     },
   });
 }

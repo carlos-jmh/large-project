@@ -1,0 +1,150 @@
+type ArchivedTask {
+  title: String!
+  points: Int!
+  completedBy: String!
+}
+
+type Message @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owner" }
+]) {
+  id: ID!
+  message: String!
+  author: String!
+  owner: String!
+  ChatRoom: ChatRoom @belongsTo(fields: ["chatroomID"])
+  chatroomID: ID! @index(name: "byChatRoom")
+}
+
+type ChatRoom @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owners" },
+]) {
+  id: ID!
+  owners: [String!]!
+  Messages: [Message] @hasMany(indexName: "byChatRoom", fields: ["id"])
+  HouseHold: HouseHold @belongsTo
+}
+
+type Task @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owners" },
+]) {
+  id: ID!
+  title: String!
+  owners: [String!]!
+  householdID: ID! @index(name: "byHouseHold")
+  foreverTask: Boolean
+  deleteSourceOnComplete: Boolean
+  EventHandler: EventHandler @hasOne
+  completed: Boolean
+  pointValue: Int
+  HouseHold: HouseHold @belongsTo(fields: ["householdID"])
+}
+
+type UserProfile @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owner" operations: [read, update] },
+]) {
+  id: ID!
+  owner: String! @index(name: "byOwner")
+  preferredName: String
+  HouseHoldMembers: [HouseHoldMember] @hasMany(indexName: "byUserProfile", fields: ["id"])
+}
+
+type HouseHoldMember @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owner" },
+]) {
+  id: ID!
+  points: Int
+  owner: String!
+  UserProfile: UserProfile @belongsTo
+  userprofileID: ID! @index(name: "byUserProfile")
+  HouseHold: HouseHold @belongsTo
+  householdID: ID! @index(name: "byHouseHold")
+  completedTasks: [ArchivedTask]
+}
+
+type EventHandler @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owners" },
+]) {
+  id: ID!
+  frequency: String!
+  owners: [String!]!
+  Events: [Event] @hasMany(indexName: "byEventHandler", fields: ["id"])
+  sourceDate: AWSDateTime!
+  endDate: AWSDateTime!
+  Task: Task @belongsTo
+}
+
+type Event @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owners" },
+]) {
+  id: ID!
+  date: AWSDateTime
+  owners: [String!]!
+  eventhandlerID: ID! @index(name: "byEventHandler")
+  calendarID: ID! @index(name: "byCalendar")
+  EventHandler: EventHandler @belongsTo(fields: ["eventhandlerID"])
+  Calendar: Calendar @belongsTo(fields: ["calendarID"])
+}
+
+type Calendar @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owners" },
+]) {
+  id: ID!
+  owners: [String!]!
+  Events: [Event] @hasMany(indexName: "byCalendar", fields: ["id"])
+  HouseHold: HouseHold @belongsTo
+}
+
+type HouseHold @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owners" }
+]) {
+  id: ID!
+  name: String!
+  owners: [String!]!
+  Lists: [List] @hasMany(indexName: "byHouseHold", fields: ["id"])
+  Tasks: [Task] @hasMany(indexName: "byHouseHold", fields: ["id"])
+  HouseHoldMembers: [HouseHoldMember] @hasMany(indexName: "byHouseHold", fields: ["id"])
+  Calendar: Calendar @hasOne
+  ChatRoom: ChatRoom @hasOne
+}
+
+type Item @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owners" }
+]) {
+  id: ID!
+  title: String!
+  description: String
+  owners: [String!]!
+  completed: Boolean
+  listID: ID! @index(name: "byList")
+  Task: Task @hasOne
+  List: List @belongsTo(fields: ["listID"])
+}
+
+type List @model @auth(rules: [
+  { allow: private, operations: [create] },
+  { allow: owner, ownerField: "owners" }
+]) {
+  id: ID!
+  title: String!
+  description: String
+  owners: [String!]!
+  householdID: ID! @index(name: "byHouseHold")
+  Items: [Item] @hasMany(indexName: "byList", fields: ["id"])
+  Task: Task @hasOne
+  HouseHold: HouseHold @belongsTo(fields: ["householdID"])
+}
+
+type Mutation {
+  createNewHouseHold(userprofileID: String!, houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
+}
+       
