@@ -1,23 +1,25 @@
 import React from 'react'
 import './householdinfo.css';
 
-const Householdinfo = () => {
+// Pass props to this function, figure out the JSON later, but should store 
+// Household Name, and the number for inbox, today and upcoming.
+const Householdinfo = (props) => {
   return (
     <div className="hhinfo">
-      <h2>Household Name</h2>
+      <h2>{props.name}</h2>
       <div className="items">
         <ul>
           <li className="selector">
             <p>Inbox</p>
-            <p>"number"</p>
+            <p>{props.inbox}</p>
           </li>
           <li className="selector">
-            <p>Inbox</p>
-            <p>"number"</p>
+            <p>Today</p>
+            <p>{props.today}</p>
           </li>
           <li className="selector">
-            <p>Inbox</p>
-            <p>"number"</p>
+            <p>Upcoming</p>
+            <p>{props.upcoming}</p>
           </li>
         </ul>
       </div>
