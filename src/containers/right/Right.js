@@ -8,6 +8,7 @@ const Right = () => {
     <div>
       Right
       <Cal/>
+      {/* Place chat here */}
     </div>
   )
 }

@@ -8,6 +8,7 @@ const Sidebar = () => {
         Sidebar
         {/* Get list of all households, as well as pertinent information regarding them.
             Create map of all the information.
+            Goes in component householdInfo pass household name, tasks due today"
         */}
     </div>
   )

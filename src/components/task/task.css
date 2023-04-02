@@ -1,0 +1,10 @@
+.task {
+    border: solid;
+    border-width: 1px;
+    border-radius: 8px;
+}
+
+.iTask {
+    display: flex;
+    gap: 4px;
+}
