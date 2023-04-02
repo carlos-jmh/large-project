@@ -5,7 +5,7 @@ import Cal from '../../components/cal/Cal'
 
 const Right = () => {
   return (
-    <div>
+    <div className="rightBar">
       Right
       <Cal/>
       {/* Place chat here */}
