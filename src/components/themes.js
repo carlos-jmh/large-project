@@ -13,7 +13,9 @@ const LightTheme = {
     highlight: "rgb(64, 141, 199)",
     primaryText: "rgb(255, 255, 255)",
     success: "rgb(0,128,0)",
-    danger:"rgb(209,26,42)",
+    danger: "rgb(209,26,42)",
+    profileSat: "76%",
+    profileLight: "69%",
   },
 };
 
@@ -32,7 +34,9 @@ const DarkTheme = {
     highlight: "rgb(69, 150, 209)",
     primaryText: "rgb(255, 255, 255)",
     success: "rgb(0,128,0)",
-    danger:"rgb(209,26,42)",
+    danger: "rgb(209,26,42)",
+    profileSat: "76%",
+    profileLight: "69%",
   },
 };
 

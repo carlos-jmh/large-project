@@ -12,9 +12,9 @@ import { useCallback, useState } from "react";
 
 import Chat from "./home/Chat";
 import ConfirmRegister from "./auth/ConfirmRegister.js";
+import CreateHousehold from "./households/CreateHousehold";
 import Events from "./home/Events";
 import InitialPage from "./households/InitialPage";
-import CreateHousehold from "./households/CreateHousehold"
 import Lists from "./home/Lists";
 import Login from "./auth/Login.js";
 import { NavigationContainer } from "@react-navigation/native";
