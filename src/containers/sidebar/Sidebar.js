@@ -10,6 +10,7 @@ const Sidebar = () => {
             Create map of all the information.
             Goes in component householdInfo pass household name, tasks due today"
         */}
+        <Householdinfo/>
     </div>
   )
 }
