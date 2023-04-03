@@ -1,0 +1,17 @@
+.iTask {
+    display: flex;
+    gap: 4px;
+    margin: 0px;
+    padding: 0px;
+}
+
+hr {
+    margin: 0px;
+    margin-bottom: 7px;
+    padding: 0px;
+}
+
+#task1 {
+    align-self: flex-start;
+    margin-top: 7px;
+}
