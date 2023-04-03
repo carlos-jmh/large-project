@@ -2,8 +2,8 @@ import React from 'react'
 import './middle.css'
 
 import Task from '../../components/task/Task'
-//import List from '../../components/list/List'
 import List from '../../components/list/List'
+import Form from '../../components/form/Form'
 
 // Get array of the households and their tasks
 // Map to tasks the name of household and array of each households tasks
@@ -23,6 +23,7 @@ const Middle = () => {
           <List name="Grocery List"/>
         </div>
       </div>
+      <Form/>
     </div>
   );
 }

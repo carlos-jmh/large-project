@@ -16,6 +16,7 @@ const Usernav = () => {
           </button>
           <div className="collapse navbar-collapse flex-grow-0" id="navbarNavAltMarkup">
             <div className="navbar-nav">
+              {/* OnClick call form component */}
               <a className="nav-item nav-link" href="/"><Icon.PlusLg size="27px"/></a>
               <a className="nav-item nav-link" href="/"><Icon.PersonCircle size="27px"/></a>
             </div>
