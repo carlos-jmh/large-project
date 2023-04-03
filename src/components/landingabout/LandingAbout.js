@@ -16,7 +16,7 @@ function LandingAbout()
                     <img src= {Houses} alt = "animation of houses" />
                 </div>
                 <div id="bodytext">
-                    <span class="font-bold">There is no place like home.</span>
+                    <span className="font-bold">There is no place like home.</span>
                 </div>
             </div>
             
