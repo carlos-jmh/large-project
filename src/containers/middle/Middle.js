@@ -11,8 +11,9 @@ const Middle = () => {
   return (
     <div>
       <div className="tasks">
-        <Task name="Dorm"/>
-        <Task name="Dorm"/>
+        <h5>Tasks</h5>
+        <Task/>
+        <Task/>
       </div>
 
       <div className="lists">

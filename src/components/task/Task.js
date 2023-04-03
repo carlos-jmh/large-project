@@ -1,8 +1,6 @@
 import React from 'react'
 import './task.css'
 
-import Itask from '../../components/itask/Itask';
-
 // Take in props:
 // Household name, array of tasks [task1, task2, task3]
 
@@ -10,11 +8,9 @@ import Itask from '../../components/itask/Itask';
 const Task = (props) => {
   return (
     <div className="task">
-        <h2>{props.name}</h2>
-        <div className="taskList">
-            <Itask/>
-            <Itask/>
-            <Itask/>
+        <div className="iTask">
+          <input type="checkbox" id="task1" value="task1"/>
+          <label htmlFor="task1">Place prop here</label>
         </div>
     </div>
   )
