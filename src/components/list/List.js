@@ -14,7 +14,7 @@ function List() {
     <div className="arrayList">
         <div className="section">
           <h6 className="sectionHeader">
-            {open ? <Icon.CaretRight onClick={showOrHide}/> : <Icon.CaretDown onClick={showOrHide}/>}
+            {open ? <Icon.CaretDown onClick={showOrHide}/> : <Icon.CaretRight onClick={showOrHide}/>}
             Grocery List
           </h6>
           <hr className="listLine"></hr>
