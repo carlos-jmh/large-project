@@ -1,9 +1,12 @@
-.collapsible .content {
-    padding: 6px;
-    background-color: #eeeeee;
+.items {
+    margin-left: 20px;
 }
-.collapsible .header {
-    background-color: #dddddd;
-    padding: 6px;
-    cursor: pointer;
+
+.listLine {
+    margin-left: 20px;
+}
+
+.arrayList {
+    margin: 0px;
+    padding: 0px;
 }
