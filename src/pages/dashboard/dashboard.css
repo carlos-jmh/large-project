@@ -5,23 +5,16 @@
 .sidebar {
     width: 15%;
     height: 100vh;
-    border: solid;
-    border-radius: 2px;
-    background-color: white;
+    background-color: rgb(247, 247, 247);
 }
 
 .middle {
     width: 50%;
     height: 100vh;
-    border:solid;
-    border-radius: 2px;
-    border-color: aqua;
 }
 
 .right {
     width: 35%;
     height: 100vh;
-    border: solid;
-    border-radius: 2px;
-    border-color: green;
+    background-color: rgb(247, 247, 247);
 }
