@@ -2,6 +2,7 @@ import React from 'react'
 import './middle.css'
 
 import Task from '../../components/task/Task'
+//import List from '../../components/list/List'
 import List from '../../components/list/List'
 
 // Get array of the households and their tasks
@@ -19,7 +20,7 @@ const Middle = () => {
         <List name="Grocery List"/>
       </div>
     </div>
-  )
+  );
 }
 
 export default Middle

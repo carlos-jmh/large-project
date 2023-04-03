@@ -27,9 +27,10 @@ type EagerMessage = {
   };
   readonly id: string;
   readonly message: string;
-  readonly authorHouseHoldMemberId: string;
+  readonly author: string;
+  readonly owner: string;
   readonly ChatRoom?: ChatRoom | null;
-  readonly chatRoomId: string;
+  readonly chatroomID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -41,9 +42,10 @@ type LazyMessage = {
   };
   readonly id: string;
   readonly message: string;
-  readonly authorHouseHoldMemberId: string;
+  readonly author: string;
+  readonly owner: string;
   readonly ChatRoom: AsyncItem<ChatRoom | undefined>;
-  readonly chatRoomId: string;
+  readonly chatroomID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -60,11 +62,12 @@ type EagerChatRoom = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly owners: string[];
   readonly Messages?: (Message | null)[] | null;
-  readonly houseHoldId: string;
   readonly HouseHold?: HouseHold | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly chatRoomHouseHoldId?: string | null;
 }
 
 type LazyChatRoom = {
@@ -73,11 +76,12 @@ type LazyChatRoom = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly owners: string[];
   readonly Messages: AsyncCollection<Message>;
-  readonly houseHoldId: string;
   readonly HouseHold: AsyncItem<HouseHold | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly chatRoomHouseHoldId?: string | null;
 }
 
 export declare type ChatRoom = LazyLoading extends LazyLoadingDisabled ? EagerChatRoom : LazyChatRoom
@@ -93,20 +97,17 @@ type EagerTask = {
   };
   readonly id: string;
   readonly title: string;
-  readonly houseHoldId: string;
+  readonly owners: string[];
+  readonly householdID: string;
   readonly foreverTask?: boolean | null;
-  readonly listId?: string | null;
-  readonly List?: List | null;
-  readonly itemId?: string | null;
-  readonly Item?: Item | null;
   readonly deleteSourceOnComplete?: boolean | null;
-  readonly eventHandlerId?: string | null;
   readonly EventHandler?: EventHandler | null;
   readonly completed?: boolean | null;
   readonly pointValue?: number | null;
   readonly HouseHold?: HouseHold | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly taskEventHandlerId?: string | null;
 }
 
 type LazyTask = {
@@ -116,20 +117,17 @@ type LazyTask = {
   };
   readonly id: string;
   readonly title: string;
-  readonly houseHoldId: string;
+  readonly owners: string[];
+  readonly householdID: string;
   readonly foreverTask?: boolean | null;
-  readonly listId?: string | null;
-  readonly List: AsyncItem<List | undefined>;
-  readonly itemId?: string | null;
-  readonly Item: AsyncItem<Item | undefined>;
   readonly deleteSourceOnComplete?: boolean | null;
-  readonly eventHandlerId?: string | null;
   readonly EventHandler: AsyncItem<EventHandler | undefined>;
   readonly completed?: boolean | null;
   readonly pointValue?: number | null;
   readonly HouseHold: AsyncItem<HouseHold | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly taskEventHandlerId?: string | null;
 }
 
 export declare type Task = LazyLoading extends LazyLoadingDisabled ? EagerTask : LazyTask
@@ -178,12 +176,15 @@ type EagerHouseHoldMember = {
   readonly id: string;
   readonly points?: number | null;
   readonly owner: string;
-  readonly userProfileId: string;
   readonly UserProfile?: UserProfile | null;
-  readonly houseHoldId: string;
+  readonly userprofileID: string;
   readonly HouseHold?: HouseHold | null;
+  readonly householdID: string;
+  readonly completedTasks?: (ArchivedTask | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly userProfileHouseHoldMembersId?: string | null;
+  readonly houseHoldHouseHoldMembersId?: string | null;
 }
 
 type LazyHouseHoldMember = {
@@ -194,12 +195,15 @@ type LazyHouseHoldMember = {
   readonly id: string;
   readonly points?: number | null;
   readonly owner: string;
-  readonly userProfileId: string;
   readonly UserProfile: AsyncItem<UserProfile | undefined>;
-  readonly houseHoldId: string;
+  readonly userprofileID: string;
   readonly HouseHold: AsyncItem<HouseHold | undefined>;
+  readonly householdID: string;
+  readonly completedTasks?: (ArchivedTask | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly userProfileHouseHoldMembersId?: string | null;
+  readonly houseHoldHouseHoldMembersId?: string | null;
 }
 
 export declare type HouseHoldMember = LazyLoading extends LazyLoadingDisabled ? EagerHouseHoldMember : LazyHouseHoldMember
@@ -215,12 +219,11 @@ type EagerEventHandler = {
   };
   readonly id: string;
   readonly frequency: string;
-  readonly calendarId: string;
-  readonly Calendar?: Calendar | null;
+  readonly owners: string[];
   readonly Events?: (Event | null)[] | null;
-  readonly Task?: Task | null;
   readonly sourceDate: string;
   readonly endDate: string;
+  readonly Task?: Task | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly eventHandlerTaskId?: string | null;
@@ -233,12 +236,11 @@ type LazyEventHandler = {
   };
   readonly id: string;
   readonly frequency: string;
-  readonly calendarId: string;
-  readonly Calendar: AsyncItem<Calendar | undefined>;
+  readonly owners: string[];
   readonly Events: AsyncCollection<Event>;
-  readonly Task: AsyncItem<Task | undefined>;
   readonly sourceDate: string;
   readonly endDate: string;
+  readonly Task: AsyncItem<Task | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly eventHandlerTaskId?: string | null;
@@ -257,8 +259,9 @@ type EagerEvent = {
   };
   readonly id: string;
   readonly date?: string | null;
-  readonly eventHandlerId: string;
-  readonly calendarId: string;
+  readonly owners: string[];
+  readonly eventhandlerID: string;
+  readonly calendarID: string;
   readonly EventHandler?: EventHandler | null;
   readonly Calendar?: Calendar | null;
   readonly createdAt?: string | null;
@@ -272,8 +275,9 @@ type LazyEvent = {
   };
   readonly id: string;
   readonly date?: string | null;
-  readonly eventHandlerId: string;
-  readonly calendarId: string;
+  readonly owners: string[];
+  readonly eventhandlerID: string;
+  readonly calendarID: string;
   readonly EventHandler: AsyncItem<EventHandler | undefined>;
   readonly Calendar: AsyncItem<Calendar | undefined>;
   readonly createdAt?: string | null;
@@ -292,12 +296,12 @@ type EagerCalendar = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly owners: string[];
   readonly Events?: (Event | null)[] | null;
-  readonly EventHandler?: (EventHandler | null)[] | null;
-  readonly houseHoldId: string;
   readonly HouseHold?: HouseHold | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly calendarHouseHoldId?: string | null;
 }
 
 type LazyCalendar = {
@@ -306,12 +310,12 @@ type LazyCalendar = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly owners: string[];
   readonly Events: AsyncCollection<Event>;
-  readonly EventHandler: AsyncCollection<EventHandler>;
-  readonly houseHoldId: string;
   readonly HouseHold: AsyncItem<HouseHold | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly calendarHouseHoldId?: string | null;
 }
 
 export declare type Calendar = LazyLoading extends LazyLoadingDisabled ? EagerCalendar : LazyCalendar
@@ -372,10 +376,11 @@ type EagerItem = {
   readonly id: string;
   readonly title: string;
   readonly description?: string | null;
+  readonly owners: string[];
   readonly completed?: boolean | null;
-  readonly listId: string;
-  readonly List?: List | null;
+  readonly listID: string;
   readonly Task?: Task | null;
+  readonly List?: List | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly itemTaskId?: string | null;
@@ -389,10 +394,11 @@ type LazyItem = {
   readonly id: string;
   readonly title: string;
   readonly description?: string | null;
+  readonly owners: string[];
   readonly completed?: boolean | null;
-  readonly listId: string;
-  readonly List: AsyncItem<List | undefined>;
+  readonly listID: string;
   readonly Task: AsyncItem<Task | undefined>;
+  readonly List: AsyncItem<List | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly itemTaskId?: string | null;
@@ -412,10 +418,11 @@ type EagerList = {
   readonly id: string;
   readonly title: string;
   readonly description?: string | null;
-  readonly houseHoldId: string;
+  readonly owners: string[];
+  readonly householdID: string;
   readonly Items?: (Item | null)[] | null;
-  readonly HouseHold?: HouseHold | null;
   readonly Task?: Task | null;
+  readonly HouseHold?: HouseHold | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly listTaskId?: string | null;
@@ -429,10 +436,11 @@ type LazyList = {
   readonly id: string;
   readonly title: string;
   readonly description?: string | null;
-  readonly houseHoldId: string;
+  readonly owners: string[];
+  readonly householdID: string;
   readonly Items: AsyncCollection<Item>;
-  readonly HouseHold: AsyncItem<HouseHold | undefined>;
   readonly Task: AsyncItem<Task | undefined>;
+  readonly HouseHold: AsyncItem<HouseHold | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly listTaskId?: string | null;
