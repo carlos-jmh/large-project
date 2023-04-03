@@ -4,6 +4,7 @@ import './middle.css'
 import Task from '../../components/task/Task'
 import List from '../../components/list/List'
 import Form from '../../components/form/Form'
+import Add from '../../components/add/Add'
 
 // Get array of the households and their tasks
 // Map to tasks the name of household and array of each households tasks
@@ -15,6 +16,7 @@ const Middle = () => {
         <div className="tasks">
           <Task/>
           <Task/>
+          <Add/>
         </div>
       </div>
       <div className="section">

@@ -1,0 +1,11 @@
+.addTask {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.addTask p {
+    margin: 0px;
+    padding: 0px;
+    color: purple;
+}
