@@ -7,7 +7,7 @@ const Cal = () => {
 
   const [date, setDate] = useState(new Date());
   return (
-    <div>
+    <div className="cal">
       <div className='calendar-container'>
         <Calendar onChange={setDate} value={date} />
       </div>
