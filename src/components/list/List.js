@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import ListItem from '../listItem/ListItem';
+import Add from '../add/Add';
 import * as Icon from 'react-bootstrap-icons';
 import './list.css'
 
@@ -21,6 +22,7 @@ function List() {
           <div className="items">
             {/* Place map of listitems after ? */}
             { open ? <><ListItem/><ListItem/> </>: <></> }
+            <Add/>
           </div>
         </div>
     </div>

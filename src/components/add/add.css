@@ -4,8 +4,44 @@
     gap: 10px;
 }
 
+.addTask:hover {
+    cursor: pointer;
+}
+
 .addTask p {
     margin: 0px;
     padding: 0px;
     color: purple;
+}
+
+.addingTask {
+    border: solid;
+    border-color: rgb(230, 227, 227);
+    border-width: 1px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.addingTask input{
+    border: none;
+}
+
+.addingTask button {
+    color: white;
+    margin: 2px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#purple {
+    background-color: rgb(108, 0, 158);
+}
+
+#purple:hover {
+    color: white;
+    background-color: rgba(58, 4, 83, 0.747);
 }
