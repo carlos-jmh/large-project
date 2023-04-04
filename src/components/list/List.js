@@ -21,8 +21,7 @@ function List() {
           <hr className="listLine"></hr>
           <div className="items">
             {/* Place map of listitems after ? */}
-            { open ? <><ListItem/><ListItem/> </>: <></> }
-            <Add/>
+            { open ? <><ListItem/><ListItem/><Add/></>: <></> }
           </div>
         </div>
     </div>
