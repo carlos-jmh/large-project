@@ -54,11 +54,35 @@ const Form = () => {
 
         {/* Create form for household */}
         <div class="tabcontent" style={{display: "none"}} id="household" ref={(c) => h = c}>
-          <p>household</p>
+          <div class="form-group">
+            <label for="householdName">Enter your household name</label>
+            <input type="text" class="form-control" id="householdName" placeholder="Uni Dorm" required></input>
+          </div>
+
+          <button type="submit" class="btn btn-success">Add Household</button>
         </div>
 
         <div class="tabcontent" style={{display: "none"}} id="list" ref={(c) => l = c}>
-          <p>list</p>
+          <div class="form-group">
+            <label for="listName">Enter your list name</label>
+            <input type="text" class="form-control" id="listName" placeholder="Grocery List" required></input>
+          </div>
+
+          <div class="form-group">
+            <label for="listDesc">Enter your list description</label>
+            <input type="text" class="form-control" id="listDisc" placeholder="List to track grocery items" required></input>
+          </div>
+
+          <div class="form-group">
+            <label for="listTask">Link to a task?</label>
+            <select id="listTask" class="form-control">
+              <option>Task1</option>
+              <option>Task2</option>
+              <option>Task3</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-success">Add List</button>
         </div>
 
         <div class="tabcontent" style={{display: "none"}} id="item" ref={(c) => i = c}>
