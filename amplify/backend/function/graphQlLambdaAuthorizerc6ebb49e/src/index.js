@@ -51,6 +51,7 @@ exports.handler = async (event) => {
     const ast = parse(queryString);
 
     const isAuthorizedToPerformQuery = await checkAuthorization(ast, sub);
+    console.log("isAuthorizedToPerformQuery: ", isAuthorizedToPerformQuery);
 
     return {
       isAuthorized: isAuthorizedToPerformQuery,
@@ -483,6 +484,8 @@ async function isAuthorizedForHouseHold(dynamo, houseHoldId, sub) {
   };
 
   try {
+    console.log("making request to dynamo for houseHoldId: ", houseHoldId);
+
     const result = await dynamo.get(params).promise();
     const houseHold = result.Item;
 
@@ -521,4 +524,9 @@ function retrieveInputArgument(argumentName, selection) {
   } else if (selection.variable && selection.variable.name) {
     return selection.variable.name.value;
   }
+<<<<<<< Updated upstream
+=======
+
+  return null;
+>>>>>>> Stashed changes
 }
