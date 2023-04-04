@@ -4,14 +4,12 @@ import { Entypo } from "@expo/vector-icons";
 import HouseholdButton from "./HouseholdButton";
 import { getStyles } from "../styles";
 import { useTheme } from "@react-navigation/native";
-import CreateHousehold from "./CreateHousehold"
-import { Button } from "react-native-web";
+import { useState } from "react";
 import { API } from "aws-amplify";
 import { graphqlOperation } from "@aws-amplify/api";
-import { DataStore } from "aws-amplify";
-import { Auth } from "aws-amplify";
-import { HouseHold } from "../../models";
+
 import { useEffect } from "react";
+import { getCognitoUser, getCognitoToken } from "../auth/auth";
 
 /* Login page */
 // TODO: Connect to backend
@@ -19,29 +17,28 @@ export default function InitialPage({ navigation }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
+  const [houseHolds, setHouseHolds] = useState([]);
+
   //TODO: GET households from backend .
-  const households = [
-    {
-      id: "1",
-      name: "Dorm",
-    },
-    {
-      id: "2",
-      name: "Apartment",
-    },
-  ];
+  // const households = [
+  //   {
+  //     id: "1",
+  //     name: "Dorm",
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "Apartment",
+  //   },
+  // ];
 
   const getUserProfile = async () => {
-    // API call to get userProfileByOwner, Owner beingthe user's sub
-    // Using custom Lambda Authorizer that takes in the user's AccessToken
-    const user = await Auth.currentAuthenticatedUser();
-
     try {
-      console.log("running getUserProfile");
+      const user = await getCognitoUser();
+      const token = await getCognitoToken();
 
       const userProfile = await API.graphql(
         graphqlOperation(
-          `query GetUserProfileByOwner($owner: ID!) {
+          `query GetUserProfileByOwner($owner: String!) {
             userProfileByOwner(owner: $owner) {
               items {
                 id
@@ -50,12 +47,10 @@ export default function InitialPage({ navigation }) {
           }`,
           { owner: user.attributes.sub }
         ),
-        { Authorization: `Banana ${user.signInUserSession.accessToken.jwtToken}` }
+        { Authorization: token }
       );
 
-      console.log("returning userProfile: ", userProfile);
-      // return the items
-      return userProfile;
+      return userProfile.data.userProfileByOwner.items[0];
     } catch (error) {
       console.log(error);
       return null;
@@ -63,33 +58,47 @@ export default function InitialPage({ navigation }) {
   };
 
   const getUsersHouseHolds = async (userProfileId) => {
-    const houseHolds = await API.graphql(
-      graphqlOperation(
-        `query GetHouseHoldMembersByUserProfileId($userProfileId: ID!) {
-          houseHoldMembersByUserProfileId(userProfileId: $userProfileId) {
-            items {
-              houseHoldId
-            }
-          }
-        }`,
-        { userProfileId: userProfileId }
-      ),
-      { Authorization: user.signInUserSession.accessToken.jwtToken }
-    );
+    try {
+      const token = await getCognitoToken();
 
-    return houseHolds;
+      const houseHolds = await API.graphql(
+        graphqlOperation(
+          `query GetHouseHoldMembersByUserProfileId($userProfileId: ID!) {
+            houseHoldMembersByUserProfileId(userProfileId: $userProfileId) {
+              items {
+                HouseHold {
+                  id
+                  name
+                }
+              }
+            }
+          }`,
+          { userProfileId: userProfileId }
+        ),
+        { Authorization: token }
+      );
+
+      return houseHolds.data.houseHoldMembersByUserProfileId.items.map(
+        (houseHoldMember) => houseHoldMember.HouseHold
+      );
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   };
 
-  // on page load, get the user's profile id
+  // on page load, get the user's profile id, then get the user's households
   useEffect(() => {
-    console.log("running!");
-
-    const getUserProfileId = async () => {
+    const fetchHouseHolds = async () => {
       const userProfile = await getUserProfile();
-      console.log(userProfile);
+
+      if (userProfile) {
+        const houseHolds = await getUsersHouseHolds(userProfile.id);
+        setHouseHolds(houseHolds);
+      }
     };
 
-    getUserProfileId();
+    fetchHouseHolds();
   }, []);
 
 
@@ -104,14 +113,14 @@ export default function InitialPage({ navigation }) {
         <Text style={styles.p}>Please choose your household</Text>
         <View style={{ height: 22 }}></View>
         <View>
-          {households.map((household, index) => {
+          {houseHolds.map((houseHold, index) => {
             return (
               <View key={index}>
                 <HouseholdButton
                   style={styles.householdButtonContainer}
-                  title={household.name}
+                  title={houseHold.name}
                   onPress={() =>
-                    navigation.navigate("Events", { household: household })
+                    navigation.navigate("Events", { household: houseHold })
                   }
                 >
                   {" "}
