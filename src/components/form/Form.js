@@ -4,8 +4,6 @@ import './form.css';
 // This all-in-one form allows household creation, task creation, and list creation.
 const Form = () => {
   let create;
-  let h, l, i, t;
-  let tabh, tabl, tabi, tabt;
 
   const [state, setState] = useState("household");
   
@@ -43,26 +41,35 @@ const Form = () => {
     }
   }
 
+  function closeForm()
+  {
+    console.log(document.querySelectorAll('div.genform'));
+    document.querySelectorAll('div.genform')[0].style.display = "none"
+  }
+
     return (
-      <div>
+      <div class="genform">
         <div className="tabs">
-          <button class="tablinks" id="h" onClick={() => openTab("h")} ref={(c) => tabh = c}>Household</button>
-          <button class="tablinks" id="l" onClick={() => openTab("l")} ref={(c) => tabl = c}>List</button>
-          <button class="tablinks" id="i" onClick={() => openTab("i")} ref={(c) => tabi = c}>Item</button>
-          <button class="tablinks" id="t" onClick={() => openTab("t")} ref={(c) => tabt = c}>Task</button>
+          <button class="tablinks" id="h" onClick={() => openTab("h")}>Household</button>
+          <button class="tablinks" id="l" onClick={() => openTab("l")}>List</button>
+          <button class="tablinks" id="i" onClick={() => openTab("i")}>Item</button>
+          <button class="tablinks" id="t" onClick={() => openTab("t")}>Task</button>
         </div>
 
         {/* Create form for household */}
-        <div class="tabcontent" style={{display: "none"}} id="household" ref={(c) => h = c}>
+        <div class="tabcontent" style={{display: "none"}} id="household">
           <div class="form-group">
             <label for="householdName">Enter your household name</label>
             <input type="text" class="form-control" id="householdName" placeholder="Uni Dorm" required></input>
           </div>
 
-          <button type="submit" class="btn btn-success">Add Household</button>
+          <div className="formBtn">
+            <button type="submit" class="btn btn-danger" onClick={() => closeForm()}>Close</button>
+            <button type="submit" class="btn btn-success">Add Household</button>
+          </div>
         </div>
 
-        <div class="tabcontent" style={{display: "none"}} id="list" ref={(c) => l = c}>
+        <div class="tabcontent" style={{display: "none"}} id="list">
           <div class="form-group">
             <label for="listName">Enter your list name</label>
             <input type="text" class="form-control" id="listName" placeholder="Grocery List" required></input>
@@ -82,15 +89,90 @@ const Form = () => {
             </select>
           </div>
 
-          <button type="submit" class="btn btn-success">Add List</button>
+          <div className="formBtn">
+            <button type="submit" class="btn btn-danger" onClick={() => closeForm()}>Close</button>
+            <button type="submit" class="btn btn-success">Add List</button>
+          </div>
+          
         </div>
 
-        <div class="tabcontent" style={{display: "none"}} id="item" ref={(c) => i = c}>
-          <p>item</p>
+        <div class="tabcontent" style={{display: "none"}} id="item">
+          <div class="form-group">
+            <label for="itemName">Enter your item name</label>
+            <input type="text" class="form-control" id="itemName" placeholder="Bannanas" required></input>
+          </div>
+
+          <div class="form-group">
+            <label for="itemDesc">Enter your item description</label>
+            <input type="text" class="form-control" id="itemDesc" placeholder="Good source of carbs" required></input>
+          </div>
+
+          <div class="form-group">
+            <label for="itemList">Link to a list</label>
+              <select id="itemList" class="form-control">
+                <option>List1</option>
+                <option>List2</option>
+                <option>List3</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label for="listTask">Link to a task?</label>
+            <select id="listTask" class="form-control">
+              <option>Task1</option>
+              <option>Task2</option>
+              <option>Task3</option>
+            </select>
+          </div>
+
+          <div className="formBtn">
+            <button type="submit" class="btn btn-danger" onClick={() => closeForm()}>Close</button>
+            <button type="submit" class="btn btn-success">Add Item</button>
+          </div>
         </div>
 
-        <div class="tabcontent" style={{display: "none"}} id="task" ref={(c) => t = c}>
-          <p>task</p>
+        <div class="tabcontent" style={{display: "none"}} id="task">
+          <div class="form-group">
+            <label for="taskName">Enter your task name</label>
+            <input type="text" class="form-control" id="taskName" placeholder="Walk dog" required></input>
+          </div>
+
+          <div class="form-group">
+            <label for="taskType">Task type</label>
+              <select id="taskType" class="form-control">
+                <option>Delete on completion</option>
+                <option>Forever</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label for="event">Make an event?</label>
+            <input type="datetime-local" class="form-control" id="event"></input>
+          </div>
+
+          <div class="form-group">
+            <label for="itemList">Link to a list</label>
+              <select id="itemList" class="form-control">
+                <option>List1</option>
+                <option>List2</option>
+                <option>List3</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label for="listTask">Link to a item?</label>
+            <select id="listTask" class="form-control">
+              <option>Item1</option>
+              <option>Item2</option>
+              <option>Item3</option>
+            </select>
+          </div>
+
+          <div className="formBtn">
+            <button type="submit" class="btn btn-danger" onClick={() => closeForm()}>Close</button>
+            <button type="submit" class="btn btn-success">Add Task</button>
+          </div>
+          
         </div>
       </div>
     )

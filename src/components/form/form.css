@@ -1,38 +1,53 @@
 .tabs {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-  }
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
   
-  /* Style the buttons inside the tab */
-  .tabs button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    border-radius: 0px;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-    margin: 0px;
-    width: 150px;
-  }
+/* Style the buttons inside the tab */
+.tabs button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  border-radius: 0px;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  margin: 0px;
+  width: 150px;
+}
   
-  /* Change background color of buttons on hover */
-  .tabs button:hover {
-    background-color: #ccc;
-  }
+/* Change background color of buttons on hover */
+.tabs button:hover {
+  background-color: #ccc;
+}
   
-  /* Create an active/current tablink class */
-  .tabs button.active {
-    background-color: #ccc;
-  }
+/* Create an active/current tablink class */
+.tabs button.active {
+  background-color: #ccc;
+}
   
-  /* Style the tab content */
-  .tabcontent {
-    display: block;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-  }
+/* Style the tab content */
+.tabcontent {
+  display: block;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  background-color: white;
+}
+
+.genform {
+  display: none;
+  width: 32.5%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.formBtn {
+  display: flex;
+  justify-content: space-between;
+}

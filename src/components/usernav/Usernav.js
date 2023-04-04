@@ -1,8 +1,17 @@
 import React from 'react'
+import * as ReactDOM from 'react-dom';
 import './usernav.css'
 import * as Icon from 'react-bootstrap-icons'
 
+import Form from '../../components/form/Form';
+
 const Usernav = () => {
+
+  function showGenForm()
+  {
+    document.querySelectorAll('div.genform')[0].style.display = "block";
+  }
+
     return (
         <nav className="navbar navbar-expand-sm navbar-dark justify-content-between">
             {/* Replace with image logo once we have that downloaded and ready*/}
@@ -17,7 +26,7 @@ const Usernav = () => {
           <div className="collapse navbar-collapse flex-grow-0" id="navbarNavAltMarkup">
             <div className="navbar-nav">
               {/* OnClick call form component */}
-              <a className="nav-item nav-link" href="/"><Icon.PlusLg size="27px"/></a>
+              <a className="nav-item nav-link" onClick={() => showGenForm()}><Icon.PlusLg size="27px"/></a>
               <a className="nav-item nav-link" href="/"><Icon.PersonCircle size="27px"/></a>
             </div>
           </div>
