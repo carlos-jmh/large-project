@@ -77,119 +77,119 @@ async function checkAuthorization(ast, sub) {
     switch (queryName) {
       // Queries
       case "eventHandlersByCalendarId": {
-        const calendarId = retrieveArgument("calendarId", selection.arguments);
+        const calendarId = retrieveArgument("calendarId", selection);
         if (!await isAuthorizedForCalendar(dynamo, calendarId, sub)) {
           return false;
         }
         break;
       }
       case "eventsByCalendarId": {
-        const calendarId = retrieveArgument("calendarId", selection.arguments);
+        const calendarId = retrieveArgument("calendarId", selection);
         if (!await isAuthorizedForCalendar(dynamo, calendarId, sub)) {
           return false;
         }
         break;
       }
       case "eventsByEventHandlerId": {
-        const eventHandlerId = retrieveArgument("eventHandlerId", selection.arguments);
+        const eventHandlerId = retrieveArgument("eventHandlerId", selection);
         if (!await isAuthorizedForEventHandler(dynamo, eventHandlerId, sub)) {
           return false;
         }
         break;
       }
       case "getCalendar": {
-        const calendarId = retrieveArgument("id", selection.arguments);
+        const calendarId = retrieveArgument("id", selection);
         if (!await isAuthorizedForCalendar(dynamo, calendarId, sub)) {
           return false;
         }
         break;
       }
       case "getChatRoom": {
-        const chatRoomId = retrieveArgument("id", selection.arguments);
+        const chatRoomId = retrieveArgument("id", selection);
         if (!await isAuthorizedForChatRoom(dynamo, chatRoomId, sub)) {
           return false;
         }
         break;
       }
       case "getEvent": {
-        const eventId = retrieveArgument("id", selection.arguments);
+        const eventId = retrieveArgument("id", selection);
         if (!await isAuthorizedForEvent(dynamo, eventId, sub)) {
           return false;
         }
         break;
       }
       case "getEventHandler": {
-        const eventHandlerId = retrieveArgument("id", selection.arguments);
+        const eventHandlerId = retrieveArgument("id", selection);
         if (!await isAuthorizedForEventHandler(dynamo, eventHandlerId, sub)) {
           return false;
         }
         break;
       }
       case "getItem": {
-        const itemId = retrieveArgument("id", selection.arguments);
+        const itemId = retrieveArgument("id", selection);
         if (!await isAuthorizedForItem(dynamo, itemId, sub)) {
           return false;
         }
         break;
       }
       case "getList": {
-        const listId = retrieveArgument("id", selection.arguments);
+        const listId = retrieveArgument("id", selection);
         if (!await isAuthorizedForList(dynamo, listId, sub)) {
           return false;
         }
         break;
       }
       case "getMessage": {
-        const messageId = retrieveArgument("id", selection.arguments);
+        const messageId = retrieveArgument("id", selection);
         if (!await isAuthorizedForMessage(dynamo, messageId, sub)) {
           return false;
         }
         break;
       }
       case "getTask": {
-        const taskId = retrieveArgument("id", selection.arguments);
+        const taskId = retrieveArgument("id", selection);
         if (!await isAuthorizedForTask(dynamo, taskId, sub)) {
           return false;
         }
         break;
       }
       case "houseHoldMembersByHouseHoldId": {
-        const houseHoldId = retrieveArgument("houseHoldId", selection.arguments);
+        const houseHoldId = retrieveArgument("houseHoldId", selection);
         if (!await isAuthorizedForHouseHold(dynamo, houseHoldId, sub)) {
           return false;
         }
         break;
       }
       case "itemsByListId": {
-        const listId = retrieveArgument("listId", selection.arguments);
+        const listId = retrieveArgument("listId", selection);
         if (!await isAuthorizedForList(dynamo, listId, sub)) {
           return false;
         }
         break;
       }
       case "listsByHouseHoldId": {
-        const houseHoldId = retrieveArgument("houseHoldId", selection.arguments);
+        const houseHoldId = retrieveArgument("houseHoldId", selection);
         if (!await isAuthorizedForHouseHold(dynamo, houseHoldId, sub)) {
           return false;
         }
         break;
       }
       case "messagesByChatRoomId": {
-        const chatRoomId = retrieveArgument("chatRoomId", selection.arguments);
+        const chatRoomId = retrieveArgument("chatRoomId", selection);
         if (!await isAuthorizedForChatRoom(dynamo, chatRoomId, sub)) {
           return false;
         }
         break;
       }
       case "tasksByHouseHoldId": {
-        const houseHoldId = retrieveArgument("houseHoldId", selection.arguments);
+        const houseHoldId = retrieveArgument("houseHoldId", selection);
         if (!await isAuthorizedForHouseHold(dynamo, houseHoldId, sub)) {
           return false;
         }
         break;
       }
       case "userProfileByOwner": {
-        const owner = retrieveArgument("owner", selection.arguments);
+        const owner = retrieveArgument("owner", selection);
         if (owner !== sub) {
           return false;
         }
@@ -198,7 +198,7 @@ async function checkAuthorization(ast, sub) {
 
       // Mutations
       case "addUserToHouseHold": {
-        const houseHoldId = retrieveArgument("houseHoldId", selection.arguments);
+        const houseHoldId = retrieveArgument("houseHoldId", selection);
         if (!await isAuthorizedForHouseHold(dynamo, houseHoldId, sub)) {
           return false;
         }
@@ -226,63 +226,63 @@ async function checkAuthorization(ast, sub) {
         break;
       }
       case "createItem": {
-        const listId = retrieveInputArgument("listId", selection.arguments);
+        const listId = retrieveInputArgument("listId", selection);
         if (!await isAuthorizedForList(dynamo, listId, sub)) {
           return false;
         }
         break;
       }
       case "createList": {
-        const houseHoldId = retrieveInputArgument("houseHoldId", selection.arguments);
+        const houseHoldId = retrieveInputArgument("houseHoldId", selection);
         if (!await isAuthorizedForHouseHold(dynamo, houseHoldId, sub)) {
           return false;
         }
         break;
       }
       case "createTask": {
-        const houseHoldId = retrieveInputArgument("houseHoldId", selection.arguments);
+        const houseHoldId = retrieveInputArgument("houseHoldId", selection);
         if (!await isAuthorizedForHouseHold(dynamo, houseHoldId, sub)) {
           return false;
         }
         break;
       }
       case "deleteItem": {
-        const itemId = retrieveInputArgument("id", selection.arguments);
+        const itemId = retrieveInputArgument("id", selection);
         if (!await isAuthorizedForItem(dynamo, itemId, sub)) {
           return false;
         }
         break;
       }
       case "deleteList": {
-        const listId = retrieveInputArgument("id", selection.arguments);
+        const listId = retrieveInputArgument("id", selection);
         if (!await isAuthorizedForList(dynamo, listId, sub)) {
           return false;
         }
         break;
       }
       case "deleteTask": {
-        const taskId = retrieveInputArgument("id", selection.arguments);
+        const taskId = retrieveInputArgument("id", selection);
         if (!await isAuthorizedForTask(dynamo, taskId, sub)) {
           return false;
         }
         break;
       }
       case "updateItem": {
-        const itemId = retrieveInputArgument("id", selection.arguments);
+        const itemId = retrieveInputArgument("id", selection);
         if (!await isAuthorizedForItem(dynamo, itemId, sub)) {
           return false;
         }
         break;
       }
       case "updateList": {
-        const listId = retrieveInputArgument("id", selection.arguments);
+        const listId = retrieveInputArgument("id", selection);
         if (!await isAuthorizedForList(dynamo, listId, sub)) {
           return false;
         }
         break;
       }
       case "updateTask": {
-        const taskId = retrieveInputArgument("id", selection.arguments);
+        const taskId = retrieveInputArgument("id", selection);
         if (!await isAuthorizedForTask(dynamo, taskId, sub)) {
           return false;
         }
@@ -496,10 +496,29 @@ async function isAuthorizedForHouseHold(dynamo, houseHoldId, sub) {
   return false;
 }
 
-function retrieveArgument(argumentName, arguments) {
-  return arguments.find((arg) => arg.name.value === argumentName).value.value;
+function retrieveArgument(argumentName, selection) {
+  if (selection.arguments && selection.arguments.length > 0) {
+    const argument = selection.arguments.find((arg) => arg.name.value === argumentName);
+    if (argument) {
+      return argument.value.value;
+    }
+  } else if (selection.variable && selection.variable.name) {
+    return selection.variable.name.value;
+  }
+
+  return null;
 }
 
-function retrieveInputArgument(argumentName, arguments) {
-  return arguments.find((arg) => arg.name.value === "input").value.fields.find((field) => field.name.value === argumentName).value.value;
+function retrieveInputArgument(argumentName, selection) {
+  if (selection.arguments && selection.arguments.length > 0) {
+    const input = selection.arguments.find((arg) => arg.name.value === "input");
+    if (input && input.value.fields) {
+      const argument = input.value.fields.find((arg) => arg.name.value === argumentName);
+      if (argument) {
+        return argument.value.value;
+      }
+    }
+  } else if (selection.variable && selection.variable.name) {
+    return selection.variable.name.value;
+  }
 }

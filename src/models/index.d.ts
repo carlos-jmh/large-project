@@ -349,7 +349,8 @@ type EagerEvent = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly date?: string | null;
+  readonly date: string;
+  readonly completed: boolean;
   readonly eventHandlerId: string;
   readonly calendarId: string;
   readonly EventHandler?: EventHandler | null;
@@ -364,7 +365,8 @@ type LazyEvent = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly date?: string | null;
+  readonly date: string;
+  readonly completed: boolean;
   readonly eventHandlerId: string;
   readonly calendarId: string;
   readonly EventHandler: AsyncItem<EventHandler | undefined>;

@@ -38,8 +38,11 @@ exports.handler = async (event) => {
 
 	const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-	// validate userProfileId
-	const userProfileId = await validateUserProfile(dynamoDb, ownerId);
+	// validate userProfile
+	const userProfile = await retrieveUserProfile(dynamoDb, ownerId);
+	if (!userProfile) {
+		return new Error('Error retrieving userProfile');
+	}
 
 	// create new houseHoldmember
 	try {
@@ -50,7 +53,8 @@ exports.handler = async (event) => {
 					id: houseHoldMemberId,
 					points: 0,
 					owner: ownerId,
-					userProfileId: userProfileId,
+					nickname: userProfile.nickname,
+					userProfileId: userProfile.id,
 					houseHoldId: houseHoldId,
 					
 					createdAt: createdAt,
@@ -141,25 +145,22 @@ exports.handler = async (event) => {
 	return houseHoldId;
 };
 
-async function validateUserProfile(dynamoDb, sub) {
-	// validate userProfileId
-	const userProfileQuery = {
+async function retrieveUserProfile(dynamoDb, sub) {
+	// get userProfile (there is an index called byOwner)
+	const params = {
 		TableName: process.env.API_HOUSEHOLDAPP_USERPROFILETABLE_NAME,
-		IndexName: "byOwner",
-		KeyConditionExpression: "#owner_id = :user_sub",
+		IndexName: 'byOwner',
+		KeyConditionExpression: 'owner = :owner',
 		ExpressionAttributeValues: {
-			":user_sub": sub
+			':owner': sub,
 		},
-		ExpressionAttributeNames: {
-			"#owner_id" : "owner"
-		},
-		ProjectionExpression: "id"
 	};
-
-	const userProfile = await dynamoDb.get(userProfileQuery).promise();
-	if (!userProfile.Item) {
-		throw new Error('Invalid userProfileId');
+	
+	try {
+		const userProfile = await dynamoDb.query(params).promise();
+		return userProfile.Items[0];
+	} catch (error) {
+		console.log(error);
+		return null;
 	}
-
-	return userProfile.Item.id;
 }
