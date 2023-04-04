@@ -71,10 +71,6 @@ export default function CreateHousehold({ navigation, route }) {
     const failedUsers = [];
     const token = await getCognitoToken();
 
-    // This is the mutation in the schema
-    // addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): String @function(name: "addUserToHouseHold-${env}") @auth(rules: [{allow: custom}])
-
-    // auth issue?
     await Promise.all(
       invitedUsers.map(async (user) => {
         try {
@@ -99,14 +95,14 @@ export default function CreateHousehold({ navigation, route }) {
 
   async function handleCreateHousehold() {
     const newHouseHold = await createHouseHold();
-    // const failedUsers = await addUsersToHouseHold(invitedUsers, newHouseHold.id);
+    const failedUsers = await addUsersToHouseHold(invitedUsers, newHouseHold.id);
 
-    // if (failedUsers.length > 0) {
-    //   console.log("Failed to add users to household: ", failedUsers);
-    // }
+    if (failedUsers.length > 0) {
+      console.log("Failed to add users to household: ", failedUsers);
+    }
 
     console.log("New household created: ", newHouseHold);
-    navigation.navigate("Events", { household: newHouseHold });
+    // navigation.navigate("Events", { household: newHouseHold });
   }
 
   return (

@@ -13,23 +13,12 @@ import { getCognitoUser, getCognitoToken } from "../auth/auth";
 
 /* Login page */
 // TODO: Connect to backend
-export default function InitialPage({ navigation }) {
+export default function InitialPage({ navigation, route }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
+  const [username, setUsername] = useState("");
   const [houseHolds, setHouseHolds] = useState([]);
-
-  //TODO: GET households from backend .
-  // const households = [
-  //   {
-  //     id: "1",
-  //     name: "Dorm",
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "Apartment",
-  //   },
-  // ];
 
   const getUserProfile = async () => {
     try {
@@ -87,16 +76,22 @@ export default function InitialPage({ navigation }) {
     }
   };
 
-  // on page load, get the user's profile id, then get the user's households
-  useEffect(() => {
-    const fetchHouseHolds = async () => {
-      const userProfile = await getUserProfile();
+  // get the user's profile id, then get the user's households
+  const fetchHouseHolds = async () => {
+    const userProfile = await getUserProfile();
 
-      if (userProfile) {
-        const houseHolds = await getUsersHouseHolds(userProfile.id);
-        setHouseHolds(houseHolds);
-      }
-    };
+    if (userProfile) {
+      const houseHolds = await getUsersHouseHolds(userProfile.id);
+      setHouseHolds(houseHolds);
+    }
+  };
+
+  // on page load
+  useEffect(() => {
+    // TODO: "user" would probably be better if passed in from the login pages
+    getCognitoUser().then((user) => {
+      setUsername(user.username);
+    });
 
     fetchHouseHolds();
   }, []);
@@ -107,7 +102,8 @@ export default function InitialPage({ navigation }) {
     <View style={styles.container}>
       <View>
         <Text style={styles.p}>Hi there,</Text>
-        <Text style={styles.header}>John Doe</Text>
+        
+        <Text style={styles.header}>{ username }</Text>
       </View>
       <View>
         <Text style={styles.p}>Please choose your household</Text>
