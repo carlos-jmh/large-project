@@ -85,6 +85,7 @@ export default function InitialPage({ navigation, route }) {
       setHouseHolds(houseHolds);
     }
   };
+  
 
   // on page load
   useEffect(() => {
@@ -96,8 +97,6 @@ export default function InitialPage({ navigation, route }) {
     fetchHouseHolds();
   }, []);
 
-
-  //TODO: Change John Doe with Account Name.
   return (
     <View style={styles.container}>
       <View>
