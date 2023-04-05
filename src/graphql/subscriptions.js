@@ -1393,3 +1393,8 @@ export const onDeleteList = /* GraphQL */ `
     }
   }
 `;
+export const onAddUserToHouseHold = /* GraphQL */ `
+  subscription OnAddUserToHouseHold($cognitoUsername: String!) {
+    onAddUserToHouseHold(cognitoUsername: $cognitoUsername)
+  }
+`;

@@ -45,12 +45,11 @@ exports.handler = async (event) => {
   const accessToken = authorizationToken.replace(/^Banana\s/, "");
   try {
     const userInfo = await cognito.getUser({ AccessToken: accessToken }).promise();
-    const sub = userInfo.UserAttributes.find((attr) => attr.Name === "sub").Value;
 
     // parsing the queryString creates an Abstract Syntax Tree (AST)
     const ast = parse(queryString);
 
-    const isAuthorizedToPerformQuery = await checkAuthorization(ast, variables, sub);
+    const isAuthorizedToPerformQuery = await checkAuthorization(ast, variables, userInfo);
     console.log("isAuthorizedToPerformQuery: ", isAuthorizedToPerformQuery);
 
     return {
@@ -66,8 +65,13 @@ exports.handler = async (event) => {
   }
 };
 
-async function checkAuthorization(ast, variables, sub) {
+async function checkAuthorization(ast, variables, userInfo) {
+  // AST selections
   const querySelections = ast.definitions[0].selectionSet.selections;
+
+  // user info
+  const sub = userInfo.UserAttributes.find((attr) => attr.Name === "sub").Value;
+  const username = userInfo.Username;
 
   const dynamo = new AWS.DynamoDB.DocumentClient();
 
@@ -285,6 +289,15 @@ async function checkAuthorization(ast, variables, sub) {
       case "updateTask": {
         const taskId = retrieveInputArgument("id", selection.arguments, variables);
         if (!await isAuthorizedForTask(dynamo, taskId, sub)) {
+          return false;
+        }
+        break;
+      }
+
+      // Subscriptions
+      case "onAddUserToHouseHold": {
+        const cognitoUsername = retrieveArgument("cognitoUsername", selection.arguments, variables);
+        if (cognitoUsername !== username) {
           return false;
         }
         break;
