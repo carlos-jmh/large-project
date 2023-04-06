@@ -6,10 +6,11 @@ import './cal.css'
 const Cal = () => {
 
   const [date, setDate] = useState(new Date());
+
   return (
     <div className="cal">
       <div className='calendar-container'>
-        <Calendar defaultValue={new Date()} minDate={new Date()} onChange={setDate} value={date} />
+        <Calendar defaultValue={new Date()} minDate={new Date()} onChange={date => setDate(date)} value={date}/>
       </div>
     </div>
   )
