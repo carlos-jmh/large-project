@@ -40,3 +40,10 @@
 .calendar {
     margin-top: 1.5rem;
 }
+
+.inbox {
+    margin: 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}

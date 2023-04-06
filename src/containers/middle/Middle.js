@@ -13,7 +13,8 @@ import "react-datepicker/dist/react-datepicker.css";
 // Get array of the households and their tasks
 // Map to tasks the name of household and array of each households tasks
 const Middle = () => {
-  let inbox = false;
+  let inbox = true;
+
   const [selectedDate, setSelecteddDate] = useState(new Date())
 
   if (!inbox)
@@ -32,7 +33,7 @@ const Middle = () => {
         </div>
         <div class="display">
           <div className="taskevent">
-            <div className="section1">
+          <div className="section1">
               <h5 className="sectionHeader">Tasks</h5>
               <div className="task">
                 <Task/>
@@ -62,9 +63,30 @@ const Middle = () => {
   }
   else {
     return (
-      <>
-      <p>Hello</p>
-      </>
+      <div className="inbox">
+        <div className="section1">
+            <h5 className="sectionHeader">Tasks</h5>
+            <div className="task">
+              <Task/>
+              <Task/>
+              <Add/>
+            </div>
+          </div>
+          <div className="section1">
+            <h5 className="sectionHeader">Events</h5>
+            <div className="event">
+              <Task/>
+              <Task/>
+              <Add/>
+            </div>
+          </div>
+          <div className="section1">
+            <h5 className="sectionHeader">Lists</h5>
+            <div className="list">
+              <List name="Grocery List"/>
+            </div>
+          </div>
+      </div>
     )
   }
   
