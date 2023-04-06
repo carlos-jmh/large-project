@@ -5,7 +5,7 @@ import './form.css';
 const Form = () => {
   let create;
 
-  const [state, setState] = useState("household");
+  const [state, setState] = useState("task");
   
   function openTab(tab)
   {
@@ -53,7 +53,7 @@ const Form = () => {
           <button class="tablinks" id="h" onClick={() => openTab("h")}>Household</button>
           <button class="tablinks" id="l" onClick={() => openTab("l")}>List</button>
           <button class="tablinks" id="i" onClick={() => openTab("i")}>Item</button>
-          <button class="tablinks" id="t" onClick={() => openTab("t")}>Task</button>
+          <button class="tablinks active" id="t" onClick={() => openTab("t")}>Task</button>
         </div>
 
         {/* Create form for household */}
@@ -131,7 +131,7 @@ const Form = () => {
           </div>
         </div>
 
-        <div class="tabcontent" style={{display: "none"}} id="task">
+        <div class="tabcontent"  id="task">
           <div class="form-group">
             <label for="taskName">Enter your task name</label>
             <input type="text" class="form-control" id="taskName" placeholder="Walk dog" required></input>
