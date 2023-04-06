@@ -1503,33 +1503,61 @@ export const schema = {
         }
     },
     "nonModels": {
-        "ArchivedTask": {
-            "name": "ArchivedTask",
+        "AddUserToHouseHoldResponse": {
+            "name": "AddUserToHouseHoldResponse",
             "fields": {
-                "title": {
-                    "name": "title",
+                "id": {
+                    "name": "id",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
+                    "type": "ID",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "points": {
                     "name": "points",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
-                "completedBy": {
-                    "name": "completedBy",
+                "owner": {
+                    "name": "owner",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "nickname": {
+                    "name": "nickname",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userProfileId": {
+                    "name": "userProfileId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "houseHoldId": {
+                    "name": "houseHoldId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "cognitoUsername": {
+                    "name": "cognitoUsername",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 }
             }
         }
     },
-    "codegenVersion": "3.3.5",
-    "version": "1b907ce0681f317d3a6a9b1be55fecc4"
+    "codegenVersion": "3.4.0",
+    "version": "574dbab724cc3eed146038e74d318fe8"
 };

@@ -46,6 +46,16 @@ exports.handler = async (event) => {
   try {
     const userInfo = await cognito.getUser({ AccessToken: accessToken }).promise();
 
+    // check operationName
+    // this was due to a bug in the AppSync console. Will leave it here for now
+    const operationName = event.requestContext.operationName;
+    if (operationName === "Deepdish:Connect") {
+      return {
+        isAuthorized: true,
+        resolverContext: { "banana": "very yellow" },
+      };
+    }
+
     // parsing the queryString creates an Abstract Syntax Tree (AST)
     const ast = parse(queryString);
 
@@ -61,6 +71,7 @@ exports.handler = async (event) => {
     console.log("ERROR: ", error);
     return {
       isAuthorized: false,
+      resolverContext: { "banana": "very yellow" },
     };
   }
 };
@@ -72,6 +83,9 @@ async function checkAuthorization(ast, variables, userInfo) {
   // user info
   const sub = userInfo.UserAttributes.find((attr) => attr.Name === "sub").Value;
   const username = userInfo.Username;
+
+  console.log("sub: ", sub);
+  console.log("username: ", username);
 
   const dynamo = new AWS.DynamoDB.DocumentClient();
 
@@ -497,8 +511,6 @@ async function isAuthorizedForHouseHold(dynamo, houseHoldId, sub) {
   };
 
   try {
-    console.log("making request to dynamo for houseHoldId: ", houseHoldId);
-
     const result = await dynamo.get(params).promise();
     const houseHold = result.Item;
 

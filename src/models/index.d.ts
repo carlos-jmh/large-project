@@ -9,21 +9,29 @@ export enum Frequency {
   YEARLY = "YEARLY"
 }
 
-type EagerArchivedTask = {
-  readonly title: string;
-  readonly points: number;
-  readonly completedBy: string;
+type EagerAddUserToHouseHoldResponse = {
+  readonly id?: string | null;
+  readonly points?: number | null;
+  readonly owner?: string | null;
+  readonly nickname?: string | null;
+  readonly userProfileId?: string | null;
+  readonly houseHoldId?: string | null;
+  readonly cognitoUsername?: string | null;
 }
 
-type LazyArchivedTask = {
-  readonly title: string;
-  readonly points: number;
-  readonly completedBy: string;
+type LazyAddUserToHouseHoldResponse = {
+  readonly id?: string | null;
+  readonly points?: number | null;
+  readonly owner?: string | null;
+  readonly nickname?: string | null;
+  readonly userProfileId?: string | null;
+  readonly houseHoldId?: string | null;
+  readonly cognitoUsername?: string | null;
 }
 
-export declare type ArchivedTask = LazyLoading extends LazyLoadingDisabled ? EagerArchivedTask : LazyArchivedTask
+export declare type AddUserToHouseHoldResponse = LazyLoading extends LazyLoadingDisabled ? EagerAddUserToHouseHoldResponse : LazyAddUserToHouseHoldResponse
 
-export declare const ArchivedTask: (new (init: ModelInit<ArchivedTask>) => ArchivedTask)
+export declare const AddUserToHouseHoldResponse: (new (init: ModelInit<AddUserToHouseHoldResponse>) => AddUserToHouseHoldResponse)
 
 type EagerMessage = {
   readonly [__modelMeta__]: {

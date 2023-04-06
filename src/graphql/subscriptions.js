@@ -1395,6 +1395,14 @@ export const onDeleteList = /* GraphQL */ `
 `;
 export const onAddUserToHouseHold = /* GraphQL */ `
   subscription OnAddUserToHouseHold($cognitoUsername: String!) {
-    onAddUserToHouseHold(cognitoUsername: $cognitoUsername)
+    onAddUserToHouseHold(cognitoUsername: $cognitoUsername) {
+      id
+      points
+      owner
+      nickname
+      userProfileId
+      houseHoldId
+      cognitoUsername
+    }
   }
 `;

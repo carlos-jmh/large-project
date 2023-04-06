@@ -19,6 +19,8 @@ const {	CognitoIdentityProviderClient, AdminGetUserCommand } = require("@aws-sdk
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+    console.log(`EVENT: ${JSON.stringify(event)}`);
+
     const { cognitoUsername, houseHoldId } = event.arguments;
 	const houseHoldMemberId = uuidv4();
 	let ownerId, userProfileId;
@@ -98,22 +100,25 @@ exports.handler = async (event) => {
 	}
 
     // Create a new HouseHoldMember
+	const houseHoldMemberItem = {
+		id: houseHoldMemberId,
+		houseHoldId: houseHoldId,
+		userProfileId,
+		points: 0,
+		nickname: cognitoUsername,
+		owner: ownerId,
+		createdAt,
+		updatedAt: createdAt,
+		__typename: 'HouseHoldMember',
+		_lastChangedAt: lastChangedAt,
+		_version: 1,
+	};
+
 	try {
 		await dynamoDb
 			.put({
 				TableName: process.env.API_HOUSEHOLDAPP_HOUSEHOLDMEMBERTABLE_NAME,
-				Item: {
-					id: houseHoldMemberId,
-					houseHoldId: houseHoldId,
-					userProfileId,
-					points: 0,
-					owner: ownerId,
-					createdAt,
-					updatedAt: createdAt,
-					__typename: 'HouseHoldMember',
-					_lastChangedAt: lastChangedAt,
-					_version: 1,
-				},
+				Item: houseHoldMemberItem,
 			})
 			.promise();
 	} catch (error) {
@@ -121,9 +126,10 @@ exports.handler = async (event) => {
 		return new Error('Error creating HouseHoldMember');
 	}
 
-    // Print all event data to console
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-    return houseHoldMemberId;
+	// We are including the cognitoUsername in the response so Subscriptions work properly.
+	const addUserToHouseHoldResponse = { ...houseHoldMemberItem, cognitoUsername: cognitoUsername };
+
+    return addUserToHouseHoldResponse;
 };
 
 // Helper Function to add user to household's owners field
