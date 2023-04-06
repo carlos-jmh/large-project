@@ -34,7 +34,8 @@
 
 .buttons {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    margin: .5rem;
 }
 
 #purple {
