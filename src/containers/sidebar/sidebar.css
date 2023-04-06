@@ -1,0 +1,38 @@
+.sidebarButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.households {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.views {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.views button {
+    background-color: transparent;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    border-radius: 2px;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+}
+
+.views h6 {
+    margin: 0;
+}
+
+.views button:hover {
+    background-color: rgb(212, 211, 211);
+}

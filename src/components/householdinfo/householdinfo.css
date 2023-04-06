@@ -1,43 +1,10 @@
-.constraint {
-    width:600px;
-    border:1px;
-  }
-  button {
-    outline:none;
-    background: none;
-    border:0;
-    margin:1em;
-  }
-  .round-button {
-    width:30%;
-  }
-  .round-button-circle {
-    width: 100%;
-    height:0;
-    padding-bottom: 50%;
-      border-radius: 10%;
-    border:3px solid #cfdcec;
-      overflow:hidden;
-      
-      background: purple; 
-      box-shadow: 0 0 1px gray;
-  }
-  .round-button-circle:hover {
-    background:#7d00b2;
-  }
-  .round-button a, .round-button span {
-    display:block;
-    float:left;
-    width:100%;
-    padding-top:25%;
-    padding-bottom:50%;
-    line-height:1em;
-    margin-top:-0.5em;
-      
-    text-align:center;
-    color:#e2eaf3;
-    font-family:Verdana;
-    font-size:1em;
-    font-weight:bold;
-    text-decoration:none;
-  }
+.round-button {
+  color: white;
+  outline: none;
+  background: #7d00b2;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 20px;
+  width: 125px;
+  margin-bottom: 30px;
+} 

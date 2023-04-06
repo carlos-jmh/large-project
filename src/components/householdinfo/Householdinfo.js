@@ -5,11 +5,9 @@ import './householdinfo.css';
 // Household Name, and the number for inbox, today and upcoming.
 const Householdinfo = (props) => {
   return (
-    <div class="constraint">
+    <div>
       <button class="round-button">
-      <div class="round-button-circle">
-        <span class="round-button">{props.name}</span>
-      </div>
+          <span class="round-button">{props.name}</span>
       </button>
     </div>
   )
