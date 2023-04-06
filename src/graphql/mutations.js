@@ -1440,6 +1440,10 @@ export const addUserToHouseHold = /* GraphQL */ `
       nickname
       userProfileId
       houseHoldId
+      HouseHoldDisplayInfo {
+        id
+        name
+      }
       cognitoUsername
     }
   }

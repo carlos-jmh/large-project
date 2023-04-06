@@ -188,6 +188,11 @@ type List
   Task: Task @hasOne
 }
 
+type HouseHoldDisplayInfo {
+  id: ID
+  name: String
+}
+
 # Exact same as HouseHoldMember, but with the cognitoUsername field
 # This allows us to run Subscriptions properly
 type AddUserToHouseHoldResponse {
@@ -197,6 +202,7 @@ type AddUserToHouseHoldResponse {
   nickname: String
   userProfileId: ID
   houseHoldId: ID
+  HouseHoldDisplayInfo: HouseHoldDisplayInfo
   cognitoUsername: String
 }
 

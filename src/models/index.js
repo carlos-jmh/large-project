@@ -10,7 +10,7 @@ const Frequency = {
 };
 
 
-const { Message, ChatRoom, Task, UserProfile, HouseHoldMember, EventHandler, Event, Calendar, HouseHold, Item, List, AddUserToHouseHoldResponse } = initSchema(schema);
+const { Message, ChatRoom, Task, UserProfile, HouseHoldMember, EventHandler, Event, Calendar, HouseHold, Item, List, HouseHoldDisplayInfo, AddUserToHouseHoldResponse } = initSchema(schema);
 
 export {
   Message,
@@ -21,4 +21,5 @@ export {
   Task,
   EventHandler,
   Calendar,
+  AddUserToHouseHoldResponse
 };

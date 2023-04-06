@@ -9,6 +9,20 @@ export enum Frequency {
   YEARLY = "YEARLY"
 }
 
+type EagerHouseHoldDisplayInfo = {
+  readonly id?: string | null;
+  readonly name?: string | null;
+}
+
+type LazyHouseHoldDisplayInfo = {
+  readonly id?: string | null;
+  readonly name?: string | null;
+}
+
+export declare type HouseHoldDisplayInfo = LazyLoading extends LazyLoadingDisabled ? EagerHouseHoldDisplayInfo : LazyHouseHoldDisplayInfo
+
+export declare const HouseHoldDisplayInfo: (new (init: ModelInit<HouseHoldDisplayInfo>) => HouseHoldDisplayInfo)
+
 type EagerAddUserToHouseHoldResponse = {
   readonly id?: string | null;
   readonly points?: number | null;
@@ -16,6 +30,7 @@ type EagerAddUserToHouseHoldResponse = {
   readonly nickname?: string | null;
   readonly userProfileId?: string | null;
   readonly houseHoldId?: string | null;
+  readonly HouseHoldDisplayInfo?: HouseHoldDisplayInfo | null;
   readonly cognitoUsername?: string | null;
 }
 
@@ -26,6 +41,7 @@ type LazyAddUserToHouseHoldResponse = {
   readonly nickname?: string | null;
   readonly userProfileId?: string | null;
   readonly houseHoldId?: string | null;
+  readonly HouseHoldDisplayInfo?: HouseHoldDisplayInfo | null;
   readonly cognitoUsername?: string | null;
 }
 

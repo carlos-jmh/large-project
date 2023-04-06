@@ -1503,6 +1503,25 @@ export const schema = {
         }
     },
     "nonModels": {
+        "HouseHoldDisplayInfo": {
+            "name": "HouseHoldDisplayInfo",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "AddUserToHouseHoldResponse": {
             "name": "AddUserToHouseHoldResponse",
             "fields": {
@@ -1548,6 +1567,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "HouseHoldDisplayInfo": {
+                    "name": "HouseHoldDisplayInfo",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "HouseHoldDisplayInfo"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "cognitoUsername": {
                     "name": "cognitoUsername",
                     "isArray": false,
@@ -1559,5 +1587,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "574dbab724cc3eed146038e74d318fe8"
+    "version": "b1f14c282af06fd125a9f3aed01daf48"
 };

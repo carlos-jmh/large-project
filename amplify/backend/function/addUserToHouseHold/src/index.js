@@ -81,12 +81,18 @@ exports.handler = async (event) => {
 		},
 	};
 
+	const houseHoldData = {};
+
 	try {
 		const data = await dynamoDb.get(getParams).promise();
 		// Check if household does not exist.
 		if (!Object.keys(data).length) throw new Error("Invalid HouseHoldId.");
 		// Check if user is already a member of the household. If so, throw an error.
 		if (data.Item.owners.includes(ownerId)) throw new Error("User is already a member of the household.");
+		
+		// store houseHold items
+		Object.assign(houseHoldData, data.Item);
+
 		// Add user to the household.
 		try {
 			await updateOwners(dynamoDb, ownerId, houseHoldId);
@@ -126,8 +132,9 @@ exports.handler = async (event) => {
 		return new Error('Error creating HouseHoldMember');
 	}
 
-	// We are including the cognitoUsername in the response so Subscriptions work properly.
-	const addUserToHouseHoldResponse = { ...houseHoldMemberItem, cognitoUsername: cognitoUsername };
+
+	// We are including the cognitoUsername and HouseHold in the response so Subscriptions work properly.
+	const addUserToHouseHoldResponse = { ...houseHoldMemberItem, cognitoUsername, HouseHoldDisplayInfo: houseHoldData };
 
     return addUserToHouseHoldResponse;
 };
