@@ -15,6 +15,8 @@ const LightTheme = {
     primaryTextFaded: "rgba(255, 255, 255, 0.7)",
     success: "rgb(0,128,0)",
     danger: "rgb(209,26,42)",
+    profileSat: "76%",
+    profileLight: "69%",
   },
 };
 
@@ -35,6 +37,8 @@ const DarkTheme = {
     primaryTextFaded: "rgba(255, 255, 255, 0.7)",
     success: "rgb(0,128,0)",
     danger: "rgb(209,26,42)",
+    profileSat: "76%",
+    profileLight: "69%",
   },
 };
 
