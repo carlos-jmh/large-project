@@ -5,7 +5,7 @@ import { useTheme } from "@react-navigation/native";
 
 /* Header bar for home pages */
 // TODO: Make header background extend into notification bar
-export default function HeaderBar({ title }) {
+export default function HeaderBar({ title, screenName }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
@@ -17,7 +17,9 @@ export default function HeaderBar({ title }) {
         alignItems: "center",
       }}
     >
-      <Text style={[styles.textTitle, { flex: 1 }]}>{title}</Text>
+      <Text style={[styles.textTitle, { flex: 1 }]}>
+        {title} - {screenName}
+      </Text>
     </View>
   );
 }
