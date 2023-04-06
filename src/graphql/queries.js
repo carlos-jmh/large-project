@@ -1641,16 +1641,18 @@ export const syncEvents = /* GraphQL */ `
     }
   }
 `;
-export const eventsByEventHandlerId = /* GraphQL */ `
-  query EventsByEventHandlerId(
+export const eventsByEventHandlerIdAndId = /* GraphQL */ `
+  query EventsByEventHandlerIdAndId(
     $eventHandlerId: ID!
+    $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelEventFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    eventsByEventHandlerId(
+    eventsByEventHandlerIdAndId(
       eventHandlerId: $eventHandlerId
+      id: $id
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

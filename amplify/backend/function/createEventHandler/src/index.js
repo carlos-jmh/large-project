@@ -1,0 +1,236 @@
+/* Amplify Params - DO NOT EDIT
+	API_HOUSEHOLDAPP_CALENDARTABLE_ARN
+	API_HOUSEHOLDAPP_CALENDARTABLE_NAME
+	API_HOUSEHOLDAPP_EVENTHANDLERTABLE_ARN
+	API_HOUSEHOLDAPP_EVENTHANDLERTABLE_NAME
+	API_HOUSEHOLDAPP_EVENTTABLE_ARN
+	API_HOUSEHOLDAPP_EVENTTABLE_NAME
+	API_HOUSEHOLDAPP_GRAPHQLAPIIDOUTPUT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */
+
+const AWS = require('aws-sdk');
+const { v4: uuidv4 } = require('uuid');
+
+/**
+ * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
+ */
+exports.handler = async (event) => {
+    const {calendarId, sourceDate, endDate} = event.arguments;
+	const frequency = event.arguments.frequency.toLowerCase();
+    const eventHandlerId = uuidv4();
+	const dynamoDb = new AWS.DynamoDB.DocumentClient();
+	const date = new Date();
+	const createdAt = date.toISOString();
+	const lastChangedAt = date.getTime();
+	const maxYears = 3; // If this changes, it also must be changed in the updateEventHandler Lambda function
+	const millisecondsPerDay = 24 * 60 * 60 * 1000;
+	
+	// Generate Date objects from input ISO-8601 DateTimes
+	const sourceDateObj = new Date(sourceDate);
+	const endDateObj = new Date(endDate);
+	
+	// Calculate # of days between source and end dates
+	const dateDifference = endDateObj - sourceDateObj;
+	const numDays = Math.round(dateDifference / millisecondsPerDay);
+	const numYears = numDays / 365;
+
+	console.log({
+		sourceDate,
+		endDate,
+		numDays,
+		numYears,
+	});
+
+	// Ensure sourceDate is before endDate and that the difference does not exceed maxYears years
+	if (numDays < 0) {
+		console.log(`endDate ${endDate} is behind sourceDate ${sourceDate}`);
+		throw new Error("End date cannot be before source date.");
+	} else if (numYears > maxYears) {
+		console.log(`Date difference is greater than ${maxYears} years.`);
+		throw new Error(`End date cannot be more than ${maxYears} year(s) ahead.`);
+	}
+
+	// Create a new EventHandler
+	const putEventHandlerParams = {
+		TableName : process.env.API_HOUSEHOLDAPP_EVENTHANDLERTABLE_NAME,
+		Item: {
+			id: eventHandlerId,
+			frequency,
+			calendarId,
+			sourceDate,
+			endDate,
+			createdAt,
+			lastChangedAt,
+		},
+	}
+    
+	try {
+		await dynamoDb.put(putEventHandlerParams).promise();
+	} catch (error) {
+		console.log(error);
+		return new Error('Error creating EventHandler');
+	}
+	
+
+	const promises = [];
+	const checkpoint = new Date(sourceDateObj);
+	// Generate events according to specified frequency
+	switch (frequency) {
+		case ("daily"):
+			// Generate promises encompassing all batchWriteParams
+			do {
+				promises.push(dynamoDb.batchWrite(genDailyParams(eventHandlerId, calendarId, checkpoint, endDateObj)).promise());
+			} while (endDateObj >= checkpoint); 
+
+			try {
+				await Promise.all(promises);
+			} catch (error) {
+				console.log(error);
+				return error;
+			}
+			break;
+		case ("weekly"):
+			// Generate promises encompassing all batchWriteParams
+			do {
+				promises.push(dynamoDb.batchWrite(genWeeklyParams(eventHandlerId, calendarId, checkpoint, endDateObj)).promise());
+			} while (endDateObj >= checkpoint); 
+
+			try {
+				await Promise.all(promises);
+			} catch (error) {
+				console.log(error);
+				return error;
+			}
+			break;
+		case ("monthly"):
+			// Generate promises encompassing all batchWriteParams
+			do {
+				promises.push(dynamoDb.batchWrite(genMonthlyParams(eventHandlerId, calendarId, checkpoint, endDateObj)).promise());
+			} while (endDateObj >= checkpoint); 
+
+			try {
+				await Promise.all(promises);
+			} catch (error) {
+				console.log(error);
+				return error;
+			}
+			break;
+		case ("yearly"):
+			try {
+				await dynamoDb.batchWrite(genYearlyParams(eventHandlerId, calendarId, checkpoint, endDateObj)).promise();
+			} catch (error) {
+				console.log(error);
+				return error;
+			}
+			break;
+		default:
+			throw new Error("Invalid frequency.");
+	}
+    
+    console.log(`EVENT: ${JSON.stringify(event)}`);
+	return eventHandlerId;
+};
+
+const genDailyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => {
+	const putRequests = [];
+	const MAX_BATCH_WRITE_REQUESTS = 25;
+	
+	while (endDateObj >= checkpoint) {
+		putRequests.push(genPutRequest(eventHandlerId, calendarId, checkpoint.toISOString()));
+		checkpoint.addDays(1);
+		
+		if (putRequests.length >= MAX_BATCH_WRITE_REQUESTS)
+			break;
+	}
+
+	const params = {
+		RequestItems: {
+			[process.env.API_HOUSEHOLDAPP_EVENTTABLE_NAME]: putRequests,
+		}
+	}
+
+	return params;
+}
+
+const genWeeklyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => {
+	const putRequests = [];
+	const MAX_BATCH_WRITE_REQUESTS = 25;
+	let daysToJump = 7; // 7 days/week
+
+	while (endDateObj >= checkpoint) {
+		putRequests.push(genPutRequest(eventHandlerId, calendarId, checkpoint.toISOString()));
+		checkpoint.addDays(daysToJump);
+		
+		if (putRequests.length >= MAX_BATCH_WRITE_REQUESTS)
+			break;
+	}
+
+	const params = {
+		RequestItems: {
+			[process.env.API_HOUSEHOLDAPP_EVENTTABLE_NAME]: putRequests,
+		}
+	}
+
+	return params;
+}
+
+const genMonthlyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => {
+	const putRequests = [];
+	const MAX_BATCH_WRITE_REQUESTS = 25;
+	let nextMonth = checkpoint.getMonth() + 1;
+	
+	while (endDateObj >= checkpoint) {
+		putRequests.push(genPutRequest(eventHandlerId, calendarId, checkpoint.toISOString()));
+		checkpoint.setMonth(nextMonth);
+		// If true, date moved to following year
+		if (nextMonth > 11) nextMonth = 0;
+		nextMonth++;
+		if (putRequests.length >= MAX_BATCH_WRITE_REQUESTS)
+			break;
+	}
+	const params = {
+		RequestItems: {
+			[process.env.API_HOUSEHOLDAPP_EVENTTABLE_NAME]: putRequests,
+		}
+	}
+
+	return params;
+}
+
+const genYearlyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => {
+	const putRequests = [];
+	let nextYear = checkpoint.getFullYear() + 1;
+
+	while (endDateObj >= checkpoint) {
+		putRequests.push(genPutRequest(eventHandlerId, calendarId, checkpoint.toISOString()));
+		checkpoint.setFullYear(nextYear);
+		nextYear++;
+	}
+	const params = {
+		RequestItems: {
+			[process.env.API_HOUSEHOLDAPP_EVENTTABLE_NAME]: putRequests,
+		}
+	}
+
+	return params;
+}
+
+const genPutRequest = (eventHandlerId, calendarId, date) => {
+	return {
+		PutRequest: {
+			Item: {
+				id: uuidv4(),
+				eventHandlerId,
+				calendarId,
+				date
+			}
+		},
+	}
+}
+
+// Helper function for adding days to a date
+Date.prototype.addDays = function(days) {
+    this.setDate(this.getDate() + days);
+}

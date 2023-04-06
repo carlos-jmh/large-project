@@ -94,7 +94,35 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "createEventHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createNewHouseHold": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "deleteEventHandler": {
       "build": true,
       "dependsOn": [
         {
@@ -147,6 +175,27 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer"
+    },
+    "updateEventHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "createEventHandler"
+        },
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "deleteEventHandler"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -166,6 +215,22 @@
         }
       ]
     },
+    "AMPLIFY_function_createEventHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_createEventHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createEventHandler"
+        }
+      ]
+    },
     "AMPLIFY_function_createNewHouseHold_deploymentBucketName": {
       "usedBy": [
         {
@@ -179,6 +244,38 @@
         {
           "category": "function",
           "resourceName": "createNewHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteEventHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteEventHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_graphQlLambdaAuthorizerc6ebb49e_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "graphQlLambdaAuthorizerc6ebb49e"
+        }
+      ]
+    },
+    "AMPLIFY_function_graphQlLambdaAuthorizerc6ebb49e_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "graphQlLambdaAuthorizerc6ebb49e"
         }
       ]
     },
@@ -211,6 +308,22 @@
         {
           "category": "function",
           "resourceName": "largeprojectCommonLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateEventHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateEventHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateEventHandler"
         }
       ]
     }

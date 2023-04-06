@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "function": {
+      "createEventHandler": [
+        "read"
+      ],
+      "deleteEventHandler": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

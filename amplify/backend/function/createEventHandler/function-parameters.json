@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "storage": {
+      "EventHandler:@model(appsync)": [
+        "create"
+      ],
+      "Event:@model(appsync)": [
+        "create"
+      ],
+      "Calendar:@model(appsync)": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
