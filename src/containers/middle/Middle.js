@@ -13,7 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
 // Get array of the households and their tasks
 // Map to tasks the name of household and array of each households tasks
 const Middle = () => {
-  let inbox = true;
+  let inbox = false;
 
   const [selectedDate, setSelecteddDate] = useState(new Date())
 

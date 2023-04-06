@@ -40,11 +40,13 @@
 
 .genform {
   display: none;
-  width: 32.5%;
+  width: fit-content;
   position: absolute;
-  left: 0;
+  left: 16%;
   right: 0;
   margin: auto;
+  margin-top: 2rem;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
 .formBtn {
