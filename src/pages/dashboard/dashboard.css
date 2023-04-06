@@ -9,12 +9,6 @@
 }
 
 .middle {
-    width: 50%;
+    width: 85%;
     height: 100vh;
-}
-
-.right {
-    width: 35%;
-    height: 100vh;
-    background-color: rgb(247, 247, 247);
 }

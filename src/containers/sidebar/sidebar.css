@@ -11,7 +11,7 @@
 }
 
 .views {
-    margin-top: 2em;
+    margin-top: 1.5em;
     margin-bottom: 2em;
     width: 100%;
     display: flex;
@@ -27,6 +27,7 @@
     align-items: center;
     text-align: center;
     padding: 10px;
+    color: black;
 }
 
 .views h6 {

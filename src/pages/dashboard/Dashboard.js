@@ -3,7 +3,6 @@ import './dashboard.css'
 import Usernav from "../../components/usernav/Usernav"
 import Sidebar from "../../containers/sidebar/Sidebar"
 import Middle from "../../containers/middle/Middle"
-import Right from "../../containers/right/Right"
 
 const Dashboard = () => {
   return (
@@ -15,9 +14,6 @@ const Dashboard = () => {
             </div>
             <div className="middle">
               <Middle/>
-            </div>
-            <div className="right">
-              <Right/>
             </div>
         </div>
     </div>

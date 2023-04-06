@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
 }
+
 .sectionHeader {
     align-self: flex-start;
 }
@@ -17,4 +18,8 @@
 .lists {
     margin: 0px;
     padding: 0px;
+}
+
+.calendar {
+    margin-top: 1.5rem;
 }
