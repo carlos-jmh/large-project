@@ -19,9 +19,16 @@ const Usernav = () => {
     setHide(!hide);
 
     if (!hide)
+    {
       document.querySelectorAll('div.sidebar')[0].style.display = "none";
+      document.querySelectorAll('div.middle')[0].classList.add("full");
+    }
     else 
+    {
       document.querySelectorAll('div.sidebar')[0].style.display = "block";
+      document.querySelectorAll('div.middle')[0].classList.remove("full");
+    }
+      
   }
 
     return (
