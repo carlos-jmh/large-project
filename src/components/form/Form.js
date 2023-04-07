@@ -29,7 +29,7 @@ const Form = () => {
       content[1].style.display = "block";
       links[1].classList.add("active");
     }
-    else if (tab === "i")
+    else if (tab === "e")
     {
       content[2].style.display = "block";
       links[2].classList.add("active");
@@ -52,7 +52,7 @@ const Form = () => {
         <div className="tabs">
           <button class="tablinks" id="h" onClick={() => openTab("h")}>Household</button>
           <button class="tablinks" id="l" onClick={() => openTab("l")}>List</button>
-          <button class="tablinks" id="i" onClick={() => openTab("i")}>Item</button>
+          <button class="tablinks" id="e" onClick={() => openTab("e")}>Event</button>
           <button class="tablinks active" id="t" onClick={() => openTab("t")}>Task</button>
         </div>
 
@@ -69,6 +69,7 @@ const Form = () => {
           </div>
         </div>
 
+      {/* Create form for list */}
         <div class="tabcontent" style={{display: "none"}} id="list">
           <div class="form-group">
             <label for="listName">Enter your list name</label>
@@ -96,33 +97,21 @@ const Form = () => {
           
         </div>
 
-        <div class="tabcontent" style={{display: "none"}} id="item">
+        {/* Create form for event */}
+        <div class="tabcontent" style={{display: "none"}} id="event">
           <div class="form-group">
-            <label for="itemName">Enter your item name</label>
-            <input type="text" class="form-control" id="itemName" placeholder="Bannanas" required></input>
+            <label for="eventName">Enter your event name</label>
+            <input type="text" class="form-control" id="eventName" placeholder="Class" required></input>
           </div>
 
           <div class="form-group">
-            <label for="itemDesc">Enter your item description</label>
-            <input type="text" class="form-control" id="itemDesc" placeholder="Good source of carbs" required></input>
+            <label for="eventDesc">Enter your event description</label>
+            <input type="text" class="form-control" id="eventDesc" placeholder="COP4331" required></input>
           </div>
 
           <div class="form-group">
-            <label for="itemList">Link to a list</label>
-              <select id="itemList" class="form-control">
-                <option>List1</option>
-                <option>List2</option>
-                <option>List3</option>
-              </select>
-          </div>
-
-          <div class="form-group">
-            <label for="listTask">Link to a task?</label>
-            <select id="listTask" class="form-control">
-              <option>Task1</option>
-              <option>Task2</option>
-              <option>Task3</option>
-            </select>
+            <label for="event">Enter event date</label>
+            <input type="datetime-local" class="form-control" id="event"></input>
           </div>
 
           <div className="formBtn">
@@ -131,6 +120,7 @@ const Form = () => {
           </div>
         </div>
 
+        {/* Create form for task */}
         <div class="tabcontent"  id="task">
           <div class="form-group">
             <label for="taskName">Enter your task name</label>
@@ -157,15 +147,6 @@ const Form = () => {
                 <option>List2</option>
                 <option>List3</option>
               </select>
-          </div>
-
-          <div class="form-group">
-            <label for="listTask">Link to a item?</label>
-            <select id="listTask" class="form-control">
-              <option>Item1</option>
-              <option>Item2</option>
-              <option>Item3</option>
-            </select>
           </div>
 
           <div className="formBtn">
