@@ -3,19 +3,9 @@
     flex-direction: column;
     align-items: center;
     height: 100%;
-    background-color: white;
-}
-
-.container-close {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.closeButton {
-    position: absolute;
-    left: 2vw;
-    top: -1px
+    background-color: rgb(228, 228, 228);
+    padding: 0px;
+    margin: 0px;
 }
 
 .households {
@@ -30,15 +20,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-}
-
-.views-close {
-    margin-top: 1.5em;
-    margin-bottom: 2em;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
 }
 
 .views button {
