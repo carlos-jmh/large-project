@@ -10,3 +10,11 @@
     margin: 0px;
     padding: 0px;
 }
+
+.todo {
+    cursor: pointer;
+}
+
+  .strike {
+    text-decoration: line-through;
+}

@@ -6,7 +6,7 @@ import List from '../../components/list/List'
 import Form from '../../components/form/Form'
 import Add from '../../components/add/Add'
 import Cal from '../../components/cal/Cal';
-
+import data from "./data.json";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -15,7 +15,20 @@ import "react-datepicker/dist/react-datepicker.css";
 const Middle = () => {
 
   const [selectedDate, setSelecteddDate] = useState(new Date())
+  const [toDoList, setToDoList] = useState(data);
 
+  const handleToggle = (id) => {
+    let mapped = toDoList.map(task => {
+      return task.id == id ? { ...task, complete: !task.complete } : { ...task};
+    });
+    setToDoList(mapped);
+  }
+  
+  const addTask = (userInput ) => {
+    let copy = [...toDoList];
+    copy = [...copy, { id: toDoList.length + 1, task: userInput, complete: false }];
+    setToDoList(copy);
+  }
     return (
       <>
         <div className="midContent">
@@ -51,7 +64,8 @@ const Middle = () => {
             <div className="section2">
               <h5 className="sectionHeader">Lists</h5>
               <div className="list">
-                <List name="Grocery List"/>
+                <List name="Grocery List" toDoList = {toDoList} handleToggle={handleToggle}/>
+                <Add addTask={addTask} useState={false}/>
               </div>
             </div>
           </div>
@@ -77,12 +91,13 @@ const Middle = () => {
             <div className="section1">
               <h5 className="sectionHeader">Lists</h5>
               <div className="list">
-                <List name="Grocery List"/>
+                <List toDoList = {toDoList} handleToggle={handleToggle}/>
+                <Add addTask={addTask} useState={false}/>
               </div>
             </div>
         </div>
       </>     
     );  
-}
+} 
 
 export default Middle
