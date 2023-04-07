@@ -46,4 +46,5 @@
     display: flex;
     flex-direction: column;
     gap: 4rem;
+    display: none;
 }

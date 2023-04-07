@@ -13,26 +13,51 @@ import "react-datepicker/dist/react-datepicker.css";
 // Get array of the households and their tasks
 // Map to tasks the name of household and array of each households tasks
 const Middle = () => {
-  let inbox = false;
 
   const [selectedDate, setSelecteddDate] = useState(new Date())
 
-  if (!inbox)
-  {
     return (
-      <div className="midContent">
-        <div className="calendar">
-          {/* <label>Selected Date</label>
-          <DatePicker
-            wrapperclassName="datePicker" 
-            selected={selectedDate} 
-            onChange={date => setSelecteddDate(date)}
-            minDate={new Date()}
-          /> */}
-          <Cal/>
+      <>
+        <div className="midContent">
+          <div className="calendar">
+            {/* <label>Selected Date</label>
+            <DatePicker
+              wrapperclassName="datePicker" 
+              selected={selectedDate} 
+              onChange={date => setSelecteddDate(date)}
+              minDate={new Date()}
+            /> */}
+            <Cal/>
+          </div>
+          <div class="display">
+            <div className="taskevent">
+            <div className="section1">
+                <h5 className="sectionHeader">Tasks</h5>
+                <div className="task">
+                  <Task/>
+                  <Task/>
+                  <Add/>
+                </div>
+              </div>
+              <div className="section1">
+                <h5 className="sectionHeader">Events</h5>
+                <div className="event">
+                  <Task/>
+                  <Task/>
+                  <Add/>
+                </div>
+              </div>
+            </div>
+            <div className="section2">
+              <h5 className="sectionHeader">Lists</h5>
+              <div className="list">
+                <List name="Grocery List"/>
+              </div>
+            </div>
+          </div>
+          <Form/>
         </div>
-        <div class="display">
-          <div className="taskevent">
+        <div className="inbox">
           <div className="section1">
               <h5 className="sectionHeader">Tasks</h5>
               <div className="task">
@@ -49,47 +74,15 @@ const Middle = () => {
                 <Add/>
               </div>
             </div>
-          </div>
-          <div className="section2">
-            <h5 className="sectionHeader">Lists</h5>
-            <div className="list">
-              <List name="Grocery List"/>
+            <div className="section1">
+              <h5 className="sectionHeader">Lists</h5>
+              <div className="list">
+                <List name="Grocery List"/>
+              </div>
             </div>
-          </div>
         </div>
-        <Form/>
-      </div>
-    );
-  }
-  else {
-    return (
-      <div className="inbox">
-        <div className="section1">
-            <h5 className="sectionHeader">Tasks</h5>
-            <div className="task">
-              <Task/>
-              <Task/>
-              <Add/>
-            </div>
-          </div>
-          <div className="section1">
-            <h5 className="sectionHeader">Events</h5>
-            <div className="event">
-              <Task/>
-              <Task/>
-              <Add/>
-            </div>
-          </div>
-          <div className="section1">
-            <h5 className="sectionHeader">Lists</h5>
-            <div className="list">
-              <List name="Grocery List"/>
-            </div>
-          </div>
-      </div>
-    )
-  }
-  
+      </>     
+    );  
 }
 
 export default Middle

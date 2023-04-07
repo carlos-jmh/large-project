@@ -9,11 +9,13 @@ const Sidebar = () => {
   // Set button to active class (background color more grey)
   // Pass value to dashboard that allows inbox value to be changed.
   function loadInbox() {
-
+    document.querySelectorAll('div.midContent')[0].style.display = "none";
+    document.querySelectorAll('div.inbox')[0].style.display = "block";
   }
 
   function loadUpcoming() {
-
+    document.querySelectorAll('div.inbox')[0].style.display = "none";
+    document.querySelectorAll('div.midContent')[0].style.display = "";
   }
 
   return (
@@ -23,11 +25,11 @@ const Sidebar = () => {
         Goes in component householdInfo pass household name, tasks due today"
       */}
       <div class="views">
-        <button onClick={loadInbox()}>
+        <button onClick={loadInbox}>
           <Icon.InboxFill/>
           <h6>Inbox</h6>
         </button>
-        <button onClick={loadUpcoming()}>
+        <button onClick={loadUpcoming}>
           <Icon.Calendar3/>
           <h6>Upcoming</h6>
         </button>
