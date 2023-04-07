@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as ReactDOM from 'react-dom';
 import './usernav.css'
 import * as Icon from 'react-bootstrap-icons'
@@ -8,6 +8,22 @@ import Form from '../../components/form/Form';
 const Usernav = () => {
 
   const [hide, setHide] = useState(false);
+
+  const [theme, setTheme] = useState('light');
+
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+  };
+  
+  useEffect(() => {
+    document.body.className = theme;
+    document.querySelectorAll("div.container").class = theme
+
+  }, [theme]);
 
   function showGenForm()
   {
@@ -32,6 +48,7 @@ const Usernav = () => {
   }
 
     return (
+      <div className = "light">
         <nav className="navbar navbar-expand-sm navbar-dark justify-content-between">
             {/* Replace with image logo once we have that downloaded and ready*/}
             {/* Place other icons here */}
@@ -45,11 +62,16 @@ const Usernav = () => {
           <div className="collapse navbar-collapse flex-grow-0" id="navbarNavAltMarkup">
             <div className="navbar-nav">
               {/* OnClick call form component */}
+              
+              <a className="nav-item nav-link" onClick={toggleTheme}>{theme == "light"? <Icon.SunFill/> : <Icon.MoonFill/>}</a>
               <a className="nav-item nav-link" onClick={() => showGenForm()}><Icon.PlusLg size="27px"/></a>
               <a className="nav-item nav-link" href="/"><Icon.PersonCircle size="27px"/></a>
+              
+
             </div>
           </div>
         </nav>
+      </div>
       )
 }
 

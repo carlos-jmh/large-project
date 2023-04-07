@@ -3,10 +3,8 @@ import './add.css'
 import * as Icon from 'react-bootstrap-icons'
 
 const Add = ({addTask}) => {
-  let taskName;
   const [add, setAdd] = useState(false);
   const [ userInput, setUserInput ] = useState('');
-
 
   function changeAdd() {
     setAdd(!add);
@@ -14,13 +12,13 @@ const Add = ({addTask}) => {
 
   const handleChange = (e) => {
     setUserInput(e.currentTarget.value)
-}
+  }
 
-const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     addTask(userInput);
     setUserInput("");
-}
+  }
 
   if (!add)
     return (

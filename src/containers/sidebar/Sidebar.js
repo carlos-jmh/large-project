@@ -39,6 +39,14 @@ const Sidebar = () => {
           <Householdinfo name="Dorm"/>
           <Householdinfo name="Apartment"/>
         </div>
+
+        <div id = "addNewHousehold">
+
+        </div>
+
+        <div id = "joinHousehold">
+          
+        </div>
     </div>
   )
 }
