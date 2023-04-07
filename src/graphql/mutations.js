@@ -1439,7 +1439,7 @@ export const addUserToHouseHold = /* GraphQL */ `
 export const createEventHandler = /* GraphQL */ `
   mutation CreateEventHandler(
     $calendarId: String!
-    $frequency: String!
+    $frequency: FREQUENCY!
     $sourceDate: AWSDateTime!
     $endDate: AWSDateTime!
   ) {
@@ -1455,7 +1455,7 @@ export const updateEventHandler = /* GraphQL */ `
   mutation UpdateEventHandler(
     $eventHandlerId: String!
     $calendarId: String!
-    $frequency: String!
+    $frequency: FREQUENCY!
     $sourceDate: AWSDateTime!
     $endDate: AWSDateTime!
   ) {

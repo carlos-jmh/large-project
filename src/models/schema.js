@@ -1441,7 +1441,17 @@ export const schema = {
             ]
         }
     },
-    "enums": {},
+    "enums": {
+        "Frequency": {
+            "name": "Frequency",
+            "values": [
+                "DAILY",
+                "WEEKLY",
+                "MONTHLY",
+                "YEARLY"
+            ]
+        }
+    },
     "nonModels": {
         "ArchivedTask": {
             "name": "ArchivedTask",
