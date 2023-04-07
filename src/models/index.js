@@ -2,21 +2,27 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const Frequency = {
+  "DAILY": "DAILY",
+  "WEEKLY": "WEEKLY",
+  "MONTHLY": "MONTHLY",
+  "YEARLY": "YEARLY"
+};
 
-
-const { Message, ChatRoom, Task, UserProfile, HouseHoldMember, EventHandler, Event, Calendar, HouseHold, Item, List, ArchivedTask } = initSchema(schema);
+const { Message, ChatRoom, HouseHold, List, Item, Task, EventHandler, Calendar, Event, HouseHoldMember, UserProfile, ArchivedTask } = initSchema(schema);
 
 export {
   Message,
   ChatRoom,
-  Task,
-  UserProfile,
-  HouseHoldMember,
-  EventHandler,
-  Event,
-  Calendar,
   HouseHold,
-  Item,
   List,
+  Item,
+  Task,
+  EventHandler,
+  Calendar,
+  Event,
+  HouseHoldMember,
+  UserProfile,
+  Frequency,
   ArchivedTask
 };

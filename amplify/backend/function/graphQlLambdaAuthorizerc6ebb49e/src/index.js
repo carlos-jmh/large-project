@@ -204,6 +204,27 @@ async function checkAuthorization(ast, sub) {
         }
         break;
       }
+      case "createEventHandler": {
+        const calendarId = retrieveArgument("calendarId", selection.arguments);
+        if (!await isAuthorizedForCalendar(dynamo, calendarId, sub)) {
+          return false;
+        }
+        break;
+      }
+      case "updateEventHandler": {
+        const eventHandlerId = retrieveArgument("eventHandlerId", selection.arguments);
+        if (!await isAuthorizedForEventHandler(dynamo, eventHandlerId, sub)) {
+          return false;
+        }
+        break;
+      }
+      case "deleteEventHandler": {
+        const eventHandlerId = retrieveArgument("eventHandlerId", selection.arguments);
+        if (!await isAuthorizedForEventHandler(dynamo, eventHandlerId, sub)) {
+          return false;
+        }
+        break;
+      }
       case "createItem": {
         const listId = retrieveInputArgument("listId", selection.arguments);
         if (!await isAuthorizedForList(dynamo, listId, sub)) {

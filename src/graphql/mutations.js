@@ -1436,3 +1436,40 @@ export const addUserToHouseHold = /* GraphQL */ `
     )
   }
 `;
+export const createEventHandler = /* GraphQL */ `
+  mutation CreateEventHandler(
+    $calendarId: String!
+    $frequency: FREQUENCY!
+    $sourceDate: AWSDateTime!
+    $endDate: AWSDateTime!
+  ) {
+    createEventHandler(
+      calendarId: $calendarId
+      frequency: $frequency
+      sourceDate: $sourceDate
+      endDate: $endDate
+    )
+  }
+`;
+export const updateEventHandler = /* GraphQL */ `
+  mutation UpdateEventHandler(
+    $eventHandlerId: String!
+    $calendarId: String!
+    $frequency: FREQUENCY!
+    $sourceDate: AWSDateTime!
+    $endDate: AWSDateTime!
+  ) {
+    updateEventHandler(
+      eventHandlerId: $eventHandlerId
+      calendarId: $calendarId
+      frequency: $frequency
+      sourceDate: $sourceDate
+      endDate: $endDate
+    )
+  }
+`;
+export const deleteEventHandler = /* GraphQL */ `
+  mutation DeleteEventHandler($eventHandlerId: String!) {
+    deleteEventHandler(eventHandlerId: $eventHandlerId)
+  }
+`;

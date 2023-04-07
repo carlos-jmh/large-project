@@ -63,7 +63,7 @@ exports.handler = async (event) => {
 	try {
 		const data = await dynamoDb.query(queryParams).promise();
 		// Throw error if User Profile does not exist
-		if (!data.Items.length) throw new Error("Invalid UserProfileId.");
+		if (!data.Items.length) throw new Error("User profile does not exist.");
 		userProfileId = data.Items[0].id;
 	} catch (error) {
 		console.log(error)
