@@ -85,16 +85,27 @@ export default function InitialPage({ navigation, route }) {
       setHouseHolds(houseHolds);
     }
   };
-  
 
   // on page load
   useEffect(() => {
-    // TODO: "user" would probably be better if passed in from the login pages
-    getCognitoUser().then((user) => {
-      setUsername(user.username);
-    });
-
-    fetchHouseHolds();
+    async function fetchData() {
+      try {
+        const user = await getCognitoUser();
+        setUsername(user.username);
+  
+        await fetchHouseHolds();
+        
+        return subscription;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  
+    const subscription = fetchData();
+  
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   return (

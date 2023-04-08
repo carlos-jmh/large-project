@@ -1,0 +1,16 @@
+{
+  "carlosdev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-largeproject-carlosdev-122146-authRole",
+      "UnauthRoleArn": "arn:aws:iam::737064277081:role/amplify-largeproject-carlosdev-122146-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::737064277081:role/amplify-largeproject-carlosdev-122146-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-largeproject-carlosdev-122146-deployment",
+      "UnauthRoleName": "amplify-largeproject-carlosdev-122146-unauthRole",
+      "StackName": "amplify-largeproject-carlosdev-122146",
+      "StackId": "arn:aws:cloudformation:us-east-2:737064277081:stack/amplify-largeproject-carlosdev-122146/f9040ed0-ca5f-11ed-84cf-063b47d8eff4",
+      "AmplifyAppId": "d16odqgz0vtejq",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-largeproject-carlosdev-122146-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    }
+  }
+}

@@ -76,8 +76,14 @@ export default function CreateHousehold({ navigation, route }) {
         try {
           await API.graphql(
             graphqlOperation(
-              `mutation AddUserToHouseHold($cognitoUsername: String!, $houseHoldId: String!) {
-                addUserToHouseHold(cognitoUsername: $cognitoUsername, houseHoldId: $houseHoldId)
+              `mutation AddUserToHouseHold($cognitoUsername: String!, $houseHoldId: ID!) {
+                addUserToHouseHold(cognitoUsername: $cognitoUsername, houseHoldId: $houseHoldId) {
+                  cognitoUsername
+                  HouseHoldDisplayInfo {
+                    id
+                    name
+                  }
+                }
               }`,
               { cognitoUsername: user.name, houseHoldId: houseHoldId }
             ),
