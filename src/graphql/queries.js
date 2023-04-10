@@ -760,6 +760,7 @@ export const getUserProfile = /* GraphQL */ `
           id
           points
           owner
+          nickname
           userProfileId
           houseHoldId
           createdAt
@@ -879,6 +880,7 @@ export const getHouseHoldMember = /* GraphQL */ `
       id
       points
       owner
+      nickname
       userProfileId
       UserProfile {
         id
@@ -960,6 +962,7 @@ export const listHouseHoldMembers = /* GraphQL */ `
         id
         points
         owner
+        nickname
         userProfileId
         UserProfile {
           id
@@ -1012,6 +1015,7 @@ export const syncHouseHoldMembers = /* GraphQL */ `
         id
         points
         owner
+        nickname
         userProfileId
         UserProfile {
           id
@@ -1066,6 +1070,7 @@ export const houseHoldMembersByUserProfileId = /* GraphQL */ `
         id
         points
         owner
+        nickname
         userProfileId
         UserProfile {
           id
@@ -1120,6 +1125,7 @@ export const houseHoldMembersByHouseHoldId = /* GraphQL */ `
         id
         points
         owner
+        nickname
         userProfileId
         UserProfile {
           id
@@ -1167,7 +1173,7 @@ export const getEventHandler = /* GraphQL */ `
           nextToken
           startedAt
         }
-        EventHandler {
+        EventHandlers {
           nextToken
           startedAt
         }
@@ -1194,6 +1200,7 @@ export const getEventHandler = /* GraphQL */ `
         items {
           id
           date
+          completed
           eventHandlerId
           calendarId
           createdAt
@@ -1536,6 +1543,7 @@ export const getEvent = /* GraphQL */ `
     getEvent(id: $id) {
       id
       date
+      completed
       eventHandlerId
       calendarId
       EventHandler {
@@ -1588,7 +1596,7 @@ export const getEvent = /* GraphQL */ `
           nextToken
           startedAt
         }
-        EventHandler {
+        EventHandlers {
           nextToken
           startedAt
         }
@@ -1629,6 +1637,7 @@ export const listEvents = /* GraphQL */ `
       items {
         id
         date
+        completed
         eventHandlerId
         calendarId
         EventHandler {
@@ -1681,6 +1690,7 @@ export const syncEvents = /* GraphQL */ `
       items {
         id
         date
+        completed
         eventHandlerId
         calendarId
         EventHandler {
@@ -1737,6 +1747,7 @@ export const eventsByEventHandlerIdAndId = /* GraphQL */ `
       items {
         id
         date
+        completed
         eventHandlerId
         calendarId
         EventHandler {
@@ -1791,6 +1802,7 @@ export const eventsByCalendarId = /* GraphQL */ `
       items {
         id
         date
+        completed
         eventHandlerId
         calendarId
         EventHandler {
@@ -1835,6 +1847,7 @@ export const getCalendar = /* GraphQL */ `
         items {
           id
           date
+          completed
           eventHandlerId
           calendarId
           createdAt
@@ -1846,7 +1859,7 @@ export const getCalendar = /* GraphQL */ `
         nextToken
         startedAt
       }
-      EventHandler {
+      EventHandlers {
         items {
           id
           frequency
@@ -1928,7 +1941,7 @@ export const listCalendars = /* GraphQL */ `
           nextToken
           startedAt
         }
-        EventHandler {
+        EventHandlers {
           nextToken
           startedAt
         }
@@ -1975,7 +1988,7 @@ export const syncCalendars = /* GraphQL */ `
           nextToken
           startedAt
         }
-        EventHandler {
+        EventHandlers {
           nextToken
           startedAt
         }
@@ -2051,6 +2064,7 @@ export const getHouseHold = /* GraphQL */ `
           id
           points
           owner
+          nickname
           userProfileId
           houseHoldId
           createdAt
@@ -2068,7 +2082,7 @@ export const getHouseHold = /* GraphQL */ `
           nextToken
           startedAt
         }
-        EventHandler {
+        EventHandlers {
           nextToken
           startedAt
         }
