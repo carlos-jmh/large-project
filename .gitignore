@@ -10,6 +10,9 @@ npm-debug.*
 *.orig.*
 web-build/
 
+# team provider info
+**/team-provider-info.json
+
 # macOS
 .DS_Store
 

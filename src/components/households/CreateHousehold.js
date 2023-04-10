@@ -28,7 +28,6 @@ export default function CreateHousehold({ navigation, route }) {
   }
 
   const createHouseHold = async () => {
-    console.log("Creating household");
     try {
       const token = await getCognitoToken();
       
@@ -67,7 +66,6 @@ export default function CreateHousehold({ navigation, route }) {
   };
 
   const addUsersToHouseHold = async (invitedUsers, houseHoldId) => {
-    console.log("Adding users to household");
     const failedUsers = [];
     const token = await getCognitoToken();
 
@@ -76,7 +74,7 @@ export default function CreateHousehold({ navigation, route }) {
         try {
           await API.graphql(
             graphqlOperation(
-              `mutation AddUserToHouseHold($cognitoUsername: String!, $houseHoldId: ID!) {
+              `mutation AddUserToHouseHold($cognitoUsername: String!, $houseHoldId: String!) {
                 addUserToHouseHold(cognitoUsername: $cognitoUsername, houseHoldId: $houseHoldId) {
                   cognitoUsername
                   HouseHoldDisplayInfo {
@@ -91,7 +89,7 @@ export default function CreateHousehold({ navigation, route }) {
           );
         }
         catch (error) {
-          failedUsers.push({ name: user.name, error: error.errors[0].message });
+          failedUsers.push({ name: user.name, error: error });
         }
       })
     );
@@ -155,7 +153,7 @@ export default function CreateHousehold({ navigation, route }) {
           <View style={{ flexBasis:'100%', height:50 }} />
           <View style={{ width:'100%' }} >
             <CustomButton title="CREATE HOUSEHOLD" 
-              onPress={handleCreateHousehold}
+              onPress={ async () => { await handleCreateHousehold(); }}
             />
           </View>
         </View>

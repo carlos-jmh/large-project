@@ -12,7 +12,6 @@ import { useEffect } from "react";
 import { getCognitoUser, getCognitoToken } from "../auth/auth";
 
 /* Login page */
-// TODO: Connect to backend
 export default function InitialPage({ navigation, route }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
@@ -94,18 +93,12 @@ export default function InitialPage({ navigation, route }) {
         setUsername(user.username);
   
         await fetchHouseHolds();
-        
-        return subscription;
       } catch (error) {
         console.log(error);
       }
     }
-  
-    const subscription = fetchData();
-  
-    return () => {
-      subscription.unsubscribe();
-    };
+
+    fetchData();
   }, []);
 
   return (
