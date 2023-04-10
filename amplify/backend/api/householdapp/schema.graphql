@@ -97,7 +97,7 @@ type EventHandler
   calendarId: ID! @index(name: "byCalendar")
   Calendar: Calendar @belongsTo(fields: ["calendarId"])
   Events: [Event] @hasMany(indexName: "byEventHandler", fields: ["id"])
-  taskId: ID! @index(name: "byTask")
+  taskId: ID!
   Task: Task @hasOne
   sourceDate: AWSDateTime!
   endDate: AWSDateTime!
