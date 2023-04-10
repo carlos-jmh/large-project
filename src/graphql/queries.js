@@ -416,6 +416,7 @@ export const getTask = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -539,6 +540,7 @@ export const listTasks = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -624,6 +626,7 @@ export const syncTasks = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -711,6 +714,7 @@ export const tasksByHouseHoldId = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1208,6 +1212,7 @@ export const getEventHandler = /* GraphQL */ `
         nextToken
         startedAt
       }
+      taskId
       Task {
         id
         title
@@ -1246,6 +1251,7 @@ export const getEventHandler = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1310,6 +1316,7 @@ export const listEventHandlers = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -1371,6 +1378,7 @@ export const syncEventHandlers = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -1434,6 +1442,71 @@ export const eventHandlersByCalendarId = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          deleteSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        sourceDate
+        endDate
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        eventHandlerTaskId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const eventHandlersByTaskId = /* GraphQL */ `
+  query EventHandlersByTaskId(
+    $taskId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelEventHandlerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    eventHandlersByTaskId(
+      taskId: $taskId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        frequency
+        calendarId
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        Events {
+          nextToken
+          startedAt
+        }
+        taskId
         Task {
           id
           title
@@ -1490,6 +1563,7 @@ export const getEvent = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -1570,6 +1644,7 @@ export const listEvents = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1622,6 +1697,7 @@ export const syncEvents = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1678,6 +1754,7 @@ export const eventsByEventHandlerIdAndId = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1732,6 +1809,7 @@ export const eventsByCalendarId = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1786,6 +1864,7 @@ export const getCalendar = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -2266,6 +2345,7 @@ export const getItem = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -2584,6 +2664,7 @@ export const getList = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt

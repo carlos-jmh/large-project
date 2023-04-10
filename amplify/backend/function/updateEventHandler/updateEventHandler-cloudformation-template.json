@@ -23,6 +23,10 @@
     "functioncreateEventHandlerName": {
       "Type": "String",
       "Default": "functioncreateEventHandlerName"
+    },
+    "apihouseholdappGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apihouseholdappGraphQLAPIIdOutput"
     }
   },
   "Conditions": {
@@ -83,6 +87,35 @@
             },
             "FUNCTION_CREATEEVENTHANDLER_NAME": {
               "Ref": "functioncreateEventHandlerName"
+            },
+            "API_HOUSEHOLDAPP_CALENDARTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:CalendarTable:Name"
+              }
+            },
+            "API_HOUSEHOLDAPP_CALENDARTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:CalendarTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_HOUSEHOLDAPP_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apihouseholdappGraphQLAPIIdOutput"
             }
           }
         },
@@ -247,6 +280,62 @@
                       {
                         "Ref": "functiondeleteEventHandlerName"
                       }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:CalendarTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apihouseholdappGraphQLAPIIdOutput}:GetAtt:CalendarTable:Name"
+                        }
+                      },
+                      "/index/*"
                     ]
                   ]
                 }

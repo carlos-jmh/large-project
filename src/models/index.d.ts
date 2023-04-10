@@ -249,6 +249,7 @@ type EagerEventHandler = {
   readonly calendarId: string;
   readonly Calendar?: Calendar | null;
   readonly Events?: (Event | null)[] | null;
+  readonly taskId: string;
   readonly Task?: Task | null;
   readonly sourceDate: string;
   readonly endDate: string;
@@ -267,6 +268,7 @@ type LazyEventHandler = {
   readonly calendarId: string;
   readonly Calendar: AsyncItem<Calendar | undefined>;
   readonly Events: AsyncCollection<Event>;
+  readonly taskId: string;
   readonly Task: AsyncItem<Task | undefined>;
   readonly sourceDate: string;
   readonly endDate: string;

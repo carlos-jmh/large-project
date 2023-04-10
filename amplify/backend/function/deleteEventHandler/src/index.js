@@ -18,7 +18,9 @@ exports.handler = async (event) => {
     const dynamoDb = new AWS.DynamoDB.DocumentClient();
     const MAX_BATCH_WRITE_REQUESTS = 25;
 	let numEvents = 0;
-
+	
+	console.log(`EVENT: ${JSON.stringify(event)}`);
+	
     // Query for all events containing the eventHandlerId
 	const queryParams = {
 		TableName: process.env.API_HOUSEHOLDAPP_EVENTTABLE_NAME,
@@ -61,7 +63,7 @@ exports.handler = async (event) => {
 
 	} catch (error) {
 		console.log(error)
-		return error;
+		throw error;
 	}
 
 	// Delete all events with eventHandlerId from the Events table
@@ -69,7 +71,7 @@ exports.handler = async (event) => {
 		await Promise.all(promises);
 	} catch (error) {
 		console.log(error);
-		return error;
+		throw error;
 	}
 
 	// Delete the EventHandler item itself
@@ -84,10 +86,9 @@ exports.handler = async (event) => {
 		await dynamoDb.delete(deleteParams).promise();
 	} catch (error) {
 		console.log(error);
-		return error;
+		throw error;
 	}
-
-    console.log(`EVENT: ${JSON.stringify(event)}`);
+	
 	return `Successfully deleted ${numEvents} events.`;
 };
 

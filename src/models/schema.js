@@ -885,8 +885,15 @@ export const schema = {
                         ]
                     }
                 },
-                "Calendar": {
-                    "name": "Calendar",
+                "taskId": {
+                    "name": "taskId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Task": {
+                    "name": "Task",
                     "isArray": false,
                     "type": {
                         "model": "Calendar"
@@ -945,6 +952,15 @@ export const schema = {
                         "name": "byCalendar",
                         "fields": [
                             "calendarId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byTask",
+                        "fields": [
+                            "taskId"
                         ]
                     }
                 },
