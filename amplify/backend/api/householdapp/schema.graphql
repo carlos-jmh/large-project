@@ -1,15 +1,10 @@
-type ArchivedTask {
-  title: String!
-  points: Int!
-  completedBy: String!
-}
-
 type Message
   @model(
     mutations: { create: null, delete: null, update: null },
   )
   @auth(rules: [
     { allow: custom },
+    { allow: private, provider: iam },
   ])
 {
   id: ID!
@@ -25,6 +20,7 @@ type ChatRoom
   )
   @auth(rules: [
     { allow: custom},
+    { allow: private, provider: iam },
   ])
 {
   id: ID!
@@ -35,6 +31,7 @@ type ChatRoom
 
 type Task @model @auth(rules: [
   { allow: custom },
+  { allow: private, provider: iam },
 ]) {
   id: ID!
   title: String!
@@ -58,6 +55,7 @@ type UserProfile
   )
   @auth(rules: [
     { allow: owner, ownerField: "owner" operations: [read] },
+    { allow: private, provider: iam },
   ])
 {
   id: ID!
@@ -72,11 +70,13 @@ type HouseHoldMember
   )
   @auth(rules: [
     { allow: owner, ownerField: "owner", operations: [read] },
+    { allow: private, provider: iam },
   ])
 {
   id: ID!
   points: Int
   owner: String!
+  nickname: String!
   userProfileId: ID! @index(name: "byUserProfile")
   UserProfile: UserProfile @belongsTo(fields: ["userProfileId"])
   houseHoldId: ID! @index(name: "byHouseHold")
@@ -89,6 +89,7 @@ type EventHandler
   )
   @auth(rules: [
     { allow: custom },
+    { allow: private, provider: iam },
   ])
 {
   id: ID!
@@ -107,10 +108,12 @@ type Event
   )
   @auth(rules: [
     { allow: custom },
+    { allow: private, provider: iam },
   ])
 {
   id: ID!
-  date: AWSDateTime
+  date: AWSDateTime!
+  completed: Boolean!
   eventHandlerId: ID! @index(name: "byEventHandler", sortKeyFields: ["id"])
   calendarId: ID! @index(name: "byCalendar")
   EventHandler: EventHandler @belongsTo(fields: ["eventHandlerId"])
@@ -123,11 +126,12 @@ type Calendar
   )
   @auth(rules: [
     { allow: custom },
+    { allow: private, provider: iam },
   ])
 {
   id: ID!
   Events: [Event] @hasMany(indexName: "byCalendar", fields: ["id"])
-  EventHandler: [EventHandler] @hasMany(indexName: "byCalendar", fields: ["id"])
+  EventHandlers: [EventHandler] @hasMany(indexName: "byCalendar", fields: ["id"])
   houseHoldId: ID!
   HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
 }
@@ -138,11 +142,17 @@ type HouseHold
   )
   @auth(
     rules: [
-      { allow: owner, ownerField: "owners", operations: [read] }
+      { allow: owner, ownerField: "owners", operations: [read] },
+      { allow: private, provider: iam },
   ])
 {
   id: ID!
-  name: String! @auth(rules: [{ allow: owner, ownerField: "owners", operations: [read, update] }])
+  name: String!
+    @auth(
+    rules: [
+      { allow: owner, ownerField: "owners", operations: [read, update] },
+      { allow: private, provider: iam },
+    ])
   owners: [String!]!
   Lists: [List] @hasMany(indexName: "byHouseHold", fields: ["id"])
   Tasks: [Task] @hasMany(indexName: "byHouseHold", fields: ["id"])
@@ -153,6 +163,7 @@ type HouseHold
 
 type Item @model @auth(rules: [
   { allow: custom },
+  { allow: private, provider: iam },
 ]) {
   id: ID!
   title: String!
@@ -175,12 +186,36 @@ type List @model @auth(rules: [
   Task: Task @hasOne
 }
 
+type HouseHoldDisplayInfo {
+  id: ID
+  name: String
+}
+
+# Exact same as HouseHoldMember, but with the cognitoUsername field
+# This allows us to run Subscriptions properly
+type AddUserToHouseHoldResponse {
+  id: ID
+  points: Int
+  owner: String
+  nickname: String
+  userProfileId: ID
+  houseHoldId: ID
+  HouseHoldDisplayInfo: HouseHoldDisplayInfo
+  cognitoUsername: String
+}
+
 type Mutation {
   createNewHouseHold(houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
-  addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): String @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: custom }])
+  addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): AddUserToHouseHoldResponse @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: custom }])
   createEventHandler(calendarId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
   updateEventHandler(eventHandlerId: String!, calendarId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
+}
+
+type Subscription {
+  onAddUserToHouseHold(cognitoUsername: String!): AddUserToHouseHoldResponse
+    @aws_subscribe(mutations: ["addUserToHouseHold"])
+    @auth(rules: [{ allow: custom }])
 }
 
 # enum for frequency of Events

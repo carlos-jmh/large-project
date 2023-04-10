@@ -97,6 +97,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -193,437 +203,10 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "HouseHold": {
-            "name": "HouseHold",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "owners": {
-                    "name": "owners",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": false
-                },
-                "Lists": {
-                    "name": "Lists",
-                    "isArray": true,
-                    "type": {
-                        "model": "List"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "HouseHold"
-                        ]
-                    }
-                },
-                "Tasks": {
-                    "name": "Tasks",
-                    "isArray": true,
-                    "type": {
-                        "model": "Task"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "HouseHold"
-                        ]
-                    }
-                },
-                "HouseHoldMembers": {
-                    "name": "HouseHoldMembers",
-                    "isArray": true,
-                    "type": {
-                        "model": "HouseHoldMember"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "HouseHold"
-                        ]
-                    }
-                },
-                "Calendar": {
-                    "name": "Calendar",
-                    "isArray": false,
-                    "type": {
-                        "model": "Calendar"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "houseHoldCalendarId"
-                        ]
-                    }
-                },
-                "ChatRoom": {
-                    "name": "ChatRoom",
-                    "isArray": false,
-                    "type": {
-                        "model": "ChatRoom"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "houseHoldChatRoomId"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "houseHoldCalendarId": {
-                    "name": "houseHoldCalendarId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "houseHoldChatRoomId": {
-                    "name": "houseHoldChatRoomId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "HouseHolds",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {
-                        "mutations": {
-                            "create": null,
-                            "delete": null
-                        }
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
+                            },
                             {
-                                "provider": "userPools",
-                                "ownerField": "owners",
-                                "allow": "owner",
-                                "operations": [
-                                    "read"
-                                ],
-                                "identityClaim": "cognito:username"
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "List": {
-            "name": "List",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "title": {
-                    "name": "title",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "houseHoldId": {
-                    "name": "houseHoldId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Items": {
-                    "name": "Items",
-                    "isArray": true,
-                    "type": {
-                        "model": "Item"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "List"
-                        ]
-                    }
-                },
-                "HouseHold": {
-                    "name": "HouseHold",
-                    "isArray": false,
-                    "type": {
-                        "model": "HouseHold"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "houseHoldId"
-                        ]
-                    }
-                },
-                "Task": {
-                    "name": "Task",
-                    "isArray": false,
-                    "type": {
-                        "model": "Task"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "listTaskId"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "listTaskId": {
-                    "name": "listTaskId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "Lists",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byHouseHold",
-                        "fields": [
-                            "houseHoldId"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "custom",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Item": {
-            "name": "Item",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "title": {
-                    "name": "title",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "completed": {
-                    "name": "completed",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "listId": {
-                    "name": "listId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "List": {
-                    "name": "List",
-                    "isArray": false,
-                    "type": {
-                        "model": "List"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "listId"
-                        ]
-                    }
-                },
-                "Task": {
-                    "name": "Task",
-                    "isArray": false,
-                    "type": {
-                        "model": "Task"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "itemTaskId"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "itemTaskId": {
-                    "name": "itemTaskId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "Items",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byList",
-                        "fields": [
-                            "listId"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "custom",
+                                "allow": "private",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -814,6 +397,274 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "UserProfile": {
+            "name": "UserProfile",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "preferredName": {
+                    "name": "preferredName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "HouseHoldMembers": {
+                    "name": "HouseHoldMembers",
+                    "isArray": true,
+                    "type": {
+                        "model": "HouseHoldMember"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "UserProfile"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "UserProfiles",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "delete": null
+                        }
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byOwner",
+                        "queryField": "userProfileByOwner",
+                        "fields": [
+                            "owner",
+                            "id"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "operations": [
+                                    "read"
+                                ],
+                                "identityClaim": "cognito:username"
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "HouseHoldMember": {
+            "name": "HouseHoldMember",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "points": {
+                    "name": "points",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "nickname": {
+                    "name": "nickname",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "userProfileId": {
+                    "name": "userProfileId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "UserProfile": {
+                    "name": "UserProfile",
+                    "isArray": false,
+                    "type": {
+                        "model": "UserProfile"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "userProfileId"
+                        ]
+                    }
+                },
+                "houseHoldId": {
+                    "name": "houseHoldId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "HouseHold": {
+                    "name": "HouseHold",
+                    "isArray": false,
+                    "type": {
+                        "model": "HouseHold"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "houseHoldId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "HouseHoldMembers",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {
+                        "mutations": {
+                            "create": null,
+                            "delete": null
+                        }
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUserProfile",
+                        "fields": [
+                            "userProfileId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byHouseHold",
+                        "fields": [
+                            "houseHoldId"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "operations": [
+                                    "read"
+                                ],
+                                "identityClaim": "cognito:username"
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -965,111 +816,10 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Calendar": {
-            "name": "Calendar",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Events": {
-                    "name": "Events",
-                    "isArray": true,
-                    "type": {
-                        "model": "Event"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "Calendar"
-                        ]
-                    }
-                },
-                "EventHandler": {
-                    "name": "EventHandler",
-                    "isArray": true,
-                    "type": {
-                        "model": "EventHandler"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "Calendar"
-                        ]
-                    }
-                },
-                "houseHoldId": {
-                    "name": "houseHoldId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "HouseHold": {
-                    "name": "HouseHold",
-                    "isArray": false,
-                    "type": {
-                        "model": "HouseHold"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "houseHoldId"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Calendars",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {
-                        "mutations": {
-                            "create": null,
-                            "delete": null
-                        }
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
+                            },
                             {
-                                "allow": "custom",
+                                "allow": "private",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1096,7 +846,14 @@ export const schema = {
                     "name": "date",
                     "isArray": false,
                     "type": "AWSDateTime",
-                    "isRequired": false,
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "completed": {
+                    "name": "completed",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
                     "attributes": []
                 },
                 "eventHandlerId": {
@@ -1203,14 +960,24 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
                 }
             ]
         },
-        "HouseHoldMember": {
-            "name": "HouseHoldMember",
+        "Calendar": {
+            "name": "Calendar",
             "fields": {
                 "id": {
                     "name": "id",
@@ -1219,39 +986,35 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "points": {
-                    "name": "points",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "owner": {
-                    "name": "owner",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "userProfileId": {
-                    "name": "userProfileId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "UserProfile": {
-                    "name": "UserProfile",
-                    "isArray": false,
+                "Events": {
+                    "name": "Events",
+                    "isArray": true,
                     "type": {
-                        "model": "UserProfile"
+                        "model": "Event"
                     },
                     "isRequired": false,
                     "attributes": [],
+                    "isArrayNullable": true,
                     "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "userProfileId"
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "Calendar"
+                        ]
+                    }
+                },
+                "EventHandlers": {
+                    "name": "EventHandlers",
+                    "isArray": true,
+                    "type": {
+                        "model": "EventHandler"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "Calendar"
                         ]
                     }
                 },
@@ -1295,7 +1058,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "HouseHoldMembers",
+            "pluralName": "Calendars",
             "attributes": [
                 {
                     "type": "model",
@@ -1307,43 +1070,35 @@ export const schema = {
                     }
                 },
                 {
-                    "type": "key",
-                    "properties": {
-                        "name": "byUserProfile",
-                        "fields": [
-                            "userProfileId"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byHouseHold",
-                        "fields": [
-                            "houseHoldId"
-                        ]
-                    }
-                },
-                {
                     "type": "auth",
                     "properties": {
                         "rules": [
                             {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
+                                "allow": "custom",
                                 "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
                                     "read"
-                                ],
-                                "identityClaim": "cognito:username"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
                 }
             ]
         },
-        "UserProfile": {
-            "name": "UserProfile",
+        "HouseHold": {
+            "name": "HouseHold",
             "fields": {
                 "id": {
                     "name": "id",
@@ -1352,19 +1107,52 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "owner": {
-                    "name": "owner",
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
-                "preferredName": {
-                    "name": "preferredName",
-                    "isArray": false,
+                "owners": {
+                    "name": "owners",
+                    "isArray": true,
                     "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
+                },
+                "Lists": {
+                    "name": "Lists",
+                    "isArray": true,
+                    "type": {
+                        "model": "List"
+                    },
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "HouseHold"
+                        ]
+                    }
+                },
+                "Tasks": {
+                    "name": "Tasks",
+                    "isArray": true,
+                    "type": {
+                        "model": "Task"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "HouseHold"
+                        ]
+                    }
                 },
                 "HouseHoldMembers": {
                     "name": "HouseHoldMembers",
@@ -1378,7 +1166,43 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "UserProfile"
+                            "HouseHold"
+                        ]
+                    }
+                },
+                "Calendar": {
+                    "name": "Calendar",
+                    "isArray": false,
+                    "type": {
+                        "model": "Calendar"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "houseHoldCalendarId"
+                        ]
+                    }
+                },
+                "ChatRoom": {
+                    "name": "ChatRoom",
+                    "isArray": false,
+                    "type": {
+                        "model": "ChatRoom"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "houseHoldChatRoomId"
                         ]
                     }
                 },
@@ -1397,10 +1221,24 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "houseHoldCalendarId": {
+                    "name": "houseHoldCalendarId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "houseHoldChatRoomId": {
+                    "name": "houseHoldChatRoomId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
-            "pluralName": "UserProfiles",
+            "pluralName": "HouseHolds",
             "attributes": [
                 {
                     "type": "model",
@@ -1412,13 +1250,141 @@ export const schema = {
                     }
                 },
                 {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owners",
+                                "allow": "owner",
+                                "operations": [
+                                    "read"
+                                ],
+                                "identityClaim": "cognito:username"
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Item": {
+            "name": "Item",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "completed": {
+                    "name": "completed",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "listId": {
+                    "name": "listId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "List": {
+                    "name": "List",
+                    "isArray": false,
+                    "type": {
+                        "model": "List"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "listId"
+                        ]
+                    }
+                },
+                "Task": {
+                    "name": "Task",
+                    "isArray": false,
+                    "type": {
+                        "model": "Task"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "itemTaskId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "itemTaskId": {
+                    "name": "itemTaskId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            },
+            "syncable": true,
+            "pluralName": "Items",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
                     "type": "key",
                     "properties": {
-                        "name": "byOwner",
-                        "queryField": "userProfileByOwner",
+                        "name": "byList",
                         "fields": [
-                            "owner",
-                            "id"
+                            "listId"
                         ]
                     }
                 },
@@ -1427,13 +1393,161 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
+                                "allow": "custom",
                                 "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
                                     "read"
-                                ],
-                                "identityClaim": "cognito:username"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "List": {
+            "name": "List",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "houseHoldId": {
+                    "name": "houseHoldId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Items": {
+                    "name": "Items",
+                    "isArray": true,
+                    "type": {
+                        "model": "Item"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "List"
+                        ]
+                    }
+                },
+                "HouseHold": {
+                    "name": "HouseHold",
+                    "isArray": false,
+                    "type": {
+                        "model": "HouseHold"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "houseHoldId"
+                        ]
+                    }
+                },
+                "Task": {
+                    "name": "Task",
+                    "isArray": false,
+                    "type": {
+                        "model": "Task"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "listTaskId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "listTaskId": {
+                    "name": "listTaskId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            },
+            "syncable": true,
+            "pluralName": "Lists",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byHouseHold",
+                        "fields": [
+                            "houseHoldId"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "custom",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -1453,33 +1567,89 @@ export const schema = {
         }
     },
     "nonModels": {
-        "ArchivedTask": {
-            "name": "ArchivedTask",
+        "HouseHoldDisplayInfo": {
+            "name": "HouseHoldDisplayInfo",
             "fields": {
-                "title": {
-                    "name": "title",
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "AddUserToHouseHoldResponse": {
+            "name": "AddUserToHouseHoldResponse",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "points": {
                     "name": "points",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
-                "completedBy": {
-                    "name": "completedBy",
+                "owner": {
+                    "name": "owner",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "nickname": {
+                    "name": "nickname",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userProfileId": {
+                    "name": "userProfileId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "houseHoldId": {
+                    "name": "houseHoldId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "HouseHoldDisplayInfo": {
+                    "name": "HouseHoldDisplayInfo",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "HouseHoldDisplayInfo"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "cognitoUsername": {
+                    "name": "cognitoUsername",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 }
             }
         }
     },
-    "codegenVersion": "3.3.5",
-    "version": "1b907ce0681f317d3a6a9b1be55fecc4"
+    "codegenVersion": "3.4.0",
+    "version": "b1f14c282af06fd125a9f3aed01daf48"
 };

@@ -1433,7 +1433,19 @@ export const addUserToHouseHold = /* GraphQL */ `
     addUserToHouseHold(
       cognitoUsername: $cognitoUsername
       houseHoldId: $houseHoldId
-    )
+    ) {
+      id
+      points
+      owner
+      nickname
+      userProfileId
+      houseHoldId
+      HouseHoldDisplayInfo {
+        id
+        name
+      }
+      cognitoUsername
+    }
   }
 `;
 export const createEventHandler = /* GraphQL */ `
