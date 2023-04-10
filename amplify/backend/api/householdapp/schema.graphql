@@ -142,12 +142,13 @@ type HouseHold
   )
   @auth(
     rules: [
-      { allow: owner, ownerField: "owners", operations: [read] }
+      { allow: owner, ownerField: "owners", operations: [read] },
       { allow: private, provider: iam },
   ])
 {
   id: ID!
-  name: String! @auth(
+  name: String!
+    @auth(
     rules: [
       { allow: owner, ownerField: "owners", operations: [read, update] },
       { allow: private, provider: iam },
@@ -173,11 +174,8 @@ type Item @model @auth(rules: [
   Task: Task @hasOne
 }
 
-type List
-  @model
-  @auth(rules: [
-    { allow: custom },
-    { allow: private, provider: iam },
+type List @model @auth(rules: [
+  { allow: custom },
 ]) {
   id: ID!
   title: String!
@@ -208,10 +206,16 @@ type AddUserToHouseHoldResponse {
 
 type Mutation {
   createNewHouseHold(houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
-  addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): String @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: custom }])
+  addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): AddUserToHouseHoldResponse @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: custom }])
   createEventHandler(calendarId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
   updateEventHandler(eventHandlerId: String!, calendarId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
+}
+
+type Subscription {
+  onAddUserToHouseHold(cognitoUsername: String!): AddUserToHouseHoldResponse
+    @aws_subscribe(mutations: ["addUserToHouseHold"])
+    @auth(rules: [{ allow: custom }])
 }
 
 # enum for frequency of Events
@@ -221,10 +225,3 @@ enum FREQUENCY {
   MONTHLY,
   YEARLY
 }  
-
-type Subscription {
-  # subscription onAddUserToHouseHold($cognitoUsername: String!)
-  onAddUserToHouseHold(cognitoUsername: String!): AddUserToHouseHoldResponse
-    @aws_subscribe(mutations: ["addUserToHouseHold"])
-    @auth(rules: [{ allow: custom }])
-}

@@ -9,17 +9,21 @@ const Frequency = {
   "YEARLY": "YEARLY"
 };
 
-
 const { Message, ChatRoom, Task, UserProfile, HouseHoldMember, EventHandler, Event, Calendar, HouseHold, Item, List, HouseHoldDisplayInfo, AddUserToHouseHoldResponse } = initSchema(schema);
 
 export {
   Message,
   ChatRoom,
-  HouseHold,
-  List,
-  Item,
   Task,
+  UserProfile,
+  HouseHoldMember,
   EventHandler,
+  Event,
   Calendar,
+  HouseHold,
+  Item,
+  List,
+  Frequency,
+  HouseHoldDisplayInfo,
   AddUserToHouseHoldResponse
 };
