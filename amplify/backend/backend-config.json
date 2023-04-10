@@ -192,6 +192,13 @@
           ],
           "category": "function",
           "resourceName": "deleteEventHandler"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
         }
       ],
       "providerPlugin": "awscloudformation",

@@ -116,6 +116,7 @@ export const onCreateTask = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -309,6 +310,7 @@ export const onUpdateTask = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -502,6 +504,7 @@ export const onDeleteTask = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -671,6 +674,7 @@ export const onCreateItem = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -800,6 +804,7 @@ export const onUpdateItem = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -929,6 +934,7 @@ export const onDeleteItem = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1071,6 +1077,7 @@ export const onCreateList = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1213,6 +1220,7 @@ export const onUpdateList = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1355,6 +1363,7 @@ export const onDeleteList = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt

@@ -1,11 +1,11 @@
 /* Amplify Params - DO NOT EDIT
-	API_HOUSEHOLDAPP_CALENDARTABLE_ARN
-	API_HOUSEHOLDAPP_CALENDARTABLE_NAME
 	API_HOUSEHOLDAPP_EVENTHANDLERTABLE_ARN
 	API_HOUSEHOLDAPP_EVENTHANDLERTABLE_NAME
 	API_HOUSEHOLDAPP_EVENTTABLE_ARN
 	API_HOUSEHOLDAPP_EVENTTABLE_NAME
 	API_HOUSEHOLDAPP_GRAPHQLAPIIDOUTPUT
+	API_HOUSEHOLDAPP_TASKTABLE_ARN
+	API_HOUSEHOLDAPP_TASKTABLE_NAME
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
@@ -17,7 +17,7 @@ const { v4: uuidv4 } = require('uuid');
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-    const {calendarId, sourceDate, endDate} = event.arguments;
+    const {calendarId, taskId, sourceDate, endDate} = event.arguments;
 	const frequency = event.arguments.frequency.toLowerCase();
     const eventHandlerId = uuidv4();
 	const dynamoDb = new AWS.DynamoDB.DocumentClient();
@@ -26,6 +26,8 @@ exports.handler = async (event) => {
 	const lastChangedAt = date.getTime();
 	const maxYears = 3; // If this changes, it also must be changed in the updateEventHandler Lambda function
 	const millisecondsPerDay = 24 * 60 * 60 * 1000;
+
+	console.log(`EVENT: ${JSON.stringify(event)}`);
 	
 	// Generate Date objects from input ISO-8601 DateTimes
 	const sourceDateObj = new Date(sourceDate);
@@ -33,32 +35,41 @@ exports.handler = async (event) => {
 	
 	// Calculate # of days between source and end dates
 	const dateDifference = endDateObj - sourceDateObj;
-	const numDays = Math.round(dateDifference / millisecondsPerDay);
-	const numYears = numDays / 365;
-
-	console.log({
-		sourceDate,
-		endDate,
-		numDays,
-		numYears,
-	});
+	const numYears = Math.round(dateDifference / millisecondsPerDay) / 365;
 
 	// Ensure sourceDate is before endDate and that the difference does not exceed maxYears years
-	if (numDays < 0) {
-		console.log(`endDate ${endDate} is behind sourceDate ${sourceDate}`);
-		throw new Error("End date cannot be before source date.");
+	if (dateDifference < 0 || dateDifference == 0) {
+		console.log(`endDate ${endDate} is behind or equal to sourceDate ${sourceDate}`);
+		throw new Error("End date cannot be before or equal to source date.");
 	} else if (numYears > maxYears) {
-		console.log(`Date difference is greater than ${maxYears} years.`);
+		console.log(`Date difference is greater than ${maxYears} year(s).`);
 		throw new Error(`End date cannot be more than ${maxYears} year(s) ahead.`);
+	}
+	
+	// Check if taskId points to an existing Task
+	const getParams = {
+		TableName: process.env.API_HOUSEHOLDAPP_TASKTABLE_NAME,
+		Key: {
+			id: taskId,
+		}
+	}
+
+	try {
+		const data = await dynamoDb.get(getParams).promise();
+		if (!data.Item) throw new Error("Invalid taskId.");
+	} catch (error) {
+		console.log(error);
+		throw error;
 	}
 
 	// Create a new EventHandler
 	const putEventHandlerParams = {
-		TableName : process.env.API_HOUSEHOLDAPP_EVENTHANDLERTABLE_NAME,
+		TableName: process.env.API_HOUSEHOLDAPP_EVENTHANDLERTABLE_NAME,
 		Item: {
 			id: eventHandlerId,
 			frequency,
 			calendarId,
+			taskId,
 			sourceDate,
 			endDate,
 			createdAt,
@@ -74,9 +85,9 @@ exports.handler = async (event) => {
 	}
 	
 
+	// Generate events according to specified frequency
 	const promises = [];
 	const checkpoint = new Date(sourceDateObj);
-	// Generate events according to specified frequency
 	switch (frequency) {
 		case ("daily"):
 			// Generate promises encompassing all batchWriteParams
@@ -88,7 +99,7 @@ exports.handler = async (event) => {
 				await Promise.all(promises);
 			} catch (error) {
 				console.log(error);
-				return error;
+				throw error;
 			}
 			break;
 		case ("weekly"):
@@ -101,7 +112,7 @@ exports.handler = async (event) => {
 				await Promise.all(promises);
 			} catch (error) {
 				console.log(error);
-				return error;
+				throw error;
 			}
 			break;
 		case ("monthly"):
@@ -114,7 +125,7 @@ exports.handler = async (event) => {
 				await Promise.all(promises);
 			} catch (error) {
 				console.log(error);
-				return error;
+				throw error;
 			}
 			break;
 		case ("yearly"):
@@ -122,14 +133,13 @@ exports.handler = async (event) => {
 				await dynamoDb.batchWrite(genYearlyParams(eventHandlerId, calendarId, checkpoint, endDateObj)).promise();
 			} catch (error) {
 				console.log(error);
-				return error;
+				throw error;
 			}
 			break;
 		default:
 			throw new Error("Invalid frequency.");
 	}
-    
-    console.log(`EVENT: ${JSON.stringify(event)}`);
+
 	return eventHandlerId;
 };
 

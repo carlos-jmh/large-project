@@ -1,4 +1,7 @@
 /* Amplify Params - DO NOT EDIT
+	API_HOUSEHOLDAPP_CALENDARTABLE_ARN
+	API_HOUSEHOLDAPP_CALENDARTABLE_NAME
+	API_HOUSEHOLDAPP_GRAPHQLAPIIDOUTPUT
 	ENV
 	FUNCTION_CREATEEVENTHANDLER_NAME
 	FUNCTION_DELETEEVENTHANDLER_NAME
@@ -7,74 +10,69 @@ Amplify Params - DO NOT EDIT */
 
 const AWS = require('aws-sdk');
 const lambda = new AWS.Lambda({
-    region: process.env.REGION // change to your region
+    region: process.env.REGION
 });
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-    const { eventHandlerId, calendarId, frequency, sourceDate, endDate } = event.arguments;
-    let updatedEventHandlerId;
-    const maxYears = 3; // If this changes, it also must be changed in the createEventHandler Lambda function
-    const millisecondsPerDay = 24 * 60 * 60 * 1000;
-    
-    // Generate Date objects from input ISO-8601 DateTimes
-    const sourceDateObj = new Date(sourceDate);
-    const endDateObj = new Date(endDate);
-    
-    // Calculate # of days between source and end dates
-    const dateDifference = endDateObj - sourceDateObj;
-    const numDays = Math.round(dateDifference / millisecondsPerDay);
-    const numYears = numDays / 365;
+  const { eventHandlerId, calendarId, taskId, frequency, sourceDate, endDate } = event.arguments;
+  const dynamoDb = new AWS.DynamoDB.DocumentClient();
+  let updatedEventHandlerId;
+
+  console.log(`EVENT: ${JSON.stringify(event)}`);
   
-    console.log({
-      sourceDate,
-      endDate,
-      numDays,
-      numYears,
-    });
+  // Check if calendarId points to an existing Calendar
+  const getParams = {
+    TableName: process.env.API_HOUSEHOLDAPP_CALENDARTABLE_NAME,
+    Key: {
+      id: calendarId,
+    }
+  };
+
+  try {
+		const data = await dynamoDb.get(getParams).promise();
+		if (!data.Item) throw new Error("Invalid calendarId.");
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+
+  // Create "updated" version of the EventHandler
+  const createParams = {
+    FunctionName: process.env.FUNCTION_CREATEEVENTHANDLER_NAME,
+    Payload: JSON.stringify(event),
+  };
+
+  // All checks on the validity of the parameters occur within the createEventHandler function
+  try {
+    const creationResult = (await lambda.invoke(createParams).promise());
+    if (creationResult.FunctionError) { // only true if error occured in createEventHandler
+      console.log(creationResult.Payload);
+      throw new Error("Error invoking createEventHandler.");
+    }
+    updatedEventHandlerId = creationResult.Payload.replace(/^"(.+(?="$))"$/, '$1'); // remove double-quotes
+  }
+  catch (error) {
+    console.log(error);
+    throw error;
+  }
   
-    // Ensure sourceDate is before endDate and that the difference does not exceed maxYears years
-    if (numDays < 0) {
-      console.log(`endDate ${endDate} is behind sourceDate ${sourceDate}`);
-      throw new Error("End date cannot be before source date.");
-    } else if (numYears > maxYears) {
-      console.log(`Date difference is greater than ${maxYears} years.`);
-      throw new Error(`End date cannot be more than ${maxYears} year(s) ahead.`);
-    }
+  // Delete "old" version of the EventHandler
+  const deleteParams = {
+    FunctionName: process.env.FUNCTION_DELETEEVENTHANDLER_NAME,
+    Payload: JSON.stringify(event),
+  };
 
-    // Delete "old" version of the EventHandler
-    const deleteParams = {
-      FunctionName: process.env.FUNCTION_DELETEEVENTHANDLER_NAME,
-      Payload: JSON.stringify(event),
-    };
+  try {
+    const deletionResult = await lambda.invoke(deleteParams).promise();
+    console.log(deletionResult);
+  }
+  catch (error) {
+    console.log(error);
+    throw error;
+  }
 
-    try {
-      const deletionResult = await lambda.invoke(deleteParams).promise();
-      console.log(deletionResult);
-    }
-    catch (error) {
-      console.log(error);
-      return error;
-    }
-    
-    // Create "updated" version of the EventHandler
-    const createParams = {
-      FunctionName: process.env.FUNCTION_CREATEEVENTHANDLER_NAME,
-      Payload: JSON.stringify(event),
-    }
-
-    try {
-      updatedEventHandlerId = (await lambda.invoke(createParams).promise()).Payload;
-      updatedEventHandlerId = updatedEventHandlerId.replace(/^"(.+(?="$))"$/, '$1'); // remove double-quotes
-      console.log(typeof(updatedEventHandlerId));
-    }
-    catch (error) {
-      console.log(error);
-      return error;
-    }
-    
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-    return updatedEventHandlerId;
+  return updatedEventHandlerId;
 };

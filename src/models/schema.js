@@ -875,6 +875,13 @@ export const schema = {
                         ]
                     }
                 },
+                "taskId": {
+                    "name": "taskId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Task": {
                     "name": "Task",
                     "isArray": false,
@@ -950,6 +957,15 @@ export const schema = {
                         "name": "byCalendar",
                         "fields": [
                             "calendarId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byTask",
+                        "fields": [
+                            "taskId"
                         ]
                     }
                 },
@@ -1481,5 +1497,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.5",
-    "version": "1b907ce0681f317d3a6a9b1be55fecc4"
+    "version": "850a6301cb712b1f60bfc9d52e43161a"
 };

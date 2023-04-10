@@ -119,6 +119,7 @@ export const createTask = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -315,6 +316,7 @@ export const updateTask = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -511,6 +513,7 @@ export const deleteTask = /* GraphQL */ `
           nextToken
           startedAt
         }
+        taskId
         Task {
           id
           title
@@ -683,6 +686,7 @@ export const createItem = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -815,6 +819,7 @@ export const updateItem = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -947,6 +952,7 @@ export const deleteItem = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1092,6 +1098,7 @@ export const createList = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1237,6 +1244,7 @@ export const updateList = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1382,6 +1390,7 @@ export const deleteList = /* GraphQL */ `
           id
           frequency
           calendarId
+          taskId
           sourceDate
           endDate
           createdAt
@@ -1439,12 +1448,14 @@ export const addUserToHouseHold = /* GraphQL */ `
 export const createEventHandler = /* GraphQL */ `
   mutation CreateEventHandler(
     $calendarId: String!
+    $taskId: String!
     $frequency: FREQUENCY!
     $sourceDate: AWSDateTime!
     $endDate: AWSDateTime!
   ) {
     createEventHandler(
       calendarId: $calendarId
+      taskId: $taskId
       frequency: $frequency
       sourceDate: $sourceDate
       endDate: $endDate
@@ -1455,6 +1466,7 @@ export const updateEventHandler = /* GraphQL */ `
   mutation UpdateEventHandler(
     $eventHandlerId: String!
     $calendarId: String!
+    $taskId: String!
     $frequency: FREQUENCY!
     $sourceDate: AWSDateTime!
     $endDate: AWSDateTime!
@@ -1462,6 +1474,7 @@ export const updateEventHandler = /* GraphQL */ `
     updateEventHandler(
       eventHandlerId: $eventHandlerId
       calendarId: $calendarId
+      taskId: $taskId
       frequency: $frequency
       sourceDate: $sourceDate
       endDate: $endDate
