@@ -1,5 +1,11 @@
 import { Modal, Pressable, Text, TextInput, View } from "react-native";
 import { useEffect, useRef, useState } from "react";
+import { Pressable, Text, TextInput, View, Modal} from "react-native";
+import { getStyles } from "./styles";
+import { useEffect, useState } from "react";
+import { useTheme } from "@react-navigation/native";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

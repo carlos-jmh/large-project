@@ -10,8 +10,14 @@ npm-debug.*
 *.orig.*
 web-build/
 
+# team provider info
+**/team-provider-info.json
+
 # macOS
 .DS_Store
+
+
+**/desktop.ini
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
@@ -34,5 +40,3 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
-
-**/desktop.ini
