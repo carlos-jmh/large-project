@@ -88,7 +88,7 @@ const Middle = () => {
               <div className="section1">
                 <h5 className="sectionHeader">Events</h5>
                 <div className="event">
-                  <Events events = {events} handleCheck={handleCheck}/>
+                  <Events events = {events} handleCheck={handleCheck2}/>
                   <Add addTask={addTask3} useState={false}/>
                 </div>
               </div>
@@ -114,7 +114,7 @@ const Middle = () => {
             <div className="section1">
               <h5 className="sectionHeader">Events</h5>
               <div className="event">
-                <Events tasks = {events} handleCheck={handleCheck2}/>
+                <Events events = {events} handleCheck={handleCheck2}/>
                 <Add addTask={addTask3} useState={false}/>
               </div>
             </div>
