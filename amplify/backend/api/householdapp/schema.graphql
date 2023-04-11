@@ -29,10 +29,15 @@ type ChatRoom
   HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
 }
 
-type Task @model @auth(rules: [
+type Task 
+  @model (
+    mutations: { delete: null },
+  )
+  @auth(rules: [
   { allow: custom },
   { allow: private, provider: iam },
-]) {
+  ]) 
+{
   id: ID!
   title: String!
   houseHoldId: ID! @index(name: "byHouseHold")
@@ -211,6 +216,7 @@ type Mutation {
   createEventHandler(calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
   updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
+  deleteTask(taskId: String!): String @function(name: "deleteTask-${env}") @auth(rules: [{ allow: custom }])
 }
 
 type Subscription {
@@ -226,3 +232,4 @@ enum FREQUENCY {
   MONTHLY,
   YEARLY
 }
+    
