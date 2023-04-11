@@ -46,6 +46,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "deleteTask": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "graphQlLambdaAuthorizerc6ebb49e": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

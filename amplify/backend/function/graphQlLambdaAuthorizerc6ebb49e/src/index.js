@@ -244,6 +244,13 @@ async function checkAuthorization(ast, variables, userInfo) {
         }
         break;
       }
+      case "deleteTask": {
+        const taskId = retrieveArgument("taskId", selection.arguments);
+        if (!await isAuthorizedForTask(dynamo, taskId, sub)) {
+          return false;
+        }
+        break;
+      }
       case "createItem": {
         const listId = retrieveInputArgument("listId", selection.arguments, variables);
         if (!await isAuthorizedForList(dynamo, listId, sub)) {
@@ -275,13 +282,6 @@ async function checkAuthorization(ast, variables, userInfo) {
       case "deleteList": {
         const listId = retrieveInputArgument("id", selection.arguments, variables);
         if (!await isAuthorizedForList(dynamo, listId, sub)) {
-          return false;
-        }
-        break;
-      }
-      case "deleteTask": {
-        const taskId = retrieveInputArgument("id", selection.arguments, variables);
-        if (!await isAuthorizedForTask(dynamo, taskId, sub)) {
           return false;
         }
         break;

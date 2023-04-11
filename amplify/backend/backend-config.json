@@ -136,6 +136,27 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "deleteTask": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "deleteEventHandler"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "graphQlLambdaAuthorizerc6ebb49e": {
       "build": true,
       "dependsOn": [
@@ -267,6 +288,22 @@
         {
           "category": "function",
           "resourceName": "deleteEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteTask_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteTask"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteTask_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteTask"
         }
       ]
     },
