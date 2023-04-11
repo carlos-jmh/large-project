@@ -5,6 +5,8 @@ import * as Icon from 'react-bootstrap-icons'
 const Add = ({addTask}) => {
   const [add, setAdd] = useState(false);
   const [ userInput, setUserInput ] = useState('');
+  const [ userDate, setDateInput ] = useState('');
+
 
   function changeAdd() {
     setAdd(!add);
@@ -16,8 +18,9 @@ const Add = ({addTask}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTask(userInput);
+    addTask(userInput, userDate);
     setUserInput("");
+    setDateInput("");
   }
 
   if (!add)
@@ -36,7 +39,7 @@ const Add = ({addTask}) => {
     return (
       <form onSubmit={handleSubmit} className="addingTask">
         <input type="text" value={userInput} onChange={handleChange} class="form-control" id="name" placeholder="Task/Item Name"/>
-        <input type="datetime-local" class="form-control" id="date"/>
+        <input type="datetime-local" value={userDate} class="form-control" id="date"/>
         <hr></hr>
         <div className="buttons">
           <button class="btn btn-danger" onClick={changeAdd}>close</button>

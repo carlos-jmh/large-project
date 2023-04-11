@@ -3,11 +3,13 @@ import './middle.css'
 
 import Task from '../../components/tasklist/TaskList'
 import List from '../../components/list/List'
+import Events from '../../components/events/Events'
 import Form from '../../components/form/Form'
 import Add from '../../components/add/Add'
 import Cal from '../../components/cal/Cal';
 import data from "./data.json";
 import taskData from "./taskData.json";
+import eventData from "./eventData.json";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList'
@@ -19,6 +21,8 @@ const Middle = () => {
   const [selectedDate, setSelecteddDate] = useState(new Date())
   const [toDoList, setToDoList] = useState(data);
   const [tasks, setTasks] = useState(taskData);
+  const [events, setEvents] = useState(eventData);
+
 
   const handleToggle = (id) => {
     let mapped = toDoList.map(task => {
@@ -33,6 +37,13 @@ const Middle = () => {
     });
     setTasks(mapped);
   }
+
+  const handleCheck2 = (id) => {
+    let mapped = events.map(task => {
+      return task.id == id ? { ...task, complete: !task.complete } : { ...task};
+    });
+    setEvents(mapped);
+  }
   
   const addTask = (userInput ) => {
     let copy = [...toDoList];
@@ -44,6 +55,12 @@ const Middle = () => {
     let copy = [...tasks];
     copy = [...copy, { id: tasks.length + 1, task: userInput, complete: false }];
     setTasks(copy);
+  }
+
+  const addTask3 = (userInput, userDate ) => {
+    let copy = [...events];
+    copy = [...copy, { id: events.length + 1, task: userInput, complete: false, date: userDate}];
+    setEvents(copy);
   }
 
 
@@ -72,9 +89,8 @@ const Middle = () => {
               <div className="section1">
                 <h5 className="sectionHeader">Events</h5>
                 <div className="event">
-                  <Task/>
-                  <Task/>
-                  <Add/>
+                  <Events events = {events} handleCheck={handleCheck2}/>
+                  <Add addTask={addTask3} useState={false}/>
                 </div>
               </div>
             </div>
@@ -99,9 +115,8 @@ const Middle = () => {
             <div className="section1">
               <h5 className="sectionHeader">Events</h5>
               <div className="event">
-                <Task/>
-                <Task/>
-                <Add/>
+                <Events tasks = {events} handleCheck={handleCheck2}/>
+                <Add addTask={addTask3} useState={false}/>
               </div>
             </div>
             <div className="section1">
