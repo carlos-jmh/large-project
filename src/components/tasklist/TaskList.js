@@ -3,7 +3,7 @@ import Task from '../task/Task';
 import * as Icon from 'react-bootstrap-icons';
 
 
-const TaskList = ({tasks}) => {
+const TaskList = ({tasks, handleCheck}) => {
 return (
   <div className="section">
       <hr className="taskLine"></hr>
@@ -11,7 +11,7 @@ return (
         {tasks?.map(task => {
             return (
               <div>
-                <Task task={task} />
+                <Task task={task} handleCheck={handleCheck} />
               </div>
             )
         })}

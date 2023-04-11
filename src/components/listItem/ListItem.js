@@ -3,7 +3,7 @@ import React from 'react'
 const ListItem = ({todo, handleToggle}) => {
   const handleClick = (e) => {
       e.preventDefault()
-      handleToggle(e.currentTarget.id)
+      handleToggle(e.currentTarget.id) 
   }
 
    return (

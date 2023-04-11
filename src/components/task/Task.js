@@ -5,10 +5,13 @@ import './task.css'
 // Task Name, Event Info
 
 // Use map to create Itasks passing in value of task
-const Task = ({task}) => {
+const Task = ({task, handleCheck}) => {
+  const checkOff = (e) => {
+    handleCheck(e.currentTarget.id) 
+}
   return (
           <div id={task.id} key={task.id + task.task} name="task" value={task.id} className={task.complete}>
-            <input type="checkbox" id={task.id}/>
+            <input type="checkbox" id={task.id} onChange={checkOff}/>
             {" " + task.task}
           </div>
   )

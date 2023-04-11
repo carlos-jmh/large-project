@@ -26,6 +26,13 @@ const Middle = () => {
     });
     setToDoList(mapped);
   }
+
+  const handleCheck = (id) => {
+    let mapped = tasks.map(task => {
+      return task.id == id ? { ...task, complete: !task.complete } : { ...task};
+    });
+    setTasks(mapped);
+  }
   
   const addTask = (userInput ) => {
     let copy = [...toDoList];
@@ -58,7 +65,7 @@ const Middle = () => {
             <div className="section1">
                 <h5 className="sectionHeader">Tasks</h5>
                 <div className="task">
-                  <TaskList tasks = {tasks}/>
+                  <TaskList tasks = {tasks} handleCheck={handleCheck}/>
                   <Add addTask={addTask2} useState={false}/>
                 </div>
               </div>
@@ -85,7 +92,7 @@ const Middle = () => {
           <div className="section1">
               <h5 className="sectionHeader">Tasks</h5>
               <div className="task">
-              <TaskList tasks = {tasks}/>
+              <TaskList tasks = {tasks} handleCheck={handleCheck}/>
               <Add addTask={addTask2} useState={false}/>
               </div>
             </div>
