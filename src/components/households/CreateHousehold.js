@@ -5,28 +5,6 @@ import LabeledInput from "../LabeledInput";
 import CustomButton from "../CustomButton";
 import ProfileIcon from "../ProfileIcon";
 import { useState } from "react";
-
-export default function CreateHousehold({ navigation, route }) {
-  const invitedUsers = [];
-  //TODO:
-
-  const { colors } = useTheme();
-  const styles = getStyles(colors);
-  const [householdName, setHouseholdName] = useState("");
-  const [addUsername, setAddUsername] = useState("");
-  const [list, setList] = useState(invitedUsers);
-
-  function handleAdd() {
-    const newList = list.concat({ name: addUsername });
-    setList(newList);
-    setAddUsername("");
-  }
-  function handleDelete(username) {
-    setList(
-      list.filter(function (el) {
-        return el.name != username;
-      })
-    );
 import { API } from "aws-amplify";
 import { graphqlOperation } from "@aws-amplify/api";
 import { getCognitoToken } from "../auth/auth";
@@ -137,14 +115,6 @@ export default function CreateHousehold({ navigation, route }) {
         <Text style={styles.p}>Hi there,</Text>
         <Text style={styles.header}>John Doe</Text>
       </View>
-      <View
-        style={{
-          alignSelf: "stretch",
-        }}
-      >
-        <View style={{ height: 100 }}></View>
-        <Text style={styles.p}>Create a new household</Text>
-        <View style={{ height: 22 }}></View>
       <View style={{ alignSelf: "stretch" }}>
         <View style={{ height: 100 }} />
         <Text style={styles.p}>Create a new household</Text>
@@ -155,20 +125,6 @@ export default function CreateHousehold({ navigation, route }) {
           onChangeText={setHouseHoldName}
           value={houseHoldName}
         />
-        <View style={{ height: 22 }}></View>
-        <View style={{ display: "flex", flexDirection: "row" }}>
-          <View style={{ height: 22 }}></View>
-          <LabeledInput
-            label={"INVITE BY USERNAME"}
-            placeholder={"Username"}
-            onChangeText={setAddUsername}
-            value={addUsername}
-          />
-          <View style={{ width: 100 }}></View>
-          <Pressable
-            style={styles.createHouseholdButtonContainer}
-            android_ripple={{ color: colors.highlight }}
-            onPress={handleAdd}
         <View style={{ height: 22 }} />
         <View style={{ display:'flex', flexDirection : 'row' }}>
           <View style={{ height: 22 }} />
@@ -187,25 +143,6 @@ export default function CreateHousehold({ navigation, route }) {
             <Text style={styles.buttonText}>INVITE</Text>
           </Pressable>
         </View>
-        <View style={{ height: 22 }}></View>
-        <Text style={[styles.label, { marginBottom: 4 }]}>
-          INVITED MEMBERS:
-        </Text>
-        <View style={{ height: 22 }}></View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignContent: "flex-start",
-          }}
-        >
-          {list.map((item) => (
-            <ProfileIcon username={item.name} deleteFunc={handleDelete} />
-          ))}
-          <View style={{ flexBasis: "100%", height: 50 }}></View>
-          <View style={{ width: "100%" }}>
-            <CustomButton title="CREATE HOUSEHOLD" />
         <View style={{ height:22 }} />
         <Text style={[styles.label, { marginBottom: 4 }]}>INVITED MEMBERS:</Text>
         <View style={{ height:22 }} />

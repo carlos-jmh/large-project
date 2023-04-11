@@ -1,30 +1,26 @@
 import * as SplashScreen from "expo-splash-screen";
 
 import { DarkTheme, LightTheme } from "../components/themes";
-import {
-  Inter_400Regular,
-  Inter_500Medium,
-  Inter_600SemiBold,
-} from "@expo-google-fonts/inter";
+import { Inter_400Regular, Inter_600SemiBold } from "@expo-google-fonts/inter";
 import {
   Keyboard,
   TouchableWithoutFeedback,
   useColorScheme,
 } from "react-native";
-import { Roboto_500Medium, Roboto_700Bold } from "@expo-google-fonts/roboto";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useCallback, useState } from "react";
 
-import Chat from "./home/chat/Chat";
+import Chat from "./home/Chat";
 import ConfirmRegister from "./auth/ConfirmRegister.js";
-import CreateHousehold from "./households/CreateHousehold";
-import Events from "./home/events/Events";
+import Events from "./home/Events";
 import InitialPage from "./households/InitialPage";
-import Lists from "./home/lists/Lists";
+import CreateHousehold from "./households/CreateHousehold"
+import Lists from "./home/Lists";
 import Login from "./auth/Login.js";
 import { NavigationContainer } from "@react-navigation/native";
 import Register from "./auth/Register.js";
-import Tasks from "./home/tasks/Tasks";
+import { Roboto_500Medium } from "@expo-google-fonts/roboto";
+import Tasks from "./home/Tasks";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
 
@@ -42,10 +38,8 @@ export default function App() {
   // Load Google fonts
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
-    Inter_500Medium,
     Inter_600SemiBold,
     Roboto_500Medium,
-    Roboto_700Bold,
   });
 
   // When fonts are loaded, hide splash screen
@@ -74,11 +68,6 @@ export default function App() {
           <NavigationContainer theme={theme}>
             <Stack.Navigator screenOptions={{ animation: "fade" }}>
               <Stack.Screen
-                name="InitialPage"
-                component={InitialPage}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
                 name="Register"
                 component={Register}
                 options={{ headerShown: false }}
@@ -91,6 +80,11 @@ export default function App() {
               <Stack.Screen
                 name="Login"
                 component={Login}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="InitialPage"
+                component={InitialPage}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
