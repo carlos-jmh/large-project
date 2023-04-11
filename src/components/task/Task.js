@@ -5,19 +5,12 @@ import './task.css'
 // Task Name, Event Info
 
 // Use map to create Itasks passing in value of task
-const Task = (props) => {
+const Task = ({task}) => {
   return (
-    <div className="task">
-        <div className="iTask">
-          {/* onClick change database data to complete and refresh*/}
-          <input type="checkbox" id="task1" value="task1"/>
-          <div class="taskInfo">
-            <label htmlFor="task1">Place task name here</label>
-            <p>Place event date, blank if no event</p>
+          <div id={task.id} key={task.id + task.task} name="task" value={task.id} className={task.complete}>
+            <input type="checkbox" id={task.id}/>
+            {" " + task.task}
           </div>
-        </div>
-        <hr></hr>
-    </div>
   )
 }
 
