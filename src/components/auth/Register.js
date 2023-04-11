@@ -20,6 +20,11 @@ export default function Register({ navigation }) {
 
   async function signUp() {
     try {
+      // TODO: Add more validation
+      if (username === "" || password === "" || email === "") {
+        throw new Error("Username, email, and password cannot be empty");
+      }
+
       const user = await CognitoAuth.signUp({
         username,
         password,
