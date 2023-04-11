@@ -5,7 +5,7 @@ import * as Icon from 'react-bootstrap-icons';
 import './events.css'
 
 
-const Events = ({events, handleCheck2}) => {
+const Events = ({events, handleCheck}) => {
   return (
     <div className="section">
         <hr className="taskLine"></hr>
@@ -13,7 +13,7 @@ const Events = ({events, handleCheck2}) => {
           {events?.map(event => {
               return (
                 <div>
-                  <Task task={event} handleCheck={handleCheck2} />
+                  <Task task={event} handleCheck={handleCheck} />
                 </div>
               )
           })}

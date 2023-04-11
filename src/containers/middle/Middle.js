@@ -63,7 +63,6 @@ const Middle = () => {
     setEvents(copy);
   }
 
-
     return (
       <>
         <div className="midContent">
@@ -89,7 +88,7 @@ const Middle = () => {
               <div className="section1">
                 <h5 className="sectionHeader">Events</h5>
                 <div className="event">
-                  <Events events = {events} handleCheck={handleCheck2}/>
+                  <Events events = {events} handleCheck={handleCheck}/>
                   <Add addTask={addTask3} useState={false}/>
                 </div>
               </div>
