@@ -913,22 +913,6 @@ export const schema = {
                         ]
                     }
                 },
-                "Events": {
-                    "name": "Events",
-                    "isArray": true,
-                    "type": {
-                        "model": "Event"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "EventHandler"
-                        ]
-                    }
-                },
                 "taskId": {
                     "name": "taskId",
                     "isArray": false,

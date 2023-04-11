@@ -21,6 +21,8 @@ const { v4: uuidv4 } = require('uuid');
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+	console.log(`EVENT: ${JSON.stringify(event)}`);
+	
 	const { houseHoldName } = event.arguments;
 	const identity = event.identity;
 	const ownerId = `${identity.sub}`;
@@ -156,10 +158,10 @@ async function validateUserProfile(dynamoDb, sub) {
 		ProjectionExpression: "id"
 	};
 
-	const userProfile = await dynamoDb.get(userProfileQuery).promise();
-	if (!userProfile.Item) {
+	const userProfile = await dynamoDb.query(userProfileQuery).promise();
+	if (!userProfile.Items.length) {
 		throw new Error('Invalid userProfileId');
 	}
 
-	return userProfile.Item.id;
+	return userProfile.Items[0].id;
 }
