@@ -12,8 +12,11 @@ const LightTheme = {
     textFaded: "rgba(28, 28, 28, 0.7)",
     highlight: "rgb(64, 141, 199)",
     primaryText: "rgb(255, 255, 255)",
+    primaryTextFaded: "rgba(255, 255, 255, 0.7)",
     success: "rgb(0,128,0)",
-    danger:"rgb(209,26,42)",
+    danger: "rgb(209,26,42)",
+    profileSat: "76%",
+    profileLight: "69%",
   },
 };
 
@@ -31,8 +34,11 @@ const DarkTheme = {
     textFaded: "rgba(255, 255, 255, 0.7)",
     highlight: "rgb(69, 150, 209)",
     primaryText: "rgb(255, 255, 255)",
+    primaryTextFaded: "rgba(255, 255, 255, 0.7)",
     success: "rgb(0,128,0)",
-    danger:"rgb(209,26,42)",
+    danger: "rgb(209,26,42)",
+    profileSat: "76%",
+    profileLight: "69%",
   },
 };
 
