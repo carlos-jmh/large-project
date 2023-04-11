@@ -6,6 +6,7 @@ import Navbar from "../Navbar";
 import UndatedTasks from "./UndatedTasks";
 import data from "../mockData";
 import { getStyles } from "../../styles";
+import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
 
 /* Tasks page */
@@ -14,9 +15,10 @@ export default function Tasks({ navigation, route }) {
   const styles = getStyles(colors);
 
   // Get actual tasks from the backend here
+  const [tasks, setTasks] = useState(data.tasks);
 
   // Undated tasks are those without an attached EventHandler
-  const undatedTasks = data.tasks
+  const undatedTasks = tasks
     .filter((task) => !("eventHandlerId" in task))
     .map((task) => {
       return {
@@ -27,7 +29,7 @@ export default function Tasks({ navigation, route }) {
   let datedTasks = [];
 
   // For dated tasks, find every Event associated with its EventHandler
-  for (const task of data.tasks.filter((task) => "eventHandlerId" in task)) {
+  for (const task of tasks.filter((task) => "eventHandlerId" in task)) {
     for (const event of data.eventHandlers[task.eventHandlerId].events) {
       datedTasks.push({
         ...task,

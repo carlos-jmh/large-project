@@ -77,6 +77,7 @@ export default data = {
         {
           id: 0,
           title: "Do dishes",
+          completed: false,
         },
       ],
     },
@@ -87,14 +88,17 @@ export default data = {
         {
           id: 0,
           title: "Milk",
+          completed: false,
         },
         {
           id: 1,
           title: "Banana",
+          completed: false,
         },
         {
           id: 2,
           title: "Olive oil",
+          completed: false,
         },
       ],
     },
