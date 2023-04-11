@@ -55,13 +55,13 @@ export default function Navbar({ navigation, screenName, household }) {
           justifyContent: "center",
           alignSelf: "center",
           alignItems: "center",
-          backgroundColor: colors.primary,
+          backgroundColor: colors.border,
           height: 54,
           width: 54,
           borderRadius: 100,
         }}
       >
-        <Entypo name="plus" size={32} color={colors.primaryText} />
+        <Entypo name="plus" size={32} color={colors.text} />
       </Pressable>
       <NavbarButton
         screenName="Lists"
