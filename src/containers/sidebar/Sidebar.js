@@ -2,10 +2,13 @@ import React, { useState } from 'react'
 import Householdinfo from '../../components/householdinfo/Householdinfo'
 import './sidebar.css'
 import * as Icon from 'react-bootstrap-icons'
-
+import AddHousehold from '../../components/addHousehold/AddHousehold'
+import householdData from "./households.json";
 
 // Vertically list component of householdInfo
 const Sidebar = () => {
+  const [households, setHouseholds] = useState(householdData)
+
   // Set button to active class (background color more grey)
   // Pass value to dashboard that allows inbox value to be changed.
   function loadInbox() {
@@ -17,6 +20,13 @@ const Sidebar = () => {
     document.querySelectorAll('div.inbox')[0].style.display = "none";
     document.querySelectorAll('div.midContent')[0].style.display = "";
   }
+
+  const addNewHousehold = (userInput) => {
+    let copy = [...households];
+    copy = [...copy, { id: households.length + 1, name: userInput}];
+    setHouseholds(copy);
+  }
+
 
   return (
     <div class = "container">
@@ -40,8 +50,14 @@ const Sidebar = () => {
           <Householdinfo name="Apartment"/>
         </div>
 
+        {households?.map(house => {
+              return (
+                  <Householdinfo name={house.name}/>
+              )
+          })}
+
         <div id = "addNewHousehold">
-          <button class = "addbutton"><Icon.HouseAdd size="30px" /></button>
+          <AddHousehold addNewHousehold={addNewHousehold}/>
         </div>
 
         <div id = "joinHousehold">
