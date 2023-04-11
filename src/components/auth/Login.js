@@ -18,6 +18,11 @@ export default function Login({ navigation }) {
 
   async function signIn() {
     try {
+      // TODO: Add more validation
+      if (username === "" || password === "") {
+        throw new Error("Username and password cannot be empty");
+      }
+
       const user = await CognitoAuth.signIn(username, password);
       navigation.navigate("InitialPage");
     } catch (error) {

@@ -17,6 +17,11 @@ export default function ConfirmRegister({ navigation, route }) {
 
   async function confirmSignUp() {
     try {
+      // Add more validation
+      if (verificationCode === "") {
+        throw new Error("Verification code cannot be empty");
+      }
+
       const user = await CognitoAuth.confirmSignUp(
         route.params.username,
         verificationCode
