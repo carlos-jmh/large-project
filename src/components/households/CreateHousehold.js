@@ -1,14 +1,14 @@
 import { Pressable, Text, View } from "react-native";
-import { getStyles } from "../styles";
-import { useTheme } from "@react-navigation/native";
-import LabeledInput from "../LabeledInput";
-import CustomButton from "../CustomButton";
-import ProfileIcon from "../ProfileIcon";
-import { useState } from "react";
-import { API } from "aws-amplify";
-import { graphqlOperation } from "@aws-amplify/api";
-import { getCognitoToken } from "../auth/auth";
 
+import { API } from "aws-amplify";
+import CustomButton from "../CustomButton";
+import LabeledInput from "../LabeledInput";
+import ProfileIcon from "../ProfileIcon";
+import { getCognitoToken } from "../auth/auth";
+import { getStyles } from "../styles";
+import { graphqlOperation } from "@aws-amplify/api";
+import { useState } from "react";
+import { useTheme } from "@react-navigation/native";
 
 export default function CreateHousehold({ navigation, route }) {
   const { colors } = useTheme();
@@ -30,7 +30,7 @@ export default function CreateHousehold({ navigation, route }) {
   const createHouseHold = async () => {
     try {
       const token = await getCognitoToken();
-      
+
       const createNewHouseHoldResponse = await API.graphql(
         graphqlOperation(
           `mutation CreateNewHouseHold($houseHoldName: String!) {
@@ -87,8 +87,7 @@ export default function CreateHousehold({ navigation, route }) {
             ),
             { Authorization: `Banana ${token}` }
           );
-        }
-        catch (error) {
+        } catch (error) {
           failedUsers.push({ name: user.name, error: error });
         }
       })
@@ -99,7 +98,10 @@ export default function CreateHousehold({ navigation, route }) {
 
   async function handleCreateHousehold() {
     const newHouseHold = await createHouseHold();
-    const failedUsers = await addUsersToHouseHold(invitedUsers, newHouseHold.id);
+    const failedUsers = await addUsersToHouseHold(
+      invitedUsers,
+      newHouseHold.id
+    );
 
     if (failedUsers.length > 0) {
       console.log("Failed to add users to household: ", failedUsers);
@@ -126,7 +128,7 @@ export default function CreateHousehold({ navigation, route }) {
           value={houseHoldName}
         />
         <View style={{ height: 22 }} />
-        <View style={{ display:'flex', flexDirection : 'row' }}>
+        <View style={{ display: "flex", flexDirection: "row" }}>
           <View style={{ height: 22 }} />
           <LabeledInput
             label={"INVITE BY USERNAME"}
@@ -143,17 +145,33 @@ export default function CreateHousehold({ navigation, route }) {
             <Text style={styles.buttonText}>INVITE</Text>
           </Pressable>
         </View>
-        <View style={{ height:22 }} />
-        <Text style={[styles.label, { marginBottom: 4 }]}>INVITED MEMBERS:</Text>
-        <View style={{ height:22 }} />
-        <View style={{ flex:1, flexDirection:'row', flexWrap: 'wrap', alignContent:'flex-start' }}>
+        <View style={{ height: 22 }} />
+        <Text style={[styles.label, { marginBottom: 4 }]}>
+          INVITED MEMBERS:
+        </Text>
+        <View style={{ height: 22 }} />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            flexWrap: "wrap",
+            alignContent: "flex-start",
+          }}
+        >
           {invitedUsers.map((item, index) => (
-            <ProfileIcon key={index} username={item.name} deleteFunc={handleInvitedUserDelete} />
+            <ProfileIcon
+              key={index}
+              username={item.name}
+              deleteFunc={handleInvitedUserDelete}
+            />
           ))}
-          <View style={{ flexBasis:'100%', height:50 }} />
-          <View style={{ width:'100%' }} >
-            <CustomButton title="CREATE HOUSEHOLD" 
-              onPress={ async () => { await handleCreateHousehold(); }}
+          <View style={{ flexBasis: "100%", height: 50 }} />
+          <View style={{ width: "100%" }}>
+            <CustomButton
+              title="CREATE HOUSEHOLD"
+              onPress={async () => {
+                await handleCreateHousehold();
+              }}
             />
           </View>
         </View>
