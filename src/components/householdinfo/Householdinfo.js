@@ -13,9 +13,11 @@ const Householdinfo = ({name}) => {
     for (let i = 0; i < tabs.length; i++)
     {
       tabs[i].classList.remove('active2');
+      tabs[i].classList.add('inactive');
     }
 
     // Add active to current.
+    document.getElementById(name).classList.remove('inactive');
     document.getElementById(name).classList.add('active2');
   }
 
@@ -25,8 +27,8 @@ const Householdinfo = ({name}) => {
   }
   return (
     <div>
-      <button class="round-button bg2" id={name}>
-          <span class="round-button" onClick={updateHouse}>{name}</span>
+      <button onClick={updateHouse} class="round-button bg2" id={name}>
+          <span class="round-button">{name}</span>
       </button>
     </div>
   )

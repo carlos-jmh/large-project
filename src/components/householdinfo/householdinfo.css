@@ -20,5 +20,9 @@
 }
 
 .active2 {
-  background-image: linear-gradient(to left, rgb(213, 184, 255) 1.5%, rgba(194, 24, 24, 0) 1%);
+  background-image: linear-gradient(to left, rgb(190, 143, 255) 1.5%, rgba(194, 24, 24, 0) 1%);
+}
+
+.inactive {
+  background-image: linear-gradient(to left, rgb(201, 201, 201) 1.5%, rgba(194, 24, 24, 0) 1%);
 }
