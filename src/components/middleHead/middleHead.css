@@ -1,0 +1,27 @@
+.views {
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.views button {
+    background-color: white;
+    border-radius: 0;
+    box-sizing: content-box;
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    color: black;
+}
+
+.views button:hover {
+    background-color: rgb(213, 184, 255);
+}
+
+.active {
+    background-image: linear-gradient(to top, rgb(213, 184, 255) 10%, rgba(194, 24, 24, 0) 1%);
+}

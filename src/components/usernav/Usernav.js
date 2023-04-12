@@ -3,8 +3,6 @@ import * as ReactDOM from 'react-dom';
 import './usernav.css'
 import * as Icon from 'react-bootstrap-icons'
 
-import Form from '../../components/form/Form';
-
 const Usernav = () => {
 
   const [hide, setHide] = useState(false);

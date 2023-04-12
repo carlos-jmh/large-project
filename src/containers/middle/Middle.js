@@ -116,13 +116,15 @@ const Middle = () => {
                 <Add addTask={addTask3} useState={false}/>
               </div>
             </div>
-            <div className="section1">
+        </div>
+        <div className="lists">
+          <div className="section1">
               <h5 className="sectionHeader">Lists</h5>
               <div className="list">
                 <List toDoList = {toDoList} handleToggle={handleToggle}/>
                 <Add addTask={addTask} useState={false}/>
               </div>
-            </div>
+          </div>
         </div>
       </>     
     );  

@@ -48,3 +48,14 @@
     gap: 4rem;
     display: none;
 }
+
+.header {
+    width: 100%;
+}
+
+.lists {
+    margin: 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}

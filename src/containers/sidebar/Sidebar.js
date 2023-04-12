@@ -12,16 +12,7 @@ const Sidebar = () => {
 
   // Set button to active class (background color more grey)
   // Pass value to dashboard that allows inbox value to be changed.
-  function loadInbox() {
-    document.querySelectorAll('div.midContent')[0].style.display = "none";
-    document.querySelectorAll('div.inbox')[0].style.display = "block";
-  }
-
-  function loadUpcoming() {
-    document.querySelectorAll('div.inbox')[0].style.display = "none";
-    document.querySelectorAll('div.midContent')[0].style.display = "";
-  }
-
+  
   const addNewHousehold = (houseHold) => {
     setHouseHolds([...houseHolds, houseHold]);
   }
@@ -113,7 +104,7 @@ const Sidebar = () => {
         Create map of all the information.
         Goes in component householdInfo pass household name, tasks due today"
       */}
-      <div class="views">
+      {/* <div class="views">
         <button onClick={loadInbox}>
           <Icon.InboxFill/>
           <h6>Inbox</h6>
@@ -122,17 +113,19 @@ const Sidebar = () => {
           <Icon.Calendar3/>
           <h6>Upcoming</h6>
         </button>
-      </div>
+      </div> */}
         <div class="households">
           <h3>Households</h3>
         </div>
 
-        {houseHolds?.map(house => {
+        <div className="houses">
+          {houseHolds?.map(house => {
               return (
                   <Householdinfo name={house.name}/>
               )
           })}
-
+        </div>
+      
         <div id = "addNewHousehold">
           <AddHousehold addNewHousehold={addNewHousehold}/>
         </div>

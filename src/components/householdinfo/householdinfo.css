@@ -1,10 +1,24 @@
 .round-button {
   color: white;
   outline: none;
-  background: #7d00b2;
+  background-color: transparent;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-radius: 20px;
-  width: 12rem;
-  margin-bottom: 30px;
+  width: 100%;
+  border-radius: 0;
+  color: black;
+  font-weight: 600;
+  font-size: 1.5rem;
 } 
+
+/* .bg2 {
+  background-image: linear-gradient(to right, rgb(199, 198, 201) 3%, rgba(194, 24, 24, 0) 1%);
+} */
+
+.round-button:hover {
+  background: rgb(213, 184, 255);
+}
+
+.active2 {
+  background-image: linear-gradient(to left, rgb(213, 184, 255) 1.5%, rgba(194, 24, 24, 0) 1%);
+}
