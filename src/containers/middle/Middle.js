@@ -65,6 +65,11 @@ const Middle = () => {
 
     return (
       <>
+      {/*
+      - In upcoming view list both tasks and events together in one column going in chronological order.
+      - Find a way to denote each one (Event is red, Task is blue) can be users choice
+      - Also included undated events above with a separation
+      */}
         <div className="midContent">
           <div className="calendar">
             {/* <label>Selected Date</label>
@@ -91,13 +96,6 @@ const Middle = () => {
                   <Events events = {events} handleCheck={handleCheck2}/>
                   <Add addTask={addTask3} useState={false}/>
                 </div>
-              </div>
-            </div>
-            <div className="section2">
-              <h5 className="sectionHeader">Lists</h5>
-              <div className="list">
-                <List name="Grocery List" toDoList = {toDoList} handleToggle={handleToggle}/>
-                <Add addTask={addTask} useState={false}/>
               </div>
             </div>
           </div>

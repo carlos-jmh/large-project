@@ -184,19 +184,11 @@ function Auth(props) {
   }
 
   if (authMode === "confirmedSignUp") {
-    return (
-      <div>
-        <p>Confirmed: { formInput.email }</p>
-      </div>
-    )
+    window.location.href = "/dashboard"
   }
 
   if (authMode === "signedIn") {
-    return (
-      <div>
-        <p>You are signed in: { formInput.username }</p>
-      </div>
-    )
+    window.location.href = "/dashboard"
   }
 }
 

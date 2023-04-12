@@ -57,32 +57,32 @@ const Form = () => {
         </div>
 
         {/* Create form for household */}
-        <div class="tabcontent" style={{display: "none"}} id="household">
-          <div class="form-group">
-            <label for="householdName">Enter your household name</label>
-            <input type="text" class="form-control" id="householdName" placeholder="Uni Dorm" required></input>
+        <div className="tabcontent" style={{display: "none"}} id="household">
+          <div className="form-group">
+            <label htmlFor="householdName">Enter your household name</label>
+            <input type="text" className="form-control" id="householdName" placeholder="Uni Dorm" required></input>
           </div>
 
           <div className="formBtn">
-            <button type="submit" class="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" class="btn btn-success">Add Household</button>
+            <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
+            <button type="submit" className="btn btn-success">Add Household</button>
           </div>
         </div>
 
       {/* Create form for list */}
         <div class="tabcontent" style={{display: "none"}} id="list">
           <div class="form-group">
-            <label for="listName">Enter your list name</label>
+            <label htmlFor="listName">Enter your list name</label>
             <input type="text" class="form-control" id="listName" placeholder="Grocery List" required></input>
           </div>
 
           <div class="form-group">
-            <label for="listDesc">Enter your list description</label>
+            <label htmlFor="listDesc">Enter your list description</label>
             <input type="text" class="form-control" id="listDisc" placeholder="List to track grocery items" required></input>
           </div>
 
           <div class="form-group">
-            <label for="listTask">Link to a task?</label>
+            <label htmlFor="listTask">Link to a task?</label>
             <select id="listTask" class="form-control">
               <option>Task1</option>
               <option>Task2</option>
@@ -100,17 +100,17 @@ const Form = () => {
         {/* Create form for event */}
         <div class="tabcontent" style={{display: "none"}} id="event">
           <div class="form-group">
-            <label for="eventName">Enter your event name</label>
+            <label htmlFor="eventName">Enter your event name</label>
             <input type="text" class="form-control" id="eventName" placeholder="Class" required></input>
           </div>
 
           <div class="form-group">
-            <label for="eventDesc">Enter your event description</label>
+            <label htmlFor="eventDesc">Enter your event description</label>
             <input type="text" class="form-control" id="eventDesc" placeholder="COP4331" required></input>
           </div>
 
           <div class="form-group">
-            <label for="event">Enter event date</label>
+            <label htmlFor="event">Enter event date</label>
             <input type="datetime-local" class="form-control" id="event"></input>
           </div>
 

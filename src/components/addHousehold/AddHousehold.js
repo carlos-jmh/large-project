@@ -1,11 +1,51 @@
 import React, {useState} from 'react'
 import './addHousehold.css'
 import * as Icon from 'react-bootstrap-icons'
+import { API, graphqlOperation } from 'aws-amplify'
+import { getCognitoToken }from "../AuthUser"
 
 const AddHousehold = ({addNewHousehold}) => {
   const [add, setAdd] = useState(false);
   const [ userInput, setUserInput ] = useState('');
 
+  const createHouseHold = async (houseHoldName) => {
+    console.log("top of create")
+    try {
+      const token = await getCognitoToken();
+
+      const createNewHouseHoldResponse = await API.graphql(
+        graphqlOperation(
+          `mutation CreateNewHouseHold($houseHoldName: String!) {
+            createNewHouseHold(houseHoldName: $houseHoldName)
+          }`,
+          { houseHoldName: houseHoldName }
+        ),
+        { Authorization: token }
+      );
+    console.log("2")
+      const newHouseHoldId = createNewHouseHoldResponse.data.createNewHouseHold;
+
+      const getHouseHoldResponse = await API.graphql(
+        graphqlOperation(
+          `query GetHouseHold($id: ID!) {
+            getHouseHold(id: $id) {
+              id
+              name
+            }
+          }`,
+          { id: newHouseHoldId }
+        ),
+        { Authorization: token }
+      );
+          console.log("3")
+      const newHouseHold = getHouseHoldResponse.data.getHouseHold;
+
+      return newHouseHold;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  };
 
   function changeAdd() {
     setAdd(!add);
@@ -15,9 +55,11 @@ const AddHousehold = ({addNewHousehold}) => {
     setUserInput(e.currentTarget.value)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    addNewHousehold(userInput)
+    console.log(userInput)
+    const newHouseHold = await createHouseHold(userInput)
+    addNewHousehold(newHouseHold)
     setUserInput("");
   }
 
