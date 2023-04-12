@@ -116,6 +116,7 @@ const Sidebar = () => {
       </div> */}
         <div class="households">
           <h3>Households</h3>
+          <hr></hr>
         </div>
 
         <div className="houses">

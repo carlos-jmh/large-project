@@ -70,37 +70,40 @@ const Middle = () => {
       - Find a way to denote each one (Event is red, Task is blue) can be users choice
       - Also included undated events above with a separation
       */}
+        <Form/>
         <div className="midContent">
           <div className="calendar">
-            {/* <label>Selected Date</label>
-            <DatePicker
-              wrapperclassName="datePicker" 
-              selected={selectedDate} 
-              onChange={date => setSelecteddDate(date)}
-              minDate={new Date()}
-            /> */}
+              {/* <label>Selected Date</label>
+              <DatePicker
+                wrapperclassName="datePicker" 
+                selected={selectedDate} 
+                onChange={date => setSelecteddDate(date)}
+                minDate={new Date()}
+              /> */}
             <Cal/>
           </div>
           <div class="display">
             <div className="taskevent">
-            <div className="section1">
+              <div className="section1">
+                <h5 className="sectionHeader">Upcoming</h5>
                 <h5 className="sectionHeader">Tasks</h5>
-                <div className="task">
+                <div className="task">    
                   <TaskList tasks = {tasks} handleCheck={handleCheck}/>
                   <Add addTask={addTask2} useState={false}/>
                 </div>
-              </div>
-              <div className="section1">
-                <h5 className="sectionHeader">Events</h5>
-                <div className="event">
-                  <Events events = {events} handleCheck={handleCheck2}/>
-                  <Add addTask={addTask3} useState={false}/>
+                <div className="section1">
+                  <h5 className="sectionHeader">Events</h5>
+                  <div className="event">
+                    <Events events = {events} handleCheck={handleCheck2}/>
+                    <Add addTask={addTask3} useState={false}/>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <Form/>
         </div>
+
+
         <div className="inbox">
           <div className="section1">
               <h5 className="sectionHeader">Tasks</h5>
@@ -116,14 +119,16 @@ const Middle = () => {
                 <Add addTask={addTask3} useState={false}/>
               </div>
             </div>
-        </div>
+          </div>
+
+
         <div className="lists">
           <div className="section1">
-              <h5 className="sectionHeader">Lists</h5>
-              <div className="list">
-                <List toDoList = {toDoList} handleToggle={handleToggle}/>
-                <Add addTask={addTask} useState={false}/>
-              </div>
+            <h5 className="sectionHeader">Lists</h5>
+            <div className="list">
+              <List toDoList = {toDoList} handleToggle={handleToggle}/>
+              <Add addTask={addTask} useState={false}/>
+            </div>
           </div>
         </div>
       </>     
