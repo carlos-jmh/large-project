@@ -217,6 +217,7 @@ type Mutation {
   updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteTask(taskId: String!): String @function(name: "deleteTask-${env}") @auth(rules: [{ allow: custom }])
+  addMessageToChatRoom(message: String!, chatRoomId: String!) : String @function(name: "addMessageToChatRoom-${env}") @auth(rules: [{allow: custom}])
 }
 
 type Subscription {

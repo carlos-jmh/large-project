@@ -1,29 +1,29 @@
 /* Amplify Params - DO NOT EDIT
-	API_HOUSEHOLDAPP_CALENDARTABLE_ARN
-	API_HOUSEHOLDAPP_CALENDARTABLE_NAME
-	API_HOUSEHOLDAPP_CHATROOMTABLE_ARN
-	API_HOUSEHOLDAPP_CHATROOMTABLE_NAME
-	API_HOUSEHOLDAPP_EVENTHANDLERTABLE_ARN
-	API_HOUSEHOLDAPP_EVENTHANDLERTABLE_NAME
-	API_HOUSEHOLDAPP_EVENTTABLE_ARN
-	API_HOUSEHOLDAPP_EVENTTABLE_NAME
-	API_HOUSEHOLDAPP_GRAPHQLAPIIDOUTPUT
-	API_HOUSEHOLDAPP_HOUSEHOLDMEMBERTABLE_ARN
-	API_HOUSEHOLDAPP_HOUSEHOLDMEMBERTABLE_NAME
-	API_HOUSEHOLDAPP_HOUSEHOLDTABLE_ARN
-	API_HOUSEHOLDAPP_HOUSEHOLDTABLE_NAME
-	API_HOUSEHOLDAPP_ITEMTABLE_ARN
-	API_HOUSEHOLDAPP_ITEMTABLE_NAME
-	API_HOUSEHOLDAPP_LISTTABLE_ARN
-	API_HOUSEHOLDAPP_LISTTABLE_NAME
-	API_HOUSEHOLDAPP_MESSAGETABLE_ARN
-	API_HOUSEHOLDAPP_MESSAGETABLE_NAME
-	API_HOUSEHOLDAPP_TASKTABLE_ARN
-	API_HOUSEHOLDAPP_TASKTABLE_NAME
-	API_HOUSEHOLDAPP_USERPROFILETABLE_ARN
-	API_HOUSEHOLDAPP_USERPROFILETABLE_NAME
-	ENV
-	REGION
+  API_HOUSEHOLDAPP_CALENDARTABLE_ARN
+  API_HOUSEHOLDAPP_CALENDARTABLE_NAME
+  API_HOUSEHOLDAPP_CHATROOMTABLE_ARN
+  API_HOUSEHOLDAPP_CHATROOMTABLE_NAME
+  API_HOUSEHOLDAPP_EVENTHANDLERTABLE_ARN
+  API_HOUSEHOLDAPP_EVENTHANDLERTABLE_NAME
+  API_HOUSEHOLDAPP_EVENTTABLE_ARN
+  API_HOUSEHOLDAPP_EVENTTABLE_NAME
+  API_HOUSEHOLDAPP_GRAPHQLAPIIDOUTPUT
+  API_HOUSEHOLDAPP_HOUSEHOLDMEMBERTABLE_ARN
+  API_HOUSEHOLDAPP_HOUSEHOLDMEMBERTABLE_NAME
+  API_HOUSEHOLDAPP_HOUSEHOLDTABLE_ARN
+  API_HOUSEHOLDAPP_HOUSEHOLDTABLE_NAME
+  API_HOUSEHOLDAPP_ITEMTABLE_ARN
+  API_HOUSEHOLDAPP_ITEMTABLE_NAME
+  API_HOUSEHOLDAPP_LISTTABLE_ARN
+  API_HOUSEHOLDAPP_LISTTABLE_NAME
+  API_HOUSEHOLDAPP_MESSAGETABLE_ARN
+  API_HOUSEHOLDAPP_MESSAGETABLE_NAME
+  API_HOUSEHOLDAPP_TASKTABLE_ARN
+  API_HOUSEHOLDAPP_TASKTABLE_NAME
+  API_HOUSEHOLDAPP_USERPROFILETABLE_ARN
+  API_HOUSEHOLDAPP_USERPROFILETABLE_NAME
+  ENV
+  REGION
 Amplify Params - DO NOT EDIT */
 
 const AWS = require('aws-sdk');
@@ -307,6 +307,13 @@ async function checkAuthorization(ast, variables, userInfo) {
         }
         break;
       }
+      case "addMessageToChatRoom": {
+        const chatRoomId = retrieveArgument("chatRoomId", selection.arguments, variables);
+        if (!await isAuthorizedForChatRoom(dynamo, chatRoomId, sub)) {
+          return false;
+        }
+        break;
+      }
 
       // Subscriptions
       case "onAddUserToHouseHold": {
@@ -316,7 +323,7 @@ async function checkAuthorization(ast, variables, userInfo) {
         }
         break;
       }
-      
+
       default:
         return false;
     }
@@ -442,7 +449,7 @@ async function isAuthorizedForEvent(dynamo, eventId, sub) {
       id: eventId,
     },
   };
-  
+
   try {
     const result = await dynamo.get(params).promise();
     const event = result.Item;
@@ -527,7 +534,7 @@ async function isAuthorizedForHouseHold(dynamo, houseHoldId, sub) {
 function retrieveArgument(argumentName, arguments, variables) {
   if (arguments && arguments.length > 0) {
     const argument = arguments.find((argument) => argument.name.value === argumentName);
-    
+
     if (argument && argument.value.kind === 'Variable') {
       return variables[argument.value.name.value];
     } else if (argument && argument.value.kind === 'StringValue') {
@@ -545,7 +552,7 @@ function retrieveInputArgument(argumentName, arguments, variables) {
     const inputArguments = inputArgument.value.fields;
 
     const argument = inputArguments.find((argument) => argument.name.value === argumentName);
-    
+
     if (argument && argument.value.kind === 'Variable') {
       return variables[argument.value.name.value];
     } else if (argument && argument.value.kind === 'StringValue') {

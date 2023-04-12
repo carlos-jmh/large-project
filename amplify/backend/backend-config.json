@@ -73,6 +73,20 @@
     }
   },
   "function": {
+    "addMessageToChatRoom": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "addUserToHouseHold": {
       "build": true,
       "dependsOn": [
