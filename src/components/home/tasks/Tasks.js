@@ -72,7 +72,10 @@ export default function Tasks({ navigation, route }) {
   return (
     <View style={{ flex: 1 }}>
       <HeaderBar title={route.params.household.name} screenName={route.name} />
-      <ScrollView style={{ marginHorizontal: 16, marginTop: 16, flex: 1 }}>
+      <ScrollView
+        style={{ marginHorizontal: 16, marginTop: 16, flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <UndatedTasks undatedTasks={undatedTasks} />
         <DatedTasks datedTasks={datedTasksByDate} />
         <View style={{ height: 16 }} />

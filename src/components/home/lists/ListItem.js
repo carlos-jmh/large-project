@@ -1,3 +1,4 @@
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
@@ -17,37 +18,43 @@ export default function ListItem({
   const styles = getStyles(colors);
 
   return (
-    <Pressable
-      style={{
-        padding: 8,
-        borderRadius: 8,
-        backgroundColor: colors.primary,
-        flexDirection: "row",
-      }}
-      android_ripple={{ color: colors.highlight }}
+    <Animated.View
+      style={{ borderRadius: 8, overflow: "hidden" }}
+      entering={FadeIn.duration(200)}
+      exiting={FadeOut.duration(200)}
     >
-      <BouncyCheckbox
-        size={18}
-        isChecked={isChecked}
-        iconStyle={{ borderRadius: 4 }}
-        innerIconStyle={{ borderRadius: 4 }}
-        fillColor={colors.primaryText}
-        ImageComponent={Checkmark}
-        onPress={onChecked}
-      />
-      <View>
-        <Text
-          style={{
-            color: colors.primaryText,
-            fontFamily: "Inter_500Medium",
-            fontSize: 14,
-          }}
-        >
-          {title}
-        </Text>
-        <ListItemInfo taskTitle={taskTitle} date={date} />
-      </View>
-    </Pressable>
+      <Pressable
+        style={{
+          padding: 8,
+          borderRadius: 8,
+          backgroundColor: colors.primary,
+          flexDirection: "row",
+        }}
+        android_ripple={{ color: colors.highlight }}
+      >
+        <BouncyCheckbox
+          size={18}
+          isChecked={isChecked}
+          iconStyle={{ borderRadius: 4 }}
+          innerIconStyle={{ borderRadius: 4 }}
+          fillColor={colors.primaryText}
+          ImageComponent={Checkmark}
+          onPress={onChecked}
+        />
+        <View>
+          <Text
+            style={{
+              color: colors.primaryText,
+              fontFamily: "Inter_500Medium",
+              fontSize: 14,
+            }}
+          >
+            {title}
+          </Text>
+          <ListItemInfo taskTitle={taskTitle} date={date} />
+        </View>
+      </Pressable>
+    </Animated.View>
   );
 }
 

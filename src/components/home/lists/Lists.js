@@ -1,29 +1,3 @@
-import { Text, View } from "react-native";
-
-import HeaderBar from "../HeaderBar";
-import Navbar from "../Navbar";
-import { getStyles } from "../../styles";
-import { useTheme } from "@react-navigation/native";
-
-/* Lists page */
-export default function Lists({ navigation, route }) {
-  const { colors } = useTheme();
-  const styles = getStyles(colors);
-
-  // Get actual lists from the backend here
-
-  return (
-    <View style={{ flex: 1 }}>
-      <HeaderBar title={route.params.household.name} screenName={route.name} />
-      <View style={{ flex: 1 }}></View>
-      <Navbar
-        screenName={route.name}
-        navigation={navigation}
-        household={route.params.household}
-      />
-    </View>
-  );
-}
 import { ScrollView, Text, View } from "react-native";
 
 import HeaderBar from "../HeaderBar";
@@ -45,9 +19,16 @@ export default function Tasks({ navigation, route }) {
   return (
     <View style={{ flex: 1 }}>
       <HeaderBar title={route.params.household.name} screenName={route.name} />
-      <ScrollView style={{ marginHorizontal: 16, marginTop: 16, flex: 1 }}>
+      <ScrollView
+        style={{
+          marginHorizontal: 16,
+          marginTop: 16,
+          flex: 1,
+        }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         {lists.map((list, i) => {
-          return <List title={list.title} listItems={list.items} />;
+          return <List title={list.title} listItems={list.items} key={i} />;
         })}
       </ScrollView>
       <Navbar
