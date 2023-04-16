@@ -1,4 +1,4 @@
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
@@ -17,9 +17,14 @@ export default function ListItem({
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
+  const primaryTextColor = isChecked
+    ? colors.primaryTextFaded
+    : colors.primaryText;
+
   return (
     <Animated.View
       style={{ borderRadius: 8, overflow: "hidden" }}
+      layout={Layout.duration(200)}
       entering={FadeIn.duration(200)}
       exiting={FadeOut.duration(200)}
     >
@@ -37,14 +42,14 @@ export default function ListItem({
           isChecked={isChecked}
           iconStyle={{ borderRadius: 4 }}
           innerIconStyle={{ borderRadius: 4 }}
-          fillColor={colors.primaryText}
+          fillColor={primaryTextColor}
           ImageComponent={Checkmark}
           onPress={onChecked}
         />
         <View>
           <Text
             style={{
-              color: colors.primaryText,
+              color: primaryTextColor,
               fontFamily: "Inter_500Medium",
               fontSize: 14,
             }}

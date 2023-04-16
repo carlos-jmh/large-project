@@ -16,7 +16,7 @@ import { useTheme } from "@react-navigation/native";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function DatedTasks({ datedTasks }) {
+export default function DatedTasks({ datedTasks, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
@@ -25,22 +25,24 @@ export default function DatedTasks({ datedTasks }) {
   return (
     <View>
       {datedTasks.map((taskMonth, i) => {
-        return <TasksMonth taskMonth={taskMonth} key={i} />;
+        return (
+          <TasksMonth taskMonth={taskMonth} key={i} onChecked={onChecked} />
+        );
       })}
     </View>
   );
 }
 
-function TasksMonth({ taskMonth }) {
+function TasksMonth({ taskMonth, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  const caratRotation = useSharedValue(0);
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  const caratRotation = useSharedValue(90 * !isExpanded);
   const caratAnimationStyles = useAnimatedStyle(() => {
     return { transform: [{ rotate: `${caratRotation.value}deg` }] };
   });
-
-  const [isExpanded, setIsExpanded] = useState(true);
 
   return (
     <Animated.View
@@ -51,6 +53,8 @@ function TasksMonth({ taskMonth }) {
         backgroundColor: colors.card,
       }}
       layout={Layout.duration(200)}
+      entering={FadeIn.duration(200)}
+      exiting={FadeOut.duration(200)}
     >
       <AnimatedPressable
         onPress={() => {
@@ -82,7 +86,9 @@ function TasksMonth({ taskMonth }) {
         </View>
         {isExpanded
           ? taskMonth.days.map((taskDay, i) => {
-              return <TasksDay taskDay={taskDay} key={i} />;
+              return (
+                <TasksDay taskDay={taskDay} key={i} onChecked={onChecked} />
+              );
             })
           : null}
       </AnimatedPressable>
@@ -90,7 +96,7 @@ function TasksMonth({ taskMonth }) {
   );
 }
 
-function TasksDay({ taskDay }) {
+function TasksDay({ taskDay, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
@@ -109,11 +115,13 @@ function TasksDay({ taskDay }) {
       >
         {taskDay.tasks.map((task, i) => {
           return (
-            <View style={{ marginTop: i > 0 ? 10 : 0 }} key={i}>
+            <View style={{ marginTop: i > 0 ? 10 : 0 }} key={task.id}>
               <Task
                 title={task.title}
                 listTitle={task.listTitle}
                 date={task.date}
+                isChecked={task.completed}
+                onChecked={(isChecked) => onChecked(isChecked, task.id)}
               />
             </View>
           );

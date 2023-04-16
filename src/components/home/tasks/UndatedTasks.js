@@ -1,4 +1,6 @@
 import Animated, {
+  FadeIn,
+  FadeOut,
   Layout,
   useAnimatedStyle,
   useSharedValue,
@@ -14,16 +16,16 @@ import { useTheme } from "@react-navigation/native";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function UndatedTasks({ undatedTasks }) {
+export default function UndatedTasks({ undatedTasks, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  const caratRotation = useSharedValue(0);
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  const caratRotation = useSharedValue(90 * !isExpanded);
   const caratAnimationStyles = useAnimatedStyle(() => {
     return { transform: [{ rotate: `${caratRotation.value}deg` }] };
   });
-
-  const [isExpanded, setIsExpanded] = useState(true);
 
   return (
     <Animated.View
@@ -33,6 +35,8 @@ export default function UndatedTasks({ undatedTasks }) {
         backgroundColor: colors.card,
       }}
       layout={Layout.duration(200)}
+      entering={FadeIn.duration(200)}
+      exiting={FadeOut.duration(200)}
     >
       <AnimatedPressable
         onPress={() => {
@@ -64,8 +68,13 @@ export default function UndatedTasks({ undatedTasks }) {
         {isExpanded
           ? undatedTasks.map((task, i) => {
               return (
-                <View style={{ marginTop: i > 0 ? 10 : 16 }} key={i}>
-                  <Task title={task.title} listTitle={task.listTitle} />
+                <View style={{ marginTop: i > 0 ? 10 : 16 }} key={task.id}>
+                  <Task
+                    title={task.title}
+                    listTitle={task.listTitle}
+                    isChecked={task.completed}
+                    onChecked={(isChecked) => onChecked(isChecked, task.id)}
+                  />
                 </View>
               );
             })

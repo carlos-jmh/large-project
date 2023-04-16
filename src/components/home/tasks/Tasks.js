@@ -17,8 +17,11 @@ export default function Tasks({ navigation, route }) {
   // Get actual tasks from the backend here
   const [tasks, setTasks] = useState(data.tasks);
 
+  // Filters out completed tasks (will be done with query in future? or completed tasks will be deleted)
+  const unfinishedTasks = tasks.filter((task) => !task.completed);
+
   // Undated tasks are those without an attached EventHandler
-  const undatedTasks = tasks
+  const undatedTasks = unfinishedTasks
     .filter((task) => !("eventHandlerId" in task))
     .map((task) => {
       return {
@@ -29,7 +32,9 @@ export default function Tasks({ navigation, route }) {
   let datedTasks = [];
 
   // For dated tasks, find every Event associated with its EventHandler
-  for (const task of tasks.filter((task) => "eventHandlerId" in task)) {
+  for (const task of unfinishedTasks.filter(
+    (task) => "eventHandlerId" in task
+  )) {
     for (const event of data.eventHandlers[task.eventHandlerId].events) {
       datedTasks.push({
         ...task,
@@ -69,6 +74,16 @@ export default function Tasks({ navigation, route }) {
     lastDate = date;
   }
 
+  // Called when a task is checked/unchecked
+  function handleCheckTask(isChecked, taskId) {
+    setTasks((oldTasks) => {
+      let newTasks = [...oldTasks];
+      const newTaskIndex = newTasks.findIndex((task) => task.id == taskId);
+      newTasks[newTaskIndex].completed = !newTasks[newTaskIndex].completed;
+      return newTasks;
+    });
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <HeaderBar title={route.params.household.name} screenName={route.name} />
@@ -76,8 +91,8 @@ export default function Tasks({ navigation, route }) {
         style={{ marginHorizontal: 16, marginTop: 16, flex: 1 }}
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        <UndatedTasks undatedTasks={undatedTasks} />
-        <DatedTasks datedTasks={datedTasksByDate} />
+        <UndatedTasks undatedTasks={undatedTasks} onChecked={handleCheckTask} />
+        <DatedTasks datedTasks={datedTasksByDate} onChecked={handleCheckTask} />
         <View style={{ height: 16 }} />
       </ScrollView>
       <Navbar

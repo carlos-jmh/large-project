@@ -1,4 +1,4 @@
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
@@ -7,13 +7,14 @@ import { getStyles } from "../../styles";
 import { useTheme } from "@react-navigation/native";
 
 /* Task component */
-export default function Task({ title, listTitle, date }) {
+export default function Task({ title, listTitle, date, isChecked, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
   return (
     <Animated.View
       style={{ borderRadius: 8, overflow: "hidden" }}
+      layout={Layout.duration(200)}
       entering={FadeIn.duration(200)}
       exiting={FadeOut.duration(200)}
     >
@@ -28,11 +29,12 @@ export default function Task({ title, listTitle, date }) {
       >
         <BouncyCheckbox
           size={18}
+          isChecked={isChecked}
           iconStyle={{ borderRadius: 4 }}
           innerIconStyle={{ borderRadius: 4 }}
           fillColor={colors.primaryText}
           ImageComponent={Checkmark}
-          onPress={() => {}}
+          onPress={onChecked}
         />
         <View>
           <Text
