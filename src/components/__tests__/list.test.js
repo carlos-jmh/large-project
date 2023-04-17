@@ -19,12 +19,14 @@ const handleToggle = (id) => {
 // });
 
 // Verify items have correct ammount of list items.
-// test('Correct amount of list items', () => {
-//     render(<List toDoList={toDoList} handdleToggle={handleToggle}/>)
+test('Correct amount of list items', () => {
+    render(<List toDoList={toDoList} handdleToggle={handleToggle}/>)
 
-//     // Count the number of ListItems in div name 'items'
-//     const container = document.getElementsByClassName('items');
-//     console.log(container.children);
+    // On load, list should be closed, and have no children.
+    const container = document.getElementsByClassName('items');
+    expect(container.children).toBe('undefined');
 
-//     // expect(container.children.length).toBe(Object.keys(data).length);
-// });
+    // On open, list should update children.
+    // How can I alter setOpen in my rendered list?
+    // expect(container.children.length).toBe(Object.keys(data).length);
+});
