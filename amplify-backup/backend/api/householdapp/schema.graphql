@@ -1,0 +1,236 @@
+type Message
+  @model(
+    mutations: { create: null, delete: null, update: null },
+  )
+  @auth(rules: [
+    { allow: custom },
+    { allow: private, provider: iam },
+  ])
+{
+  id: ID!
+  message: String!
+  authorHouseHoldMemberId: String!
+  ChatRoom: ChatRoom @belongsTo(fields: ["chatRoomId"])
+  chatRoomId: ID! @index(name: "byChatRoom")
+}
+
+type ChatRoom
+  @model(
+    mutations: { create: null, delete: null, update: null },
+  )
+  @auth(rules: [
+    { allow: custom},
+    { allow: private, provider: iam },
+  ])
+{
+  id: ID!
+  Messages: [Message] @hasMany(indexName: "byChatRoom", fields: ["id"])
+  houseHoldId: ID!
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
+}
+
+type Task 
+  @model (
+    mutations: { delete: null },
+  )
+  @auth(rules: [
+  { allow: custom },
+  { allow: private, provider: iam },
+  ]) 
+{
+  id: ID!
+  title: String!
+  houseHoldId: ID! @index(name: "byHouseHold")
+  foreverTask: Boolean
+  listId: ID
+  List: List @belongsTo(fields: ["listId"])
+  itemId: ID
+  Item: Item @belongsTo(fields: ["itemId"])
+  deleteSourceOnComplete: Boolean
+  eventHandlerId: ID
+  EventHandler: EventHandler @belongsTo(fields: ["eventHandlerId"])
+  completed: Boolean
+  pointValue: Int
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
+}
+
+type UserProfile
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: owner, ownerField: "owner" operations: [read] },
+    { allow: private, provider: iam },
+  ])
+{
+  id: ID!
+  owner: String! @index(name: "byOwner", queryField: "userProfileByOwner", sortKeyFields: ["id"])
+  preferredName: String @auth(rules: [{ allow: owner, ownerField: "owner", operations: [read, update] }])
+  HouseHoldMembers: [HouseHoldMember] @hasMany(indexName: "byUserProfile", fields: ["id"])
+}
+
+type HouseHoldMember
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: owner, ownerField: "owner", operations: [read] },
+    { allow: private, provider: iam },
+  ])
+{
+  id: ID!
+  points: Int
+  owner: String!
+  nickname: String!
+  userProfileId: ID! @index(name: "byUserProfile")
+  UserProfile: UserProfile @belongsTo(fields: ["userProfileId"])
+  houseHoldId: ID! @index(name: "byHouseHold")
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
+}
+
+type EventHandler
+  @model(
+    mutations: { create: null, update: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: custom },
+    { allow: private, provider: iam },
+  ])
+{
+  id: ID!
+  frequency: String!
+  calendarId: ID! @index(name: "byCalendar")
+  Calendar: Calendar @belongsTo(fields: ["calendarId"])
+  Events: [Event] @hasMany(indexName: "byEventHandler", fields: ["id"])
+  taskId: ID!
+  Task: Task @hasOne
+  sourceDate: AWSDateTime!
+  endDate: AWSDateTime!
+}
+
+type Event
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: custom },
+    { allow: private, provider: iam },
+  ])
+{
+  id: ID!
+  date: AWSDateTime!
+  completed: Boolean!
+  eventHandlerId: ID! @index(name: "byEventHandler", sortKeyFields: ["id"])
+  calendarId: ID! @index(name: "byCalendar")
+  EventHandler: EventHandler @belongsTo(fields: ["eventHandlerId"])
+  Calendar: Calendar @belongsTo(fields: ["calendarId"])
+}
+
+type Calendar
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(rules: [
+    { allow: custom },
+    { allow: private, provider: iam },
+  ])
+{
+  id: ID!
+  Events: [Event] @hasMany(indexName: "byCalendar", fields: ["id"])
+  EventHandlers: [EventHandler] @hasMany(indexName: "byCalendar", fields: ["id"])
+  houseHoldId: ID!
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
+}
+
+type HouseHold
+  @model(
+    mutations: { create: null, delete: null },
+  )
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "owners", operations: [read] },
+      { allow: private, provider: iam },
+  ])
+{
+  id: ID!
+  name: String!
+    @auth(
+    rules: [
+      { allow: owner, ownerField: "owners", operations: [read, update] },
+      { allow: private, provider: iam },
+    ])
+  owners: [String!]!
+  Lists: [List] @hasMany(indexName: "byHouseHold", fields: ["id"])
+  Tasks: [Task] @hasMany(indexName: "byHouseHold", fields: ["id"])
+  HouseHoldMembers: [HouseHoldMember] @hasMany(indexName: "byHouseHold", fields: ["id"])
+  Calendar: Calendar @hasOne
+  ChatRoom: ChatRoom @hasOne
+}
+
+type Item @model @auth(rules: [
+  { allow: custom },
+  { allow: private, provider: iam },
+]) {
+  id: ID!
+  title: String!
+  description: String
+  completed: Boolean
+  listId: ID! @index(name: "byList")
+  List: List @belongsTo(fields: ["listId"])
+  Task: Task @hasOne
+}
+
+type List @model @auth(rules: [
+  { allow: custom },
+]) {
+  id: ID!
+  title: String!
+  description: String
+  houseHoldId: ID! @index(name: "byHouseHold")
+  Items: [Item] @hasMany(indexName: "byList", fields: ["id"])
+  HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
+  Task: Task @hasOne
+}
+
+type HouseHoldDisplayInfo {
+  id: ID
+  name: String
+}
+
+# Exact same as HouseHoldMember, but with the cognitoUsername field
+# This allows us to run Subscriptions properly
+type AddUserToHouseHoldResponse {
+  id: ID
+  points: Int
+  owner: String
+  nickname: String
+  userProfileId: ID
+  houseHoldId: ID
+  HouseHoldDisplayInfo: HouseHoldDisplayInfo
+  cognitoUsername: String
+}
+
+type Mutation {
+  createNewHouseHold(houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
+  addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): AddUserToHouseHoldResponse @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: custom }])
+  createEventHandler(calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
+  updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
+  deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
+  deleteTask(taskId: String!): String @function(name: "deleteTask-${env}") @auth(rules: [{ allow: custom }])
+  addMessageToChatRoom(message: String!, chatRoomId: String!) : String @function(name: "addMessageToChatRoom-${env}") @auth(rules: [{allow: custom}])
+}
+
+type Subscription {
+  onAddUserToHouseHold(cognitoUsername: String!): AddUserToHouseHoldResponse
+    @aws_subscribe(mutations: ["addUserToHouseHold"])
+    @auth(rules: [{ allow: custom }])
+}
+
+# enum for frequency of Events
+enum FREQUENCY {
+  DAILY,
+  WEEKLY,
+  MONTHLY,
+  YEARLY
+}
+    

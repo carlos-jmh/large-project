@@ -1,0 +1,389 @@
+{
+  "api": {
+    "householdapp": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "largeproject9e7232c0"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authlargeproject9e7232c0"
+              }
+            },
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "authenticationType": "AWS_LAMBDA",
+            "lambdaAuthorizerConfig": {
+              "lambdaFunction": "graphQlLambdaAuthorizerc6ebb49e",
+              "ttlSeconds": "0"
+            }
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "largeproject9e7232c0": {
+      "customAuth": false,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "largeproject9e7232c0PostConfirmation",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OPTIONAL",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
+  "function": {
+    "addMessageToChatRoom": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "addUserToHouseHold": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "largeproject9e7232c0"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "createEventHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "createNewHouseHold": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "deleteEventHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "deleteTask": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "deleteEventHandler"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "graphQlLambdaAuthorizerc6ebb49e": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "largeproject9e7232c0PostConfirmation": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "largeprojectCommonLayer"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "largeprojectCommonLayer": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    },
+    "updateEventHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "createEventHandler"
+        },
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "deleteEventHandler"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_addUserToHouseHold_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addUserToHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_addUserToHouseHold_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addUserToHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_createEventHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_createEventHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_createNewHouseHold_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createNewHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_createNewHouseHold_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createNewHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteEventHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteEventHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteTask_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteTask"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteTask_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteTask"
+        }
+      ]
+    },
+    "AMPLIFY_function_graphQlLambdaAuthorizerc6ebb49e_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "graphQlLambdaAuthorizerc6ebb49e"
+        }
+      ]
+    },
+    "AMPLIFY_function_graphQlLambdaAuthorizerc6ebb49e_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "graphQlLambdaAuthorizerc6ebb49e"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeproject9e7232c0PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeproject9e7232c0PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeproject9e7232c0PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeproject9e7232c0PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeprojectCommonLayer_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeprojectCommonLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeprojectCommonLayer_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeprojectCommonLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateEventHandler_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateEventHandler_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateEventHandler"
+        }
+      ]
+    }
+  }
+}
