@@ -147,5 +147,30 @@ export function getStyles(colors) {
       shadowRadius: 4,
       elevation: 5,
     },
+    calendarStyles:{
+      margin:20,
+      padding:20,
+      borderRadius:20,
+      calendarBackground: colors.card,
+      textSectionTitleColor: colors.calendarText,
+      textSectionTitleDisabledColor: colors.textFaded,
+      selectedDayBackgroundColor: '#ff9900',
+      selectedDayTextColor: colors.calendarText,
+      todayTextColor: '#00adf5',
+      dayTextColor: colors.calendarText,
+      textDisabledColor: colors.textFaded,
+      dotColor: '#00adf5',
+      selectedDotColor: colors.calendarText,
+      arrowColor: colors.calendarText,
+      monthTextColor: colors.calendarText,
+      indicatorColor: 'blue',
+      textDayFontWeight: '300',
+      textMonthFontWeight: 'bold',
+      textDayHeaderFontWeight: '300',
+      textDayFontSize: 16,
+      textMonthFontSize: 16,
+      textDayHeaderFontSize: 16,
+
+    }
   });
 }

@@ -17,6 +17,7 @@ const LightTheme = {
     danger: "rgb(209,26,42)",
     profileSat: "76%",
     profileLight: "69%",
+    calendarText: '#000'
   },
 };
 
@@ -39,6 +40,7 @@ const DarkTheme = {
     danger: "rgb(209,26,42)",
     profileSat: "76%",
     profileLight: "69%",
+    calendarText: '#fff'
   },
 };
 
