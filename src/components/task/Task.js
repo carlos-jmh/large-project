@@ -9,12 +9,12 @@ const Task = ({task, handleCheck}) => {
   const checkOff = (e) => {
     handleCheck(e.currentTarget.id) 
 }
-
   if(task.date) {
     return (
       <div date={task.date} id={task.id} key={task.id + task.task} name="task" value={task.id} className={task.complete}>
         <input type="checkbox" id={task.id} onChange={checkOff}/>
         {" " + task.task}
+        {" " + task.date}
       </div>
     ) 
   } else {

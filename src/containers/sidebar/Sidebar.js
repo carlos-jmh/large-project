@@ -100,20 +100,6 @@ const Sidebar = () => {
 
   return (
     <div class = "container">
-      {/* Get list of all households, as well as pertinent information regarding them.
-        Create map of all the information.
-        Goes in component householdInfo pass household name, tasks due today"
-      */}
-      {/* <div class="views">
-        <button onClick={loadInbox}>
-          <Icon.InboxFill/>
-          <h6>Inbox</h6>
-        </button>
-        <button onClick={loadUpcoming}>
-          <Icon.Calendar3/>
-          <h6>Upcoming</h6>
-        </button>
-      </div> */}
         <div class="households">
           <h3>Households</h3>
           <hr></hr>

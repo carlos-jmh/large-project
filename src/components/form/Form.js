@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
+import Add from '../add/Add';
 import './form.css';
 
 // This all-in-one form allows household creation, task creation, and list creation.
 const Form = () => {
-  let create;
 
-  const [state, setState] = useState("task");
+  // Set button to active class (background color more grey)
+  // Pass value to dashboard that allows inbox value to be changed.
   
   function openTab(tab)
   {
@@ -19,25 +20,20 @@ const Form = () => {
       links[i].classList.remove('active');
     }
 
-    if (tab === "h")
+    if (tab === "l")
     {
       content[0].style.display = "block";
       links[0].classList.add("active");
     }
-    else if (tab === "l")
+    else if (tab === "e")
     {
       content[1].style.display = "block";
       links[1].classList.add("active");
     }
-    else if (tab === "e")
+    else
     {
       content[2].style.display = "block";
       links[2].classList.add("active");
-    }
-    else
-    {
-      content[3].style.display = "block";
-      links[3].classList.add("active");
     }
   }
 
@@ -50,23 +46,10 @@ const Form = () => {
     return (
       <div class="genform">
         <div className="tabs">
-          <button class="tablinks" id="h" onClick={() => openTab("h")}>Household</button>
           <button class="tablinks" id="l" onClick={() => openTab("l")}>List</button>
           <button class="tablinks" id="e" onClick={() => openTab("e")}>Event</button>
           <button class="tablinks active" id="t" onClick={() => openTab("t")}>Task</button>
-        </div>
-
-        {/* Create form for household */}
-        <div className="tabcontent" style={{display: "none"}} id="household">
-          <div className="form-group">
-            <label htmlFor="householdName">Enter your household name</label>
-            <input type="text" className="form-control" id="householdName" placeholder="Uni Dorm" required></input>
-          </div>
-
-          <div className="formBtn">
-            <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" className="btn btn-success">Add Household</button>
-          </div>
+          <button type="submit" onClick={() => closeForm()}>X</button>
         </div>
 
       {/* Create form for list */}
@@ -133,11 +116,6 @@ const Form = () => {
                 <option>Delete on completion</option>
                 <option>Forever</option>
               </select>
-          </div>
-
-          <div class="form-group">
-            <label for="event">Make an event?</label>
-            <input type="datetime-local" class="form-control" id="event"></input>
           </div>
 
           <div class="form-group">

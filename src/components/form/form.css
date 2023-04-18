@@ -18,6 +18,20 @@
   margin: 0px;
   width: 150px;
 }
+
+.close {
+  background-color: red;
+  float: left;
+  border: none;
+  border-radius: 0px;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  margin: 0px;
+  width: 150px;
+}
   
 /* Change background color of buttons on hover */
 .tabs button:hover {

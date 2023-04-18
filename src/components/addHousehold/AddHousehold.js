@@ -5,11 +5,10 @@ import { API, graphqlOperation } from 'aws-amplify'
 import { getCognitoToken }from "../AuthUser"
 
 const AddHousehold = ({addNewHousehold}) => {
-  const [add, setAdd] = useState(false);
+  const [add, setAdd] = useState();
   const [ userInput, setUserInput ] = useState('');
 
   const createHouseHold = async (houseHoldName) => {
-    console.log("top of create")
     try {
       const token = await getCognitoToken();
 
@@ -22,7 +21,6 @@ const AddHousehold = ({addNewHousehold}) => {
         ),
         { Authorization: token }
       );
-    console.log("2")
       const newHouseHoldId = createNewHouseHoldResponse.data.createNewHouseHold;
 
       const getHouseHoldResponse = await API.graphql(
@@ -37,7 +35,6 @@ const AddHousehold = ({addNewHousehold}) => {
         ),
         { Authorization: token }
       );
-          console.log("3")
       const newHouseHold = getHouseHoldResponse.data.getHouseHold;
 
       return newHouseHold;
@@ -57,7 +54,6 @@ const AddHousehold = ({addNewHousehold}) => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(userInput)
     const newHouseHold = await createHouseHold(userInput)
     addNewHousehold(newHouseHold)
     setUserInput("");
@@ -72,7 +68,7 @@ const AddHousehold = ({addNewHousehold}) => {
   else 
     return (
       <form onSubmit={handleSubmit} className="addingTask">
-        <input type="text" value={userInput} onChange={handleChange} class="form-control" id="name" placeholder="Task/Item Name"/>
+        <input type="text" value={userInput} onChange={handleChange} class="form-control" id="name" placeholder="Household Name"/>
         <hr></hr>
         <div className="buttons">
           <button class="btn btn-danger" onClick={changeAdd}>close</button>
