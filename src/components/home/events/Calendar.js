@@ -7,7 +7,7 @@ import data from '../mockData';
 
 export default function MyCalendar({getEventsByDate}) {
   const [markedDates, setMarkedDates] = useState({});
-  const [selected, setSelected] = useState((new Date()).toDateString);
+  const [selected, setSelected] = useState();
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
