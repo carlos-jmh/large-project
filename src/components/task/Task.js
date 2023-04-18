@@ -15,6 +15,7 @@ const Task = ({task, handleCheck}) => {
       <div date={task.date} id={task.id} key={task.id + task.task} name="task" value={task.id} className={task.complete}>
         <input type="checkbox" id={task.id} onChange={checkOff}/>
         {" " + task.task}
+        {"" + task.date}
       </div>
     ) 
   } else {
