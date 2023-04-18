@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import './middle.css'
 
-import Task from '../../components/tasklist/TaskList'
 import List from '../../components/list/List'
 import Events from '../../components/events/Events'
 import Form from '../../components/form/Form'
@@ -22,7 +21,6 @@ const Middle = () => {
   const [toDoList, setToDoList] = useState(data);
   const [tasks, setTasks] = useState(taskData);
   const [events, setEvents] = useState(eventData);
-
 
   const handleToggle = (id) => {
     let mapped = toDoList.map(task => {
@@ -66,9 +64,9 @@ const Middle = () => {
     return (
       <>
       {/*
-      - In upcoming view list both tasks and events together in one column going in chronological order.
+      - In upcoming view list both tasks and events together in one column going in chronological order. (DONE)
       - Find a way to denote each one (Event is red, Task is blue) can be users choice
-      - Also included undated events above with a separation
+      - Also included undated events above with a separation 
       */}
         <Form/>
         <div className="midContent">

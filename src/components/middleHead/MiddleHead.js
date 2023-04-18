@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as Icon from 'react-bootstrap-icons';
 import './middleHead.css';
 
 const MiddleHead = () => {
+    useEffect(() => {
+      loadInbox();
+    });
     function loadInbox() {
         document.querySelectorAll('div.midContent')[0].style.display = "none";
         document.querySelectorAll('div.lists')[0].style.display = "none";
