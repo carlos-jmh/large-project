@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 import './add.css'
 import * as Icon from 'react-bootstrap-icons'
 
-const Add = ({addTask}) => {
-  const [add, setAdd] = useState(false);
+const Add = ({addTask, state}) => {
+  const [add, setAdd] = useState(state);
   const [ userInput, setUserInput ] = useState('');
   const [ userDate, setDateInput ] = useState('');
 
