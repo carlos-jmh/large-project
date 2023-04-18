@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import AddHousehold from '../../components/addHousehold/AddHousehold'
+import Add from '../add/Add';
 import './form.css';
 
 // This all-in-one form allows household creation, task creation, and list creation.
@@ -116,11 +116,6 @@ const Form = () => {
                 <option>Delete on completion</option>
                 <option>Forever</option>
               </select>
-          </div>
-
-          <div class="form-group">
-            <label for="event">Make an event?</label>
-            <input type="datetime-local" class="form-control" id="event"></input>
           </div>
 
           <div class="form-group">

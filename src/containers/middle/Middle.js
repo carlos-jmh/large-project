@@ -87,13 +87,13 @@ const Middle = () => {
                 <h5 className="sectionHeader">Tasks</h5>
                 <div className="task">    
                   <TaskList tasks = {tasks} handleCheck={handleCheck}/>
-                  <Add addTask={addTask2} useState={false}/>
+                  <Add addTask={addTask2} useState={false} name="Task"/>
                 </div>
                 <div className="section1">
                   <h5 className="sectionHeader">Events</h5>
                   <div className="event">
                     <Events events = {events} handleCheck={handleCheck2}/>
-                    <Add addTask={addTask3} useState={false}/>
+                    <Add addTask={addTask3} useState={false} name="Event"/>
                   </div>
                 </div>
               </div>
@@ -107,14 +107,14 @@ const Middle = () => {
               <h5 className="sectionHeader">Tasks</h5>
               <div className="task">
               <TaskList tasks = {tasks} handleCheck={handleCheck}/>
-              <Add addTask={addTask2} useState={false}/>
+              <Add addTask={addTask2} useState={false} name="Task"/>
               </div>
             </div>
             <div className="section1">
               <h5 className="sectionHeader">Events</h5>
               <div className="event">
                 <Events events = {events} handleCheck={handleCheck2}/>
-                <Add addTask={addTask3} useState={false}/>
+                <Add addTask={addTask3} useState={false} name="Event"/>
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@ const Middle = () => {
             <h5 className="sectionHeader">Lists</h5>
             <div className="list">
               <List toDoList = {toDoList} handleToggle={handleToggle}/>
-              <Add addTask={addTask} useState={false}/>
+              <Add addTask={addTask} useState={false} name="Item"/>
             </div>
           </div>
         </div>
