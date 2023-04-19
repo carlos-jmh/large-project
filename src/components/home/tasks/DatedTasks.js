@@ -1,3 +1,11 @@
+import Animated, {
+  FadeIn,
+  FadeOut,
+  Layout,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import { Pressable, Text, View } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
@@ -6,7 +14,9 @@ import { getStyles } from "../../styles";
 import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
 
-export default function DatedTasks({ datedTasks }) {
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+export default function DatedTasks({ datedTasks, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
@@ -14,59 +24,79 @@ export default function DatedTasks({ datedTasks }) {
 
   return (
     <View>
-      {datedTasks.map((taskMonth) => {
-        return <TasksMonth taskMonth={taskMonth} />;
+      {datedTasks.map((taskMonth, i) => {
+        return (
+          <TasksMonth taskMonth={taskMonth} key={i} onChecked={onChecked} />
+        );
       })}
     </View>
   );
 }
 
-function TasksMonth({ taskMonth }) {
+function TasksMonth({ taskMonth, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
   const [isExpanded, setIsExpanded] = useState(true);
 
+  const caratRotation = useSharedValue(90 * !isExpanded);
+  const caratAnimationStyles = useAnimatedStyle(() => {
+    return { transform: [{ rotate: `${caratRotation.value}deg` }] };
+  });
+
   return (
-    <Pressable
-      onPress={() => setIsExpanded(!isExpanded)}
-      android_ripple={{ color: colors.border }}
+    <Animated.View
       style={{
-        padding: 16,
         borderRadius: 8,
-        backgroundColor: colors.card,
+        overflow: "hidden",
         marginTop: 16,
+        backgroundColor: colors.card,
       }}
+      layout={Layout.duration(200)}
+      entering={FadeIn.duration(200)}
+      exiting={FadeOut.duration(200)}
     >
-      <View style={{ flexDirection: "row" }}>
-        <Text
-          style={{
-            color: colors.text,
-            fontFamily: "Inter_600SemiBold",
-            fontSize: 14,
-            flex: 1,
-            textAlign: "center",
-          }}
-        >
-          {months[taskMonth.date.getMonth()]} {taskMonth.date.getFullYear()} (
-          {taskMonth.length})
-        </Text>
-        <AntDesign
-          name={isExpanded ? "caretdown" : "caretleft"}
-          size={16}
-          color={colors.text}
-        />
-      </View>
-      {isExpanded
-        ? taskMonth.days.map((taskDay) => {
-            return <TasksDay taskDay={taskDay} />;
-          })
-        : null}
-    </Pressable>
+      <AnimatedPressable
+        onPress={() => {
+          setIsExpanded(!isExpanded);
+          caratRotation.value = withTiming(90 * isExpanded, { duration: 200 });
+        }}
+        android_ripple={{ color: colors.border }}
+        style={{
+          padding: 16,
+        }}
+        layout={Layout.duration(200)}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={{
+              color: colors.text,
+              fontFamily: "Inter_600SemiBold",
+              fontSize: 14,
+              flex: 1,
+              textAlign: "center",
+            }}
+          >
+            {months[taskMonth.date.getMonth()]} {taskMonth.date.getFullYear()} (
+            {taskMonth.length})
+          </Text>
+          <Animated.View style={caratAnimationStyles}>
+            <AntDesign name={"caretdown"} size={16} color={colors.text} />
+          </Animated.View>
+        </View>
+        {isExpanded
+          ? taskMonth.days.map((taskDay, i) => {
+              return (
+                <TasksDay taskDay={taskDay} key={i} onChecked={onChecked} />
+              );
+            })
+          : null}
+      </AnimatedPressable>
+    </Animated.View>
   );
 }
 
-function TasksDay({ taskDay }) {
+function TasksDay({ taskDay, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
@@ -85,11 +115,13 @@ function TasksDay({ taskDay }) {
       >
         {taskDay.tasks.map((task, i) => {
           return (
-            <View style={{ marginTop: i > 0 ? 10 : 0 }}>
+            <View style={{ marginTop: i > 0 ? 10 : 0 }} key={task.id}>
               <Task
                 title={task.title}
                 listTitle={task.listTitle}
                 date={task.date}
+                isChecked={task.completed}
+                onChecked={(isChecked) => onChecked(isChecked, task.id)}
               />
             </View>
           );
@@ -106,7 +138,11 @@ function DateLabel({ date }) {
   const isToday = new Date().toDateString() === date.toDateString();
 
   return (
-    <View style={{ width: 32, alignItems: "center", marginRight: 8 }}>
+    <Animated.View
+      style={{ width: 32, alignItems: "center", marginRight: 8 }}
+      entering={FadeIn.duration(200)}
+      exiting={FadeOut.duration(200)}
+    >
       <Text
         style={{
           color: isToday ? colors.primary : colors.textFaded,
@@ -140,7 +176,7 @@ function DateLabel({ date }) {
           {date.getDate()}
         </Text>
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
