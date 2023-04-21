@@ -30,9 +30,7 @@ type ChatRoom
 }
 
 type Task 
-  @model (
-    mutations: { delete: null },
-  )
+  @model
   @auth(rules: [
   { allow: custom },
   { allow: private, provider: iam },
@@ -46,7 +44,7 @@ type Task
   List: List @belongsTo(fields: ["listId"])
   itemId: ID
   Item: Item @belongsTo(fields: ["itemId"])
-  deleteSourceOnComplete: Boolean
+  completeSourceOnComplete: Boolean
   eventHandlerId: ID
   EventHandler: EventHandler @belongsTo(fields: ["eventHandlerId"])
   completed: Boolean
@@ -174,22 +172,28 @@ type Item @model @auth(rules: [
   id: ID!
   title: String!
   description: String
-  completed: Boolean
+  completed: Boolean!
   listId: ID! @index(name: "byList")
   List: List @belongsTo(fields: ["listId"])
   Task: Task @hasOne
 }
 
-type List @model @auth(rules: [
-  { allow: custom },
+type List 
+  @model(
+    mutations: { delete: null }
+  ) 
+  @auth(rules: [
+  { allow: custom },{ allow: private, provider: iam }
 ]) {
   id: ID!
   title: String!
   description: String
   houseHoldId: ID! @index(name: "byHouseHold")
+  completed: Boolean!
   Items: [Item] @hasMany(indexName: "byList", fields: ["id"])
   HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
   Task: Task @hasOne
+  
 }
 
 type HouseHoldDisplayInfo {
@@ -217,7 +221,9 @@ type Mutation {
   updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteTask(taskId: String!): String @function(name: "deleteTask-${env}") @auth(rules: [{ allow: custom }])
+  deleteListCustom(listId: String!): String @function(name: "deleteListCustom-${env}") @auth(rules: [{ allow: custom }])
   addMessageToChatRoom(message: String!, chatRoomId: String!) : String @function(name: "addMessageToChatRoom-${env}") @auth(rules: [{allow: custom}])
+  completeTask(taskId: String!) : String @function(name: "completeTask-${env}") @auth(rules: [{allow: custom}])
 }
 
 type Subscription {

@@ -108,6 +108,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "completeTask": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createEventHandler": {
       "build": true,
       "dependsOn": [
@@ -137,6 +151,20 @@
       "service": "Lambda"
     },
     "deleteEventHandler": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "deleteListCustom": {
       "build": true,
       "dependsOn": [
         {
@@ -241,6 +269,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_addMessageToChatRoom_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addMessageToChatRoom"
+        }
+      ]
+    },
+    "AMPLIFY_function_addMessageToChatRoom_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addMessageToChatRoom"
+        }
+      ]
+    },
     "AMPLIFY_function_addUserToHouseHold_deploymentBucketName": {
       "usedBy": [
         {
