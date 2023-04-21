@@ -30,9 +30,7 @@ type ChatRoom
 }
 
 type Task 
-  @model (
-    mutations: {},
-  )
+  @model
   @auth(rules: [
   { allow: custom },
   { allow: private, provider: iam },
@@ -180,7 +178,11 @@ type Item @model @auth(rules: [
   Task: Task @hasOne
 }
 
-type List @model(mutations: {},) @auth(rules: [
+type List 
+  @model(
+    mutations: { delete: null }
+  ) 
+  @auth(rules: [
   { allow: custom },{ allow: private, provider: iam }
 ]) {
   id: ID!
