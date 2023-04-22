@@ -314,6 +314,7 @@ export const getTask = /* GraphQL */ `
         title
         description
         houseHoldId
+        completed
         Items {
           nextToken
           startedAt
@@ -337,7 +338,7 @@ export const getTask = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -366,6 +367,7 @@ export const getTask = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -380,7 +382,7 @@ export const getTask = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -397,7 +399,7 @@ export const getTask = /* GraphQL */ `
         _lastChangedAt
         itemTaskId
       }
-      deleteSourceOnComplete
+      completeSourceOnComplete
       eventHandlerId
       EventHandler {
         id
@@ -424,7 +426,7 @@ export const getTask = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -513,6 +515,7 @@ export const listTasks = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -534,7 +537,7 @@ export const listTasks = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -599,6 +602,7 @@ export const syncTasks = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -620,7 +624,7 @@ export const syncTasks = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -687,6 +691,7 @@ export const tasksByHouseHoldId = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -708,7 +713,7 @@ export const tasksByHouseHoldId = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -1224,6 +1229,7 @@ export const getEventHandler = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -1245,7 +1251,7 @@ export const getEventHandler = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -1324,7 +1330,7 @@ export const listEventHandlers = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -1386,7 +1392,7 @@ export const syncEventHandlers = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -1450,7 +1456,7 @@ export const eventHandlersByCalendarId = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -1507,7 +1513,7 @@ export const getEvent = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -1964,6 +1970,7 @@ export const getHouseHold = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -1982,7 +1989,7 @@ export const getHouseHold = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -2203,6 +2210,7 @@ export const getItem = /* GraphQL */ `
         title
         description
         houseHoldId
+        completed
         Items {
           nextToken
           startedAt
@@ -2226,7 +2234,7 @@ export const getItem = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -2254,6 +2262,7 @@ export const getItem = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -2275,7 +2284,7 @@ export const getItem = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -2338,6 +2347,7 @@ export const listItems = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -2352,7 +2362,7 @@ export const listItems = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -2398,6 +2408,7 @@ export const syncItems = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -2412,7 +2423,7 @@ export const syncItems = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -2460,6 +2471,7 @@ export const itemsByListId = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -2474,7 +2486,7 @@ export const itemsByListId = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -2503,6 +2515,7 @@ export const getList = /* GraphQL */ `
       title
       description
       houseHoldId
+      completed
       Items {
         items {
           id
@@ -2573,6 +2586,7 @@ export const getList = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -2594,7 +2608,7 @@ export const getList = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -2651,6 +2665,7 @@ export const listLists = /* GraphQL */ `
         title
         description
         houseHoldId
+        completed
         Items {
           nextToken
           startedAt
@@ -2674,7 +2689,7 @@ export const listLists = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -2714,6 +2729,7 @@ export const syncLists = /* GraphQL */ `
         title
         description
         houseHoldId
+        completed
         Items {
           nextToken
           startedAt
@@ -2737,7 +2753,7 @@ export const syncLists = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -2779,6 +2795,7 @@ export const listsByHouseHoldId = /* GraphQL */ `
         title
         description
         houseHoldId
+        completed
         Items {
           nextToken
           startedAt
@@ -2802,7 +2819,7 @@ export const listsByHouseHoldId = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue

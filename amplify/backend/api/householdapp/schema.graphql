@@ -30,7 +30,9 @@ type ChatRoom
 }
 
 type Task 
-  @model
+  @model (
+    mutations: { create: "createTask", delete: null, update: null },
+  )
   @auth(rules: [
   { allow: custom },
   { allow: private, provider: iam },
@@ -108,7 +110,7 @@ type EventHandler
 
 type Event
   @model(
-    mutations: { create: null, delete: null },
+    mutations: { create: null, delete: null, update: "updateEvent" },
   )
   @auth(rules: [
     { allow: custom },
@@ -126,7 +128,7 @@ type Event
 
 type Calendar
   @model(
-    mutations: { create: null, delete: null },
+    mutations: { create: null, delete: null, update: "updateCalendar" },
   )
   @auth(rules: [
     { allow: custom },
@@ -142,7 +144,7 @@ type Calendar
 
 type HouseHold
   @model(
-    mutations: { create: null, delete: null },
+    mutations: { create: null, delete: null, update: "updateHouseHold" },
   )
   @auth(
     rules: [
@@ -178,10 +180,10 @@ type Item @model @auth(rules: [
   Task: Task @hasOne
 }
 
-type List 
+type List
   @model(
-    mutations: { delete: null }
-  ) 
+    mutations: { create: "createList", delete: null, update: "updateList" },
+  )
   @auth(rules: [
   { allow: custom },{ allow: private, provider: iam }
 ]) {

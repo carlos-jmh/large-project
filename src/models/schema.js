@@ -294,8 +294,8 @@ export const schema = {
                         ]
                     }
                 },
-                "deleteSourceOnComplete": {
-                    "name": "deleteSourceOnComplete",
+                "completeSourceOnComplete": {
+                    "name": "completeSourceOnComplete",
                     "isArray": false,
                     "type": "Boolean",
                     "isRequired": false,
@@ -376,7 +376,9 @@ export const schema = {
                     "type": "model",
                     "properties": {
                         "mutations": {
-                            "delete": null
+                            "create": "createTask",
+                            "delete": null,
+                            "update": null
                         }
                     }
                 },
@@ -936,7 +938,8 @@ export const schema = {
                     "properties": {
                         "mutations": {
                             "create": null,
-                            "delete": null
+                            "delete": null,
+                            "update": "updateEvent"
                         }
                     }
                 },
@@ -1076,7 +1079,8 @@ export const schema = {
                     "properties": {
                         "mutations": {
                             "create": null,
-                            "delete": null
+                            "delete": null,
+                            "update": "updateCalendar"
                         }
                     }
                 },
@@ -1256,7 +1260,8 @@ export const schema = {
                     "properties": {
                         "mutations": {
                             "create": null,
-                            "delete": null
+                            "delete": null,
+                            "update": "updateHouseHold"
                         }
                     }
                 },
@@ -1316,7 +1321,7 @@ export const schema = {
                     "name": "completed",
                     "isArray": false,
                     "type": "Boolean",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "listId": {
@@ -1458,6 +1463,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "completed": {
+                    "name": "completed",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "Items": {
                     "name": "Items",
                     "isArray": true,
@@ -1536,7 +1548,13 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "mutations": {
+                            "create": "createList",
+                            "delete": null,
+                            "update": "updateList"
+                        }
+                    }
                 },
                 {
                     "type": "key",
@@ -1553,6 +1571,16 @@ export const schema = {
                         "rules": [
                             {
                                 "allow": "custom",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1662,5 +1690,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.0",
-    "version": "5a1634c13a365f28614de23e281607cf"
+    "version": "d7dadef2f31f2631238b8278e1db0b36"
 };
