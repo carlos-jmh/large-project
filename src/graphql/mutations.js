@@ -1,22 +1,23 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createItem = /* GraphQL */ `
-  mutation CreateItem(
-    $input: CreateItemInput!
-    $condition: ModelItemConditionInput
+export const createTask = /* GraphQL */ `
+  mutation CreateTask(
+    $input: CreateTaskInput!
+    $condition: ModelTaskConditionInput
   ) {
-    createItem(input: $input, condition: $condition) {
+    createTask(input: $input, condition: $condition) {
       id
       title
-      description
-      completed
+      houseHoldId
+      foreverTask
       listId
       List {
         id
         title
         description
         houseHoldId
+        completed
         Items {
           nextToken
           startedAt
@@ -40,7 +41,518 @@ export const createItem = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        listTaskId
+      }
+      itemId
+      Item {
+        id
+        title
+        description
+        completed
+        listId
+        List {
+          id
+          title
+          description
+          houseHoldId
+          completed
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          completeSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        itemTaskId
+      }
+      completeSourceOnComplete
+      eventHandlerId
+      EventHandler {
+        id
+        frequency
+        calendarId
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        Events {
+          nextToken
+          startedAt
+        }
+        taskId
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          completeSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        sourceDate
+        endDate
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        eventHandlerTaskId
+      }
+      completed
+      pointValue
+      HouseHold {
+        id
+        name
+        owners
+        Lists {
+          nextToken
+          startedAt
+        }
+        Tasks {
+          nextToken
+          startedAt
+        }
+        HouseHoldMembers {
+          nextToken
+          startedAt
+        }
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        ChatRoom {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        houseHoldCalendarId
+        houseHoldChatRoomId
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateEvent = /* GraphQL */ `
+  mutation UpdateEvent(
+    $input: UpdateEventInput!
+    $condition: ModelEventConditionInput
+  ) {
+    updateEvent(input: $input, condition: $condition) {
+      id
+      date
+      completed
+      eventHandlerId
+      calendarId
+      EventHandler {
+        id
+        frequency
+        calendarId
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        Events {
+          nextToken
+          startedAt
+        }
+        taskId
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          completeSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        sourceDate
+        endDate
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        eventHandlerTaskId
+      }
+      Calendar {
+        id
+        Events {
+          nextToken
+          startedAt
+        }
+        EventHandlers {
+          nextToken
+          startedAt
+        }
+        houseHoldId
+        HouseHold {
+          id
+          name
+          owners
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          houseHoldCalendarId
+          houseHoldChatRoomId
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateCalendar = /* GraphQL */ `
+  mutation UpdateCalendar(
+    $input: UpdateCalendarInput!
+    $condition: ModelCalendarConditionInput
+  ) {
+    updateCalendar(input: $input, condition: $condition) {
+      id
+      Events {
+        items {
+          id
+          date
+          completed
+          eventHandlerId
+          calendarId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      EventHandlers {
+        items {
+          id
+          frequency
+          calendarId
+          taskId
+          sourceDate
+          endDate
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          eventHandlerTaskId
+        }
+        nextToken
+        startedAt
+      }
+      houseHoldId
+      HouseHold {
+        id
+        name
+        owners
+        Lists {
+          nextToken
+          startedAt
+        }
+        Tasks {
+          nextToken
+          startedAt
+        }
+        HouseHoldMembers {
+          nextToken
+          startedAt
+        }
+        Calendar {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        ChatRoom {
+          id
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        houseHoldCalendarId
+        houseHoldChatRoomId
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateHouseHold = /* GraphQL */ `
+  mutation UpdateHouseHold(
+    $input: UpdateHouseHoldInput!
+    $condition: ModelHouseHoldConditionInput
+  ) {
+    updateHouseHold(input: $input, condition: $condition) {
+      id
+      name
+      owners
+      Lists {
+        items {
+          id
+          title
+          description
+          houseHoldId
+          completed
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          listTaskId
+        }
+        nextToken
+        startedAt
+      }
+      Tasks {
+        items {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          completeSourceOnComplete
+          eventHandlerId
+          completed
+          pointValue
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      HouseHoldMembers {
+        items {
+          id
+          points
+          owner
+          nickname
+          userProfileId
+          houseHoldId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        nextToken
+        startedAt
+      }
+      Calendar {
+        id
+        Events {
+          nextToken
+          startedAt
+        }
+        EventHandlers {
+          nextToken
+          startedAt
+        }
+        houseHoldId
+        HouseHold {
+          id
+          name
+          owners
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          houseHoldCalendarId
+          houseHoldChatRoomId
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      ChatRoom {
+        id
+        Messages {
+          nextToken
+          startedAt
+        }
+        houseHoldId
+        HouseHold {
+          id
+          name
+          owners
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          houseHoldCalendarId
+          houseHoldChatRoomId
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      houseHoldCalendarId
+      houseHoldChatRoomId
+    }
+  }
+`;
+export const createItem = /* GraphQL */ `
+  mutation CreateItem(
+    $input: CreateItemInput!
+    $condition: ModelItemConditionInput
+  ) {
+    createItem(input: $input, condition: $condition) {
+      id
+      title
+      description
+      completed
+      listId
+      List {
+        id
+        title
+        description
+        houseHoldId
+        completed
+        Items {
+          nextToken
+          startedAt
+        }
+        HouseHold {
+          id
+          name
+          owners
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          houseHoldCalendarId
+          houseHoldChatRoomId
+        }
+        Task {
+          id
+          title
+          houseHoldId
+          foreverTask
+          listId
+          itemId
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -68,6 +580,7 @@ export const createItem = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -89,7 +602,7 @@ export const createItem = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -150,6 +663,7 @@ export const updateItem = /* GraphQL */ `
         title
         description
         houseHoldId
+        completed
         Items {
           nextToken
           startedAt
@@ -173,7 +687,7 @@ export const updateItem = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -201,6 +715,7 @@ export const updateItem = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -222,7 +737,7 @@ export const updateItem = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -283,6 +798,7 @@ export const deleteItem = /* GraphQL */ `
         title
         description
         houseHoldId
+        completed
         Items {
           nextToken
           startedAt
@@ -306,7 +822,7 @@ export const deleteItem = /* GraphQL */ `
           foreverTask
           listId
           itemId
-          deleteSourceOnComplete
+          completeSourceOnComplete
           eventHandlerId
           completed
           pointValue
@@ -334,6 +850,7 @@ export const deleteItem = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -355,7 +872,7 @@ export const deleteItem = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -410,6 +927,7 @@ export const createList = /* GraphQL */ `
       title
       description
       houseHoldId
+      completed
       Items {
         items {
           id
@@ -480,6 +998,7 @@ export const createList = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -501,7 +1020,7 @@ export const createList = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -556,6 +1075,7 @@ export const updateList = /* GraphQL */ `
       title
       description
       houseHoldId
+      completed
       Items {
         items {
           id
@@ -626,6 +1146,7 @@ export const updateList = /* GraphQL */ `
           title
           description
           houseHoldId
+          completed
           createdAt
           updatedAt
           _version
@@ -647,153 +1168,7 @@ export const updateList = /* GraphQL */ `
           _lastChangedAt
           itemTaskId
         }
-        deleteSourceOnComplete
-        eventHandlerId
-        EventHandler {
-          id
-          frequency
-          calendarId
-          taskId
-          sourceDate
-          endDate
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          eventHandlerTaskId
-        }
-        completed
-        pointValue
-        HouseHold {
-          id
-          name
-          owners
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          houseHoldCalendarId
-          houseHoldChatRoomId
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      listTaskId
-    }
-  }
-`;
-export const deleteList = /* GraphQL */ `
-  mutation DeleteList(
-    $input: DeleteListInput!
-    $condition: ModelListConditionInput
-  ) {
-    deleteList(input: $input, condition: $condition) {
-      id
-      title
-      description
-      houseHoldId
-      Items {
-        items {
-          id
-          title
-          description
-          completed
-          listId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          itemTaskId
-        }
-        nextToken
-        startedAt
-      }
-      HouseHold {
-        id
-        name
-        owners
-        Lists {
-          nextToken
-          startedAt
-        }
-        Tasks {
-          nextToken
-          startedAt
-        }
-        HouseHoldMembers {
-          nextToken
-          startedAt
-        }
-        Calendar {
-          id
-          houseHoldId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        ChatRoom {
-          id
-          houseHoldId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        houseHoldCalendarId
-        houseHoldChatRoomId
-      }
-      Task {
-        id
-        title
-        houseHoldId
-        foreverTask
-        listId
-        List {
-          id
-          title
-          description
-          houseHoldId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          listTaskId
-        }
-        itemId
-        Item {
-          id
-          title
-          description
-          completed
-          listId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          itemTaskId
-        }
-        deleteSourceOnComplete
+        completeSourceOnComplete
         eventHandlerId
         EventHandler {
           id
@@ -910,5 +1285,20 @@ export const deleteEventHandler = /* GraphQL */ `
 export const deleteTask = /* GraphQL */ `
   mutation DeleteTask($taskId: String!) {
     deleteTask(taskId: $taskId)
+  }
+`;
+export const deleteListCustom = /* GraphQL */ `
+  mutation DeleteListCustom($listId: String!) {
+    deleteListCustom(listId: $listId)
+  }
+`;
+export const addMessageToChatRoom = /* GraphQL */ `
+  mutation AddMessageToChatRoom($message: String!, $chatRoomId: String!) {
+    addMessageToChatRoom(message: $message, chatRoomId: $chatRoomId)
+  }
+`;
+export const completeTask = /* GraphQL */ `
+  mutation CompleteTask($taskId: String!) {
+    completeTask(taskId: $taskId)
   }
 `;

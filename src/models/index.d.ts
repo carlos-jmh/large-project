@@ -128,7 +128,7 @@ type EagerTask = {
   readonly List?: List | null;
   readonly itemId?: string | null;
   readonly Item?: Item | null;
-  readonly deleteSourceOnComplete?: boolean | null;
+  readonly completeSourceOnComplete?: boolean | null;
   readonly eventHandlerId?: string | null;
   readonly EventHandler?: EventHandler | null;
   readonly completed?: boolean | null;
@@ -151,7 +151,7 @@ type LazyTask = {
   readonly List: AsyncItem<List | undefined>;
   readonly itemId?: string | null;
   readonly Item: AsyncItem<Item | undefined>;
-  readonly deleteSourceOnComplete?: boolean | null;
+  readonly completeSourceOnComplete?: boolean | null;
   readonly eventHandlerId?: string | null;
   readonly EventHandler: AsyncItem<EventHandler | undefined>;
   readonly completed?: boolean | null;
@@ -407,7 +407,7 @@ type EagerItem = {
   readonly id: string;
   readonly title: string;
   readonly description?: string | null;
-  readonly completed?: boolean | null;
+  readonly completed: boolean;
   readonly listId: string;
   readonly List?: List | null;
   readonly Task?: Task | null;
@@ -424,7 +424,7 @@ type LazyItem = {
   readonly id: string;
   readonly title: string;
   readonly description?: string | null;
-  readonly completed?: boolean | null;
+  readonly completed: boolean;
   readonly listId: string;
   readonly List: AsyncItem<List | undefined>;
   readonly Task: AsyncItem<Task | undefined>;
@@ -448,6 +448,7 @@ type EagerList = {
   readonly title: string;
   readonly description?: string | null;
   readonly houseHoldId: string;
+  readonly completed: boolean;
   readonly Items?: (Item | null)[] | null;
   readonly HouseHold?: HouseHold | null;
   readonly Task?: Task | null;
@@ -465,6 +466,7 @@ type LazyList = {
   readonly title: string;
   readonly description?: string | null;
   readonly houseHoldId: string;
+  readonly completed: boolean;
   readonly Items: AsyncCollection<Item>;
   readonly HouseHold: AsyncItem<HouseHold | undefined>;
   readonly Task: AsyncItem<Task | undefined>;
