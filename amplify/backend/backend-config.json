@@ -150,6 +150,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "deleteEvent": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "deleteEventHandler": {
       "build": true,
       "dependsOn": [
@@ -376,6 +390,22 @@
         {
           "category": "function",
           "resourceName": "deleteEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteEvent_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteEvent"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteEvent_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteEvent"
         }
       ]
     },

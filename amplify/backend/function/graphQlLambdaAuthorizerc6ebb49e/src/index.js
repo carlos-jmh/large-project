@@ -251,6 +251,13 @@ async function checkAuthorization(ast, variables, userInfo) {
         }
         break;
       }
+      case "deleteEvent": {
+        const eventId = retrieveArgument("eventId", selection.arguments);
+        if (!await isAuthorizedForEvent(dynamo, eventId, sub)) {
+          return false;
+        }
+        break;
+      }
       case "completeTask": {
         const taskId = retrieveArgument("taskId", selection.arguments);
         if (!await isAuthorizedForTask(dynamo, taskId, sub)) {
