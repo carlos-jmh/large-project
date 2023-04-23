@@ -25,14 +25,17 @@ export default function Events({ navigation, route }) {
     const eventsByDate = tasksWithEvents.reduce((acc, task) => {
       const eventHandler = data.eventHandlers.find(handler => handler.id === task.eventHandlerId);
       if (eventHandler) {
-        const event = eventHandler.events.find(event => event.date.startsWith(date));
+        const event = eventHandler.events.find(event => {
+          const eventDate = new Date(event.date).toISOString().slice(0,10);
+          return eventDate.startsWith(date);
+        });
         if (event) {
           if (!acc[date]) {
             acc[date] = [];
           }
           acc[date].push({
             title: eventHandler.title,
-            time: event.date,
+            date: event.date,
           });
         }
       }

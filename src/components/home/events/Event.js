@@ -34,7 +34,7 @@ const Event = ({ event }) => {
         >
           {title}
         </Text>
-        <EventInfo listTitle={"Task"} date={event.date} />
+        <EventInfo listTitle={"Task"} date={date} />
       </View>
     </Pressable>
   );
@@ -66,14 +66,16 @@ function EventInfo({ listTitle, date }) {
     const styles = getStyles(colors);
   
     let dateInfo = null;
-    if (date) {
-      let hours = date.getHours();
+    let eventDate = new Date(date);
+    console.log(eventDate)
+    if (eventDate) {
+      let hours = eventDate.getHours();
       const m = hours >= 12 ? "PM" : "AM";
       hours %= 12;
       if (hours == 0) {
         hours = 12;
       }
-      const minutes = date.getMinutes();
+      const minutes = eventDate.getMinutes();
   
       dateInfo = (
         <TaskInfoLabel
@@ -83,17 +85,12 @@ function EventInfo({ listTitle, date }) {
       );
     }
   
-    let listInfo = null;
-    if (listTitle) {
-      listInfo = <TaskInfoLabel text={listTitle} iconName="check-square" />;
-    }
+
   
-    if (listTitle || date) {
+    if (date) {
       return (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           {dateInfo}
-          {listTitle && date ? <View style={{ width: 12 }} /> : null}
-          {listInfo}
         </View>
       );
     } else {
