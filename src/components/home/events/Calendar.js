@@ -7,7 +7,7 @@ import data from '../mockData';
 
 export default function MyCalendar({getEventsByDate}) {
   const [markedDates, setMarkedDates] = useState({});
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState('');
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
@@ -26,18 +26,31 @@ export default function MyCalendar({getEventsByDate}) {
     setMarkedDates(newMarkedDates);
   }, []
   );
+
+  if (selected) {
+    markedDates[selected] = {
+      selected: true,
+      selectedColor: colors.primary
+    };
+  }
   
   console.log(markedDates) 
   return (
     <View style = {{borderRadius:20}}>
       <Calendar
-        markedDates={markedDates}  
-        theme={styles.calendarStyles}
-        onDayPress={day => {
-            getEventsByDate(day.dateString)
-            setSelected(day.dateString)
+        onDayPress={day => {    
+          markedDates[selected] = {
+          marked:true,
+          selected:false,
+          dotColor: colors.primary,
+          };
+          setSelected(day.dateString)
+          getEventsByDate(day.dateString)
         }}
-        selected = {selected}
+        style= {{borderRadius:20 , padding:10}}
+        markedDates={markedDates}
+        theme={styles.calendarStyles}
+
       />
     </View>
   );

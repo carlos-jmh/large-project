@@ -13,7 +13,8 @@ const Event = ({ event }) => {
   return (
     <Pressable
       style={{
-        margin:20,
+        marginVertical:8,
+        marginHorizontal:20,
         padding: 8,
         borderRadius: 8,
         backgroundColor: colors.primary,
@@ -21,7 +22,7 @@ const Event = ({ event }) => {
       }}
       android_ripple={{ color: colors.highlight }}
     >
-    <AntDesign name="infocirlceo" size={18} color={colors.text} style= {{margin:5}} />
+    <AntDesign name="infocirlceo" size={22} color={colors.background} style= {{margin:8}} />
       <View style={{display:'flex',justifyContent:'center',alignContent:'center'}}>
         <Text
           style={{
@@ -33,7 +34,7 @@ const Event = ({ event }) => {
         >
           {title}
         </Text>
-        <EventInfo listTitle={"Myrabi"} date={event.date} />
+        <EventInfo listTitle={"Task"} date={event.date} />
       </View>
     </Pressable>
   );

@@ -163,7 +163,7 @@ export function getStyles(colors) {
       selectedDotColor: colors.calendarText,
       arrowColor: colors.calendarText,
       monthTextColor: colors.calendarText,
-      indicatorColor: 'blue',
+      indicatorColor: 'red',
       textDayFontWeight: '300',
       textMonthFontWeight: 'bold',
       textDayHeaderFontWeight: '300',

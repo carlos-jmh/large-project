@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, SectionList, ScrollView } from "react-native";
 
 import HeaderBar from "../HeaderBar";
 import Navbar from "../Navbar";
@@ -88,11 +88,13 @@ export default function Events({ navigation, route }) {
           <MyCalendar getEventsByDate={getEventsByDate}/>
         </View>
         <Text style = {[styles.text, {fontSize:25}]}>Events on {formatDate(date)}</Text>
+        <ScrollView>
         {events === undefined ? (
         <Text style = {[styles.p, {fontSize:15, textAlign:'left',paddingLeft:20,paddingTop:20}]}>No events for this date.</Text>
       ) : (
         events.map((event) => <Event key={event.id} event={event} />)
       )}
+      </ScrollView>
       </View>
       <Navbar
         screenName={route.name}

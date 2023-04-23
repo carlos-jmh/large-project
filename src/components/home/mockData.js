@@ -116,7 +116,11 @@ export default data = {
       events: [
         {
           id: 1,
-          date: "2023-04-13T03:59:00Z",
+          date: "2023-05-02T03:59:00Z",
+        },
+        {
+          id: 3,
+          date: "2023-05-02T03:59:00Z",
         },
       ],
     },
@@ -127,6 +131,16 @@ export default data = {
         {
           id: 2,
           date: "2025-05-01T04:00:00Z",
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: "Project Presentation",
+      events: [
+        {
+          id: 2,
+          date: "2023-05-02T04:00:00Z",
         },
       ],
     },
