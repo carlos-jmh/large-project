@@ -219,6 +219,7 @@ type AddUserToHouseHoldResponse {
 type Mutation {
   createNewHouseHold(houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
   addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): AddUserToHouseHoldResponse @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: custom }])
+  removeUserFromHouseHold(houseHoldId: String!, houseHoldMemberId: String!): String @function(name: "removeUserFromHouseHold-${env}") @auth(rules: [{ allow: custom }])
   createEventHandler(calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
   updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
@@ -241,4 +242,4 @@ enum FREQUENCY {
   MONTHLY,
   YEARLY
 }
-    
+      

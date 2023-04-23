@@ -91,6 +91,13 @@ export type AmplifyDependentResourcesAttributes = {
     "largeprojectCommonLayer": {
       "Arn": "string"
     },
+    "removeUserFromHouseHold": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "updateEventHandler": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

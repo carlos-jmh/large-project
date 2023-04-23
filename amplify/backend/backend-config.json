@@ -239,6 +239,20 @@
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer"
     },
+    "removeUserFromHouseHold": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "updateEventHandler": {
       "build": true,
       "dependsOn": [
@@ -301,6 +315,22 @@
         }
       ]
     },
+    "AMPLIFY_function_completeTask_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "completeTask"
+        }
+      ]
+    },
+    "AMPLIFY_function_completeTask_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "completeTask"
+        }
+      ]
+    },
     "AMPLIFY_function_createEventHandler_deploymentBucketName": {
       "usedBy": [
         {
@@ -346,6 +376,22 @@
         {
           "category": "function",
           "resourceName": "deleteEventHandler"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteListCustom_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteListCustom"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteListCustom_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteListCustom"
         }
       ]
     },
@@ -410,6 +456,22 @@
         {
           "category": "function",
           "resourceName": "largeprojectCommonLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_removeUserFromHouseHold_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "removeUserFromHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_removeUserFromHouseHold_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "removeUserFromHouseHold"
         }
       ]
     },

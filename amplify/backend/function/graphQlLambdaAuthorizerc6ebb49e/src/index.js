@@ -223,6 +223,13 @@ async function checkAuthorization(ast, variables, userInfo) {
         }
         break;
       }
+      case "removeUserFromHouseHold": {
+        const houseHoldId = retrieveArgument("houseHoldId", selection.arguments, variables);
+        if (!await isAuthorizedForHouseHold(dynamo, houseHoldId, sub)) {
+          return false;
+        }
+        break;
+      }
       case "createEventHandler": {
         const calendarId = retrieveArgument("calendarId", selection.arguments);
         if (!await isAuthorizedForCalendar(dynamo, calendarId, sub)) {

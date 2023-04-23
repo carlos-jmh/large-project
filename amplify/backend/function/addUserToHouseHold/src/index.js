@@ -44,7 +44,7 @@ exports.handler = async (event) => {
 	}
 	catch (error) {
 		console.log(error);
-		return error;
+		throw error;
 	}
 	
 	// Get userProfileId from existing user profile using ownerId
@@ -69,7 +69,7 @@ exports.handler = async (event) => {
 		userProfileId = data.Items[0].id;
 	} catch (error) {
 		console.log(error)
-		return error;
+		throw error;
 	}
 
 	// Get HouseHold and check if user is already within the owners array.
@@ -98,11 +98,11 @@ exports.handler = async (event) => {
 			await updateOwners(dynamoDb, ownerId, houseHoldId);
 		}
 		catch (error) {
-			return error;
+			throw error;
 		};
 	} catch (error) {
 		console.log(error)
-		return error;
+		throw error;
 	}
 
     // Create a new HouseHoldMember
@@ -156,10 +156,5 @@ const updateOwners = async (dynamoDb, ownerId, houseHoldId) => {
 		}
 	};
 
-	try {
-		await dynamoDb.update(updateParams).promise();
-	} catch (error) {
-		console.log(error);
-		return error;
-	}
+	await dynamoDb.update(updateParams).promise();
 }

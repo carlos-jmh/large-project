@@ -1241,6 +1241,17 @@ export const addUserToHouseHold = /* GraphQL */ `
     }
   }
 `;
+export const removeUserFromHouseHold = /* GraphQL */ `
+  mutation RemoveUserFromHouseHold(
+    $houseHoldId: String!
+    $houseHoldMemberId: String!
+  ) {
+    removeUserFromHouseHold(
+      houseHoldId: $houseHoldId
+      houseHoldMemberId: $houseHoldMemberId
+    )
+  }
+`;
 export const createEventHandler = /* GraphQL */ `
   mutation CreateEventHandler(
     $calendarId: String!
