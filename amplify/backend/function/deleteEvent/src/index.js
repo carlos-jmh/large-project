@@ -29,7 +29,7 @@ exports.handler = async (event) => {
     try {
         const data = await dynamoDb.get(getParams).promise();
         // Throw error if the Event does not exist
-        if (!data.Item) throw new Error("Invalid EventId.");
+        if (!data.Item) throw new Error("Invalid eventId.");
         prevEventId = data.Item.prevEventId;
         nextEventId = data.Item.nextEventId;
     } catch (error) {
