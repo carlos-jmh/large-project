@@ -6,10 +6,20 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { getStyles } from "../../styles";
 import { useTheme } from "@react-navigation/native";
 
-/* Task component */
-export default function Task({ title, listTitle, date, isChecked, onChecked }) {
+/* List item component */
+export default function ListItem({
+  title,
+  taskTitle,
+  date,
+  onChecked,
+  isChecked,
+}) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
+
+  const primaryTextColor = isChecked
+    ? colors.primaryTextFaded
+    : colors.primaryText;
 
   return (
     <Animated.View
@@ -32,28 +42,28 @@ export default function Task({ title, listTitle, date, isChecked, onChecked }) {
           isChecked={isChecked}
           iconStyle={{ borderRadius: 4 }}
           innerIconStyle={{ borderRadius: 4 }}
-          fillColor={colors.primaryText}
+          fillColor={primaryTextColor}
           ImageComponent={Checkmark}
           onPress={onChecked}
         />
         <View>
           <Text
             style={{
-              color: colors.primaryText,
+              color: primaryTextColor,
               fontFamily: "Inter_500Medium",
               fontSize: 14,
             }}
           >
             {title}
           </Text>
-          <TaskInfo listTitle={listTitle} date={date} />
+          <ListItemInfo taskTitle={taskTitle} date={date} />
         </View>
       </Pressable>
     </Animated.View>
   );
 }
 
-function TaskInfo({ listTitle, date }) {
+function ListItemInfo({ taskTitle, date }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
@@ -68,24 +78,24 @@ function TaskInfo({ listTitle, date }) {
     const minutes = date.getMinutes();
 
     dateInfo = (
-      <TaskInfoLabel
+      <ListItemInfoLabel
         text={`${hours}${minutes != 0 ? `:${minutes}` : ""} ${m}`}
         iconName="clock"
       />
     );
   }
 
-  let listInfo = null;
-  if (listTitle) {
-    listInfo = <TaskInfoLabel text={listTitle} iconName="list" />;
+  let taskInfo = null;
+  if (taskTitle) {
+    taskInfo = <ListItemInfoLabel text={taskTitle} iconName="tasks" />;
   }
 
-  if (listTitle || date) {
+  if (taskTitle || date) {
     return (
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         {dateInfo}
-        {listTitle && date ? <View style={{ width: 12 }} /> : null}
-        {listInfo}
+        {taskTitle && date ? <View style={{ width: 12 }} /> : null}
+        {taskInfo}
       </View>
     );
   } else {
@@ -93,7 +103,7 @@ function TaskInfo({ listTitle, date }) {
   }
 }
 
-function TaskInfoLabel({ text, iconName }) {
+function ListItemInfoLabel({ text, iconName }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
