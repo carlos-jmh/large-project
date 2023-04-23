@@ -226,6 +226,7 @@ type Mutation {
   updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteTask(taskId: String!): String @function(name: "deleteTask-${env}") @auth(rules: [{ allow: custom }])
+  deleteEvent(eventId: String!): String @function(name: "deleteEvent-${env}") @auth(rules: [{ allow: custom }])
   deleteListCustom(listId: String!): String @function(name: "deleteListCustom-${env}") @auth(rules: [{ allow: custom }])
   addMessageToChatRoom(message: String!, chatRoomId: String!) : String @function(name: "addMessageToChatRoom-${env}") @auth(rules: [{allow: custom}])
   completeTask(taskId: String!) : String @function(name: "completeTask-${env}") @auth(rules: [{allow: custom}])

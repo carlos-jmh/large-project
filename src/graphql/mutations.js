@@ -1302,6 +1302,11 @@ export const deleteTask = /* GraphQL */ `
     deleteTask(taskId: $taskId)
   }
 `;
+export const deleteEvent = /* GraphQL */ `
+  mutation DeleteEvent($eventId: String!) {
+    deleteEvent(eventId: $eventId)
+  }
+`;
 export const deleteListCustom = /* GraphQL */ `
   mutation DeleteListCustom($listId: String!) {
     deleteListCustom(listId: $listId)
