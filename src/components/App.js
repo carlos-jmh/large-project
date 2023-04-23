@@ -36,7 +36,7 @@ SplashScreen.preventAutoHideAsync();
 /* Root app component, sets up theme and fonts */
 export default function App() {
   const scheme = useColorScheme();
-  const theme = DarkTheme; //scheme === "dark" ? DarkTheme : LightTheme;
+  const theme = LightTheme; //scheme === "dark" ? DarkTheme : LightTheme;
   const colors = theme.colors;
 
   // Load Google fonts
