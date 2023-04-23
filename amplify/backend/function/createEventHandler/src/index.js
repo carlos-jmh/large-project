@@ -88,11 +88,17 @@ exports.handler = async (event) => {
 	// Generate events according to specified frequency
 	const promises = [];
 	const checkpoint = new Date(sourceDateObj);
+	let eventIds = {
+		currId: uuidv4(),
+		prevId: null,
+		nextId: null,
+	}
+
 	switch (frequency) {
 		case ("daily"):
 			// Generate promises encompassing all batchWriteParams
 			do {
-				promises.push(dynamoDb.batchWrite(genDailyParams(eventHandlerId, calendarId, checkpoint, endDateObj)).promise());
+				promises.push(dynamoDb.batchWrite(genDailyParams(eventIds, eventHandlerId, calendarId, checkpoint, endDateObj)).promise());
 			} while (endDateObj >= checkpoint); 
 
 			try {
@@ -105,7 +111,7 @@ exports.handler = async (event) => {
 		case ("weekly"):
 			// Generate promises encompassing all batchWriteParams
 			do {
-				promises.push(dynamoDb.batchWrite(genWeeklyParams(eventHandlerId, calendarId, checkpoint, endDateObj)).promise());
+				promises.push(dynamoDb.batchWrite(genWeeklyParams(eventIds, eventHandlerId, calendarId, checkpoint, endDateObj)).promise());
 			} while (endDateObj >= checkpoint); 
 
 			try {
@@ -118,7 +124,7 @@ exports.handler = async (event) => {
 		case ("monthly"):
 			// Generate promises encompassing all batchWriteParams
 			do {
-				promises.push(dynamoDb.batchWrite(genMonthlyParams(eventHandlerId, calendarId, checkpoint, endDateObj)).promise());
+				promises.push(dynamoDb.batchWrite(genMonthlyParams(eventIds, eventHandlerId, calendarId, checkpoint, endDateObj)).promise());
 			} while (endDateObj >= checkpoint); 
 
 			try {
@@ -130,7 +136,7 @@ exports.handler = async (event) => {
 			break;
 		case ("yearly"):
 			try {
-				await dynamoDb.batchWrite(genYearlyParams(eventHandlerId, calendarId, checkpoint, endDateObj)).promise();
+				await dynamoDb.batchWrite(genYearlyParams(eventIds, eventHandlerId, calendarId, checkpoint, endDateObj)).promise();
 			} catch (error) {
 				console.log(error);
 				throw error;
@@ -143,14 +149,24 @@ exports.handler = async (event) => {
 	return eventHandlerId;
 };
 
-const genDailyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => {
+const genDailyParams = (eventIds, eventHandlerId, calendarId, checkpoint, endDateObj) => {
 	const putRequests = [];
 	const MAX_BATCH_WRITE_REQUESTS = 25;
+	let daysToJump = 1;
 	
 	while (endDateObj >= checkpoint) {
-		putRequests.push(genPutRequest(eventHandlerId, calendarId, checkpoint.toISOString()));
-		checkpoint.addDays(1);
-		
+		const nextDate = (new Date(checkpoint));
+		nextDate.addDays(daysToJump);
+		if (endDateObj < nextDate) eventIds.nextId = null;
+		else eventIds.nextId = uuidv4();
+
+		putRequests.push(genPutRequest(eventIds, eventHandlerId, calendarId, checkpoint.toISOString()));
+		checkpoint.addDays(daysToJump);
+
+		// Resolve ids for doubly-linked events
+		eventIds.prevId = eventIds.currId;
+		eventIds.currId = eventIds.nextId;
+
 		if (putRequests.length >= MAX_BATCH_WRITE_REQUESTS)
 			break;
 	}
@@ -164,14 +180,23 @@ const genDailyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => {
 	return params;
 }
 
-const genWeeklyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => {
+const genWeeklyParams = (eventIds, eventHandlerId, calendarId, checkpoint, endDateObj) => {
 	const putRequests = [];
 	const MAX_BATCH_WRITE_REQUESTS = 25;
 	let daysToJump = 7; // 7 days/week
 
 	while (endDateObj >= checkpoint) {
-		putRequests.push(genPutRequest(eventHandlerId, calendarId, checkpoint.toISOString()));
+		const nextDate = (new Date(checkpoint));
+		nextDate.addDays(daysToJump);
+		if (endDateObj < nextDate) eventIds.nextId = null;
+		else eventIds.nextId = uuidv4();
+
+		putRequests.push(genPutRequest(eventIds, eventHandlerId, calendarId, checkpoint.toISOString()));
 		checkpoint.addDays(daysToJump);
+
+		// Resolve ids for doubly-linked events
+		eventIds.prevId = eventIds.currId;
+		eventIds.currId = eventIds.nextId;
 		
 		if (putRequests.length >= MAX_BATCH_WRITE_REQUESTS)
 			break;
@@ -186,20 +211,31 @@ const genWeeklyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => 
 	return params;
 }
 
-const genMonthlyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => {
+const genMonthlyParams = (eventIds, eventHandlerId, calendarId, checkpoint, endDateObj) => {
 	const putRequests = [];
 	const MAX_BATCH_WRITE_REQUESTS = 25;
 	let nextMonth = checkpoint.getMonth() + 1;
 	
 	while (endDateObj >= checkpoint) {
-		putRequests.push(genPutRequest(eventHandlerId, calendarId, checkpoint.toISOString()));
+		const nextDate = (new Date(checkpoint));
+		nextDate.setMonth(nextMonth);
+		if (endDateObj < nextDate) eventIds.nextId = null;
+		else eventIds.nextId = uuidv4();
+
+		putRequests.push(genPutRequest(eventIds, eventHandlerId, calendarId, checkpoint.toISOString()));
 		checkpoint.setMonth(nextMonth);
 		// If true, date moved to following year
 		if (nextMonth > 11) nextMonth = 0;
 		nextMonth++;
+
+		// Resolve ids for doubly-linked events
+		eventIds.prevId = eventIds.currId;
+		eventIds.currId = eventIds.nextId;
+
 		if (putRequests.length >= MAX_BATCH_WRITE_REQUESTS)
 			break;
 	}
+
 	const params = {
 		RequestItems: {
 			[process.env.API_HOUSEHOLDAPP_EVENTTABLE_NAME]: putRequests,
@@ -209,14 +245,23 @@ const genMonthlyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) =>
 	return params;
 }
 
-const genYearlyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => {
+const genYearlyParams = (eventIds, eventHandlerId, calendarId, checkpoint, endDateObj) => {
 	const putRequests = [];
 	let nextYear = checkpoint.getFullYear() + 1;
 
 	while (endDateObj >= checkpoint) {
-		putRequests.push(genPutRequest(eventHandlerId, calendarId, checkpoint.toISOString()));
+		const nextDate = (new Date(checkpoint));
+		nextDate.setFullYear(nextYear);
+		if (endDateObj < nextDate) eventIds.nextId = null;
+		else eventIds.nextId = uuidv4();
+		
+		putRequests.push(genPutRequest(eventIds, eventHandlerId, calendarId, checkpoint.toISOString()));
 		checkpoint.setFullYear(nextYear);
 		nextYear++;
+
+		// Resolve ids for doubly-linked events
+		eventIds.prevId = eventIds.currId;
+		eventIds.currId = eventIds.nextId;
 	}
 	const params = {
 		RequestItems: {
@@ -227,11 +272,13 @@ const genYearlyParams = (eventHandlerId, calendarId, checkpoint, endDateObj) => 
 	return params;
 }
 
-const genPutRequest = (eventHandlerId, calendarId, date) => {
+const genPutRequest = (eventIds, eventHandlerId, calendarId, date) => {
 	return {
 		PutRequest: {
 			Item: {
-				id: uuidv4(),
+				id: eventIds.currId,
+				prevEventId: eventIds.prevId,
+				nextEventId: eventIds.nextId,
 				eventHandlerId,
 				calendarId,
 				date

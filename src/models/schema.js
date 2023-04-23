@@ -1214,6 +1214,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "prevEventId": {
+                    "name": "prevEventId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "nextEventId": {
+                    "name": "nextEventId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "eventHandlerId": {
                     "name": "eventHandlerId",
                     "isArray": false,
@@ -1690,5 +1704,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.5",
-    "version": "d7dadef2f31f2631238b8278e1db0b36"
+    "version": "a50e1fd1d22b89d7eb322756d3cce327"
 };

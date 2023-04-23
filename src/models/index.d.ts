@@ -379,6 +379,8 @@ type EagerEvent = {
   readonly id: string;
   readonly date: string;
   readonly completed: boolean;
+  readonly prevEventId?: string | null;
+  readonly nextEventId?: string | null;
   readonly eventHandlerId: string;
   readonly calendarId: string;
   readonly EventHandler?: EventHandler | null;
@@ -395,6 +397,8 @@ type LazyEvent = {
   readonly id: string;
   readonly date: string;
   readonly completed: boolean;
+  readonly prevEventId?: string | null;
+  readonly nextEventId?: string | null;
   readonly eventHandlerId: string;
   readonly calendarId: string;
   readonly EventHandler: AsyncItem<EventHandler | undefined>;

@@ -1206,6 +1206,8 @@ export const getEventHandler = /* GraphQL */ `
           id
           date
           completed
+          prevEventId
+          nextEventId
           eventHandlerId
           calendarId
           createdAt
@@ -1486,6 +1488,8 @@ export const getEvent = /* GraphQL */ `
       id
       date
       completed
+      prevEventId
+      nextEventId
       eventHandlerId
       calendarId
       EventHandler {
@@ -1580,6 +1584,8 @@ export const listEvents = /* GraphQL */ `
         id
         date
         completed
+        prevEventId
+        nextEventId
         eventHandlerId
         calendarId
         EventHandler {
@@ -1633,6 +1639,8 @@ export const syncEvents = /* GraphQL */ `
         id
         date
         completed
+        prevEventId
+        nextEventId
         eventHandlerId
         calendarId
         EventHandler {
@@ -1690,6 +1698,8 @@ export const eventsByEventHandlerIdAndId = /* GraphQL */ `
         id
         date
         completed
+        prevEventId
+        nextEventId
         eventHandlerId
         calendarId
         EventHandler {
@@ -1745,6 +1755,8 @@ export const eventsByCalendarId = /* GraphQL */ `
         id
         date
         completed
+        prevEventId
+        nextEventId
         eventHandlerId
         calendarId
         EventHandler {
@@ -1790,6 +1802,8 @@ export const getCalendar = /* GraphQL */ `
           id
           date
           completed
+          prevEventId
+          nextEventId
           eventHandlerId
           calendarId
           createdAt

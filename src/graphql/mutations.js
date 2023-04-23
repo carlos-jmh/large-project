@@ -209,6 +209,8 @@ export const updateEvent = /* GraphQL */ `
       id
       date
       completed
+      prevEventId
+      nextEventId
       eventHandlerId
       calendarId
       EventHandler {
@@ -304,6 +306,8 @@ export const updateCalendar = /* GraphQL */ `
           id
           date
           completed
+          prevEventId
+          nextEventId
           eventHandlerId
           calendarId
           createdAt

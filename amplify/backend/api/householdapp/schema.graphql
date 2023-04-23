@@ -120,6 +120,8 @@ type Event
   id: ID!
   date: AWSDateTime!
   completed: Boolean!
+  prevEventId: ID
+  nextEventId: ID
   eventHandlerId: ID! @index(name: "byEventHandler", sortKeyFields: ["id"])
   calendarId: ID! @index(name: "byCalendar")
   EventHandler: EventHandler @belongsTo(fields: ["eventHandlerId"])
@@ -242,4 +244,4 @@ enum FREQUENCY {
   MONTHLY,
   YEARLY
 }
-      
+       
