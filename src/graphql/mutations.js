@@ -209,6 +209,8 @@ export const updateEvent = /* GraphQL */ `
       id
       date
       completed
+      prevEventId
+      nextEventId
       eventHandlerId
       calendarId
       EventHandler {
@@ -304,6 +306,8 @@ export const updateCalendar = /* GraphQL */ `
           id
           date
           completed
+          prevEventId
+          nextEventId
           eventHandlerId
           calendarId
           createdAt
@@ -1241,6 +1245,17 @@ export const addUserToHouseHold = /* GraphQL */ `
     }
   }
 `;
+export const removeUserFromHouseHold = /* GraphQL */ `
+  mutation RemoveUserFromHouseHold(
+    $houseHoldId: String!
+    $houseHoldMemberId: String!
+  ) {
+    removeUserFromHouseHold(
+      houseHoldId: $houseHoldId
+      houseHoldMemberId: $houseHoldMemberId
+    )
+  }
+`;
 export const createEventHandler = /* GraphQL */ `
   mutation CreateEventHandler(
     $calendarId: String!
@@ -1285,6 +1300,11 @@ export const deleteEventHandler = /* GraphQL */ `
 export const deleteTask = /* GraphQL */ `
   mutation DeleteTask($taskId: String!) {
     deleteTask(taskId: $taskId)
+  }
+`;
+export const deleteEvent = /* GraphQL */ `
+  mutation DeleteEvent($eventId: String!) {
+    deleteEvent(eventId: $eventId)
   }
 `;
 export const deleteListCustom = /* GraphQL */ `

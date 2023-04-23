@@ -223,6 +223,13 @@ async function checkAuthorization(ast, variables, userInfo) {
         }
         break;
       }
+      case "removeUserFromHouseHold": {
+        const houseHoldId = retrieveArgument("houseHoldId", selection.arguments, variables);
+        if (!await isAuthorizedForHouseHold(dynamo, houseHoldId, sub)) {
+          return false;
+        }
+        break;
+      }
       case "createEventHandler": {
         const calendarId = retrieveArgument("calendarId", selection.arguments);
         if (!await isAuthorizedForCalendar(dynamo, calendarId, sub)) {
@@ -240,6 +247,13 @@ async function checkAuthorization(ast, variables, userInfo) {
       case "deleteEventHandler": {
         const eventHandlerId = retrieveArgument("eventHandlerId", selection.arguments);
         if (!await isAuthorizedForEventHandler(dynamo, eventHandlerId, sub)) {
+          return false;
+        }
+        break;
+      }
+      case "deleteEvent": {
+        const eventId = retrieveArgument("eventId", selection.arguments);
+        if (!await isAuthorizedForEvent(dynamo, eventId, sub)) {
           return false;
         }
         break;
