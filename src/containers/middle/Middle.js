@@ -103,6 +103,7 @@ const Middle = ({theme}) => {
   }
 
   useEffect(() => {
+    // Add event listener on localStorage. When changed, pull houseHoldID and reload data.
     window.addEventListener('storage', () => {
       let id = localStorage.getItem('houseHoldId');
       
