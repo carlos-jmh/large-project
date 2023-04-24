@@ -28,6 +28,7 @@ const Middle = ({theme}) => {
   const [toDoList, setToDoList] = useState(data);
   const [tasks, setTasks] = useState(taskData);
   const [events, setEvents] = useState(eventData);
+  const [lists, setLists] = useState();
   const [id, sethouseHoldId] = useState('');
 
   // UseEffect on local storage to load houseHoldId
@@ -49,15 +50,27 @@ const Middle = ({theme}) => {
     };
   }, [])
   
-  
-  /*
-  For API Implementation all we have to do is connect 3 variables to the backend:
-  - data
-  - taskData
-  - eventData
-  from the 3 useStates above. That is where I am loading all the info from the JSON files for the entire application - Gabe
-  */
+   // Upon id change, refetch lists, tasks and events.
+   useEffect(() => {
+    async function fetchLists() {
+      setLists(await getLists(id));
+      console.log(lists);
+    };
 
+    async function fetchTasks() {
+      const tasks = await getTasks(id);
+      console.log(tasks);
+    }
+
+    async function fetchEvents() {
+      const events = await getEvents(id);
+      console.log(events);
+    }
+    
+    fetchLists();
+    fetchTasks();
+    fetchEvents();
+  }, [id]);
   
   const TEST_HOUSEHOLDID = "ee1afec5-f8b1-4dd9-b907-fac07b638107";
 
@@ -182,28 +195,6 @@ const Middle = ({theme}) => {
     //   return [];
     // }
   }
-
-  // Upon id change, refetch lists, tasks and events.
-  useEffect(() => {
-    async function fetchLists() {
-      const lists = await getLists(id);
-      console.log(lists);
-    };
-
-    async function fetchTasks() {
-      const tasks = await getTasks(id);
-      console.log(tasks);
-    }
-
-    async function fetchEvents() {
-      const events = await getEvents(id);
-      console.log(events);
-    }
-    
-    fetchLists();
-    fetchTasks();
-    fetchEvents();
-  }, [id]);
 
   // Load in households and their respective info.
 
