@@ -29,6 +29,24 @@ const Middle = ({theme}) => {
   const [toDoList, setToDoList] = useState(data);
   const [tasks, setTasks] = useState(taskData);
   const [events, setEvents] = useState(eventData);
+  const [houseHoldId, sethouseHoldId] = useState(null);
+
+  // UseEffect on local storage to load houseHoldId
+  useEffect(() => {
+    function checkHouseHoldId() {
+      const id = localStorage.getItem('household');
+
+      if (id) {
+        sethouseHoldId(id);
+      }
+    }
+
+    window.addEventListener('storage', checkHouseHoldId);
+
+    return () => {
+      window.removeEventListener('storage', checkHouseHoldId);
+    }
+  }, [])
   
   /*
   For API Implementation all we have to do is connect 3 variables to the backend:
