@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import './middle.css'
-
 import List from '../../components/list/List'
 import Events from '../../components/events/Events'
 import Form from '../../components/form/Form'
@@ -29,24 +28,27 @@ const Middle = ({theme}) => {
   const [toDoList, setToDoList] = useState(data);
   const [tasks, setTasks] = useState(taskData);
   const [events, setEvents] = useState(eventData);
-  const [houseHoldId, sethouseHoldId] = useState(null);
+  const [id, sethouseHoldId] = useState('');
 
   // UseEffect on local storage to load houseHoldId
   useEffect(() => {
-    function checkHouseHoldId() {
-      const id = localStorage.getItem('household');
 
-      if (id) {
-        sethouseHoldId(id);
-      }
+    function checkHouseHold() {
+      const hhId = localStorage.getItem("houseHoldId");
+
+      if (hhId)
+        sethouseHoldId(hhId);
+
+      console.log(hhId);
     }
-
-    window.addEventListener('storage', checkHouseHoldId);
+    
+    window.addEventListener("storage", checkHouseHold);
 
     return () => {
-      window.removeEventListener('storage', checkHouseHoldId);
-    }
+      window.removeEventListener("storage", checkHouseHold);
+    };
   }, [])
+  
   
   /*
   For API Implementation all we have to do is connect 3 variables to the backend:
@@ -181,26 +183,27 @@ const Middle = ({theme}) => {
     // }
   }
 
+  // Upon id change, refetch lists, tasks and events.
   useEffect(() => {
     async function fetchLists() {
-      const lists = await getLists(TEST_HOUSEHOLDID);
+      const lists = await getLists(id);
       console.log(lists);
     };
 
     async function fetchTasks() {
-      const tasks = await getTasks(TEST_HOUSEHOLDID);
+      const tasks = await getTasks(id);
       console.log(tasks);
     }
 
     async function fetchEvents() {
-      const events = await getEvents(TEST_HOUSEHOLDID);
+      const events = await getEvents(id);
       console.log(events);
     }
     
     fetchLists();
     fetchTasks();
     fetchEvents();
-  }, []);
+  }, [id]);
 
   // Load in households and their respective info.
 

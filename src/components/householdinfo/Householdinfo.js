@@ -9,6 +9,10 @@ const Householdinfo = ({name, id, theme}) => {
     // Do something with household ID to load its info.
     function display()
     {
+      // Add ID to local storage. Set dispatch event.
+      localStorage.setItem("houseHoldId", id);
+      window.dispatchEvent(new Event('storage'));
+
       let tabs = document.querySelectorAll('button.round-button');
       console.log(tabs);
 
@@ -27,6 +31,7 @@ const Householdinfo = ({name, id, theme}) => {
     {
       display();
     }
+
     return (
       <div>
         <button onClick={updateHouse} className="round-button bg2" id={name}>
@@ -38,6 +43,10 @@ const Householdinfo = ({name, id, theme}) => {
   else {
     function display()
     {
+      // Add ID to local storage. 
+      localStorage.setItem("houseHoldId", id);
+      window.dispatchEvent(new Event('storage'));
+
       let tabs = document.querySelectorAll('button.round-button-dark');
       console.log(tabs);
 
