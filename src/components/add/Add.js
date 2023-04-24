@@ -263,7 +263,7 @@ const Add = ({addTask, name, list, theme}) => {
             { listoritem === "item" ? 
               <>
                 <select required id="itemList" className="form-control childSelect" ref={itemAttach}>
-                  { data.map(d => {
+                  { list.map(d => {
                     return d.listItems.map(item => {
                       return <option value={item.task}>{item.task}</option>
                     })
