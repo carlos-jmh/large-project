@@ -226,14 +226,14 @@ const Middle = ({theme}) => {
             <h5 className="sectionHeader">Tasks</h5>
             <div>
               <TaskList tasks = {tasks} handleCheck={handleTaskCheck}/>
-              <Add addTask={addTask2} name="Task" theme={theme}/>
+              <Add addTask={addTask2} useState={false} name="Task" list={listData} theme={theme}/>
               <br/>
             </div>
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
               <Events events = {[]} handleCheck={handleEventCheck}/>
-              <Add addTask={addTask3} name="Event" theme={theme}/>
+              <Add addTask={addTask3} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>
         </div>
