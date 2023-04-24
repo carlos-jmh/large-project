@@ -50,8 +50,8 @@ const Middle = ({theme}) => {
 
   useEffect(() => {
     console.log("Lists: " + JSON.stringify(lists));
-    console.log("Tasks: " + JSON.stringify(tasks));
-    console.log("Events: " + JSON.stringify(events));
+    //console.log("Tasks: " + JSON.stringify(tasks));
+    //console.log("Events: " + JSON.stringify(events));
     setLoaded(true);
   }, [lists, tasks, events]);
 
@@ -311,12 +311,12 @@ const Middle = ({theme}) => {
       <div className="lists">
         <div className="section1">
           <h5 className="sectionHeader">Lists</h5>
-          {toDoList.map((currList, index) => {
+          {lists.map((currList, index) => {
             return (
               <div key = {index} className='list'>
                 <hr className="taskLine"></hr>
-                <List name={currList.listName} list={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
-                <Add addTask={addTask} useState={false} name={currList.listName} list={currList} theme={theme}/>
+                <List name={currList.title} list={currList.Items.items} listIndex={index} handleToggle={handleListItemToggle}/>
+                <Add addTask={addTask} useState={false} name={currList.title} list={currList} theme={theme}/>
                 <br/>
               </div>
             )

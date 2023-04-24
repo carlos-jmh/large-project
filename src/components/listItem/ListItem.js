@@ -1,13 +1,14 @@
 import React from 'react'
  
-const ListItem = ({todo, listIndex, itemIndex, handleToggle, lname}) => {
+const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
+  console.log(item);
   const handleClick = (e) => {
       e.preventDefault();
-      handleToggle(listIndex, itemIndex, !todo.complete);
+      handleToggle(listIndex, itemIndex, !item.complete);
   }
    return (
-      <div value={todo.id} onClick={handleClick} className={todo.complete ? "todo strike" : "todo"}>
-        {todo.task}
+      <div value={item.id} onClick={handleClick} className={item.completed ? "todo strike" : "todo"}>
+        {item.title}
       </div>
    );
 };

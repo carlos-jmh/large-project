@@ -6,6 +6,7 @@ import './list.css'
 
 const List = ({name, list, listIndex, handleToggle}) => {
   const [open, setOpen] = useState(false);
+  console.log(list);
 
   const showOrHide = () => {
     setOpen(!open);
@@ -23,8 +24,8 @@ return (
         <div className="items">
           {/* Place map of listitems after ? */}
           {/* Items: title, id, houseHoldId, description, completed */}
-          {open ? list.map((todo, index) => {
-              return <ListItem key={index} todo={todo} listIndex={listIndex} itemIndex={index} handleToggle={handleToggle} lname={name}/>
+          {open ? list.map((item, index) => {
+              return <ListItem key={index} item={item} listIndex={listIndex} itemIndex={index} handleToggle={handleToggle} lname={name}/>
           }) : <></>}
         </div>
     </div>
