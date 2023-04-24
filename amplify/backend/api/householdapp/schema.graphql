@@ -236,6 +236,12 @@ type Subscription {
   onAddUserToHouseHold(cognitoUsername: String!): AddUserToHouseHoldResponse
     @aws_subscribe(mutations: ["addUserToHouseHold"])
     @auth(rules: [{ allow: custom }])
+  onNewItemCreated(listId: String!): Item
+    @aws_subscribe(mutations: ["createItem"])
+    @auth(rules: [{ allow: custom }])
+  onItemUpdated(listId: String!): Item
+    @aws_subscribe(mutations: ["updateItem"])
+    @auth(rules: [{ allow: custom }])
 }
 
 # enum for frequency of Events

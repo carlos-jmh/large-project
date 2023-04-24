@@ -231,42 +231,42 @@ async function checkAuthorization(ast, variables, userInfo) {
         break;
       }
       case "createEventHandler": {
-        const calendarId = retrieveArgument("calendarId", selection.arguments);
+        const calendarId = retrieveArgument("calendarId", selection.arguments, variables);
         if (!await isAuthorizedForCalendar(dynamo, calendarId, sub)) {
           return false;
         }
         break;
       }
       case "updateEventHandler": {
-        const eventHandlerId = retrieveArgument("eventHandlerId", selection.arguments);
+        const eventHandlerId = retrieveArgument("eventHandlerId", selection.arguments, variables);
         if (!await isAuthorizedForEventHandler(dynamo, eventHandlerId, sub)) {
           return false;
         }
         break;
       }
       case "deleteEventHandler": {
-        const eventHandlerId = retrieveArgument("eventHandlerId", selection.arguments);
+        const eventHandlerId = retrieveArgument("eventHandlerId", selection.arguments, variables);
         if (!await isAuthorizedForEventHandler(dynamo, eventHandlerId, sub)) {
           return false;
         }
         break;
       }
       case "deleteEvent": {
-        const eventId = retrieveArgument("eventId", selection.arguments);
+        const eventId = retrieveArgument("eventId", selection.arguments, variables);
         if (!await isAuthorizedForEvent(dynamo, eventId, sub)) {
           return false;
         }
         break;
       }
       case "completeTask": {
-        const taskId = retrieveArgument("taskId", selection.arguments);
+        const taskId = retrieveArgument("taskId", selection.arguments, variables);
         if (!await isAuthorizedForTask(dynamo, taskId, sub)) {
           return false;
         }
         break;
       }
       case "deleteTask": {
-        const taskId = retrieveArgument("taskId", selection.arguments);
+        const taskId = retrieveArgument("taskId", selection.arguments, variables);
         if (!await isAuthorizedForTask(dynamo, taskId, sub)) {
           return false;
         }
@@ -340,6 +340,20 @@ async function checkAuthorization(ast, variables, userInfo) {
       case "onAddUserToHouseHold": {
         const cognitoUsername = retrieveArgument("cognitoUsername", selection.arguments, variables);
         if (cognitoUsername !== username) {
+          return false;
+        }
+        break;
+      }
+      case "onNewItemCreated": {
+        const listId = retrieveArgument("listId", selection.arguments, variables);
+        if (!await isAuthorizedForList(dynamo, listId, sub)) {
+          return false;
+        }
+        break;
+      }
+      case "onItemUpdated": {
+        const listId = retrieveArgument("listId", selection.arguments, variables);
+        if (!await isAuthorizedForList(dynamo, listId, sub)) {
           return false;
         }
         break;
