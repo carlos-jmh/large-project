@@ -132,10 +132,12 @@ const Add = ({addTask, name, list, theme}) => {
     e.preventDefault();
 
     // Pass correct values here. 
-    const newItem = await createItem("asdsa", "sdas");
+    const newItem = await createItem(false, false, "", false, localStorage.getItem("houseHoldId"), {title}, listAttach, itemAttach);
   }
 
-  const createTask = async (completeSourceOnComplete, completed, foreverTask, houseHoldId, itemId, listId, title) => {
+  const createTask = async (completeSourceOnComplete, completed, eventHandlerId, foreverTask, houseHoldId, title, listId, itemId) => {
+    console.log(houseHoldId);
+    console.log(title.current.value);
     try {
       const token = await getCognitoToken();
 
@@ -159,10 +161,10 @@ const Add = ({addTask, name, list, theme}) => {
             completed: false,
             eventHandlerId: "",
             foreverTask: false,
-            houseHoldId: "ee1afec5-f8b1-4dd9-b907-fac07b638107",
-            title: "throw out the trash",
+            houseHoldId: houseHoldId,
+            title: title.current.value,
             listId: "",
-            itemId: ""
+            itemId: "",
           }
         ),
         { Authorization: `Banana ${token}` }
@@ -185,7 +187,7 @@ const Add = ({addTask, name, list, theme}) => {
     
     // create Task -> with EventHandlerId
     // Pass correct values here. 
-    const newTask = await createTask("asdsa", "sdas");
+    const newTask = await createTask(false, false, "", false, localStorage.getItem("houseHoldId"), title, listAttach, itemAttach);
 
     // updateEventHandler -> add TaskId to itself
   }

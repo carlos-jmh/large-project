@@ -207,9 +207,10 @@ const Middle = ({theme}) => {
 
   //Handles list ITEM completions
   const handleListItemToggle = (listIndex, itemIndex, completed) => {
-    setToDoList(prevState => {
-      const newList = [...prevState];
-      newList[listIndex].listItems[itemIndex].complete = completed;
+    console.log(lists[listIndex].Items.items[itemIndex].completed)
+    setLists(prevState => {
+      const newList = [...prevState]
+      newList[listIndex].Items.items[itemIndex].completed = completed;
       return newList;
     });
   }
