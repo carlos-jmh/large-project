@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import './middle.css'
 
 import List from '../../components/list/List'
-import Task from '../../components/task/Task'
 import Events from '../../components/events/Events'
 import Form from '../../components/form/Form'
 import Add from '../../components/add/Add'
@@ -10,11 +9,8 @@ import Cal from '../../components/cal/Cal';
 import data from "./data.json";
 import taskData from "./taskData.json";
 import eventData from "./eventData.json";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList';
-import ListItem from '../../components/listItem/ListItem';
-import { json } from 'react-router-dom';
 import Upcoming from '../../components/usernav/Upcoming';
 import { getCognitoToken } from '../../components/AuthUser';
 import { API, graphqlOperation } from 'aws-amplify'
@@ -34,13 +30,13 @@ const Middle = ({theme}) => {
   const [tasks, setTasks] = useState(taskData);
   const [events, setEvents] = useState(eventData);
   
-  {/*
+  /*
   For API Implementation all we have to do is connect 3 variables to the backend:
   - data
   - taskData
   - eventData
   from the 3 useStates above. That is where I am loading all the info from the JSON files for the entire application - Gabe
-  */}
+  */
 
   
   const TEST_HOUSEHOLDID = "ee1afec5-f8b1-4dd9-b907-fac07b638107";
@@ -130,40 +126,41 @@ const Middle = ({theme}) => {
     }
   }
 
+  // TODO (carlos): Implement
   const getEvents = async (houseHoldId) => {
-    try {
-      const token = await getCognitoToken();
+    // try {
+    //   const token = await getCognitoToken();
 
-      const lists = await API.graphql(
-        graphqlOperation(
-          `query GetTasks($houseHoldId: ID = "") {
-            tasksByHouseHoldId(houseHoldId: $houseHoldId) {
-              items {
-                completeSourceOnComplete
-                completed
-                eventHandlerId
-                foreverTask
-                houseHoldId
-                id
-                itemId
-                listId
-                title
-              }
-            }
-          }`,
-          { houseHoldId: houseHoldId }
-        ),
-        { Authorization: `Banana ${token}` }
-      );
+    //   const lists = await API.graphql(
+    //     graphqlOperation(
+    //       `query GetTasks($houseHoldId: ID = "") {
+    //         tasksByHouseHoldId(houseHoldId: $houseHoldId) {
+    //           items {
+    //             completeSourceOnComplete
+    //             completed
+    //             eventHandlerId
+    //             foreverTask
+    //             houseHoldId
+    //             id
+    //             itemId
+    //             listId
+    //             title
+    //           }
+    //         }
+    //       }`,
+    //       { houseHoldId: houseHoldId }
+    //     ),
+    //     { Authorization: `Banana ${token}` }
+    //   );
 
-      // process into object that you want
+    //   // process into object that you want
 
-      return lists.data.tasksByHouseHoldId.items;
+    //   return lists.data.tasksByHouseHoldId.items;
 
-    } catch (error) {
-      console.log("ERROR fetching Lists ", error)
-      return [];
-    }
+    // } catch (error) {
+    //   console.log("ERROR fetching Lists ", error)
+    //   return [];
+    // }
   }
 
   useEffect(() => {
@@ -184,6 +181,7 @@ const Middle = ({theme}) => {
     
     fetchLists();
     fetchTasks();
+    fetchEvents();
   }, []);
 
   // Load in households and their respective info.
@@ -194,7 +192,7 @@ const Middle = ({theme}) => {
     let temp = [];
     let mapped = toDoList.map(list => {
       list.listItems.map(item => { 
-        if((item.id == id) && (list.listName == name)) { 
+        if((item.id === id) && (list.listName === name)) { 
           temp.push({...item , complete: !item.complete})
         } else {
           temp.push(item)
@@ -245,7 +243,7 @@ const Middle = ({theme}) => {
     copy = [...copy, { id: tasks.length + 1, task: userInput, complete: false, date: userDate, list: connect }];
 
     setTasks(copy);
-    }
+  }
 
   //This is for adding events
   const addTask3 = (userInput, name, list, userDate, userDesc) => {
@@ -254,76 +252,67 @@ const Middle = ({theme}) => {
     setEvents(copy);
   }
 
-  const getDate = (day, month, year) => {
-    month++;
-    if(month < 10) {
-      month = '0' + month.toString()
-    }
-    let fullDate = month + '-' + day + '-' + year;
-    setSelectedDate(fullDate)
-  }
+  // Break into seperate component.
+  return (
+    <>
+    {/*
+    - In upcoming view list both tasks and events together in one column going in chronological order.
+    - Also included undated events above with a separation 
+    */}
 
-    // Break into seperate component.
-    return (
-      <>
-      {/*
-      - In upcoming view list both tasks and events together in one column going in chronological order.
-      - Also included undated events above with a separation 
-      */}
-
-        <Form/>
-        <div className="midContent">
-          <div className="calendar">
-            <Cal getDate={getDate}/>
-          </div>
-          <div class="display">
-            <div className="taskevent">
-              <div className="section1">
-                <h5 className="sectionHeader">Upcoming</h5>
-                <Upcoming tasks = {tasks} handleCheck={handleCheck} selectedDate={selectedDate} name = "Task"/>
-                <Upcoming tasks = {events} handleCheck={handleCheck2} selectedDate={selectedDate} name = "Event"/>
-              </div>
-            </div>
-          </div>
+      <Form/>
+      <div className="midContent">
+        <div className="calendar">
+          <Cal setSelectedDate={setSelectedDate}/>
         </div>
-
-
-        <div className="inbox">
-          <div className="section1">
-              <h5 className="sectionHeader">Tasks</h5>
-              <div>
-                <TaskList tasks = {tasks} handleCheck={handleCheck}/>
-                <Add addTask={addTask2} name="Task" theme={theme}/>
-                <br/>
-              </div>
-            </div>
+        <div className="display">
+          <div className="taskevent">
             <div className="section1">
-              <h5 className="sectionHeader">Events</h5>
-              <div>
-                <Events events = {events} handleCheck={handleCheck2}/>
-                <Add addTask={addTask3} name="Event" theme={theme}/>
-              </div>
+              <h5 className="sectionHeader">Upcoming</h5>
+              <Upcoming tasks = {tasks} handleCheck={handleCheck} selectedDate={selectedDate} name = "Task"/>
+              <Upcoming tasks = {events} handleCheck={handleCheck2} selectedDate={selectedDate} name = "Event"/>
             </div>
           </div>
+        </div>
+      </div>
 
 
-        <div className="lists">
+      <div className="inbox">
+        <div className="section1">
+            <h5 className="sectionHeader">Tasks</h5>
+            <div>
+              <TaskList tasks = {tasks} handleCheck={handleCheck}/>
+              <Add addTask={addTask2} name="Task" theme={theme}/>
+              <br/>
+            </div>
+          </div>
           <div className="section1">
-            <h5 className="sectionHeader">Lists</h5>
-            {toDoList.map(current => {
-              return (
-                <div key = {current.listName} className='list'>
-                  <hr className="taskLine"></hr>
-                <List name = {current.listName} list = {current.listItems} handleToggle={handleToggle}/>
-                <Add addTask={addTask} useState={false} name={current.listName} list = {current} theme={theme}/>
-                <br/>
-                </div>
-              )
-            })}
+            <h5 className="sectionHeader">Events</h5>
+            <div>
+              <Events events = {events} handleCheck={handleCheck2}/>
+              <Add addTask={addTask3} name="Event" theme={theme}/>
+            </div>
           </div>
         </div>
-      </>     
-    );  
+
+
+      <div className="lists">
+        <div className="section1">
+          <h5 className="sectionHeader">Lists</h5>
+          {toDoList.map(current => {
+            return (
+              <div key = {current.listName} className='list'>
+                <hr className="taskLine"></hr>
+              <List name = {current.listName} list = {current.listItems} handleToggle={handleToggle}/>
+              <Add addTask={addTask} useState={false} name={current.listName} list = {current} theme={theme}/>
+              <br/>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </>     
+  );  
 } 
 
 export default Middle;

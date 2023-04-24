@@ -5,17 +5,9 @@ import data from '../../containers/middle/data.json';
 import { API, graphqlOperation } from 'aws-amplify'
 import { getCognitoToken }from "../AuthUser"
 
-<<<<<<< HEAD
-const Add = ({addTask, name}) => {
-  const [add, setAdd] = useState(name);
-=======
 const Add = ({addTask, name, list, theme}) => {
   const [add, setAdd] = useState(false);
-<<<<<<< HEAD
->>>>>>> fc839c7 (minor dark mode changes)
-=======
   const [listoritem, setListOrItem] = useState();
->>>>>>> c8407dc (Update general form to match other forms.)
   const [ userInput, setUserInput ] = useState('');
   const [ userDate, setDateInput ] = useState('');
   const [ userDesc, setDescInput ] = useState('');
@@ -234,24 +226,24 @@ const Add = ({addTask, name, list, theme}) => {
     if(name === "Event") {
       return (
         <form onSubmit={handleSubmit} className="addingTask">
-          <input required type="text" value={userInput} onChange={handleChange} class="form-control" id="name" placeholder="Event Name" ref={title}/>
-          <input type="text" value={userDesc} onChange={handleChange3} class="form-control" id="name" placeholder="Event Description" ref={desc}/>
+          <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Event Name" ref={title}/>
+          <input type="text" value={userDesc} onChange={handleChange3} className="form-control" id="name" placeholder="Event Description" ref={desc}/>
 
           <div className="selections">
             <div className="childSelect">
-              <label for="startDate">Start Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} class="form-control" id="startDate" ref={sDate}/>
+              <label htmlFor="startDate">Start Date</label>
+              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
-              <label for="endDate">End Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} class="form-control" id="endDate" ref={eDate}/>
+              <label htmlFor="endDate">End Date</label>
+              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
           
           {/* Repetition: start and end date */}
           <div className="selections">
-            <select id="taskType" class="form-control childSelect" ref={freq}>
+            <select id="taskType" className="form-control childSelect" ref={freq}>
               <option value="ONCE">Once</option>
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>
@@ -262,38 +254,38 @@ const Add = ({addTask, name, list, theme}) => {
 
           {/* Cannot connect to a list. */}
           <div className="buttons">
-            <button class="btn btn-danger" onClick={changeAdd}>close</button>
-            <button class="btn" id="purple" onClick={async (e) => await addEvent(e)}>add</button>
+            <button className="btn btn-danger" onClick={changeAdd}>close</button>
+            <button className="btn" id="purple" onClick={async (e) => await addEvent(e)}>add</button>
           </div>
         </form>
       )
     } else if (name === "Task") {
       return (
         <form onSubmit={handleSubmit} className="addingTask">
-          <input required type="text" value={userInput} onChange={handleChange} class="form-control" id="name" placeholder="Task Name" ref={title}/>
+          <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Task Name" ref={title}/>
           
           {/* Start and End Date Required */}
           <div className="selections">
             <div className="childSelect">
-              <label for="startDate">Start Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} class="form-control" id="startDate" ref={sDate}/>
+              <label htmlFor="startDate">Start Date</label>
+              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
-              <label for="endDate">End Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} class="form-control" id="endDate" ref={eDate}/>
+              <label htmlFor="endDate">End Date</label>
+              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
 
           {/* Choose to attach to a list or item */}
           <div className="selections">
             <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
-              <label for="chooselist">Attach to list</label>
+              <label htmlFor="chooselist">Attach to list</label>
               <input type="checkbox" id="chooselist" name="chooselist" onClick={() => handleListOrItem('list')}></input>
             </div>
 
             <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
-              <label for="chooseitem">Attach to item</label>
+              <label htmlFor="chooseitem">Attach to item</label>
               <input type="checkbox" id="chooseitem" name="chooseitem" onClick={() => handleListOrItem('item')}></input>
             </div>
           </div>
@@ -301,7 +293,7 @@ const Add = ({addTask, name, list, theme}) => {
           {/* If List or Item Selected, option for complete source ? */}
           <div className="selections">
             {/* Frequency Type Options: Once, Daily, Weekly, Monthly, Yearly */}
-            <select id="taskType" class="form-control childSelect" ref={freq}>
+            <select id="taskType" className="form-control childSelect" ref={freq}>
               <option value="ONCE">Once</option>
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>
@@ -311,13 +303,13 @@ const Add = ({addTask, name, list, theme}) => {
 
             { listoritem === 'list' ? 
               <>
-                <select required id="listList" onChange={handleChange4} class="form-control childSelect" ref={listAttach}>
+                <select required id="listList" onChange={handleChange4} className="form-control childSelect" ref={listAttach}>
                   {/*pulling from JSON file data.json, needs to be connected to list database to retrieve list names*/}
                   { data.map(d => {
                     return <option value={d.listName}>{d.listName}</option>
                   })}
                 </select>
-                <select id="taskType" class="form-control childSelect">
+                <select id="taskType" className="form-control childSelect">
                   <option value="true">Complete source on completion</option>
                   <option value="false">Keep forever</option>
                 </select>
@@ -327,14 +319,14 @@ const Add = ({addTask, name, list, theme}) => {
 
             { listoritem === "item" ? 
               <>
-                <select required id="itemList" class="form-control childSelect" ref={itemAttach}>
+                <select required id="itemList" className="form-control childSelect" ref={itemAttach}>
                   { data.map(d => {
                     return d.listItems.map(item => {
                       return <option value={item.task}>{item.task}</option>
                     })
                   })}
                 </select>
-                <select id="taskType" class="form-control childSelect">
+                <select id="taskType" className="form-control childSelect">
                   <option value="true">Complete source on completion</option>
                   <option value="false">Keep forever</option>
                 </select>
@@ -346,8 +338,8 @@ const Add = ({addTask, name, list, theme}) => {
           
           <hr></hr>
           <div className="buttons">
-            <button class="btn btn-danger" onClick={changeAdd}>close</button>
-            <button class="btn" id="purple" onClick={async (e) => await addtask(e)}>add</button>
+            <button className="btn btn-danger" onClick={changeAdd}>close</button>
+            <button className="btn" id="purple" onClick={async (e) => await addtask(e)}>add</button>
           </div>
         </form>
       )
@@ -355,11 +347,11 @@ const Add = ({addTask, name, list, theme}) => {
     else {
       return (
         <form onSubmit={handleSubmit} className="addingTask">
-          <input required type="text" value={userInput} onChange={handleChange} class="form-control" id="name" placeholder="Item Name" ref={title}/>
+          <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Item Name" ref={title}/>
           <hr></hr>
           <div className="buttons">
-            <button class="btn btn-danger" onClick={changeAdd}>close</button>
-            <button class="btn" id="purple" onClick={async (e) => await addItem(e)}>add</button>
+            <button className="btn btn-danger" onClick={changeAdd}>close</button>
+            <button className="btn" id="purple" onClick={async (e) => await addItem(e)}>add</button>
           </div>
         </form>
       )

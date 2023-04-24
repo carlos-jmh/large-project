@@ -10,7 +10,7 @@ const Events = ({events, handleCheck}) => {
         <div className="tasks">
           {events?.map(event => {
               return (
-                <div>
+                <div key={event.id}>
                   <Task task={event} handleCheck={handleCheck} type="Event" />
                 </div>
               )

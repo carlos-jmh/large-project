@@ -67,18 +67,18 @@ const AddHousehold = ({addNewHousehold, theme}) => {
     if (!add) {
       return (
           <div className="addTask">
-            <button class = "addbutton"><Icon.HouseAdd className="addHouse" size="30px" onClick={changeAdd} /></button>
+            <button className= "addbutton"><Icon.HouseAdd className="addHouse" size="30px" onClick={changeAdd} /></button>
           </div>
       )
     }
     else {
       return (
         <form onSubmit={handleSubmit} className="addingTask addHouse">
-          <input type="text" value={userInput} onChange={handleChange} class="form-control" id="name" placeholder="Household Name" ref={hhName}/>
+          <input type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Household Name" ref={hhName}/>
           <hr></hr>
           <div className="buttons">
-            <button class="btn btn-danger" onClick={changeAdd}>close</button>
-            <button class="btn" id="purple" onClick={handleSubmit}>add</button>
+            <button className="btn btn-danger" onClick={changeAdd}>close</button>
+            <button className="btn" id="purple" onClick={handleSubmit}>add</button>
           </div>
         </form>
       )
@@ -87,18 +87,18 @@ const AddHousehold = ({addNewHousehold, theme}) => {
     if (!add) {
       return (
           <div className="addTask-dark">
-            <button class = "addbutton-dark"><Icon.HouseAdd className="addHouse-dark" size="30px" onClick={changeAdd} /></button>
+            <button className= "addbutton-dark"><Icon.HouseAdd className="addHouse-dark" size="30px" onClick={changeAdd} /></button>
           </div>
       )
     }
     else {
       return (
         <form onSubmit={handleSubmit} className="addingTask-dark addHouse">
-          <input type="text" value={userInput} onChange={handleChange} class="form-control" id="name" placeholder="Household Name" ref={hhName}/>
+          <input type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Household Name" ref={hhName}/>
           <hr></hr>
           <div className="buttons-dark">
-            <button class="btn btn-danger" onClick={changeAdd}>close</button>
-            <button class="btn" id="purple" onClick={handleSubmit}>add</button>
+            <button className="btn btn-danger" onClick={changeAdd}>close</button>
+            <button className="btn" id="purple" onClick={handleSubmit}>add</button>
           </div>
         </form>
       )

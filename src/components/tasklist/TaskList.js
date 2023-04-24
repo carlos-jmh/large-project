@@ -1,7 +1,5 @@
 import React from 'react'
 import Task from '../task/Task';
-import * as Icon from 'react-bootstrap-icons';
-
 
 const TaskList = ({tasks, handleCheck}) => {
 return (
@@ -10,7 +8,7 @@ return (
       <div className="tasks">
         {tasks?.map(task => {
             return (
-              <div>
+              <div key={task.id}>
                 <Task task={task} handleCheck={handleCheck} type = "Task"/>
               </div>
             )

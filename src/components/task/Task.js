@@ -8,7 +8,7 @@ const Task = ({task, handleCheck, type}) => {
 }
   if(type === "Event") {
     return (
-        <div className='eventItem' date={task.date} id={task.id} key={task.id + task.task} name="task" value={task.id}>
+        <div className='eventItem' date={task.date} id={task.id} name="task" value={task.id}>
           <div className="info">
             <input className="check" type="checkbox" id={task.id} onChange={checkOff} checked = {task.complete ? true : false}/>
             <label className={task.complete ? "label strike" : "label"}>{" " + task.task}{" " + task.date}{" " + task.description}</label>
@@ -23,7 +23,7 @@ const Task = ({task, handleCheck, type}) => {
     ) 
   } else {
     return (
-            <div id={task.id} key={task.id + task.task} name="task" value={task.id} className='taskItem'>
+            <div id={task.id} name="task" value={task.id} className='taskItem'>
               <div className="info">
                 <input className="check" type="checkbox" id={task.id} onChange={checkOff} checked = {task.complete ? true : false}/>
                 <label className={task.complete ? "label strike" : "label"}>{" " + task.task}{" " + task.date}{" " + task.list}</label>

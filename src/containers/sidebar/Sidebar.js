@@ -69,39 +69,29 @@ const Sidebar = ({theme}) => {
       );
     } catch (error) {
       console.log(error);
-      return null;
-    }
-  };
-
-  // get the user's households
-  const fetchHouseHolds = async () => {
-    const userProfile = await getUserProfile();
-
-    if (userProfile) {
-      const houseHolds = await getUsersHouseHolds(userProfile.id);
-      setHouseHolds(houseHolds);
+      return [];
     }
   };
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        //const user = await getCognitoUser();
-        //setUsername(user.username);
-  
-        await fetchHouseHolds();
-      } catch (error) {
-        console.log(error);
+    async function fetchHouseHolds() {
+      const userProfile = await getUserProfile();
+
+      if (userProfile) {
+        const houseHolds = await getUsersHouseHolds(userProfile.id);
+        setHouseHolds(houseHolds);
       }
+  
+      return null;
     }
 
-    fetchData();
+    fetchHouseHolds();
   }, []);
 
   if(theme === 'light')  {
     return (
-      <div class = "container">
-          <div class="households">
+      <div className= "container">
+          <div className="households">
             <h4>Households</h4>
             <hr></hr>
           </div>
@@ -110,7 +100,9 @@ const Sidebar = ({theme}) => {
             {/* Pass house.id as well */}
             {houseHolds?.map(house => {
                 return (
+                  <div key={house.id}>
                     <Householdinfo name={house.name} id={house.id} theme = {theme}/>
+                  </div>
                 )
             })}
           </div>
@@ -127,8 +119,8 @@ const Sidebar = ({theme}) => {
     }
     else {
       return (
-        <div class = "container-dark">
-            <div class="households-dark">
+        <div className= "container-dark">
+            <div className="households-dark">
               <h3>Households</h3>
               <hr></hr>
             </div>

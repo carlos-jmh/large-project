@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import ListItem from '../listItem/ListItem';
-import Add from '../add/Add';
 import * as Icon from 'react-bootstrap-icons';
 import './list.css'
 
@@ -26,7 +25,9 @@ return (
           {/* Items: title, id, houseHoldId, description, completed */}
           {open ? list.map(todo => {
               return (
+                <div key={todo.id}>
                   <ListItem todo={todo} handleToggle={handleToggle} lname={name}/>
+                </div>
               )
           }) : <></>}
         </div>

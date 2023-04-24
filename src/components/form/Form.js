@@ -175,29 +175,29 @@ const Form = () => {
   }
 
     return (
-      <div class="genform">
+      <div className="genform">
         <div className="tabs">
-          <button class="tablinks" id="l" onClick={() => openTab("l")}>List</button>
-          <button class="tablinks" id="e" onClick={() => openTab("e")}>Event</button>
-          <button class="tablinks active" id="t" onClick={() => openTab("t")}>Task</button>
-          <button class="tablinks" id="m" onClick={() => openTab("m")}>Member</button>
+          <button className="tablinks" id="l" onClick={() => openTab("l")}>List</button>
+          <button className="tablinks" id="e" onClick={() => openTab("e")}>Event</button>
+          <button className="tablinks active" id="t" onClick={() => openTab("t")}>Task</button>
+          <button className="tablinks" id="m" onClick={() => openTab("m")}>Member</button>
         </div>
 
       {/* Create form for list */}
-        <div class="tabcontent" style={{display: "none"}} id="list">
-          <div class="form-group">
+        <div className="tabcontent" style={{display: "none"}} id="list">
+          <div className="form-group">
             <label htmlFor="listName">Enter your list name</label>
-            <input type="text" class="form-control" id="listName" placeholder="Grocery List" required ref={title}></input>
+            <input type="text" className="form-control" id="listName" placeholder="Grocery List" required ref={title}></input>
           </div>
 
-          <div class="form-group">
+          <div className="form-group">
             <label htmlFor="listDesc">Enter your list description</label>
-            <input type="text" class="form-control" id="listDisc" placeholder="List to track grocery items" required ref={desc}></input>
+            <input type="text" className="form-control" id="listDisc" placeholder="List to track grocery items" required ref={desc}></input>
           </div>
 
-          <div class="form-group">
+          <div className="form-group">
             <label htmlFor="listTask">Link to a task?</label>
-            <select id="listTask" class="form-control" ref={linkedTask}>
+            <select id="listTask" className="form-control" ref={linkedTask}>
               <option value="none">None</option>
               <option value="Task1">Task1</option>
               <option value="Task2">Task2</option>
@@ -206,35 +206,35 @@ const Form = () => {
           </div>
 
           <div className="formBtn">
-            <button type="submit" class="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" class="btn btn-success" onClick={async (e) => await add(e, "l")}>Add List</button>
+            <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
+            <button type="submit" className="btn btn-success" onClick={async (e) => await add(e, "l")}>Add List</button>
           </div>
           
         </div>
 
         {/* Create form for event */}
-        <div class="tabcontent" style={{display: "none"}} id="event">
+        <div className="tabcontent" style={{display: "none"}} id="event">
         
-          <div className="form-group" style={{"display": "flex", "flex-direction":"column", "gap": "1rem"}}>
-            <input required type="text" value={userInput} onChange={handleChange} class="form-control" id="eventName" placeholder="Event Name" ref={title}/>
-            <input type="text" value={userDesc} onChange={handleChange3} class="form-control" id="name" placeholder="Event Description" ref={desc}/>
+          <div className="form-group" style={{"display": "flex", "flexDirection":"column", "gap": "1rem"}}>
+            <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="eventName" placeholder="Event Name" ref={title}/>
+            <input type="text" value={userDesc} onChange={handleChange3} className="form-control" id="name" placeholder="Event Description" ref={desc}/>
           </div>
 
           <div className="selections">
             <div className="childSelect">
-              <label for="startDate">Start Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} class="form-control" id="startDate" ref={sDate}/>
+              <label htmlFor="startDate">Start Date</label>
+              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
-              <label for="endDate">End Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} class="form-control" id="endDate" ref={eDate}/>
+              <label htmlFor="endDate">End Date</label>
+              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
 
           {/* Repetition: start and end date */}
-          <div className="form-group selections" style={{"margin-top": "1rem"}}>
-            <select id="taskType" class="form-control childSelect" ref={freq}>
+          <div className="form-group selections" style={{"marginTop": "1rem"}}>
+            <select id="taskType" className="form-control childSelect" ref={freq}>
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>
               <option value="MONTHLY">Monthly</option>
@@ -243,46 +243,46 @@ const Form = () => {
           </div>
 
           <div className="formBtn">
-            <button type="submit" class="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" class="btn btn-success" onClick={async (e) => await add(e, "e")}>Add Event</button>
+            <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
+            <button type="submit" className="btn btn-success" onClick={async (e) => await add(e, "e")}>Add Event</button>
           </div>
         </div>
 
         {/* Create form for task */}
-        <div class="tabcontent"  id="task">
-          <div class="form-group">
+        <div className="tabcontent"  id="task">
+          <div className="form-group">
             <label htmlFor="eventName">Enter your task name</label>
-            <input type="text" class="form-control" id="taskName" placeholder="Task Name" required ref={title}></input>
+            <input type="text" className="form-control" id="taskName" placeholder="Task Name" required ref={title}></input>
           </div>
 
           <div className="selections">
             <div className="childSelect">
-              <label for="startDate">Start Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} class="form-control" id="startDate" ref={sDate}/>
+              <label htmlFor="startDate">Start Date</label>
+              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
-              <label for="endDate">End Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} class="form-control" id="endDate" ref={eDate}/>
+              <label htmlFor="endDate">End Date</label>
+              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
 
            {/* Choose to attach to a list or item */}
            <div className="selections">
             <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
-              <label for="chooselist">Attach to list</label>
+              <label htmlFor="chooselist">Attach to list</label>
               <input type="checkbox" id="chooselist" name="chooselist" onClick={() => handleListOrItem('list')}></input>
             </div>
 
             <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
-              <label for="chooseitem">Attach to item</label>
+              <label htmlFor="chooseitem">Attach to item</label>
               <input type="checkbox" id="chooseitem" name="chooseitem" onClick={() => handleListOrItem('item')}></input>
             </div>
           </div>
 
           <div className="selections vertical">
             {/* Frequency Type Options: Once, Daily, Weekly, Monthly, Yearly */}
-            <select id="taskType" class="form-control childSelect" ref={freq}>
+            <select id="taskType" className="form-control childSelect" ref={freq}>
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>
               <option value="MONTHLY">Monthly</option>
@@ -291,13 +291,13 @@ const Form = () => {
 
             { listoritem === 'list' ? 
               <>
-                <select required id="listList" onChange={handleChange4} class="form-control childSelect" ref={listAttach}>
+                <select required id="listList" onChange={handleChange4} className="form-control childSelect" ref={listAttach}>
                   {/*pulling from JSON file data.json, needs to be connected to list database to retrieve list names*/}
                   { data.map(d => {
                     return <option value={d.listName}>{d.listName}</option>
                   })}
                 </select>
-                <select id="taskType" class="form-control childSelect">
+                <select id="taskType" className="form-control childSelect">
                   <option>Complete source on completion</option>
                   <option>Keep forever</option>
                 </select>
@@ -307,14 +307,14 @@ const Form = () => {
 
             { listoritem === "item" ? 
               <>
-                <select required id="itemList" class="form-control childSelect" ref={itemAttach}>
+                <select required id="itemList" className="form-control childSelect" ref={itemAttach}>
                   { data.map(d => {
                     return d.listItems.map(item => {
                       return <option value={item.task}>{item.task}</option>
                     })
                   })}
                 </select>
-                <select id="taskType" class="form-control childSelect">
+                <select id="taskType" className="form-control childSelect">
                   <option>Complete source on completion</option>
                   <option>Keep forever</option>
                 </select>
@@ -325,21 +325,21 @@ const Form = () => {
           </div>         
 
           <div className="formBtn">
-            <button type="submit" class="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" class="btn btn-success" onClick={async (e) => await add(e, "t")}>Add Task</button>
+            <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
+            <button type="submit" className="btn btn-success" onClick={async (e) => await add(e, "t")}>Add Task</button>
           </div>
         </div>
 
         {/* Create form for adding a person */}
-        <div class="tabcontent" style={{display: "none"}} id="event">
-          <div class="form-group">
+        <div className="tabcontent" style={{display: "none"}} id="event">
+          <div className="form-group">
             <label htmlFor="eventName">Enter member</label>
-            <input type="text" class="form-control" id="eventName" placeholder="username" required ref={username}></input>
+            <input type="text" className="form-control" id="eventName" placeholder="username" required ref={username}></input>
           </div>
 
           <div className="formBtn">
-            <button type="submit" class="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" class="btn btn-success" onClick={async (e) => await add(e, "m")}>Add Member</button>
+            <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
+            <button type="submit" className="btn btn-success" onClick={async (e) => await add(e, "m")}>Add Member</button>
           </div>
         </div>
       </div>

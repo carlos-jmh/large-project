@@ -29,8 +29,8 @@ const Householdinfo = ({name, id, theme}) => {
     }
     return (
       <div>
-        <button onClick={updateHouse} class="round-button bg2" id={name}>
-            <span class="round-button">{name}</span>
+        <button onClick={updateHouse} className="round-button bg2" id={name}>
+            <span className="round-button">{name}</span>
         </button>
       </div>
     )
@@ -58,8 +58,8 @@ const Householdinfo = ({name, id, theme}) => {
     }
     return (
       <div>
-        <button onClick={updateHouse} class="round-button-dark bg2-dark" id={name}>
-            <span class="round-button-dark">{name}</span>
+        <button onClick={updateHouse} className="round-button-dark bg2-dark" id={name}>
+            <span className="round-button-dark">{name}</span>
         </button>
       </div>
     )

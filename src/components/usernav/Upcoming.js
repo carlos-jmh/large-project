@@ -6,8 +6,8 @@ const Upcoming = ({tasks, handleCheck, selectedDate, name}) => {
 
 let copy = [];
 for(let i = 0; i < tasks.length; i++) {
-    console.log(tasks[i].date)
-    console.log(selectedDate)
+    // console.log(tasks[i].date)
+    // console.log(selectedDate)
     if(tasks[i].date == selectedDate.toString()) {
         copy.push(tasks[i])
     }
