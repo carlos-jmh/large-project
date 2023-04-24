@@ -8,11 +8,11 @@ let copy = [];
 for(let i = 0; i < tasks.length; i++) {
     // console.log(tasks[i].date)
     // console.log(selectedDate)
-    if(tasks[i].date == selectedDate.toString()) {
+    if(tasks[i].date === selectedDate.toString()) {
         copy.push(tasks[i])
     }
 }
-if(copy.length == 0) {
+if(copy.length === 0) {
     return (
         <div className="section">
             <hr className="taskLine"></hr>

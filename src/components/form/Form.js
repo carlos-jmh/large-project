@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect } from 'react'
+import React, {useRef, useState } from 'react'
 import './form.css';
 import data from '../../containers/middle/data.json';
 import { getCognitoToken } from '../AuthUser';
@@ -346,4 +346,4 @@ const Form = () => {
     )
 }
 
-export default Form
+export default Form;

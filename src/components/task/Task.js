@@ -2,10 +2,11 @@ import React from 'react'
 import './task.css'
 import * as Icon from 'react-bootstrap-icons'
 
-const Task = ({task, handleCheck, type}) => {
-  const checkOff = (e) => {
-    handleCheck(e.currentTarget.id) 
-}
+const Task = ({task, taskIndex, handleCheck, type}) => {
+  const checkOff = () => {
+    handleCheck(taskIndex, !task.complete); 
+  }
+
   if(type === "Event") {
     return (
         <div className='eventItem' date={task.date} id={task.id} name="task" value={task.id}>

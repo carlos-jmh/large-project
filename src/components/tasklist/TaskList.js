@@ -6,11 +6,9 @@ return (
   <div className="section">
       <hr className="taskLine"></hr>
       <div className="tasks">
-        {tasks?.map(task => {
+        {tasks?.map((task, index) => {
             return (
-              <div key={task.id}>
-                <Task task={task} handleCheck={handleCheck} type = "Task"/>
-              </div>
+                <Task key={index} task={task} taskIndex={index} handleCheck={handleCheck} type = "Task"/>
             )
         })}
         <hr></hr>

@@ -8,10 +8,10 @@ const Events = ({events, handleCheck}) => {
     <div className="section">
         <hr className="taskLine"></hr>
         <div className="tasks">
-          {events?.map(event => {
+          {events?.map((event, index) => {
               return (
-                <div key={event.id}>
-                  <Task task={event} handleCheck={handleCheck} type="Event" />
+                <div key={index}>
+                  <Task task={event} taskIndex={index} handleCheck={handleCheck} type="Event" />
                 </div>
               )
           })}

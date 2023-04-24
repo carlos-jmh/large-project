@@ -188,38 +188,31 @@ const Middle = ({theme}) => {
 
 
   //Handles list ITEM completions
-  const handleToggle = (id, name) => {
-    let temp = [];
-    let mapped = toDoList.map(list => {
-      list.listItems.map(item => { 
-        if((item.id === id) && (list.listName === name)) { 
-          temp.push({...item , complete: !item.complete})
-        } else {
-          temp.push(item)
-        }
-
-      });
-        list.listItems = temp
-        temp = []
-        return ({...list})
-      });
-    setToDoList(mapped);
-  }
-
-  //Handles task completion
-  const handleCheck = (id) => {
-    let mapped = tasks.map(task => {
-      return task.id === id ? { ...task, complete: !task.complete } : { ...task};
+  const handleListItemToggle = (listIndex, itemIndex, completed) => {
+    setToDoList(prevState => {
+      const newList = [...prevState];
+      newList[listIndex].listItems[itemIndex].complete = completed;
+      return newList;
     });
-    setTasks(mapped);
   }
 
+  //Handles list completions
+  const handleTaskCheck = (taskIndex, complete) => {
+    setTasks(prevState => {
+      const newTasks = [...prevState];
+      newTasks[taskIndex].complete = complete;
+      return newTasks;
+    });
+  }
+
+  // TODO: Remove this --- Events are no longer "completable"
   //Handles event completion
-  const handleCheck2 = (id) => {
-    let mapped = events.map(task => {
-      return task.id === id ? { ...task, complete: !task.complete } : { ...task};
+  const handleEventCheck = (eventIndex, complete) => {
+    setEvents(prevState => {
+      const newEvents = [...prevState];
+      newEvents[eventIndex].complete = complete;
+      return newEvents;
     });
-    setEvents(mapped);
   }
   
   //This is for adding individual items in a given list
@@ -269,8 +262,8 @@ const Middle = ({theme}) => {
           <div className="taskevent">
             <div className="section1">
               <h5 className="sectionHeader">Upcoming</h5>
-              <Upcoming tasks = {tasks} handleCheck={handleCheck} selectedDate={selectedDate} name = "Task"/>
-              <Upcoming tasks = {events} handleCheck={handleCheck2} selectedDate={selectedDate} name = "Event"/>
+              <Upcoming tasks = {tasks} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
+              <Upcoming tasks = {events} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
             </div>
           </div>
         </div>
@@ -281,31 +274,31 @@ const Middle = ({theme}) => {
         <div className="section1">
             <h5 className="sectionHeader">Tasks</h5>
             <div>
-              <TaskList tasks = {tasks} handleCheck={handleCheck}/>
+              <TaskList tasks = {tasks} handleCheck={handleTaskCheck}/>
               <Add addTask={addTask2} name="Task" theme={theme}/>
               <br/>
             </div>
-          </div>
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
-              <Events events = {events} handleCheck={handleCheck2}/>
+              <Events events = {events} handleCheck={handleEventCheck}/>
               <Add addTask={addTask3} name="Event" theme={theme}/>
             </div>
           </div>
         </div>
+      </div>
 
 
       <div className="lists">
         <div className="section1">
           <h5 className="sectionHeader">Lists</h5>
-          {toDoList.map(current => {
+          {toDoList.map((currList, index) => {
             return (
-              <div key = {current.listName} className='list'>
+              <div key = {index} className='list'>
                 <hr className="taskLine"></hr>
-              <List name = {current.listName} list = {current.listItems} handleToggle={handleToggle}/>
-              <Add addTask={addTask} useState={false} name={current.listName} list = {current} theme={theme}/>
-              <br/>
+                <List name={currList.listName} list={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
+                <Add addTask={addTask} useState={false} name={currList.listName} list={currList} theme={theme}/>
+                <br/>
               </div>
             )
           })}
