@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "auth": {
+      "largeproject9e7232c0": [
+        "read"
+      ]
+    },
+    "storage": {
+      "UserProfile:@model(appsync)": [
+        "read"
+      ],
+      "HouseHoldMember:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "HouseHold:@model(appsync)": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
