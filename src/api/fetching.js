@@ -84,39 +84,3 @@ export const fetchEventsByCalendarId = async (calendarId) => {
     return [];
   }
 }
-
-// const getEvents = async (houseHoldId) => {
-  // try {
-  //   const token = await getCognitoToken();
-
-  //   const lists = await API.graphql(
-  //     graphqlOperation(
-  //       `query GetTasks($houseHoldId: ID = "") {
-  //         tasksByHouseHoldId(houseHoldId: $houseHoldId) {
-  //           items {
-  //             completeSourceOnComplete
-  //             completed
-  //             eventHandlerId
-  //             foreverTask
-  //             houseHoldId
-  //             id
-  //             itemId
-  //             listId
-  //             title
-  //           }
-  //         }
-  //       }`,
-  //       { houseHoldId: houseHoldId }
-  //     ),
-  //     { Authorization: `Banana ${token}` }
-  //   );
-
-  //   // process into object that you want
-
-  //   return lists.data.tasksByHouseHoldId.items;
-
-  // } catch (error) {
-  //   console.log("ERROR fetching Lists ", error)
-  //   return [];
-  // }
-// }
