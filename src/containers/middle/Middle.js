@@ -28,8 +28,32 @@ const Middle = ({theme}) => {
   const [toDoList, setToDoList] = useState(data);
   const [tasks, setTasks] = useState(taskData);
   const [events, setEvents] = useState(eventData);
-  const [lists, setLists] = useState();
+  const [lists, setLists] = useState([]);
   const [id, sethouseHoldId] = useState('');
+  const [loaded, setLoaded] = useState(false);
+
+
+  async function fetchLists(hhId) {
+    const l = await getLists(hhId);
+    setLists(l);
+  };
+
+  async function fetchTasks(hhId) {
+    const t = await getTasks(hhId);
+    setTasks(t);
+  }
+
+  async function fetchEvents(hhId) {
+    const e = await getEvents(hhId);
+    setEvents(e);
+  }
+
+  useEffect(() => {
+    console.log("Lists: " + JSON.stringify(lists));
+    console.log("Tasks: " + JSON.stringify(tasks));
+    console.log("Events: " + JSON.stringify(events));
+    setLoaded(true);
+  }, [lists, tasks, events]);
 
   // UseEffect on local storage to load houseHoldId
   useEffect(() => {
@@ -38,8 +62,12 @@ const Middle = ({theme}) => {
       const hhId = localStorage.getItem("houseHoldId");
 
       if (hhId)
+      {
         sethouseHoldId(hhId);
-
+        fetchLists(hhId);
+        fetchTasks(hhId);
+        //fetchEvents(hhId);
+      }
       console.log(hhId);
     }
     
@@ -50,29 +78,7 @@ const Middle = ({theme}) => {
     };
   }, [])
   
-   // Upon id change, refetch lists, tasks and events.
-   useEffect(() => {
-    async function fetchLists() {
-      setLists(await getLists(id));
-      console.log(lists);
-    };
-
-    async function fetchTasks() {
-      const tasks = await getTasks(id);
-      console.log(tasks);
-    }
-
-    async function fetchEvents() {
-      const events = await getEvents(id);
-      console.log(events);
-    }
-    
-    fetchLists();
-    fetchTasks();
-    fetchEvents();
-  }, [id]);
-  
-  const TEST_HOUSEHOLDID = "ee1afec5-f8b1-4dd9-b907-fac07b638107";
+  // const TEST_HOUSEHOLDID = "ee1afec5-f8b1-4dd9-b907-fac07b638107";
 
   const getLists = async (houseHoldId) => {
     try {
@@ -259,6 +265,7 @@ const Middle = ({theme}) => {
 
   // Break into seperate component.
   return (
+    loaded ? 
     <>
     {/*
     - In upcoming view list both tasks and events together in one column going in chronological order.
@@ -275,7 +282,7 @@ const Middle = ({theme}) => {
             <div className="section1">
               <h5 className="sectionHeader">Upcoming</h5>
               <Upcoming tasks = {tasks} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
-              <Upcoming tasks = {events} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
+              <Upcoming tasks = {[]} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
             </div>
           </div>
         </div>
@@ -293,7 +300,7 @@ const Middle = ({theme}) => {
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
-              <Events events = {events} handleCheck={handleEventCheck}/>
+              <Events events = {[]} handleCheck={handleEventCheck}/>
               <Add addTask={addTask3} name="Event" theme={theme}/>
             </div>
           </div>
@@ -317,6 +324,65 @@ const Middle = ({theme}) => {
         </div>
       </div>
     </>     
+    :
+    <>
+    {/*
+    - In upcoming view list both tasks and events together in one column going in chronological order.
+    - Also included undated events above with a separation 
+    */}
+
+      <Form/>
+      <div className="midContent">
+        <div className="calendar">
+          <Cal setSelectedDate={setSelectedDate}/>
+        </div>
+        <div className="display">
+          <div className="taskevent">
+            <div className="section1">
+              <h5 className="sectionHeader">Upcoming</h5>
+              <Upcoming tasks = {[]} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
+              <Upcoming tasks = {events} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div className="inbox">
+        <div className="section1">
+            <h5 className="sectionHeader">Tasks</h5>
+            <div>
+              <TaskList tasks = {[]} handleCheck={handleTaskCheck}/>
+              <Add addTask={addTask2} name="Task" theme={theme}/>
+              <br/>
+            </div>
+          <div className="section1">
+            <h5 className="sectionHeader">Events</h5>
+            <div>
+              <Events events = {[]} handleCheck={handleEventCheck}/>
+              <Add addTask={addTask3} name="Event" theme={theme}/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div className="lists">
+        <div className="section1">
+          <h5 className="sectionHeader">Lists</h5>
+          {[].map((currList, index) => {
+            return (
+              <div key = {index} className='list'>
+                <hr className="taskLine"></hr>
+                <List name={currList.listName} list={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
+                <Add addTask={addTask} useState={false} name={currList.listName} list={currList} theme={theme}/>
+                <br/>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </>
   );  
 } 
 

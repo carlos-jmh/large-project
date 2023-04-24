@@ -8,7 +8,9 @@ return (
       <div className="tasks">
         {tasks?.map((task, index) => {
             return (
-                <Task key={index} task={task} taskIndex={index} handleCheck={handleCheck} type = "Task"/>
+                <Task 
+                key={index} task={task} taskIndex={index} handleCheck={handleCheck} 
+                type="Task"/>
             )
         })}
         <hr></hr>

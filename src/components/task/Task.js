@@ -3,6 +3,8 @@ import './task.css'
 import * as Icon from 'react-bootstrap-icons'
 
 const Task = ({task, taskIndex, handleCheck, type}) => {
+
+  // Update database as well.
   const checkOff = () => {
     handleCheck(taskIndex, !task.complete); 
   }
@@ -26,8 +28,9 @@ const Task = ({task, taskIndex, handleCheck, type}) => {
     return (
             <div id={task.id} name="task" value={task.id} className='taskItem'>
               <div className="info">
-                <input className="check" type="checkbox" id={task.id} onChange={checkOff} checked = {task.complete ? true : false}/>
-                <label className={task.complete ? "label strike" : "label"}>{" " + task.task}{" " + task.date}{" " + task.list}</label>
+                <input className="check" type="checkbox" id={task.id} onChange={checkOff} checked = {task.completed ? true : false}/>
+                {/* Place the date and any links here as well */}
+                <label className={task.complete ? "label strike" : "label"}>{" " + task.title}</label>
               </div>
               
               <div className="icons">
