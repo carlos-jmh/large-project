@@ -103,30 +103,35 @@ const Middle = ({theme}) => {
   }
 
   useEffect(() => {
-    async function loadListData() {
-      const lists = await fetchLists(TEST_HOUSEHOLDID);
-      await processLists(lists);
-    };
-
-    async function loadTaskData() {
-      const tasks = await fetchTasksByHouseHoldId(TEST_HOUSEHOLDID);
-      console.log(tasks);
-    }
-
-    async function loadEventData() {
-      const events = await fetchEventsByCalendarId(TEST_CALENDARID);
-      console.log(events);
-    }
-
-    async function loadEventHandlerData() {
-      const events = await fetchEventHandlersByCalendarId(TEST_CALENDARID);
-      console.log(events);
-    }
+    window.addEventListener('storage', () => {
+      let id = localStorage.getItem('houseHoldId');
+      
+      async function loadListData() {
+        const lists = await fetchLists(id);
+        await processLists(lists);
+      };
+  
+      async function loadTaskData() {
+        const tasks = await fetchTasksByHouseHoldId(id);
+        await setTasks(tasks);
+      }
+  
+      async function loadEventData() {
+        const events = await fetchEventsByCalendarId(id);
+        console.log(events);
+      }
+  
+      async function loadEventHandlerData() {
+        const events = await fetchEventHandlersByCalendarId(id);
+        console.log(events);
+      }
+      
+      loadListData();
+      loadTaskData();
+      loadEventData();
+      loadEventHandlerData();
+    })
     
-    loadListData();
-    loadTaskData();
-    loadEventData();
-    loadEventHandlerData();
   }, []);
 
   // Load in households and their respective info.
