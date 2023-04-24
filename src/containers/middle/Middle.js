@@ -11,8 +11,13 @@ import eventData from "./eventData.json";
 import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList';
 import Upcoming from '../../components/usernav/Upcoming';
-import { getCognitoToken } from '../../components/AuthUser';
-import { API, graphqlOperation } from 'aws-amplify'
+
+import { fetchEventHandlersByCalendarId, fetchEventsByCalendarId, fetchItemsByListId, fetchLists, fetchTasksByHouseHoldId } from '../../api/fetching';
+import { createSubListItems, updateSubListItems } from '../../api/subscribing'
+import { updateExistingItem } from '../../api/mutating'
+
+export const TEST_HOUSEHOLDID = "ee1afec5-f8b1-4dd9-b907-fac07b638107";
+export const TEST_CALENDARID = "8140617b-65f6-4e8a-8aeb-f009606ae792";
 
 const Middle = ({theme}) => {
   //THIS SORTS BOTH JSON FILES BEFORE THEY ARE LOADED IN
@@ -28,190 +33,111 @@ const Middle = ({theme}) => {
   const [toDoList, setToDoList] = useState(data);
   const [tasks, setTasks] = useState(taskData);
   const [events, setEvents] = useState(eventData);
-  const [lists, setLists] = useState([]);
-  const [id, sethouseHoldId] = useState('');
-  const [loaded, setLoaded] = useState(false);
 
+  const [listData, setListData] = useState([]);
+  
+  /*
+  For API Implementation all we have to do is connect 3 variables to the backend:
+  - data
+  - taskData
+  - eventData
+  from the 3 useStates above. That is where I am loading all the info from the JSON files for the entire application - Gabe
+  */
 
-  async function fetchLists(hhId) {
-    const l = await getLists(hhId);
-    setLists(l);
-  };
+  const processLists = async (lists) => {
+    const processedLists = lists.map(async (list, listIndex) => {
+      const listItems = await fetchItemsByListId(list.id);
 
-  async function fetchTasks(hhId) {
-    const t = await getTasks(hhId);
-    setTasks(t);
-  }
+      // TODO (carlos): Implement delete
+      // Creating subscriptions for list item updates
+      createSubListItems(list.id, listIndex, newListItemIsCreated);
+      updateSubListItems(list.id, listIndex, existingListItemIsUpdated);
 
-  async function fetchEvents(hhId) {
-    const e = await getEvents(hhId);
-    setEvents(e);
-  }
+      const processedItems = listItems.map((item) => {
+        return {
+          id: item.id,
+          task: item.title,
+          complete: item.completed,
+          _version: item._version,
+        }
+      });
 
-  useEffect(() => {
-    console.log("Lists: " + JSON.stringify(lists));
-    //console.log("Tasks: " + JSON.stringify(tasks));
-    //console.log("Events: " + JSON.stringify(events));
-    setLoaded(true);
-  }, [lists, tasks, events]);
-
-  // UseEffect on local storage to load houseHoldId
-  useEffect(() => {
-
-    function checkHouseHold() {
-      const hhId = localStorage.getItem("houseHoldId");
-
-      if (hhId)
-      {
-        sethouseHoldId(hhId);
-        fetchLists(hhId);
-        fetchTasks(hhId);
-        //fetchEvents(hhId);
+      return {
+        listId: list.id,
+        listName: list.title,
+        listItems: processedItems,
+        _version: list._version,
       }
-      console.log(hhId);
+    });
+
+    setListData(await Promise.all(processedLists));
+  }
+
+  const newListItemIsCreated = (item, index) => {
+    console.log("SUBSCRIPTION CREATE ITEM", item);
+    setListData(prevState => {
+      const newListData = [...prevState];
+      newListData[index].listItems.push({
+        id: item.id,
+        task: item.title,
+        complete: item.completed,
+        _version: item._version,
+      });
+      return newListData;
+    });
+  }
+
+  const existingListItemIsUpdated = (item, index) => {
+    console.log("SUBSCRIPTION UPDATE ITEM", item);
+    setListData(prevState => {
+      const newListData = [...prevState];
+      const itemIndex = newListData[index].listItems.findIndex(listItem => listItem.id === item.id);
+      newListData[index].listItems[itemIndex] = {
+        id: item.id,
+        task: item.title,
+        complete: item.completed,
+        _version: item._version,
+      };
+      return newListData;
+    });
+  }
+
+  useEffect(() => {
+    async function loadListData() {
+      const lists = await fetchLists(TEST_HOUSEHOLDID);
+      await processLists(lists);
+    };
+
+    async function loadTaskData() {
+      const tasks = await fetchTasksByHouseHoldId(TEST_HOUSEHOLDID);
+      console.log(tasks);
+    }
+
+    async function loadEventData() {
+      const events = await fetchEventsByCalendarId(TEST_CALENDARID);
+      console.log(events);
+    }
+
+    async function loadEventHandlerData() {
+      const events = await fetchEventHandlersByCalendarId(TEST_CALENDARID);
+      console.log(events);
     }
     
-    window.addEventListener("storage", checkHouseHold);
-
-    return () => {
-      window.removeEventListener("storage", checkHouseHold);
-    };
-  }, [])
-  
-  // const TEST_HOUSEHOLDID = "ee1afec5-f8b1-4dd9-b907-fac07b638107";
-
-  const getLists = async (houseHoldId) => {
-    try {
-      const token = await getCognitoToken();
-
-      const lists = await API.graphql(
-        graphqlOperation(
-          `query ListsByHouseHoldId($houseHoldId: ID!) {
-            listsByHouseHoldId(houseHoldId: $houseHoldId) {
-              items {
-                title
-                id
-                houseHoldId
-                description
-                completed
-                Items {
-                  items {
-                    title
-                    listId
-                    id
-                    description
-                    completed
-                  }
-                }
-                Task {
-                  id
-                  title
-                  foreverTask
-                  eventHandlerId
-                  completed
-                  completeSourceOnComplete
-                }
-              }
-            }
-          }`,
-          { houseHoldId: houseHoldId }
-        ),
-        { Authorization: `Banana ${token}` }
-      );
-
-      // process into object that you want
-
-      return lists.data.listsByHouseHoldId.items;
-
-    } catch (error) {
-      console.log("ERROR fetching Lists ", error)
-      return [];
-    }
-  }
-
-  const getTasks = async (houseHoldId) => {
-    try {
-      const token = await getCognitoToken();
-
-      const lists = await API.graphql(
-        graphqlOperation(
-          `query GetTasks($houseHoldId: ID = "") {
-            tasksByHouseHoldId(houseHoldId: $houseHoldId) {
-              items {
-                completeSourceOnComplete
-                completed
-                eventHandlerId
-                foreverTask
-                houseHoldId
-                id
-                itemId
-                listId
-                title
-              }
-            }
-          }`,
-          { houseHoldId: houseHoldId }
-        ),
-        { Authorization: `Banana ${token}` }
-      );
-
-      // process into object that you want
-
-      return lists.data.tasksByHouseHoldId.items;
-
-    } catch (error) {
-      console.log("ERROR fetching Lists ", error)
-      return [];
-    }
-  }
-
-  // TODO (carlos): Implement
-  const getEvents = async (houseHoldId) => {
-    // try {
-    //   const token = await getCognitoToken();
-
-    //   const lists = await API.graphql(
-    //     graphqlOperation(
-    //       `query GetTasks($houseHoldId: ID = "") {
-    //         tasksByHouseHoldId(houseHoldId: $houseHoldId) {
-    //           items {
-    //             completeSourceOnComplete
-    //             completed
-    //             eventHandlerId
-    //             foreverTask
-    //             houseHoldId
-    //             id
-    //             itemId
-    //             listId
-    //             title
-    //           }
-    //         }
-    //       }`,
-    //       { houseHoldId: houseHoldId }
-    //     ),
-    //     { Authorization: `Banana ${token}` }
-    //   );
-
-    //   // process into object that you want
-
-    //   return lists.data.tasksByHouseHoldId.items;
-
-    // } catch (error) {
-    //   console.log("ERROR fetching Lists ", error)
-    //   return [];
-    // }
-  }
+    loadListData();
+    loadTaskData();
+    loadEventData();
+    loadEventHandlerData();
+  }, []);
 
   // Load in households and their respective info.
 
-
-  //Handles list ITEM completions
-  const handleListItemToggle = (listIndex, itemIndex, completed) => {
-    console.log(lists[listIndex].Items.items[itemIndex].completed)
-    setLists(prevState => {
-      const newList = [...prevState]
-      newList[listIndex].Items.items[itemIndex].completed = completed;
-      return newList;
+  //Handles list ITEM edition
+  const handleListItemToggle = (item, listIndex, itemIndex) => {
+    updateExistingItem(item);
+    setListData(prevState => {
+      const newListData = [...prevState];
+      newListData[listIndex].listItems[itemIndex] = item;
+      return newListData;
     });
   }
 
@@ -266,7 +192,6 @@ const Middle = ({theme}) => {
 
   // Break into seperate component.
   return (
-    loaded ? 
     <>
     {/*
     - In upcoming view list both tasks and events together in one column going in chronological order.
@@ -312,70 +237,11 @@ const Middle = ({theme}) => {
       <div className="lists">
         <div className="section1">
           <h5 className="sectionHeader">Lists</h5>
-          {lists.map((currList, index) => {
+          {listData.map((currList, index) => {
             return (
               <div key = {index} className='list'>
                 <hr className="taskLine"></hr>
-                <List name={currList.title} list={currList.Items.items} listIndex={index} handleToggle={handleListItemToggle}/>
-                <Add addTask={addTask} useState={false} name={currList.title} list={currList} theme={theme}/>
-                <br/>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    </>     
-    :
-    <>
-    {/*
-    - In upcoming view list both tasks and events together in one column going in chronological order.
-    - Also included undated events above with a separation 
-    */}
-
-      <Form/>
-      <div className="midContent">
-        <div className="calendar">
-          <Cal setSelectedDate={setSelectedDate}/>
-        </div>
-        <div className="display">
-          <div className="taskevent">
-            <div className="section1">
-              <h5 className="sectionHeader">Upcoming</h5>
-              <Upcoming tasks = {[]} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
-              <Upcoming tasks = {events} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div className="inbox">
-        <div className="section1">
-            <h5 className="sectionHeader">Tasks</h5>
-            <div>
-              <TaskList tasks = {[]} handleCheck={handleTaskCheck}/>
-              <Add addTask={addTask2} name="Task" theme={theme}/>
-              <br/>
-            </div>
-          <div className="section1">
-            <h5 className="sectionHeader">Events</h5>
-            <div>
-              <Events events = {[]} handleCheck={handleEventCheck}/>
-              <Add addTask={addTask3} name="Event" theme={theme}/>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div className="lists">
-        <div className="section1">
-          <h5 className="sectionHeader">Lists</h5>
-          {[].map((currList, index) => {
-            return (
-              <div key = {index} className='list'>
-                <hr className="taskLine"></hr>
-                <List name={currList.listName} list={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
+                <List name={currList.listName} listItems={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
                 <Add addTask={addTask} useState={false} name={currList.listName} list={currList} theme={theme}/>
                 <br/>
               </div>

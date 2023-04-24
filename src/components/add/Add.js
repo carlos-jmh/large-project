@@ -2,8 +2,8 @@ import React, {useRef, useState, useEffect } from 'react'
 import './add.css'
 import * as Icon from 'react-bootstrap-icons'
 import data from '../../containers/middle/data.json';
-import { API, graphqlOperation } from 'aws-amplify'
-import { getCognitoToken }from "../AuthUser"
+import { createNewItem, createNewTask } from '../../api/mutating';
+import { TEST_HOUSEHOLDID } from '../../containers/middle/Middle';
 
 const Add = ({addTask, name, list, theme}) => {
   const [add, setAdd] = useState(false);
@@ -101,85 +101,17 @@ const Add = ({addTask, name, list, theme}) => {
     setListConnect("")
   }
 
-  const createItem = async (listId, title) => {
-    try {
-      const token = await getCognitoToken();
-
-      const newItem = await API.graphql(
-        graphqlOperation(
-          `mutation CreateItem($completed: Boolean = false, $listId: ID = "", $title: String = "") {
-            createItem(input: {completed: $completed, listId: $listId, title: $title}) {
-              id
-              listId
-              title
-              completed
-            }
-          }`,
-          { listId: "b7fcc866-79f7-446e-9e5f-4aa58cf0dcf4", title: "Millenium Falcon" }
-        ),
-        { Authorization: `Banana ${token}` }
-      )
-
-      console.log("new Item: ", newItem.data.createItem);
-      return newItem.data.createItem;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }
-
   const addItem = async(e) => {
     e.preventDefault();
 
     // Pass correct values here. 
-    const newItem = await createItem(false, false, "", false, localStorage.getItem("houseHoldId"), {title}, listAttach, itemAttach);
-  }
-
-  const createTask = async (completeSourceOnComplete, completed, eventHandlerId, foreverTask, houseHoldId, title, listId, itemId) => {
-    console.log(houseHoldId);
-    console.log(title.current.value);
-    try {
-      const token = await getCognitoToken();
-
-      const newTask = await API.graphql(
-        graphqlOperation(
-          `mutation CreateTask($completeSourceOnComplete: Boolean = false, $completed: Boolean = false, $eventHandlerId: ID = "", $foreverTask: Boolean = false, $houseHoldId: ID = "", $itemId: ID = "", $listId: ID = "", $title: String = "") {
-            createTask(input: {completeSourceOnComplete: $completeSourceOnComplete, completed: $completed, eventHandlerId: $eventHandlerId, foreverTask: $foreverTask, houseHoldId: $houseHoldId, itemId: $itemId, listId: $listId, title: $title}) {
-              id
-              itemId
-              listId
-              title
-              houseHoldId
-              foreverTask
-              eventHandlerId
-              completed
-              completeSourceOnComplete
-            }
-          }`,
-          {
-            completeSourceOnComplete: false,
-            completed: false,
-            eventHandlerId: "",
-            foreverTask: false,
-            houseHoldId: houseHoldId,
-            title: title.current.value,
-            listId: "",
-            itemId: "",
-          }
-        ),
-        { Authorization: `Banana ${token}` }
-      )
-
-      console.log("new Task: ", newTask.data.createTask);
-      return newTask.data.createTask;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
+    const newItem = await createNewItem("220eeb18-3bd8-46a5-9d0e-04227ef374e4", "get some bananas");
   }
 
   const addtask = async(e) => {
     e.preventDefault();
+
+    console.log("creating new Task!");
 
     // if start/endDate + recurrence (recurrence = ONCE)
       // create EventHandler -> startDate, endDate, recurrence
@@ -187,7 +119,18 @@ const Add = ({addTask, name, list, theme}) => {
     
     // create Task -> with EventHandlerId
     // Pass correct values here. 
-    const newTask = await createTask(false, false, "", false, localStorage.getItem("houseHoldId"), title, listAttach, itemAttach);
+    const newTask = await createNewTask(
+      false,
+      false,
+      false,
+      TEST_HOUSEHOLDID,
+      "",
+      "",
+      "",
+      "throw out the trash"
+    );
+
+    console.log("new Task: ", newTask);
 
     // updateEventHandler -> add TaskId to itself
   }
@@ -195,7 +138,7 @@ const Add = ({addTask, name, list, theme}) => {
   const addEvent = async(e) => {
     e.preventDefault();
 
-    // const newEvent = await createEvent("asd", "asda");
+    // const newEvent = await createEventHandler("asd", "asda");
   }
 
   if (!add)
