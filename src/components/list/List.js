@@ -4,7 +4,7 @@ import * as Icon from 'react-bootstrap-icons';
 import './list.css'
 
 
-const List = ({name, list, listIndex, handleToggle}) => {
+const List = ({name, listItems, listIndex, handleToggle}) => {
   const [open, setOpen] = useState(false);
 
   const showOrHide = () => {
@@ -23,8 +23,8 @@ return (
         <div className="items">
           {/* Place map of listitems after ? */}
           {/* Items: title, id, houseHoldId, description, completed */}
-          {open ? list.map((todo, index) => {
-              return <ListItem key={index} todo={todo} listIndex={listIndex} itemIndex={index} handleToggle={handleToggle} lname={name}/>
+          {open ? listItems.map((item, index) => {
+              return <ListItem key={index} item={item} listIndex={listIndex} itemIndex={index} handleToggle={handleToggle} lname={name}/>
           }) : <></>}
         </div>
     </div>

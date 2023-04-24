@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/pubsub": "^5.1.12",
     "@aws-amplify/ui-react": "^4.3.8",
     "@aws-sdk/client-appsync": "^3.282.0",
     "@testing-library/jest-dom": "^5.16.5",

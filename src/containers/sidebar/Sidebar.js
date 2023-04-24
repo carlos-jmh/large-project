@@ -81,7 +81,7 @@ const Sidebar = ({theme}) => {
         const houseHolds = await getUsersHouseHolds(userProfile.id);
         setHouseHolds(houseHolds);
       }
-  
+      
       return null;
     }
 
