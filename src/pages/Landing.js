@@ -9,7 +9,6 @@ function Landing() {
     <div>
         <Navbar/>
         <LandingBody/>
-        <LandingAbout/>
         <Footer />
     </div>
   )

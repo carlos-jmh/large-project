@@ -71,7 +71,7 @@ function Auth(props) {
       <div className="signinContainer">
         <div className="form">
           <div className="form-content">
-            <h3 className="form-title">Sign In</h3>
+            <h3 className="form-title">Login</h3>
             <div className="text-center">
               Not registered yet?{" "}
               <span className="link-primary" onClick={() => setAuthMode("signUp")}>
@@ -121,7 +121,7 @@ function Auth(props) {
             <div className="text-center">
               Already registered?{" "}
               <span className="link-primary" onClick={() => setAuthMode("signIn")}>
-                Sign In
+                Login
               </span>
             </div>
             <div className="form-group mt-3">

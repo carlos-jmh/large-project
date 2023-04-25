@@ -3,6 +3,8 @@ import './landingbody.css'
 import Dinner from '../../images/dinner_party.jpeg';
 import Cleaning from '../../images/cleaning.jpeg';
 import Groceries from '../../images/grocery_store.jpeg';
+import AboutWidget from '../../images/who_we_are.png';
+import Houses from '../../images/houses.jpg';
 
 function LandingBody()
 {
@@ -38,6 +40,23 @@ return(
                 <img src={Groceries} 
                     alt="Couple buying groceries together"/>
             </div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <div className = "wrapper2">
+            <div id="whoarewe">
+                <img src= {AboutWidget} alt = "Who Are We" />
+            </div>
+            <div id ="houseswrapper">
+                <div id= "houses">
+                    <img src= {Houses} alt = "animation of houses" />
+                </div>
+                <div id="bodytext">
+                    <span className="font-bold">There is no place like home.</span>
+                </div>
+            </div>
+            
         </div>
     </div>
 )
