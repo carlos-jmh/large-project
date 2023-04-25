@@ -2,11 +2,17 @@ import React from 'react';
 import './dropdown.css';
 import * as Icon from 'react-bootstrap-icons';
 
+import { Auth as CognitoAuth } from 'aws-amplify';
+
 const Dropdown = () => {
 
-    // Call API to logout and redirect to landing page?
-    function doLogout() {
-        
+    const signOutUser = async () => {
+        try {
+          await CognitoAuth.signOut();
+          window.location.href = "/";
+        } catch (error) {
+          console.log(error);
+        }
     }
     
     // Function to edit a user's username.
@@ -33,7 +39,7 @@ const Dropdown = () => {
     function submitUsername() {
         // Make API call to update. If this goes through submit.
 
-        
+
         // Remove editing status for paragraph.
         let paragraph = document.getElementById('username');
         paragraph.contentEditable = true;
@@ -66,7 +72,7 @@ const Dropdown = () => {
                 <hr/>
                 <div className="child-group">
                     <p>Logout</p>
-                    <button onClick={doLogout}>logout</button>
+                    <button onClick={signOutUser}>logout</button>
                 </div>
             </div>
         </div>
