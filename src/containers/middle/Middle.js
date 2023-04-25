@@ -5,9 +5,6 @@ import Events from '../../components/events/Events'
 import Form from '../../components/form/Form'
 import Add from '../../components/add/Add'
 import Cal from '../../components/cal/Cal';
-import data from "./data.json";
-import taskData from "./taskData.json";
-import eventData from "./eventData.json";
 import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList';
 import Upcoming from '../../components/usernav/Upcoming';
@@ -21,18 +18,18 @@ export const TEST_CALENDARID = "8140617b-65f6-4e8a-8aeb-f009606ae792";
 
 const Middle = ({theme}) => {
   //THIS SORTS BOTH JSON FILES BEFORE THEY ARE LOADED IN
-  taskData.sort((a,b) => {
-    return new Date(a.date) - new Date(b.date)
-  })
+  // taskData.sort((a,b) => {
+  //   return new Date(a.date) - new Date(b.date)
+  // })
 
-  eventData.sort((a,b) => {
-    return new Date(a.date) - new Date(b.date)
-  })
+  // eventData.sort((a,b) => {
+  //   return new Date(a.date) - new Date(b.date)
+  // })
 
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const [toDoList, setToDoList] = useState(data);
-  const [tasks, setTasks] = useState(taskData);
-  const [events, setEvents] = useState(eventData);
+  const [toDoList, setToDoList] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const [listData, setListData] = useState([]);
   

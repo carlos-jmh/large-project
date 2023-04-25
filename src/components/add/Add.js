@@ -107,7 +107,6 @@ const Add = ({addTask, name, list, theme}) => {
   }
 
   const addtask = async(e) => {
-    e.preventDefault();
     console.log("creating new Task!");
 
     // if start/endDate + recurrence (recurrence = ONCE)
@@ -120,11 +119,11 @@ const Add = ({addTask, name, list, theme}) => {
       false,
       false,
       false,
-      TEST_HOUSEHOLDID,
+      localStorage.getItem("houseHoldId"),
       "",
       "",
       "",
-      "throw out the trash"
+      "throw out the trash 3"
     );
 
     console.log("new Task: ", newTask);
