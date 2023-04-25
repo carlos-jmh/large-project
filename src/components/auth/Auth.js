@@ -59,6 +59,8 @@ function Auth(props) {
   const forgotPassword = async() => {
     try {
       console.log(formInput.email);
+      //await CognitoAuth.forgotPassword(formInput.email);
+      //setAuthMode("signIn");
     } catch (error) {
       console.log(error);
     }
