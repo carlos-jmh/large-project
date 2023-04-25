@@ -28,9 +28,7 @@ export default function Tasks({ navigation, route }) {
         contentContainerStyle={{ flexGrow: 1 }}
       >
         {lists.map((list, i) => {
-          return (
-            <List title={list.title} listItems={list.items} key={list.id} />
-          );
+          return <List list={list} key={list.id} />;
         })}
       </ScrollView>
       <Navbar

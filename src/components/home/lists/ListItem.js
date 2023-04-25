@@ -1,8 +1,8 @@
 import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
-import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+import Checkbox from "../../Checkbox";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { getStyles } from "../../styles";
 import { useTheme } from "@react-navigation/native";
 
@@ -37,14 +37,10 @@ export default function ListItem({
         }}
         android_ripple={{ color: colors.highlight }}
       >
-        <BouncyCheckbox
-          size={18}
+        <Checkbox
           isChecked={isChecked}
-          iconStyle={{ borderRadius: 4 }}
-          innerIconStyle={{ borderRadius: 4 }}
-          fillColor={primaryTextColor}
-          ImageComponent={Checkmark}
-          onPress={onChecked}
+          onChecked={onChecked}
+          fadedWhenChecked={true}
         />
         <View>
           <Text
@@ -122,10 +118,4 @@ function ListItemInfoLabel({ text, iconName }) {
       </Text>
     </View>
   );
-}
-
-function Checkmark({}) {
-  const { colors } = useTheme();
-  const styles = getStyles(colors);
-  return <FontAwesome name="check" size={12} color={colors.primary} />;
 }

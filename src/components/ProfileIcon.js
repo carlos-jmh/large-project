@@ -1,9 +1,10 @@
-import { Modal, Pressable, Text, TextInput, View } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { Modal, Pressable, Text, View } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
+import CustomModal from "./CustomModal";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getStyles } from "./styles";
+import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
 
 function getInitial(username) {
@@ -29,60 +30,54 @@ export default function ProfileIcon({ username, deleteFunc }) {
       onPress={() => setModalVisible(!modalVisible)}
     >
       <Text style={styles.iconText}>{initial}</Text>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+      <CustomModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
       >
-        <View style={[styles.modalContainer]}>
-          <View style={styles.modalView}>
-            <Text style={styles.label}>USERNAME:</Text>
-            <View style={{ height: 20 }}></View>
-            <Text style={styles.textTitle}>{username}</Text>
-            <View style={{ height: 20 }}></View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
+        <Pressable style={styles.modalView}>
+          <Text style={styles.label}>USERNAME:</Text>
+          <View style={{ height: 20 }}></View>
+          <Text style={styles.textTitle}>{username}</Text>
+          <View style={{ height: 20 }}></View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Pressable
+              style={[
+                styles.buttonContainer,
+                { width: 50, backgroundColor: colors.danger },
+              ]}
+              onPress={() => {
+                deleteFunc(username);
+                setModalVisible(!modalVisible);
               }}
             >
-              <Pressable
-                style={[
-                  styles.buttonContainer,
-                  { width: 50, backgroundColor: colors.danger },
-                ]}
-                onPress={() => {
-                  deleteFunc(username);
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="delete-outline"
-                  size={24}
-                  color="black"
-                />
-              </Pressable>
-              <Pressable
-                style={[
-                  styles.buttonContainer,
-                  {
-                    width: 50,
-                    backgroundColor: colors.success,
-                    marginLeft: 20,
-                  },
-                ]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <AntDesign name="checkcircleo" size={24} color="black" />
-              </Pressable>
-            </View>
+              <MaterialCommunityIcons
+                name="delete-outline"
+                size={24}
+                color="black"
+              />
+            </Pressable>
+            <Pressable
+              style={[
+                styles.buttonContainer,
+                {
+                  width: 50,
+                  backgroundColor: colors.success,
+                  marginLeft: 20,
+                },
+              ]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <AntDesign name="checkcircleo" size={24} color="black" />
+            </Pressable>
           </View>
-        </View>
-      </Modal>
+        </Pressable>
+      </CustomModal>
     </Pressable>
   );
 }

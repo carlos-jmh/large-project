@@ -1,11 +1,11 @@
 import {
-  Entypo,
   FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
+import AddButton from "./AddButton";
 import { getStyles } from "../styles";
 import { useTheme } from "@react-navigation/native";
 
@@ -49,20 +49,7 @@ export default function Navbar({ navigation, screenName, household }) {
           />
         )}
       />
-      <Pressable
-        style={{
-          borderRadius: 100,
-          justifyContent: "center",
-          alignSelf: "center",
-          alignItems: "center",
-          backgroundColor: colors.primary,
-          height: 54,
-          width: 54,
-          borderRadius: 100,
-        }}
-      >
-        <Entypo name="plus" size={32} color={colors.primaryText} />
-      </Pressable>
+      <AddButton />
       <NavbarButton
         screenName="Lists"
         currentScreenName={screenName}

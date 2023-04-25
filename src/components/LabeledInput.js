@@ -15,6 +15,7 @@ export default function LabeledInput({
   helpLabel,
   helpCallback,
   helpColor,
+  backgroundColor,
 }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
@@ -46,7 +47,17 @@ export default function LabeledInput({
           </Text>
         </Pressable>
       </View>
-      <View style={styles.inputContainer}>
+      <View
+        style={[
+          styles.inputContainer,
+          {
+            backgroundColor:
+              backgroundColor == null
+                ? styles.inputContainer.backgroundColor
+                : backgroundColor,
+          },
+        ]}
+      >
         <TextInput
           value={value}
           onChangeText={onChangeText}

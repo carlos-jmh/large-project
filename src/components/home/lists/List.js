@@ -6,9 +6,11 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
-import { AntDesign } from "@expo/vector-icons";
+import CustomModal from "../../CustomModal";
+import EditList from "./EditList";
 import ListItem from "./ListItem";
 import { getStyles } from "../../styles";
 import { useState } from "react";
@@ -17,14 +19,15 @@ import { useTheme } from "@react-navigation/native";
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 /* List component */
-export default function List({ title, listItems }) {
+export default function List({ list }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
+  const [modalVisible, setModalVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [items, setItems] = useState(listItems);
+  const [items, setItems] = useState(list.items);
 
-  const caratRotation = useSharedValue(90 * !isExpanded);
+  const caratRotation = useSharedValue(-90 * !isExpanded);
   const caratAnimationStyles = useAnimatedStyle(() => {
     return { transform: [{ rotate: `${caratRotation.value}deg` }] };
   });
@@ -57,9 +60,12 @@ export default function List({ title, listItems }) {
     >
       <AnimatedPressable
         onPress={() => {
-          caratRotation.value = withTiming(90 * isExpanded, { duration: 200 });
+          caratRotation.value = withTiming(-90 * isExpanded, {
+            duration: 200,
+          });
           setIsExpanded(!isExpanded);
         }}
+        onLongPress={() => setModalVisible(true)}
         android_ripple={{ color: colors.border }}
         style={{
           padding: 16,
@@ -67,21 +73,30 @@ export default function List({ title, listItems }) {
         layout={Layout.duration(200)}
       >
         <View style={{ flexDirection: "row" }}>
-          <Text
-            style={{
-              color: colors.text,
-              fontFamily: "Inter_600SemiBold",
-              fontSize: 14,
-              flex: 1,
-              textAlign: "center",
-              marginBottom: isExpanded ? 6 : 0,
-            }}
-          >
-            {title} ({numCompleted}/{items.length})
-          </Text>
           <Animated.View style={caratAnimationStyles}>
             <AntDesign name={"caretdown"} size={16} color={colors.text} />
           </Animated.View>
+          <Text
+            style={[
+              styles.groupTitleText,
+              { marginBottom: isExpanded ? 6 : 0 },
+            ]}
+          >
+            {list.title} ({numCompleted}/{items.length})
+          </Text>
+          <Pressable
+            android_ripple={{ color: colors.text, borderless: true }}
+            onPress={() => setModalVisible(true)}
+            hitSlop={16}
+          >
+            <MaterialIcons name={"mode-edit"} size={20} color={colors.text} />
+            <CustomModal
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+            >
+              <EditList list={list} setModalVisible={setModalVisible} />
+            </CustomModal>
+          </Pressable>
         </View>
         {isExpanded
           ? items.map((item, i) => {
@@ -106,7 +121,7 @@ export default function List({ title, listItems }) {
           <Animated.Text
             style={{
               marginTop: 16,
-              color: colors.primaryTextFaded,
+              color: colors.textFaded,
               fontFamily: "Inter_500Medium",
               fontSize: 14,
               flex: 1,
