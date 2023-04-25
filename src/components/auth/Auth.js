@@ -62,6 +62,14 @@ function Auth(props) {
     }
   }
 
+  const forgotPassword = async() => {
+    try {
+      console.log(formInput.email);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   if (authMode === "signIn") {
     return (
       <div className="signinContainer">
@@ -181,7 +189,7 @@ function Auth(props) {
               />
             </div>
             <div className="d-grid gap-2 mt-3">
-              <button className="btn btn-primary" onClick={ signUpUser }>
+              <button className="btn btn-primary" onClick={ forgotPassword }>
                 Submit
               </button>
             </div>
