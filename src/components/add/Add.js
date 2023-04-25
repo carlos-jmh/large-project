@@ -103,12 +103,11 @@ const Add = ({addTask, name, list, theme}) => {
     e.preventDefault();
 
     // Pass correct values here. 
-    const newItem = await createNewItem("220eeb18-3bd8-46a5-9d0e-04227ef374e4", "get some bananas");
+    const newItem = await createNewItem(list.listId, title.current.value);
   }
 
   const addtask = async(e) => {
     e.preventDefault();
-
     console.log("creating new Task!");
 
     // if start/endDate + recurrence (recurrence = ONCE)
@@ -211,12 +210,12 @@ const Add = ({addTask, name, list, theme}) => {
           <div className="selections">
             <div className="childSelect">
               <label htmlFor="startDate">Start Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
+              <input type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
               <label htmlFor="endDate">End Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
+              <input type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
 
