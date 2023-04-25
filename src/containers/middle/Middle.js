@@ -8,6 +8,7 @@ import Cal from '../../components/cal/Cal';
 import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList';
 import Upcoming from '../../components/usernav/Upcoming';
+import Dropdown from '../../components/dropdown/Dropdown';
 
 import { fetchEventHandlersByCalendarId, fetchEventsByCalendarId, fetchItemsByListId, fetchLists, fetchTasksByHouseHoldId } from '../../api/fetching';
 import { createSubListItems, updateSubListItems } from '../../api/subscribing'
@@ -252,6 +253,8 @@ const Middle = ({theme}) => {
           })}
         </div>
       </div>
+
+      <Dropdown/>
     </>
   );  
 } 
