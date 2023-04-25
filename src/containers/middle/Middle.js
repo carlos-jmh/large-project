@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import './middle.css'
-
 import List from '../../components/list/List'
 import Events from '../../components/events/Events'
 import Form from '../../components/form/Form'
 import Add from '../../components/add/Add'
 import Cal from '../../components/cal/Cal';
-import data from "./data.json";
-import taskData from "./taskData.json";
-import eventData from "./eventData.json";
 import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList';
 import Upcoming from '../../components/usernav/Upcoming';
@@ -22,18 +18,18 @@ export const TEST_CALENDARID = "8140617b-65f6-4e8a-8aeb-f009606ae792";
 
 const Middle = ({theme}) => {
   //THIS SORTS BOTH JSON FILES BEFORE THEY ARE LOADED IN
-  taskData.sort((a,b) => {
-    return new Date(a.date) - new Date(b.date)
-  })
+  // taskData.sort((a,b) => {
+  //   return new Date(a.date) - new Date(b.date)
+  // })
 
-  eventData.sort((a,b) => {
-    return new Date(a.date) - new Date(b.date)
-  })
+  // eventData.sort((a,b) => {
+  //   return new Date(a.date) - new Date(b.date)
+  // })
 
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const [toDoList, setToDoList] = useState(data);
-  const [tasks, setTasks] = useState(taskData);
-  const [events, setEvents] = useState(eventData);
+  const [toDoList, setToDoList] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const [listData, setListData] = useState([]);
   
@@ -104,30 +100,36 @@ const Middle = ({theme}) => {
   }
 
   useEffect(() => {
-    async function loadListData() {
-      const lists = await fetchLists(TEST_HOUSEHOLDID);
-      await processLists(lists);
-    };
-
-    async function loadTaskData() {
-      const tasks = await fetchTasksByHouseHoldId(TEST_HOUSEHOLDID);
-      console.log(tasks);
-    }
-
-    async function loadEventData() {
-      const events = await fetchEventsByCalendarId(TEST_CALENDARID);
-      console.log(events);
-    }
-
-    async function loadEventHandlerData() {
-      const events = await fetchEventHandlersByCalendarId(TEST_CALENDARID);
-      console.log(events);
-    }
+    // Add event listener on localStorage. When changed, pull houseHoldID and reload data.
+    window.addEventListener('storage', () => {
+      let id = localStorage.getItem('houseHoldId');
+      
+      async function loadListData() {
+        const lists = await fetchLists(id);
+        await processLists(lists);
+      };
+  
+      async function loadTaskData() {
+        const tasks = await fetchTasksByHouseHoldId(id);
+        await setTasks(tasks);
+      }
+  
+      async function loadEventData() {
+        const events = await fetchEventsByCalendarId(id);
+        console.log(events);
+      }
+  
+      async function loadEventHandlerData() {
+        const events = await fetchEventHandlersByCalendarId(id);
+        console.log(events);
+      }
+      
+      loadListData();
+      loadTaskData();
+      loadEventData();
+      loadEventHandlerData();
+    })
     
-    loadListData();
-    loadTaskData();
-    loadEventData();
-    loadEventHandlerData();
   }, []);
 
   // Load in households and their respective info.
@@ -209,7 +211,7 @@ const Middle = ({theme}) => {
             <div className="section1">
               <h5 className="sectionHeader">Upcoming</h5>
               <Upcoming tasks = {tasks} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
-              <Upcoming tasks = {events} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
+              <Upcoming tasks = {[]} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
             </div>
           </div>
         </div>
@@ -221,14 +223,14 @@ const Middle = ({theme}) => {
             <h5 className="sectionHeader">Tasks</h5>
             <div>
               <TaskList tasks = {tasks} handleCheck={handleTaskCheck}/>
-              <Add addTask={addTask2} name="Task" theme={theme}/>
+              <Add addTask={addTask2} useState={false} name="Task" list={listData} theme={theme}/>
               <br/>
             </div>
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
-              <Events events = {events} handleCheck={handleEventCheck}/>
-              <Add addTask={addTask3} name="Event" theme={theme}/>
+              <Events events = {[]} handleCheck={handleEventCheck}/>
+              <Add addTask={addTask3} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>
         </div>
@@ -250,7 +252,7 @@ const Middle = ({theme}) => {
           })}
         </div>
       </div>
-    </>     
+    </>
   );  
 } 
 

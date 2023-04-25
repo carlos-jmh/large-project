@@ -6,6 +6,7 @@ import './list.css'
 
 const List = ({name, listItems, listIndex, handleToggle}) => {
   const [open, setOpen] = useState(false);
+  console.log(listItems);
 
   const showOrHide = () => {
     setOpen(!open);

@@ -45,7 +45,7 @@ const MiddleHead = ({theme}) => {
         document.querySelectorAll('div.lists')[0].style.display = "block";
 
         if(theme === 'light') {
-          document.getElementsByClassName("loadLists")[0].classList.remove('active');
+          document.getElementsByClassName("loadInbox")[0].classList.remove('active');
           document.getElementsByClassName("loadUpcoming")[0].classList.remove('active');
           document.getElementsByClassName("loadLists")[0].classList.add('active');
         } else {

@@ -17,9 +17,13 @@
     margin-bottom: 1.5rem;
     color: black;
     transition: all 0.50s linear;
-}
+} 
 
 .views h6 {
+    margin: 0;
+}
+
+.views-dark h6 {
     margin: 0;
 }
 

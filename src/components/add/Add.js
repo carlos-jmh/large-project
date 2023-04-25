@@ -6,13 +6,13 @@ import { createNewItem, createNewTask } from '../../api/mutating';
 import { TEST_HOUSEHOLDID } from '../../containers/middle/Middle';
 
 const Add = ({addTask, name, list, theme}) => {
+  console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
   const [ userInput, setUserInput ] = useState('');
   const [ userDate, setDateInput ] = useState('');
   const [ userDesc, setDescInput ] = useState('');
   const [ listConnect, setListConnect ] = useState('');
-  const dateInputRef = useRef(null);
   const title = useRef(null);
   const desc = useRef(null);
   const sDate = useRef(null);
@@ -39,24 +39,22 @@ const Add = ({addTask, name, list, theme}) => {
     setAdd(!add);
   }
 
-  function handleListOrItem(string) {
-    if (listoritem === 'none')
-    setListOrItem(string);
-
-    if (listoritem === string)
-      setListOrItem('none');
-    
-    // Check if they are not the same. 
-    if (listoritem !== string)
+  const handleClick = (event) => {
+    if (event.target.name === "chooselist")
     {
-      // Uncheck id=chooseItem
-      if (string === 'list')
-        document.getElementById('chooseitem').checked = false;
+      if (!event.target.checked)
+        setListOrItem("none")
       else
-        document.getElementById('chooselist').checked = false;
-
-      setListOrItem(string)
+        setListOrItem("list");
     }
+    else
+    {
+      if (!event.target.checked)
+        setListOrItem("none")
+      else
+        setListOrItem("item");
+    }
+    
   }
 
   const handleChange = (e) => {
@@ -105,12 +103,10 @@ const Add = ({addTask, name, list, theme}) => {
     e.preventDefault();
 
     // Pass correct values here. 
-    const newItem = await createNewItem("220eeb18-3bd8-46a5-9d0e-04227ef374e4", "get some bananas");
+    const newItem = await createNewItem(list.listId, title.current.value);
   }
 
   const addtask = async(e) => {
-    e.preventDefault();
-
     console.log("creating new Task!");
 
     // if start/endDate + recurrence (recurrence = ONCE)
@@ -123,11 +119,11 @@ const Add = ({addTask, name, list, theme}) => {
       false,
       false,
       false,
-      TEST_HOUSEHOLDID,
+      localStorage.getItem("houseHoldId"),
       "",
       "",
       "",
-      "throw out the trash"
+      "throw out the trash 3"
     );
 
     console.log("new Task: ", newTask);
@@ -213,12 +209,12 @@ const Add = ({addTask, name, list, theme}) => {
           <div className="selections">
             <div className="childSelect">
               <label htmlFor="startDate">Start Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
+              <input type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
               <label htmlFor="endDate">End Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
+              <input type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
 
@@ -226,12 +222,12 @@ const Add = ({addTask, name, list, theme}) => {
           <div className="selections">
             <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
               <label htmlFor="chooselist">Attach to list</label>
-              <input type="checkbox" id="chooselist" name="chooselist" onClick={() => handleListOrItem('list')}></input>
+              <input type="checkbox" id="chooselist" name="chooselist" onClick={handleClick}></input>
             </div>
 
             <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
               <label htmlFor="chooseitem">Attach to item</label>
-              <input type="checkbox" id="chooseitem" name="chooseitem" onClick={() => handleListOrItem('item')}></input>
+              <input type="checkbox" id="chooseitem" name="chooseitem" onClick={handleClick}></input>
             </div>
           </div>
           
@@ -250,8 +246,8 @@ const Add = ({addTask, name, list, theme}) => {
               <>
                 <select required id="listList" onChange={handleChange4} className="form-control childSelect" ref={listAttach}>
                   {/*pulling from JSON file data.json, needs to be connected to list database to retrieve list names*/}
-                  { data.map(d => {
-                    return <option value={d.listName}>{d.listName}</option>
+                  { list.map(d => {
+                    return <option value={d.listId}>{d.listName}</option>
                   })}
                 </select>
                 <select id="taskType" className="form-control childSelect">
@@ -265,7 +261,7 @@ const Add = ({addTask, name, list, theme}) => {
             { listoritem === "item" ? 
               <>
                 <select required id="itemList" className="form-control childSelect" ref={itemAttach}>
-                  { data.map(d => {
+                  { list.map(d => {
                     return d.listItems.map(item => {
                       return <option value={item.task}>{item.task}</option>
                     })
