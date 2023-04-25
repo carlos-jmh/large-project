@@ -227,6 +227,7 @@ export const getTask = /* GraphQL */ `
         frequency
         calendarId
         taskId
+        upcomingEventId
         sourceDate
         endDate
         createdAt
@@ -661,6 +662,7 @@ export const getEventHandler = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      upcomingEventId
       sourceDate
       endDate
       createdAt
@@ -684,6 +686,7 @@ export const listEventHandlers = /* GraphQL */ `
         frequency
         calendarId
         taskId
+        upcomingEventId
         sourceDate
         endDate
         createdAt
@@ -716,6 +719,7 @@ export const syncEventHandlers = /* GraphQL */ `
         frequency
         calendarId
         taskId
+        upcomingEventId
         sourceDate
         endDate
         createdAt
@@ -750,6 +754,7 @@ export const eventHandlersByCalendarId = /* GraphQL */ `
         frequency
         calendarId
         taskId
+        upcomingEventId
         sourceDate
         endDate
         createdAt
@@ -769,6 +774,7 @@ export const getEvent = /* GraphQL */ `
     getEvent(id: $id) {
       id
       date
+      eventType
       completed
       prevEventId
       nextEventId
@@ -779,6 +785,7 @@ export const getEvent = /* GraphQL */ `
         frequency
         calendarId
         taskId
+        upcomingEventId
         sourceDate
         endDate
         createdAt
@@ -815,6 +822,7 @@ export const listEvents = /* GraphQL */ `
       items {
         id
         date
+        eventType
         completed
         prevEventId
         nextEventId
@@ -847,6 +855,7 @@ export const syncEvents = /* GraphQL */ `
       items {
         id
         date
+        eventType
         completed
         prevEventId
         nextEventId
@@ -883,6 +892,7 @@ export const eventsByEventHandlerIdAndId = /* GraphQL */ `
       items {
         id
         date
+        eventType
         completed
         prevEventId
         nextEventId
@@ -917,6 +927,7 @@ export const eventsByCalendarId = /* GraphQL */ `
       items {
         id
         date
+        eventType
         completed
         prevEventId
         nextEventId

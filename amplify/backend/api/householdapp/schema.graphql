@@ -102,8 +102,9 @@ type EventHandler
   calendarId: ID! @index(name: "byCalendar")
   Calendar: Calendar @belongsTo(fields: ["calendarId"])
   Events: [Event] @hasMany(indexName: "byEventHandler", fields: ["id"])
-  taskId: ID!
+  taskId: ID
   Task: Task @hasOne
+  upcomingEventId: ID
   sourceDate: AWSDateTime!
   endDate: AWSDateTime!
 }
@@ -119,6 +120,7 @@ type Event
 {
   id: ID!
   date: AWSDateTime!
+  eventType: EVENTTYPE!
   completed: Boolean!
   prevEventId: ID
   nextEventId: ID
@@ -222,8 +224,8 @@ type Mutation {
   createNewHouseHold(houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
   addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): AddUserToHouseHoldResponse @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: custom }])
   removeUserFromHouseHold(houseHoldId: String!, houseHoldMemberId: String!): String @function(name: "removeUserFromHouseHold-${env}") @auth(rules: [{ allow: custom }])
-  createEventHandler(calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
-  updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String!, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
+  createEventHandler(calendarId: String!, taskId: String, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!, eventType: EVENTTYPE!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
+  updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!, eventType: EVENTTYPE!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteTask(taskId: String!): String @function(name: "deleteTask-${env}") @auth(rules: [{ allow: custom }])
   deleteEvent(eventId: String!): String @function(name: "deleteEvent-${env}") @auth(rules: [{ allow: custom }])
@@ -246,9 +248,16 @@ type Subscription {
 
 # enum for frequency of Events
 enum FREQUENCY {
+  ONCE,
   DAILY,
   WEEKLY,
   MONTHLY,
   YEARLY
 }
-       
+
+# enum for type of Event
+enum EVENTTYPE {
+  EVENT,
+  TASK
+}
+             
