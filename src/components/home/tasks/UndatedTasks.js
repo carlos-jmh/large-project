@@ -22,7 +22,7 @@ export default function UndatedTasks({ undatedTasks, onChecked }) {
 
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const caratRotation = useSharedValue(90 * !isExpanded);
+  const caratRotation = useSharedValue(-90 * !isExpanded);
   const caratAnimationStyles = useAnimatedStyle(() => {
     return { transform: [{ rotate: `${caratRotation.value}deg` }] };
   });
@@ -41,7 +41,7 @@ export default function UndatedTasks({ undatedTasks, onChecked }) {
       <AnimatedPressable
         onPress={() => {
           setIsExpanded(!isExpanded);
-          caratRotation.value = withTiming(90 * isExpanded, { duration: 200 });
+          caratRotation.value = withTiming(-90 * isExpanded, { duration: 200 });
         }}
         android_ripple={{ color: colors.border }}
         style={{
@@ -50,20 +50,12 @@ export default function UndatedTasks({ undatedTasks, onChecked }) {
         layout={Layout.duration(200)}
       >
         <View style={{ flexDirection: "row" }}>
-          <Text
-            style={{
-              color: colors.text,
-              fontFamily: "Inter_600SemiBold",
-              fontSize: 14,
-              flex: 1,
-              textAlign: "center",
-            }}
-          >
-            Undated tasks ({undatedTasks.length})
-          </Text>
           <Animated.View style={caratAnimationStyles}>
             <AntDesign name={"caretdown"} size={16} color={colors.text} />
           </Animated.View>
+          <Text style={styles.groupTitleText}>
+            Undated tasks ({undatedTasks.length})
+          </Text>
         </View>
         {isExpanded
           ? undatedTasks.map((task, i) => {

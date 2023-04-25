@@ -8,6 +8,7 @@ import {
 } from "@expo-google-fonts/inter";
 import {
   Keyboard,
+  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   useColorScheme,
 } from "react-native";
@@ -36,7 +37,7 @@ SplashScreen.preventAutoHideAsync();
 /* Root app component, sets up theme and fonts */
 export default function App() {
   const scheme = useColorScheme();
-  const theme = LightTheme; //scheme === "dark" ? DarkTheme : LightTheme;
+  const theme = DarkTheme; //scheme === "dark" ? DarkTheme : LightTheme;
   const colors = theme.colors;
 
   // Load Google fonts
@@ -71,55 +72,60 @@ export default function App() {
           style={{ flex: 1, backgroundColor: colors.background }}
           onLayout={onLayoutRootView}
         >
-          <NavigationContainer theme={theme}>
-            <Stack.Navigator screenOptions={{ animation: "fade" }}>
-              <Stack.Screen
-                name="InitialPage"
-                component={InitialPage}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Register"
-                component={Register}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="ConfirmRegister"
-                component={ConfirmRegister}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Login"
-                component={Login}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CreateHousehold"
-                component={CreateHousehold}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Events"
-                component={Events}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Tasks"
-                component={Tasks}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Lists"
-                component={Lists}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Chat"
-                component={Chat}
-                options={{ headerShown: false }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+          >
+            <NavigationContainer theme={theme}>
+              <Stack.Navigator screenOptions={{ animation: "fade" }}>
+                <Stack.Screen
+                  name="InitialPage"
+                  component={InitialPage}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Register"
+                  component={Register}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="ConfirmRegister"
+                  component={ConfirmRegister}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Login"
+                  component={Login}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="CreateHousehold"
+                  component={CreateHousehold}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Events"
+                  component={Events}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Tasks"
+                  component={Tasks}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Lists"
+                  component={Lists}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Chat"
+                  component={Chat}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </KeyboardAvoidingView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
     </SafeAreaProvider>

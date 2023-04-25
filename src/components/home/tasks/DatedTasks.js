@@ -20,8 +20,6 @@ export default function DatedTasks({ datedTasks, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  const [isExpanded, setIsExpanded] = useState(true);
-
   return (
     <View>
       {datedTasks.map((taskMonth, i) => {
@@ -39,7 +37,7 @@ function TasksMonth({ taskMonth, onChecked }) {
 
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const caratRotation = useSharedValue(90 * !isExpanded);
+  const caratRotation = useSharedValue(-90 * !isExpanded);
   const caratAnimationStyles = useAnimatedStyle(() => {
     return { transform: [{ rotate: `${caratRotation.value}deg` }] };
   });
@@ -59,7 +57,7 @@ function TasksMonth({ taskMonth, onChecked }) {
       <AnimatedPressable
         onPress={() => {
           setIsExpanded(!isExpanded);
-          caratRotation.value = withTiming(90 * isExpanded, { duration: 200 });
+          caratRotation.value = withTiming(-90 * isExpanded, { duration: 200 });
         }}
         android_ripple={{ color: colors.border }}
         style={{
@@ -68,21 +66,13 @@ function TasksMonth({ taskMonth, onChecked }) {
         layout={Layout.duration(200)}
       >
         <View style={{ flexDirection: "row" }}>
-          <Text
-            style={{
-              color: colors.text,
-              fontFamily: "Inter_600SemiBold",
-              fontSize: 14,
-              flex: 1,
-              textAlign: "center",
-            }}
-          >
-            {months[taskMonth.date.getMonth()]} {taskMonth.date.getFullYear()} (
-            {taskMonth.length})
-          </Text>
           <Animated.View style={caratAnimationStyles}>
             <AntDesign name={"caretdown"} size={16} color={colors.text} />
           </Animated.View>
+          <Text style={styles.groupTitleText}>
+            {months[taskMonth.date.getMonth()]} {taskMonth.date.getFullYear()} (
+            {taskMonth.length})
+          </Text>
         </View>
         {isExpanded
           ? taskMonth.days.map((taskDay, i) => {
@@ -115,13 +105,18 @@ function TasksDay({ taskDay, onChecked }) {
       >
         {taskDay.tasks.map((task, i) => {
           return (
-            <View style={{ marginTop: i > 0 ? 10 : 0 }} key={task.id}>
+            <View
+              style={{ marginTop: i > 0 ? 10 : 0 }}
+              key={`${task.id}-${task.eventId}`}
+            >
               <Task
                 title={task.title}
                 listTitle={task.listTitle}
                 date={task.date}
                 isChecked={task.completed}
-                onChecked={(isChecked) => onChecked(isChecked, task.id)}
+                onChecked={(isChecked) =>
+                  onChecked(isChecked, task.id, task.eventId)
+                }
               />
             </View>
           );

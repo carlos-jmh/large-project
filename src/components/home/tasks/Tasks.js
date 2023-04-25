@@ -38,6 +38,7 @@ export default function Tasks({ navigation, route }) {
     for (const event of data.eventHandlers[task.eventHandlerId].events) {
       datedTasks.push({
         ...task,
+        eventId: event.id,
         date: new Date(event.date),
         listTitle: "listId" in task ? data.lists[task.listId].title : null,
       });
@@ -75,7 +76,7 @@ export default function Tasks({ navigation, route }) {
   }
 
   // Called when a task is checked/unchecked
-  function handleCheckTask(isChecked, taskId) {
+  function handleCheckTask(isChecked, taskId, eventId) {
     setTasks((oldTasks) => {
       let newTasks = [...oldTasks];
       const newTaskIndex = newTasks.findIndex((task) => task.id == taskId);
