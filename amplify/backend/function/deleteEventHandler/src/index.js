@@ -89,7 +89,7 @@ exports.handler = async (event) => {
 		throw error;
 	}
 	
-	return `Successfully deleted ${numEvents} events.`;
+	return `Successfully deleted ${numEvents} event(s).`;
 };
 
 const genDeleteParams = (deleteRequests) => {

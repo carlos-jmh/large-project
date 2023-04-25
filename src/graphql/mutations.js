@@ -46,6 +46,7 @@ export const createTask = /* GraphQL */ `
         frequency
         calendarId
         taskId
+        upcomingEventId
         sourceDate
         endDate
         createdAt
@@ -85,6 +86,7 @@ export const updateEvent = /* GraphQL */ `
     updateEvent(input: $input, condition: $condition) {
       id
       date
+      eventType
       completed
       prevEventId
       nextEventId
@@ -95,6 +97,7 @@ export const updateEvent = /* GraphQL */ `
         frequency
         calendarId
         taskId
+        upcomingEventId
         sourceDate
         endDate
         createdAt
@@ -504,10 +507,11 @@ export const removeUserFromHouseHold = /* GraphQL */ `
 export const createEventHandler = /* GraphQL */ `
   mutation CreateEventHandler(
     $calendarId: String!
-    $taskId: String!
+    $taskId: String
     $frequency: FREQUENCY!
     $sourceDate: AWSDateTime!
     $endDate: AWSDateTime!
+    $eventType: EVENTTYPE!
   ) {
     createEventHandler(
       calendarId: $calendarId
@@ -515,6 +519,7 @@ export const createEventHandler = /* GraphQL */ `
       frequency: $frequency
       sourceDate: $sourceDate
       endDate: $endDate
+      eventType: $eventType
     )
   }
 `;
@@ -522,10 +527,11 @@ export const updateEventHandler = /* GraphQL */ `
   mutation UpdateEventHandler(
     $eventHandlerId: String!
     $calendarId: String!
-    $taskId: String!
+    $taskId: String
     $frequency: FREQUENCY!
     $sourceDate: AWSDateTime!
     $endDate: AWSDateTime!
+    $eventType: EVENTTYPE!
   ) {
     updateEventHandler(
       eventHandlerId: $eventHandlerId
@@ -534,6 +540,7 @@ export const updateEventHandler = /* GraphQL */ `
       frequency: $frequency
       sourceDate: $sourceDate
       endDate: $endDate
+      eventType: $eventType
     )
   }
 `;

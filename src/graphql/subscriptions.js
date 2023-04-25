@@ -43,6 +43,7 @@ export const onCreateTask = /* GraphQL */ `
         frequency
         calendarId
         taskId
+        upcomingEventId
         sourceDate
         endDate
         createdAt
@@ -79,6 +80,7 @@ export const onUpdateEvent = /* GraphQL */ `
     onUpdateEvent(filter: $filter) {
       id
       date
+      eventType
       completed
       prevEventId
       nextEventId
@@ -89,6 +91,7 @@ export const onUpdateEvent = /* GraphQL */ `
         frequency
         calendarId
         taskId
+        upcomingEventId
         sourceDate
         endDate
         createdAt
