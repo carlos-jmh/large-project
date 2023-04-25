@@ -27,7 +27,7 @@ return(
             </a>
         </span>
         <br />
-        <div className = "wrapper1">
+        {/* <div className = "wrapper1">
             <div className="child">
                 <img src={Dinner} 
             alt="Group of friends eating dinner"/>
@@ -40,10 +40,10 @@ return(
                 <img src={Groceries} 
                     alt="Couple buying groceries together"/>
             </div>
-        </div>
+        </div> */}
+        {/* <br/>
         <br/>
-        <br/>
-        <br/>
+        <br/> */}
         <div className = "wrapper2">
             <div id="whoarewe">
                 <img src= {AboutWidget} alt = "Who Are We" />
@@ -53,7 +53,7 @@ return(
                     <img src= {Houses} alt = "animation of houses" />
                 </div>
                 <div id="bodytext">
-                    <span className="font-bold">There is no place like home.</span>
+                    <span className="font-body">There's no place like home.</span>
                 </div>
             </div>
             

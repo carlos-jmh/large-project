@@ -5,7 +5,7 @@
     text-align: center;
     font-size: 30px;
     background-color: #6c009e;
-    background-image: linear-gradient(to bottom, #6c009e 0%, #ffffff 100%);
+    background-image: linear-gradient(to top, #6c009e 0%, #ffffff 60%);
 
 }
 
@@ -49,17 +49,25 @@ button
 .font-main {
     font-family: 'PT Sans', sans-serif;
     font-weight: 400;
-    color: white;
+    color: rgb(126, 125, 125);
 }
 
 .font-main button {
    font-size: 30px; 
+   color: white;
 }
-  
+
 .font-bold {
     font-family: 'PT Sans', sans-serif;
     font-weight: 700;
-    color: white;
+    color: rgb(126, 125, 125);
+}
+
+.font-body {
+    font-family: 'PT Sans', sans-serif;
+    font-weight: 600;
+    font-size: 35px;
+    color: rgb(255, 255, 255);
 }
 
 #houses img {
