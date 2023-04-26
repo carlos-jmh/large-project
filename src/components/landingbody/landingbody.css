@@ -70,8 +70,17 @@ button
     color: rgb(255, 255, 255);
 }
 
+#whoarewe img {
+    object-fit: fill !important;
+    height: 40rem;
+    width: 28rem;
+}
+
 #houses img {
     border-radius: 10px;
+    object-fit: fill !important;
+    height: 30rem;
+    width: 40rem;
 }
 
 #bodytext .font-bold {
