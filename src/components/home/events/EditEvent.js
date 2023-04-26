@@ -3,6 +3,7 @@ import { TextInput,Pressable, View, Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { getStyles } from '../../styles';
 import CustomModal from '../../CustomModal';
+import LabeledInput from '../../LabeledInput';
 
 export default function EditEvent({ event, visible, onClose, onSave }) {
   const [title, setTitle] = useState(event.title);
@@ -17,15 +18,22 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
 
   return (
     <CustomModal modalVisible={visible} setModalVisible={onClose}>
-      <View style={[styles.modalContent]}>
+      <View style={[styles.modalView]}>
         <Text style={styles.modalTitle}>Edit Event</Text>
-        <TextInput
+        <LabeledInput
+          value={title}
+          label={"TITLE"}
+          onChangeText={setTitle}
+          placeholder={"Event title"}
+          backgroundColor={colors.border}
+        />
+        {/* <TextInput
           style={[styles.textInput, styles.modalTextInput]}
           onChangeText={setTitle}
           value={title}
           placeholder="Event title"
           placeholderTextColor={colors.gray}
-        />
+        /> */}
         <TextInput
           style={[styles.textInput, styles.modalTextInput]}
           onChangeText={setDate}
