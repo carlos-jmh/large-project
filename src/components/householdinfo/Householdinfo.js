@@ -9,9 +9,8 @@ const Householdinfo = ({houseHold, houseHoldClickHandler, theme}) => {
     // // Do something with household ID to load its info.
     // function display()
     // {
-    //   // Add ID to local storage. Set dispatch event.
-    //   localStorage.setItem("houseHoldId", id);
-    //   window.dispatchEvent(new Event('storage'));
+
+
 
     //   let tabs = document.querySelectorAll('button.round-button');
     //   // console.log(tabs);
