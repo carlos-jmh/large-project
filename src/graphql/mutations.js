@@ -18,6 +18,7 @@ export const createTask = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -32,6 +33,7 @@ export const createTask = /* GraphQL */ `
         description
         completed
         listId
+        taskId
         createdAt
         updatedAt
         _version
@@ -62,6 +64,52 @@ export const createTask = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        houseHoldCalendarId
+        houseHoldChatRoomId
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateHouseHoldMember = /* GraphQL */ `
+  mutation UpdateHouseHoldMember(
+    $input: UpdateHouseHoldMemberInput!
+    $condition: ModelHouseHoldMemberConditionInput
+  ) {
+    updateHouseHoldMember(input: $input, condition: $condition) {
+      id
+      points
+      owner
+      nickname
+      userProfileId
+      UserProfile {
+        id
+        owner
+        preferredName
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      houseHoldId
+      HouseHold {
+        id
+        name
+        owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -144,6 +192,8 @@ export const updateCalendar = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -181,6 +231,7 @@ export const updateHouseHold = /* GraphQL */ `
         nextToken
         startedAt
       }
+      calendarId
       Calendar {
         id
         houseHoldId
@@ -190,6 +241,7 @@ export const updateHouseHold = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      chatRoomId
       ChatRoom {
         id
         houseHoldId
@@ -226,6 +278,7 @@ export const createItem = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -233,6 +286,7 @@ export const createItem = /* GraphQL */ `
         _lastChangedAt
         listTaskId
       }
+      taskId
       Task {
         id
         title
@@ -276,6 +330,7 @@ export const updateItem = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -283,6 +338,7 @@ export const updateItem = /* GraphQL */ `
         _lastChangedAt
         listTaskId
       }
+      taskId
       Task {
         id
         title
@@ -326,6 +382,7 @@ export const deleteItem = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -333,6 +390,7 @@ export const deleteItem = /* GraphQL */ `
         _lastChangedAt
         listTaskId
       }
+      taskId
       Task {
         id
         title
@@ -378,6 +436,8 @@ export const createList = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -386,6 +446,7 @@ export const createList = /* GraphQL */ `
         houseHoldCalendarId
         houseHoldChatRoomId
       }
+      taskId
       Task {
         id
         title
@@ -431,6 +492,8 @@ export const updateList = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -439,6 +502,7 @@ export const updateList = /* GraphQL */ `
         houseHoldCalendarId
         houseHoldChatRoomId
       }
+      taskId
       Task {
         id
         title

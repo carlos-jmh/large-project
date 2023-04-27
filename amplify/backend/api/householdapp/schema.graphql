@@ -71,10 +71,10 @@ type UserProfile
 
 type HouseHoldMember
   @model(
-    mutations: { create: null, delete: null },
+    mutations: { create: null, update: "updateHouseHoldMember", delete: null },
   )
   @auth(rules: [
-    { allow: owner, ownerField: "owner", operations: [read] },
+    { allow: owner, ownerField: "owner", operations: [read, update] },
     { allow: private, provider: iam },
   ])
 {
@@ -152,22 +152,19 @@ type HouseHold
   )
   @auth(
     rules: [
-      { allow: owner, ownerField: "owners", operations: [read] },
+      { allow: owner, ownerField: "owners", operations: [read, update] },
       { allow: private, provider: iam },
   ])
 {
   id: ID!
   name: String!
-    @auth(
-    rules: [
-      { allow: owner, ownerField: "owners", operations: [read, update] },
-      { allow: private, provider: iam },
-    ])
   owners: [String!]!
   Lists: [List] @hasMany(indexName: "byHouseHold", fields: ["id"])
   Tasks: [Task] @hasMany(indexName: "byHouseHold", fields: ["id"])
   HouseHoldMembers: [HouseHoldMember] @hasMany(indexName: "byHouseHold", fields: ["id"])
+  calendarId: ID!
   Calendar: Calendar @hasOne
+  chatRoomId: ID!
   ChatRoom: ChatRoom @hasOne
 }
 
@@ -181,6 +178,7 @@ type Item @model @auth(rules: [
   completed: Boolean!
   listId: ID! @index(name: "byList")
   List: List @belongsTo(fields: ["listId"])
+  taskId: ID
   Task: Task @hasOne
 }
 
@@ -198,8 +196,8 @@ type List
   completed: Boolean!
   Items: [Item] @hasMany(indexName: "byList", fields: ["id"])
   HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
+  taskId: ID
   Task: Task @hasOne
-  
 }
 
 type HouseHoldDisplayInfo {

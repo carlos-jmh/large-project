@@ -1,10 +1,9 @@
 import { API } from "aws-amplify";
-import { getCognitoToken } from '../components/AuthUser';
+import { getCognitoToken } from "../components/AuthUser";
+import { addUserToHouseHold, removeUserFromHouseHold, updateHouseHoldMember } from "../graphql/mutations";
 
 export const updateExistingItem = async (item) => {
   try {
-    const token = await getCognitoToken();
-
     const updatedItem = await API.graphql(
       {
         query:
@@ -29,8 +28,9 @@ export const updateExistingItem = async (item) => {
           id: item.id,
           title: item.task,
         },
+        authMode: "LAMBDA"
       },
-      { Authorization: `Banana ${token}` });
+    );
     
     return updatedItem.data.updateItem;
   } catch (error) {
@@ -41,8 +41,6 @@ export const updateExistingItem = async (item) => {
 
 export const createNewItem = async (listId, title) => {
   try {
-    const token = await getCognitoToken();
-
     const newItem = await API.graphql(
       {
         query:
@@ -64,9 +62,9 @@ export const createNewItem = async (listId, title) => {
         variables: {
             listId: listId,
             title: title
-        }
+        },
+        authMode: "LAMBDA"
       },
-      { Authorization: `Banana ${token}` }
     )
 
     return newItem.data.createItem;
@@ -87,8 +85,6 @@ export const createNewTask = async (
   title
 ) => {
   try {
-    const token = await getCognitoToken();
-
     const newTask = await API.graphql(
       {
         query:
@@ -119,11 +115,109 @@ export const createNewTask = async (
           itemId: itemId,
           listId: listId,
           title: title
-        }
-      }, { Authorization: `Banana ${token}` }
+        },
+        authMode: "LAMBDA"
+      }
     );
 
     return newTask.data.createTask;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const editHouseHold = async (houseHold) => {
+  try {
+    const updatedHouseHold = await API.graphql(
+      {
+        query:
+          `mutation UpdateHouseHold($id: ID!, $name: String!) {
+            updateHouseHold(input: {id: $id, name: $name}) {
+              _lastChangedAt
+              _deleted
+              _version
+              createdAt
+              houseHoldCalendarId
+              houseHoldChatRoomId
+              id
+              name
+              owners
+              updatedAt
+            }
+          }`,
+        variables: {
+          input: {
+            id: houseHold.id,
+            name: houseHold.name,
+            _version: houseHold._version
+          }
+        },
+        authMode: "AMAZON_COGNITO_USER_POOLS",
+        authToken: await getCognitoToken()
+      }
+    );
+
+    return updatedHouseHold.data.updateHouseHold;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const addUser = async (houseHoldId, username) => {
+  try {
+    const addedUser = await API.graphql({
+      query: addUserToHouseHold,
+      variables: {
+        houseHoldId: houseHoldId,
+        cognitoUsername: username
+      },
+      authMode: "LAMBDA"
+    });
+
+    return addedUser.data.addUserToHouseHold;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const removeUser = async (houseHoldId, houseHoldMemberId) => {
+  try {
+
+    const removedUser = await API.graphql({
+      query: removeUserFromHouseHold,
+      variables: {
+        houseHoldId: houseHoldId,
+        houseHoldMemberId: houseHoldMemberId
+      },
+      authMode: "LAMBDA"
+    });
+
+    return removedUser.data.removeUserFromHouseHold;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const editHouseHoldMember = async (houseHoldMember) => {
+  try {
+    const editedHouseHoldMember = await API.graphql({
+      query: updateHouseHoldMember,
+      variables: {
+        input: {
+          id: houseHoldMember.id,
+          nickname: houseHoldMember.nickname,
+          _version: houseHoldMember._version
+        }
+      },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+      authToken: await getCognitoToken()
+    });
+
+    return editedHouseHoldMember.data.updateHouseHoldMember;
   } catch (error) {
     console.log(error);
     return null;
