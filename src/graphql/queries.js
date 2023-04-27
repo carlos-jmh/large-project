@@ -121,6 +121,8 @@ export const getChatRoom = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -199,6 +201,7 @@ export const getTask = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -213,6 +216,7 @@ export const getTask = /* GraphQL */ `
         description
         completed
         listId
+        taskId
         createdAt
         updatedAt
         _version
@@ -243,6 +247,8 @@ export const getTask = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -483,6 +489,8 @@ export const getHouseHoldMember = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -961,6 +969,8 @@ export const getCalendar = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -1043,6 +1053,7 @@ export const getHouseHold = /* GraphQL */ `
         nextToken
         startedAt
       }
+      calendarId
       Calendar {
         id
         houseHoldId
@@ -1052,6 +1063,7 @@ export const getHouseHold = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      chatRoomId
       ChatRoom {
         id
         houseHoldId
@@ -1082,6 +1094,8 @@ export const listHouseHolds = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -1112,6 +1126,8 @@ export const syncHouseHolds = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -1139,6 +1155,7 @@ export const getItem = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -1146,6 +1163,7 @@ export const getItem = /* GraphQL */ `
         _lastChangedAt
         listTaskId
       }
+      taskId
       Task {
         id
         title
@@ -1185,6 +1203,7 @@ export const listItems = /* GraphQL */ `
         description
         completed
         listId
+        taskId
         createdAt
         updatedAt
         _version
@@ -1216,6 +1235,7 @@ export const syncItems = /* GraphQL */ `
         description
         completed
         listId
+        taskId
         createdAt
         updatedAt
         _version
@@ -1249,6 +1269,7 @@ export const itemsByListId = /* GraphQL */ `
         description
         completed
         listId
+        taskId
         createdAt
         updatedAt
         _version
@@ -1277,6 +1298,8 @@ export const getList = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -1285,6 +1308,7 @@ export const getList = /* GraphQL */ `
         houseHoldCalendarId
         houseHoldChatRoomId
       }
+      taskId
       Task {
         id
         title
@@ -1324,6 +1348,7 @@ export const listLists = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -1355,6 +1380,7 @@ export const syncLists = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -1388,6 +1414,7 @@ export const listsByHouseHoldId = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version

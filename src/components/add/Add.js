@@ -1,12 +1,11 @@
-import React, {useRef, useState, useEffect } from 'react'
+import React, {useRef, useState, useEffect, useContext } from 'react'
 import './add.css'
 import * as Icon from 'react-bootstrap-icons'
-import data from '../../containers/middle/data.json';
 import { createNewItem, createNewTask } from '../../api/mutating';
-import { TEST_HOUSEHOLDID } from '../../containers/middle/Middle';
+import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
 const Add = ({addTask, name, list, theme}) => {
-  console.log(list);
+  // console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
   const [ userInput, setUserInput ] = useState('');
@@ -20,6 +19,8 @@ const Add = ({addTask, name, list, theme}) => {
   const freq = useRef(null);
   const listAttach = useRef(null);
   const itemAttach = useRef(null);
+
+  const { houseHold } = useContext(HouseHoldContext);
 
   // Add event object:
   let eObj = {title: title, sourceDate: sDate, endDate: eDate, freq: freq}
@@ -62,7 +63,7 @@ const Add = ({addTask, name, list, theme}) => {
   }
 
   const handleChange2 = (e) => {
-    setDateInput(e.target.value);
+    setDateInput(new Date(e.target.value));
   }
 
   const handleChange3 = (e) => {
@@ -91,9 +92,8 @@ const Add = ({addTask, name, list, theme}) => {
       }
     });
     */
-    let date = userDate.split("-");
     e.preventDefault();
-    addTask(userInput, name, list, date[1] + "-" + date[2] + "-" + date[0], listConnect);
+    addTask(userInput, name, list, userDate, listConnect);
     setUserInput("");
     setDateInput("");
     setListConnect("")
@@ -109,6 +109,7 @@ const Add = ({addTask, name, list, theme}) => {
   const addtask = async(e) => {
     console.log("creating new Task!");
 
+    // TODO (carlos): Implement Linking between Task and EventHandler
     // if start/endDate + recurrence (recurrence = ONCE)
       // create EventHandler -> startDate, endDate, recurrence
       // const eventHandler = await createEventHandler(sDate, eDate, freq);
@@ -119,7 +120,7 @@ const Add = ({addTask, name, list, theme}) => {
       false,
       false,
       false,
-      localStorage.getItem("houseHoldId"),
+      houseHold.id,
       "",
       "",
       "",

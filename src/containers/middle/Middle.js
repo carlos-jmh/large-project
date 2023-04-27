@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import './middle.css'
 import List from '../../components/list/List'
 import Events from '../../components/events/Events'
@@ -9,12 +9,36 @@ import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList';
 import Upcoming from '../../components/usernav/Upcoming';
 
-import { fetchEventHandlersByCalendarId, fetchEventsByCalendarId, fetchItemsByListId, fetchLists, fetchTasksByHouseHoldId } from '../../api/fetching';
-import { createSubListItems, updateSubListItems } from '../../api/subscribing'
+import {
+  fetchItemsByListId,
+} from '../../api/fetching';
 import { updateExistingItem } from '../../api/mutating'
+import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
+import { useEventData, useEventHandlerData, useListsData, useTasksData } from '../../api/hooks'
 
-export const TEST_HOUSEHOLDID = "ee1afec5-f8b1-4dd9-b907-fac07b638107";
-export const TEST_CALENDARID = "8140617b-65f6-4e8a-8aeb-f009606ae792";
+const processLists = async (lists) => {
+  const processedLists = await Promise.all(lists.map(async (list) => {
+    const listItems = await fetchItemsByListId(list.id);
+
+    const processedItems = listItems.map((item) => {
+      return {
+        id: item.id,
+        task: item.title,
+        complete: item.completed,
+        _version: item._version,
+      };
+    });
+
+    return {
+      listId: list.id,
+      listName: list.title,
+      listItems: processedItems,
+      _version: list._version,
+    };
+  }));
+
+  return processedLists;
+};
 
 const Middle = ({theme}) => {
   //THIS SORTS BOTH JSON FILES BEFORE THEY ARE LOADED IN
@@ -31,46 +55,9 @@ const Middle = ({theme}) => {
   const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
 
-  const [listData, setListData] = useState([]);
-  
-  /*
-  For API Implementation all we have to do is connect 3 variables to the backend:
-  - data
-  - taskData
-  - eventData
-  from the 3 useStates above. That is where I am loading all the info from the JSON files for the entire application - Gabe
-  */
+  const { houseHold } = useContext(HouseHoldContext);
 
-  const processLists = async (lists) => {
-    const processedLists = lists.map(async (list, listIndex) => {
-      const listItems = await fetchItemsByListId(list.id);
-
-      // TODO (carlos): Implement delete
-      // Creating subscriptions for list item updates
-      createSubListItems(list.id, listIndex, newListItemIsCreated);
-      updateSubListItems(list.id, listIndex, existingListItemIsUpdated);
-
-      const processedItems = listItems.map((item) => {
-        return {
-          id: item.id,
-          task: item.title,
-          complete: item.completed,
-          _version: item._version,
-        }
-      });
-
-      return {
-        listId: list.id,
-        listName: list.title,
-        listItems: processedItems,
-        _version: list._version,
-      }
-    });
-
-    setListData(await Promise.all(processedLists));
-  }
-
-  const newListItemIsCreated = (item, index) => {
+  const onListItemCreated = (item, index, setListData) => {
     console.log("SUBSCRIPTION CREATE ITEM", item);
     setListData(prevState => {
       const newListData = [...prevState];
@@ -82,14 +69,23 @@ const Middle = ({theme}) => {
       });
       return newListData;
     });
-  }
+  };
 
-  const existingListItemIsUpdated = (item, index) => {
+  const onListItemUpdated = (item, listIndex, setListData) => {
     console.log("SUBSCRIPTION UPDATE ITEM", item);
+
+    // extract current item from list and its index
+    const currentItemIndex = listData[listIndex].listItems.findIndex(listItem => listItem.id === item.id);
+    const currentItem = listData[listIndex].listItems[currentItemIndex];
+    
+    // if the item is the same version, do nothing (we already have the latest version)
+    if (currentItem._version === item._version) {
+      return;
+    }
+
     setListData(prevState => {
       const newListData = [...prevState];
-      const itemIndex = newListData[index].listItems.findIndex(listItem => listItem.id === item.id);
-      newListData[index].listItems[itemIndex] = {
+      newListData[listIndex].listItems[currentItemIndex] = {
         id: item.id,
         task: item.title,
         complete: item.completed,
@@ -97,42 +93,34 @@ const Middle = ({theme}) => {
       };
       return newListData;
     });
-  }
+  };
 
-  useEffect(() => {
-    // Add event listener on localStorage. When changed, pull houseHoldID and reload data.
-    window.addEventListener('storage', () => {
-      let id = localStorage.getItem('houseHoldId');
-      
-      async function loadListData() {
-        const lists = await fetchLists(id);
-        await processLists(lists);
-      };
-  
-      async function loadTaskData() {
-        const tasks = await fetchTasksByHouseHoldId(id);
-        await setTasks(tasks);
-      }
-  
-      async function loadEventData() {
-        const events = await fetchEventsByCalendarId(id);
-        console.log(events);
-      }
-  
-      async function loadEventHandlerData() {
-        const events = await fetchEventHandlersByCalendarId(id);
-        console.log(events);
-      }
-      
-      loadListData();
-      loadTaskData();
-      loadEventData();
-      loadEventHandlerData();
-    })
-    
-  }, []);
+  const [listData, setListData] = useListsData({
+    houseHoldId: houseHold.id,
+    processDataCallback: processLists,
+    onListItemCreated,
+    onListItemUpdated,
+  });
 
-  // Load in households and their respective info.
+  const [taskData, setTaskData] = useTasksData({
+    houseHoldId: houseHold.id,
+  });
+  
+  const [eventData, setEventData] = useEventData({
+    calendarId: houseHold.houseHoldCalendarId,
+  });
+
+  const [eventHandlerData, setEventHandlerData] = useEventHandlerData({
+    calendarId: houseHold.houseHoldCalendarId,
+  });
+
+  /*
+  For API Implementation all we have to do is connect 3 variables to the backend:
+  - data
+  - taskData
+  - eventData
+  from the 3 useStates above. That is where I am loading all the info from the JSON files for the entire application - Gabe
+  */
 
   //Handles list ITEM edition
   const handleListItemToggle = (item, listIndex, itemIndex) => {
@@ -146,7 +134,7 @@ const Middle = ({theme}) => {
 
   //Handles list completions
   const handleTaskCheck = (taskIndex, complete) => {
-    setTasks(prevState => {
+    setTaskData(prevState => {
       const newTasks = [...prevState];
       newTasks[taskIndex].complete = complete;
       return newTasks;
@@ -180,10 +168,10 @@ const Middle = ({theme}) => {
 
   //This is for adding tasks
   const addTask2 = (userInput, name, list, userDate, connect) => {
-    let copy = [...tasks];
-    copy = [...copy, { id: tasks.length + 1, task: userInput, complete: false, date: userDate, list: connect }];
+    let copy = [...taskData];
+    copy = [...copy, { id: taskData.length + 1, task: userInput, complete: false, date: userDate, list: connect }];
 
-    setTasks(copy);
+    setTaskData(copy);
   }
 
   //This is for adding events
@@ -193,7 +181,6 @@ const Middle = ({theme}) => {
     setEvents(copy);
   }
 
-  // Break into seperate component.
   return (
     <>
     {/*
@@ -210,7 +197,7 @@ const Middle = ({theme}) => {
           <div className="taskevent">
             <div className="section1">
               <h5 className="sectionHeader">Upcoming</h5>
-              <Upcoming tasks = {tasks} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
+              <Upcoming tasks={taskData} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
               <Upcoming tasks = {[]} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
             </div>
           </div>
@@ -222,7 +209,7 @@ const Middle = ({theme}) => {
         <div className="section1">
             <h5 className="sectionHeader">Tasks</h5>
             <div>
-              <TaskList tasks = {tasks} handleCheck={handleTaskCheck}/>
+              <TaskList tasks={taskData} handleCheck={handleTaskCheck}/>
               <Add addTask={addTask2} useState={false} name="Task" list={listData} theme={theme}/>
               <br/>
             </div>

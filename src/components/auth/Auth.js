@@ -15,7 +15,6 @@ function Auth(props) {
 
   const signUpUser = async () => {
     try {
-      console.log("signing up!");
       await CognitoAuth.signUp({
         username: formInput.username,
         password: formInput.password,
@@ -23,7 +22,6 @@ function Auth(props) {
           email: formInput.email
         }
       });
-      console.log("signed up!");
       setAuthMode("confirmSignUp");
     } catch (error) {
       console.log(error);
@@ -32,12 +30,8 @@ function Auth(props) {
 
   const signInUser = async () => {
     try {
-      console.log("signing in!");
       await CognitoAuth.signIn(formInput.username, formInput.password);
-      console.log("signed in!");
 
-      console.log(formInput);
-    
       setAuthMode("signedIn");
     } catch (error) {
       console.log(error);

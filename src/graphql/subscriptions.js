@@ -15,6 +15,7 @@ export const onCreateTask = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -29,6 +30,7 @@ export const onCreateTask = /* GraphQL */ `
         description
         completed
         listId
+        taskId
         createdAt
         updatedAt
         _version
@@ -59,6 +61,52 @@ export const onCreateTask = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        houseHoldCalendarId
+        houseHoldChatRoomId
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateHouseHoldMember = /* GraphQL */ `
+  subscription OnUpdateHouseHoldMember(
+    $filter: ModelSubscriptionHouseHoldMemberFilterInput
+    $owner: String
+  ) {
+    onUpdateHouseHoldMember(filter: $filter, owner: $owner) {
+      id
+      points
+      owner
+      nickname
+      userProfileId
+      UserProfile {
+        id
+        owner
+        preferredName
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      houseHoldId
+      HouseHold {
+        id
+        name
+        owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -135,6 +183,8 @@ export const onUpdateCalendar = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -171,6 +221,7 @@ export const onUpdateHouseHold = /* GraphQL */ `
         nextToken
         startedAt
       }
+      calendarId
       Calendar {
         id
         houseHoldId
@@ -180,6 +231,7 @@ export const onUpdateHouseHold = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      chatRoomId
       ChatRoom {
         id
         houseHoldId
@@ -213,6 +265,7 @@ export const onCreateItem = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -220,6 +273,7 @@ export const onCreateItem = /* GraphQL */ `
         _lastChangedAt
         listTaskId
       }
+      taskId
       Task {
         id
         title
@@ -260,6 +314,7 @@ export const onUpdateItem = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -267,6 +322,7 @@ export const onUpdateItem = /* GraphQL */ `
         _lastChangedAt
         listTaskId
       }
+      taskId
       Task {
         id
         title
@@ -307,6 +363,7 @@ export const onDeleteItem = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -314,6 +371,7 @@ export const onDeleteItem = /* GraphQL */ `
         _lastChangedAt
         listTaskId
       }
+      taskId
       Task {
         id
         title
@@ -356,6 +414,8 @@ export const onCreateList = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -364,6 +424,7 @@ export const onCreateList = /* GraphQL */ `
         houseHoldCalendarId
         houseHoldChatRoomId
       }
+      taskId
       Task {
         id
         title
@@ -406,6 +467,8 @@ export const onUpdateList = /* GraphQL */ `
         id
         name
         owners
+        calendarId
+        chatRoomId
         createdAt
         updatedAt
         _version
@@ -414,6 +477,7 @@ export const onUpdateList = /* GraphQL */ `
         houseHoldCalendarId
         houseHoldChatRoomId
       }
+      taskId
       Task {
         id
         title
@@ -471,6 +535,7 @@ export const onNewItemCreated = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -478,6 +543,7 @@ export const onNewItemCreated = /* GraphQL */ `
         _lastChangedAt
         listTaskId
       }
+      taskId
       Task {
         id
         title
@@ -518,6 +584,7 @@ export const onItemUpdated = /* GraphQL */ `
         description
         houseHoldId
         completed
+        taskId
         createdAt
         updatedAt
         _version
@@ -525,6 +592,7 @@ export const onItemUpdated = /* GraphQL */ `
         _lastChangedAt
         listTaskId
       }
+      taskId
       Task {
         id
         title
