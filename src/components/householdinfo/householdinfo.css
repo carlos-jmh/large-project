@@ -1,0 +1,59 @@
+.round-button {
+  outline: none;
+  background-color: transparent;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  border-radius: 0;
+  color: black;
+  font-weight: 600;
+  font-size: 1.5rem;
+  transition: all 0.10s linear;
+} 
+
+.round-button:hover {
+  background: rgb(213, 184, 255);
+  transition: all 0.10s linear;
+}
+
+.active2 {
+  background-image: linear-gradient(to left, rgb(190, 143, 255) .8%, rgba(194, 24, 24, 0) 1%);
+  transition: all 0.10s linear;
+}
+
+.inactive {
+  background-image: linear-gradient(to left, rgba(245, 245, 245, 0.699), rgba(194, 24, 24, 0) 1%);
+  transition: all 0.10s linear;
+}
+
+.round-button-dark {
+  outline: none;
+  background-color: transparent;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  border-radius: 0;
+  color: white;
+  font-weight: 600;
+  font-size: 1.5rem;
+  transition: all 0.10s linear;
+} 
+
+.round-button-dark:hover {
+  background: rgb(86, 0, 179);
+  transition: all 0.10s linear;
+}
+
+.active2-dark {
+  background-image: linear-gradient(to left, rgb(86, 0, 179) 1.5%, rgba(194, 24, 24, 0) 1%);
+  transition: all 0.10s linear;
+}
+
+.inactive-dark {
+  background-image: linear-gradient(to left, rgb(114, 114, 114) 1.5%, rgba(194, 24, 24, 0) 1%);
+  transition: all 0.10s linear;
+}
+
+/* .bg2 {
+  background-image: linear-gradient(to right, rgb(199, 198, 201) 3%, rgba(194, 24, 24, 0) 1%);
+} */

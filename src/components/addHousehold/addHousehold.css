@@ -1,0 +1,121 @@
+.addTask {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.addTask:hover {
+    cursor: pointer;
+}
+
+.addTask p {
+    margin: 0px;
+    padding: 0px;
+    color: purple;
+}
+
+.addingTask {
+    border: solid;
+    border-color: rgb(230, 227, 227);
+    border-width: 1px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.50s linear;
+}
+
+.addingTask input{
+    border: none;
+}
+
+.addingTask button {
+    color: white;
+    margin: 2px;
+    transition: all 0.50s linear;
+}
+
+.addHouse {
+    background-color: rgb(255, 255, 255);
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: .5rem;
+}
+
+#purple {
+    background-color: rgb(108, 0, 158);
+}
+
+#purple:hover {
+    color: white;
+    background-color: rgba(58, 4, 83, 0.747);
+}
+
+.addbutton {
+    color: black;
+    outline: none;
+    background: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    width: 5rem;
+    margin-bottom: 30px;
+    transition: all 0.50s linear;
+  } 
+
+  .addbutton-dark {
+    color: white;
+    outline: none;
+    background: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    width: 5rem;
+    margin-bottom: 30px;
+    transition: all 0.50s linear;
+  } 
+
+
+.addTask-dark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.addTask-dark:hover {
+    cursor: pointer;
+}
+
+.addTask-dark p {
+    margin: 0px;
+    padding: 0px;
+    color: purple;
+}
+
+.addingTask-dark {
+    border: solid;
+    border-color: rgb(230, 227, 227);
+    border-width: 1px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.50s linear;
+}
+
+.addingTask-dark input{
+    border: none;
+}
+
+.addingTask-dark button {
+    color: white;
+    margin: 2px;
+    transition: all 0.50s linear;
+}
+
+.buttons-dark {
+    display: flex;
+    justify-content: space-between;
+    margin: .5rem;
+}

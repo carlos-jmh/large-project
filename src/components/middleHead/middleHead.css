@@ -1,0 +1,63 @@
+.views {
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    transition: all 0.50s linear;
+}
+
+.views button {
+    background-color: white;
+    border-radius: 0;
+    box-sizing: content-box;
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    color: black;
+    transition: all 0.50s linear;
+}
+
+.views button:hover {
+    background-color: rgb(213, 184, 255);
+    transition: all 0.20s linear;
+}
+
+.active {
+    background-image: linear-gradient(to top, rgb(190, 143, 255) 7%, rgba(194, 24, 24, 0) 1%);
+    transition: all 0.20s linear;
+}
+
+.views-dark {
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    transition: all 0.50s linear;
+}
+
+.views-dark button {
+    background-color: rgb(85, 85, 85);
+    border-radius: 0;
+    box-sizing: content-box;
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    color: white;
+    transition: all 0.50s linear;
+}
+
+.views-dark button:hover {
+    background-color: rgb(86, 0, 179);
+    transition: all 0.20s linear;
+}
+
+.active-dark {
+    background-image: linear-gradient(to top, rgb(86, 0, 179) 10%, rgba(194, 24, 24, 0) 1%);
+    transition: all 0.20s linear;
+}

@@ -1,0 +1,61 @@
+.midContent {
+    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.display {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.taskevent {
+    display: flex;
+    gap: 10rem;
+}
+
+.sectionHeader {
+    align-self: flex-start;
+}
+
+.section1 {
+    width: 100%;
+}
+
+.section2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 25px 0px 0px;
+}
+
+.list {
+    margin: 0px;
+    padding: 0px;
+}
+
+.calendar {
+    margin-top: 1.5rem;
+}
+
+.inbox {
+    margin: 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    display: none;
+}
+
+.header {
+    width: 100%;
+}
+
+.lists {
+    margin: 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}

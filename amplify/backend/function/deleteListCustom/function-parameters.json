@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "storage": {
+      "Task:@model(appsync)": [
+        "read",
+        "delete"
+      ],
+      "Item:@model(appsync)": [
+        "read",
+        "delete"
+      ],
+      "List:@model(appsync)": [
+        "read",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

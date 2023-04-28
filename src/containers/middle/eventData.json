@@ -1,0 +1,20 @@
+[{
+    "id": 1,
+    "task": "Give dog a bath",
+    "complete": true,
+    "date": "12-2-2023",
+    "description": ""
+  }, {
+    "id": 2,
+    "task": "Do laundry",
+    "complete": true,
+    "date": "12-2-2023",
+    "description": ""
+  }, {
+    "id": 3,
+    "task": "Vacuum floor",
+    "complete": false,
+    "date": "12-2-2023",
+    "description": ""
+  }
+]

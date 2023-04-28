@@ -1,0 +1,36 @@
+.wrapper2 img
+{
+    height: 100%;
+    width: 100%;
+}
+
+#whoarewe
+{
+    width: 35%;
+    margin: 100px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#whoarewe img
+{
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+#houseswrapper
+{
+    padding-top: 100px;
+    width: 40%;
+    display: inline-block;
+}
+
+#houses img
+{
+    object-fit: cover;
+}
+
+#bodytext
+{
+    font-size: 80px;
+}

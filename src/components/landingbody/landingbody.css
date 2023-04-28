@@ -1,0 +1,47 @@
+.center-text
+{
+    height: 50%;
+    padding: 50px;
+    text-align: center;
+    font-size: 30px;
+    background-color: #6c009e;
+    background-image: linear-gradient(0deg, #6c009e 0%, #ffffff 60%);
+
+}
+
+.main-title
+{
+    font-size: 50px;
+}
+
+button
+{
+    background-color: rgb(101, 1, 148);
+    color: white;
+    border: none;
+    font-size: 30px;
+    padding: 0px 15px 0px 15px;
+    border-radius: 10px;
+}
+
+.child
+{
+    width: 250px;
+    margin: 50px;
+    padding: 15px;
+    display: inline-block;
+    background: black;
+    border-radius: 10px;
+    height: 300px;
+}
+
+.wrapper1 img
+{
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.child img{
+    object-fit: cover;
+}

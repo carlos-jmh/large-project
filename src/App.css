@@ -1,0 +1,65 @@
+
+.App {
+  background-color: white;
+}
+
+.signinContainer {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  padding-left: 12%;
+  padding-right: 12%;
+  background-image: linear-gradient(90deg, white 50%, rgb(108, 0, 158) 50%);
+  }
+
+.signupContainer {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  padding-left:67%;
+  padding-right: 12%;
+  background-image: linear-gradient(90deg,rgb(108, 0, 158) 50%, white 50%);
+  }
+
+.form {
+  width: 420px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.form-content {
+  padding-left: 12%;
+  padding-right: 12%;
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 24px;
+  color: rgb(34, 34, 34);
+  font-weight: 800;
+}
+
+.link-primary:hover {
+  cursor: pointer;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+.font-main {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 400;
+}
+
+.font-bold {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+}
