@@ -15,6 +15,7 @@ import ListItem from "./ListItem";
 import { getStyles } from "../../styles";
 import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
+import { updateExistingItem } from "../../../api/mutating";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -25,7 +26,7 @@ export default function List({ list }) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [items, setItems] = useState(list.items);
+  const [items, setItems] = useState(list.listItems);
 
   const caratRotation = useSharedValue(-90 * !isExpanded);
   const caratAnimationStyles = useAnimatedStyle(() => {
@@ -35,6 +36,12 @@ export default function List({ list }) {
 
   // Called when an item is checked/unchecked
   function handleCheckItem(isChecked, itemIndex) {
+    console.log("CHECK ITEM", isChecked, itemIndex);
+    updateExistingItem({
+      ...items[itemIndex],
+      completed: isChecked,
+    });
+
     setItems((oldItems) => {
       let newItem = oldItems[itemIndex];
       newItem.completed = isChecked;

@@ -26,7 +26,7 @@ export default function ConfirmRegister({ navigation, route }) {
         route.params.username,
         verificationCode
       );
-      navigation.navigate("InitialPage");
+      navigation.navigate("InitialPage", { user: user });
     } catch (error) {
       console.log("Error confirming sign up:", error);
     }

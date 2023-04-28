@@ -1,8 +1,8 @@
 import { Auth } from "aws-amplify";
 
 export const getCognitoToken = async () => {
-  const user = await Auth.currentAuthenticatedUser();
-  return user.signInUserSession.accessToken.jwtToken;
+  const session = await Auth.currentSession();
+  return session.getAccessToken().getJwtToken();
 }
 
 export const getCognitoUser = async () => {

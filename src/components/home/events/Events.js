@@ -7,7 +7,8 @@ import { useTheme } from "@react-navigation/native";
 import MyCalendar from "./Calendar";
 import mockData from "../mockData";
 import Event from "./Event";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { HouseHoldContext } from "../../HouseHoldContext";
 
 /* Events page */
 export default function Events({ navigation, route }) {
@@ -16,6 +17,8 @@ export default function Events({ navigation, route }) {
   const [events, setEvents] = useState();
   const [date, setDate] = useState(getTodaysDate());
   // Get actual eventHandlers from the backend here
+
+  const { houseHold } = useContext(HouseHoldContext);
 
   function getEventsByDate(date) {
     // First, filter the tasks to get all the tasks with events (i.e., tasks with an "eventHandlerId" property)
@@ -85,7 +88,7 @@ export default function Events({ navigation, route }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <HeaderBar title={route.params.household.name} screenName={route.name} />
+      <HeaderBar title={houseHold.name} screenName={route.name} />
       <View style={{ flex: 1}}>
         <View style= {{margin:20, borderRadius:20}}>
           <MyCalendar getEventsByDate={getEventsByDate}/>
@@ -102,7 +105,7 @@ export default function Events({ navigation, route }) {
       <Navbar
         screenName={route.name}
         navigation={navigation}
-        household={route.params.household}
+        household={houseHold}
       />
     </View>
   );
