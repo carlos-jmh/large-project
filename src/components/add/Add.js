@@ -114,7 +114,7 @@ const Add = ({addTask, name, list, theme}) => {
       // create EventHandler -> startDate, endDate, recurrence
       // const eventHandler = await createEventHandler(sDate, eDate, freq);
     
-    // create Task -> with EventHandlerId
+    // create Task -> with EventHandlerId 
     // Pass correct values here. 
     const newTask = await createNewTask(
       false,
@@ -124,18 +124,20 @@ const Add = ({addTask, name, list, theme}) => {
       "",
       "",
       "",
-      "throw out the trash 3"
+      title.current.value
     );
 
     console.log("new Task: ", newTask);
 
     // updateEventHandler -> add TaskId to itself
+    // Shows up as undefined until reload. 
   }
 
   const addEvent = async(e) => {
     e.preventDefault();
 
     // const newEvent = await createEventHandler("asd", "asda");
+    // Event handler should then make events? 
   }
 
   if (!add)
