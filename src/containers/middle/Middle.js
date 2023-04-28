@@ -184,7 +184,7 @@ const Middle = ({theme}) => {
             <div className="section1">
               <h5 className="sectionHeader">Upcoming</h5>
               <Upcoming tasks={taskData} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
-              <Upcoming tasks = {[]} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
+              <Upcoming tasks={eventData} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@ const Middle = ({theme}) => {
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
-              <Events events = {[]} handleCheck={handleEventCheck} handleDelete={taskDeleteHandler}/>
+              <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={taskDeleteHandler}/>
               <Add addTask={addTask3} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>
