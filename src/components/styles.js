@@ -239,5 +239,30 @@ export function getStyles(colors) {
     },
     modalButtonTextSave: {},
     modalButtonTextCancel: {},
+    dateInputContainer: {
+      marginTop: 10,
+      marginBottom: 20,
+      borderColor: 'gray',
+      borderWidth: 1,
+      borderRadius: 5,
+      padding: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    dateInput: {
+      flex: 1,
+      marginLeft: 10,
+    },
+    dateInputText: {
+      color: colors.text,
+      fontSize: 16,
+    },  
+    checkboxContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+    },                                                            
   });
+
 }

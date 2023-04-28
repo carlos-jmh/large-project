@@ -29,7 +29,7 @@ const Event = ({ event }) => {
       android_ripple={{ color: colors.highlight }}
       onLongPress={() => setModalVisible(true)}
     >
-    <AntDesign name="infocirlceo" size={22} color={colors.background} style= {{margin:8}} />
+    <AntDesign name="infocirlceo" size={22} color={colors.text} style= {{margin:8}}  onPress={() => setModalVisible(true) }/>
       <View style={{display:'flex',justifyContent:'center',alignContent:'center'}}>
         <Text
           style={{
