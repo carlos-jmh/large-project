@@ -6,8 +6,10 @@ import Navbar from "../Navbar";
 import UndatedTasks from "./UndatedTasks";
 import data from "../mockData";
 import { getStyles } from "../../styles";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useTheme } from "@react-navigation/native";
+import { HouseHoldContext } from "../../HouseHoldContext";
+import { useTasksData } from "../../../api/hooks";
 
 /* Tasks page */
 export default function Tasks({ navigation, route }) {
@@ -16,6 +18,12 @@ export default function Tasks({ navigation, route }) {
 
   // Get actual tasks from the backend here
   const [tasks, setTasks] = useState(data.tasks);
+
+  const { houseHold } = useContext(HouseHoldContext);
+
+  const [taskData, setTaskData] = useTasksData({
+    houseHoldId: houseHold.id,
+  });
 
   // Filters out completed tasks (will be done with query in future? or completed tasks will be deleted)
   const unfinishedTasks = tasks.filter((task) => !task.completed);
@@ -87,7 +95,7 @@ export default function Tasks({ navigation, route }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <HeaderBar title={route.params.household.name} screenName={route.name} />
+      <HeaderBar title={houseHold.name} screenName={route.name} />
       <ScrollView
         style={{ marginHorizontal: 16, marginTop: 16, flex: 1 }}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -99,7 +107,7 @@ export default function Tasks({ navigation, route }) {
       <Navbar
         screenName={route.name}
         navigation={navigation}
-        household={route.params.household}
+        household={houseHold}
       />
     </View>
   );

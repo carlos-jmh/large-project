@@ -24,7 +24,7 @@ export default function Login({ navigation }) {
       }
 
       const user = await CognitoAuth.signIn(username, password);
-      navigation.navigate("InitialPage");
+      navigation.navigate("InitialPage", { user: user });
     } catch (error) {
       console.log("Error signing in:", error);
     }

@@ -4,7 +4,7 @@ import { API } from "aws-amplify";
 import CustomButton from "../CustomButton";
 import LabeledInput from "../LabeledInput";
 import ProfileIcon from "../ProfileIcon";
-import { getCognitoToken } from "../auth/auth";
+import { getCognitoToken } from "../../utils/auth";
 import { getStyles } from "../styles";
 import { graphqlOperation } from "@aws-amplify/api";
 import { useState } from "react";
