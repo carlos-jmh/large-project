@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './dropdown.css';
 import * as Icon from 'react-bootstrap-icons';
-
 import { Auth as CognitoAuth } from 'aws-amplify';
+import { removeUser } from '../../api/mutating';
+import { fetchHouseHoldMembers } from '../../api/fetching';
+import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
 const Dropdown = () => {
+
+    const { houseHold } = useContext(HouseHoldContext);
 
     const signOutUser = async () => {
         try {
@@ -39,7 +43,6 @@ const Dropdown = () => {
     function submitUsername() {
         // Make API call to update. If this goes through submit.
 
-
         // Remove editing status for paragraph.
         let paragraph = document.getElementById('username');
         paragraph.contentEditable = true;
@@ -54,16 +57,24 @@ const Dropdown = () => {
     }
 
     // Function to leave the specific houseHold. Should leave, than refresh.
-    function leaveHousehold() {
+    const leaveHousehold = async () => {
         
         // Check if user truly wants to leave. 
         if (window.confirm("Are you sure you want to leave the current household?"))
-        {
+        {            
+            console.log(houseHold.id);
 
-        }
-        else
-        {
+            // Fetch houseHoldMembers (check for matching houseHoldId)
+            const members = await fetchHouseHoldMembers();
 
+            console.log(members);
+            
+            const member = members.find(element => element.houseHoldId === houseHold.id);
+            
+            console.log(member);
+
+            // Remove: houseHoldId, houseHoldMemberId 
+            removeUser(houseHold.id, member.id);         
         }
     }
     
