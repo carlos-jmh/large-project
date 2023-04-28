@@ -138,7 +138,7 @@ export const fetchHouseHold = async (houseHoldId) => {
   }
 }
 
-export const fetchHouseHoldMembers = async (houseHoldId) => {
+export const fetchHouseHoldMembers = async () => {
   try {
     const houseHoldMembers = await API.graphql({
       query: listHouseHoldMembers,
