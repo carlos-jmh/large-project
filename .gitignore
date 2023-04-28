@@ -1,31 +1,23 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+node_modules/
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-/.expo
+# team provider info
+**/team-provider-info.json
 
-# testing
-/coverage
-
-# production
-/build
-
-# misc
+# macOS
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
-amplify/team-provider-info.json
-src/ui-components
-src/models
+**/desktop.ini
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
