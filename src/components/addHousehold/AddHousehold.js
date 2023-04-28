@@ -1,8 +1,8 @@
 import React, {useState, useRef } from 'react'
 import './addHousehold.css'
 import * as Icon from 'react-bootstrap-icons'
-import { API, graphqlOperation } from 'aws-amplify'
-import { getCognitoToken }from "../AuthUser"
+import { createHouseHold } from '../../api/mutating'
+import { fetchHouseHold } from '../../api/fetching'
 
 const AddHousehold = ({addNewHousehold, theme}) => {
   const [add, setAdd] = useState();
@@ -11,42 +11,6 @@ const AddHousehold = ({addNewHousehold, theme}) => {
 
   // Object to create household
   // let hhObj = {houseHoldName: hhName};
-
-  const createHouseHold = async (houseHoldName) => {
-    try {
-      const token = await getCognitoToken();
-      
-      const createNewHouseHoldResponse = await API.graphql(
-        graphqlOperation(
-          `mutation CreateNewHouseHold($houseHoldName: String!) {
-            createNewHouseHold(houseHoldName: $houseHoldName)
-          }`,
-          { houseHoldName: houseHoldName }
-        ),
-        { Authorization: token }
-      );
-      const newHouseHoldId = createNewHouseHoldResponse.data.createNewHouseHold;
-
-      const getHouseHoldResponse = await API.graphql(
-        graphqlOperation(
-          `query GetHouseHold($id: ID!) {
-            getHouseHold(id: $id) {
-              id
-              name
-            }
-          }`,
-          { id: newHouseHoldId }
-        ),
-        { Authorization: token }
-      );
-      const newHouseHold = getHouseHoldResponse.data.getHouseHold;
-
-      return newHouseHold;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  };
 
   function changeAdd() {
     setAdd(!add);
@@ -58,7 +22,16 @@ const AddHousehold = ({addNewHousehold, theme}) => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const newHouseHold = await createHouseHold(hhName);
+    const newHouseHoldId = await createHouseHold(hhName.current.value);
+    if (!newHouseHoldId || newHouseHoldId === "") {
+      return;
+    }
+
+    const newHouseHold = await fetchHouseHold(newHouseHoldId);
+    if (!newHouseHold) {
+      return;
+    }
+
     addNewHousehold(newHouseHold)
     setUserInput("");
   }
