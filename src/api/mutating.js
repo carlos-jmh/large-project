@@ -1,6 +1,6 @@
 import { API } from "aws-amplify";
 import { getCognitoToken } from "../components/AuthUser";
-import { addUserToHouseHold, removeUserFromHouseHold, updateHouseHoldMember } from "../graphql/mutations";
+import { addUserToHouseHold, removeUserFromHouseHold, updateHouseHoldMember, createNewHouseHold } from "../graphql/mutations";
 
 export const updateExistingItem = async (item) => {
   try {
@@ -121,6 +121,24 @@ export const createNewTask = async (
     );
 
     return newTask.data.createTask;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const createHouseHold = async (name) => {
+  try {
+    const newHouseHold = await API.graphql({
+      query: createNewHouseHold,
+      variables: {
+        houseHoldName: name
+      },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+      authToken: await getCognitoToken()
+    });
+
+    return newHouseHold.data.createNewHouseHold;
   } catch (error) {
     console.log(error);
     return null;

@@ -125,7 +125,7 @@ const Form = () => {
     if (tab === "l")
     {
       // Create objects.
-      const newList = await createList(title, desc, linkedTask, "ee1afec5-f8b1-4dd9-b907-fac07b638107");
+      console.log("Not implemented yet");
     }
       
     // Add event.
@@ -143,35 +143,6 @@ const Form = () => {
     {
       // Data: username to be added
     }
-  }
-
-  // Title, Description and LinkedTaskId not being passed correctly.
-  const createList = async (title, description, linkedTaskId, houseHoldId) => {
-      try {
-        const token = await getCognitoToken();
-
-        const newList = await API.graphql(
-          graphqlOperation(
-            `mutation MyMutation($completed: Boolean = false, $description: String = "", $houseHoldId: ID = "", $title: String = "") {
-              createList(input: {completed: $completed, houseHoldId: $houseHoldId, title: $title, description: $description}) {
-                id
-                title
-                houseHoldId
-                description
-                completed
-              }
-            }`,
-            { description: "description", houseHoldId: "ee1afec5-f8b1-4dd9-b907-fac07b638107", title: "Legos to buy" }
-          ),
-          { Authorization: `Banana ${token}` }
-        )
-
-        console.log("new list: ", newList.data.createList);
-        return newList.data.createList;
-      } catch (error) {
-        console.log(error);
-        return null;
-      }
   }
 
     return (

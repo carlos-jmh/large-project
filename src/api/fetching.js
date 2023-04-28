@@ -3,6 +3,7 @@ import { getCognitoToken } from "../components/AuthUser";
 import {
   eventHandlersByCalendarId,
   eventsByCalendarId,
+  getHouseHold,
   houseHoldMembersByHouseHoldId,
   itemsByListId,
   listHouseHoldMembers,
@@ -100,6 +101,40 @@ export const fetchHouseHolds = async () => {
   } catch (error) {
     console.log(error);
     return [];
+  }
+}
+
+export const fetchHouseHold = async (houseHoldId) => {
+  try {
+    const houseHold = await API.graphql({
+      query:
+        `query GetHouseHold($id: ID!) {
+          getHouseHold(id: $id) {
+            id
+            name
+            owners
+            calendarId
+            chatRoomId
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            houseHoldCalendarId
+            houseHoldChatRoomId
+          }
+        }`,
+      variables: {
+        id: houseHoldId
+      },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+      authToken: await getCognitoToken(),
+    });
+
+    return houseHold.data.getHouseHold;
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 }
 
