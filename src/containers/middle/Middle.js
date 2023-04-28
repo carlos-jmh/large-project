@@ -8,6 +8,7 @@ import Cal from '../../components/cal/Cal';
 import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList';
 import Upcoming from '../../components/usernav/Upcoming';
+import Dropdown from '../../components/dropdown/Dropdown';
 
 import {
   fetchItemsByListId,
@@ -235,6 +236,8 @@ const Middle = ({theme}) => {
           })}
         </div>
       </div>
+
+      <Dropdown/>
     </>
   );  
 } 
