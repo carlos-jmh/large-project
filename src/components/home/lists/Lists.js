@@ -3,22 +3,64 @@ import { ScrollView, Text, View } from "react-native";
 import HeaderBar from "../HeaderBar";
 import List from "./List";
 import Navbar from "../Navbar";
-import data from "../mockData";
 import { getStyles } from "../../styles";
-import { useState } from "react";
+import { useContext } from "react";
 import { useTheme } from "@react-navigation/native";
+import { useListsData } from '../../../api/hooks';
+import { HouseHoldContext } from "../../HouseHoldContext";
+import { fetchItemsByListId } from "../../../api/fetching";
+
+const processLists = async (lists) => {
+  const processedLists = await Promise.all(lists.map(async (list) => {
+    const listItems = await fetchItemsByListId(list.id);
+
+    return {
+      ...list,
+      listItems: listItems,
+    }
+  }));
+
+  return processedLists;
+};
 
 /* Lists page */
-export default function Tasks({ navigation, route }) {
+export default function Lists({ navigation, route }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  // Get actual tasks from the backend here
-  const [lists, setLists] = useState(data.lists);
+  const onItemCreated = (item, listIndex, setListData) => {
+    console.log("SUBSCRIPTION CREATE ITEM", item);
+    setListData((oldListData) => {
+      const newListData = [...oldListData];
+      newListData[listIndex].listItems.push(item);
+      return newListData;
+    });
+  };
+
+  const onItemUpdated = (item, listIndex, setListData) => {
+    console.log("SUBSCRIPTION UPDATE ITEM", item);
+    setListData((oldListData) => {
+      const newListData = [...oldListData];
+      const itemIndex = newListData[listIndex].listItems.findIndex(
+        (listItem) => listItem.id === item.id
+      );
+      newListData[listIndex].listItems[itemIndex] = item;
+      return newListData;
+    });
+  };
+
+  const { houseHold } = useContext(HouseHoldContext);
+
+  const [listData] = useListsData({
+    houseHoldId: houseHold.id,
+    processDataCallback: processLists,
+    onListItemCreated: onItemCreated,
+    onListItemUpdated: onItemUpdated,
+  });
 
   return (
     <View style={{ flex: 1 }}>
-      <HeaderBar title={route.params.household.name} screenName={route.name} />
+      <HeaderBar title={houseHold.name} screenName={route.name} />
       <ScrollView
         style={{
           marginHorizontal: 16,
@@ -27,14 +69,14 @@ export default function Tasks({ navigation, route }) {
         }}
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        {lists.map((list, i) => {
+        {listData.map((list, i) => {
           return <List list={list} key={list.id} />;
         })}
       </ScrollView>
       <Navbar
         screenName={route.name}
         navigation={navigation}
-        household={route.params.household}
+        household={houseHold}
       />
     </View>
   );
