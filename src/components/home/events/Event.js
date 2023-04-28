@@ -1,15 +1,21 @@
-import React from 'react';
+import React , {useState} from 'react';
 import { getStyles } from "../../styles";
 import { useTheme } from "@react-navigation/native";
 import { Pressable, View, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import EditEvent from './EditEvent';
 
 const Event = ({ event }) => {
     const { colors } = useTheme();
     const styles = getStyles(colors);
+    const [modalVisible, setModalVisible] = useState(false);
     const { title, date } = event;
 
+
+    const handleSave = (editedEvent) => {
+      // handle the save logic
+  }
   return (
     <Pressable
       style={{
@@ -21,8 +27,9 @@ const Event = ({ event }) => {
         flexDirection: "row",
       }}
       android_ripple={{ color: colors.highlight }}
+      onLongPress={() => setModalVisible(true)}
     >
-    <AntDesign name="infocirlceo" size={22} color={colors.background} style= {{margin:8}} />
+    <AntDesign name="infocirlceo" size={22} color={colors.text} style= {{margin:8}}  onPress={() => setModalVisible(true) }/>
       <View style={{display:'flex',justifyContent:'center',alignContent:'center'}}>
         <Text
           style={{
@@ -36,6 +43,7 @@ const Event = ({ event }) => {
         </Text>
         <EventInfo listTitle={"Task"} date={date} />
       </View>
+      <EditEvent event={event} visible={modalVisible} onClose={() => setModalVisible(false)} onSave={handleSave} />
     </Pressable>
   );
 };

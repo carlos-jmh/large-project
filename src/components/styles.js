@@ -184,5 +184,85 @@ export function getStyles(colors) {
       borderRadius: 8,
       borderWidth: 0,
     },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+      backgroundColor: '#fff',
+      borderRadius: 8,
+      padding: 16,
+      alignItems: 'center',
+      width: '80%',
+    },
+    modalTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 16,
+      textAlign: 'center',
+    },
+    modalTextInput: {
+      marginTop: 16,
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 4,
+      width: '100%',
+      fontSize: 16,
+      marginBottom: 16,
+    },
+    modalButtonsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      width: '100%',
+    },
+    modalButton: {
+      borderRadius: 8,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      marginHorizontal: 8,
+    },
+    modalButtonSave: {
+      backgroundColor: 'green',
+    },
+    modalButtonCancel: {
+      backgroundColor: 'red',
+    },
+    modalButtonText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    modalButtonTextSave: {},
+    modalButtonTextCancel: {},
+    dateInputContainer: {
+      marginTop: 10,
+      marginBottom: 20,
+      borderColor: 'gray',
+      borderWidth: 1,
+      borderRadius: 5,
+      padding: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    dateInput: {
+      flex: 1,
+      marginLeft: 10,
+    },
+    dateInputText: {
+      color: colors.text,
+      fontSize: 16,
+    },  
+    checkboxContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+    },                                                            
   });
+
 }
