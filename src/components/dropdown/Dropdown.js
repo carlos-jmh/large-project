@@ -1,13 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './dropdown.css';
 import * as Icon from 'react-bootstrap-icons';
 import { Auth as CognitoAuth } from 'aws-amplify';
-import { removeUser } from '../../api/mutating';
+import { editHouseHoldMember, removeUser } from '../../api/mutating';
 import { fetchHouseHoldMembers } from '../../api/fetching';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
 const Dropdown = () => {
 
+    const [houseHoldMember, setHouseHoldMember] = useState({});
+    const [nickname, setNickname] = useState("");
     const { houseHold } = useContext(HouseHoldContext);
 
     const signOutUser = async () => {
@@ -19,6 +21,31 @@ const Dropdown = () => {
         }
     }
     
+    // Load on first render.
+    useEffect(() => {        
+        async function loadHouseholdMembers() {
+            const members = await fetchHouseHoldMembers();
+
+            console.log(members);
+            console.log(houseHold.id);
+
+            const member = members.find(element => element.houseHoldId === houseHold.id);
+
+            if (!ignore) {
+                if (member !== undefined)
+                {
+                    setHouseHoldMember(member);
+                    setNickname(member.nickname);
+                }
+            }
+        }
+
+        let ignore = false;
+        loadHouseholdMembers();
+        return () => {
+            ignore = true;
+        };
+    }, [houseHold])
     // Function to edit a user's username.
     // Idea: Bring up popup to edit it? Or edit inhouse and change button to done?
     function editUsername() {
@@ -40,11 +67,15 @@ const Dropdown = () => {
     }
 
     // Function to update username.
-    function submitUsername() {
-        // Make API call to update. If this goes through submit.
-
-        // Remove editing status for paragraph.
+    const submitUsername = async () => {        
         let paragraph = document.getElementById('username');
+        
+        const member = houseHoldMember;
+
+        member.nickname = paragraph.textContent;
+
+        editHouseHoldMember(member);
+        
         paragraph.contentEditable = true;
         paragraph.style.border = "none";
 
@@ -61,20 +92,9 @@ const Dropdown = () => {
         
         // Check if user truly wants to leave. 
         if (window.confirm("Are you sure you want to leave the current household?"))
-        {            
-            console.log(houseHold.id);
-
-            // Fetch houseHoldMembers (check for matching houseHoldId)
-            const members = await fetchHouseHoldMembers();
-
-            console.log(members);
-            
-            const member = members.find(element => element.houseHoldId === houseHold.id);
-            
-            console.log(member);
-
+        {  
             // Remove: houseHoldId, houseHoldMemberId 
-            removeUser(houseHold.id, member.id);         
+            removeUser(houseHold.id, houseHoldMember.id);         
         }
     }
     
@@ -91,7 +111,7 @@ const Dropdown = () => {
                     <label htmlFor="username">HOUSEHOLD USERENAME</label>
                     <div className="child-group">
                         {/* Change to be household specific user information: should default to locally stored username */}
-                        <p id="username">{localStorage.getItem('CognitoIdentityServiceProvider.1ncc815mbno6k3oeg06ga39jbe.LastAuthUser')}</p>
+                        <p id="username">{nickname}</p>
                         <button id="edit-button" onClick={editUsername}><Icon.GearFill/></button>
                         <button id="done-button" onClick={submitUsername} style={{"display": "none"}}>done</button>
                     </div>
