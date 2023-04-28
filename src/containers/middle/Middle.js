@@ -41,21 +41,29 @@ const processLists = async (lists) => {
 };
 
 const Middle = ({theme}) => {
-  //THIS SORTS BOTH JSON FILES BEFORE THEY ARE LOADED IN
-  // taskData.sort((a,b) => {
-  //   return new Date(a.date) - new Date(b.date)
-  // })
-
-  // eventData.sort((a,b) => {
-  //   return new Date(a.date) - new Date(b.date)
-  // })
-
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [toDoList, setToDoList] = useState([]);
-  const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
 
   const { houseHold } = useContext(HouseHoldContext);
+
+  const [taskData, setTaskData] = useTasksData({
+    houseHoldId: houseHold.id,
+  });
+  
+  const [eventData, setEventData] = useEventData({
+    calendarId: houseHold.houseHoldCalendarId,
+  });
+
+  const [eventHandlerData, setEventHandlerData] = useEventHandlerData({
+    calendarId: houseHold.houseHoldCalendarId,
+  });
+
+  const taskDeleteHandler = (id, index) => {
+    let removed = taskData.filter((current) => current.id != id)
+    setTaskData(removed);
+    console.log(removed);
+  ;}
 
   const onListItemCreated = (item, index, setListData) => {
     console.log("SUBSCRIPTION CREATE ITEM", item);
@@ -100,18 +108,6 @@ const Middle = ({theme}) => {
     processDataCallback: processLists,
     onListItemCreated,
     onListItemUpdated,
-  });
-
-  const [taskData, setTaskData] = useTasksData({
-    houseHoldId: houseHold.id,
-  });
-  
-  const [eventData, setEventData] = useEventData({
-    calendarId: houseHold.houseHoldCalendarId,
-  });
-
-  const [eventHandlerData, setEventHandlerData] = useEventHandlerData({
-    calendarId: houseHold.houseHoldCalendarId,
   });
 
   /*
@@ -209,14 +205,14 @@ const Middle = ({theme}) => {
         <div className="section1">
             <h5 className="sectionHeader">Tasks</h5>
             <div>
-              <TaskList tasks={taskData} handleCheck={handleTaskCheck}/>
+              <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler}/>
               <Add addTask={addTask2} useState={false} name="Task" list={listData} theme={theme}/>
               <br/>
             </div>
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
-              <Events events = {[]} handleCheck={handleEventCheck}/>
+              <Events events = {[]} handleCheck={handleEventCheck} handleDelete={taskDeleteHandler}/>
               <Add addTask={addTask3} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>

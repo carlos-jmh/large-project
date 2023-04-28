@@ -22,6 +22,7 @@ const Sidebar = ({theme}) => {
 
   const updateHouseHold = (event, houseHold) => {
     event.preventDefault();
+    
     setHouseHold(houseHold);
   }
 
