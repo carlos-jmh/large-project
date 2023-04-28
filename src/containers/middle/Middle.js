@@ -179,6 +179,7 @@ const Middle = ({theme}) => {
   }
 
   return (
+    loaded ? 
     <>
     {/*
     - In upcoming view list both tasks and events together in one column going in chronological order.

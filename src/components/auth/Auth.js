@@ -56,12 +56,22 @@ function Auth(props) {
     }
   }
 
+  const forgotPassword = async() => {
+    try {
+      console.log(formInput.email);
+      //await CognitoAuth.forgotPassword(formInput.email);
+      //setAuthMode("signIn");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   if (authMode === "signIn") {
     return (
       <div className="signinContainer">
         <div className="form">
           <div className="form-content">
-            <h3 className="form-title">Sign In</h3>
+            <h3 className="form-title">Login</h3>
             <div className="text-center">
               Not registered yet?{" "}
               <span className="link-primary" onClick={() => setAuthMode("signUp")}>
@@ -94,7 +104,7 @@ function Auth(props) {
               </button>
             </div>
             <p className="text-center mt-2">
-              Forgot <a href="#">password?</a>
+              Forgot <a onClick={() => setAuthMode("forgotPassword")}>password?</a>
             </p>
           </div>
         </div>
@@ -111,7 +121,7 @@ function Auth(props) {
             <div className="text-center">
               Already registered?{" "}
               <span className="link-primary" onClick={() => setAuthMode("signIn")}>
-                Sign In
+                Login
               </span>
             </div>
             <div className="form-group mt-3">
@@ -150,8 +160,47 @@ function Auth(props) {
               </button>
             </div>
             <p className="text-center mt-2">
-              Forgot <a href="#">password?</a>
+              Forgot <a onClick={() => setAuthMode("forgotPassword")}>password?</a>
             </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (authMode === "forgotPassword") {
+    return (
+      <div className="forgotPasswordContainer">
+        <div className="form">
+          <div className="form-content">
+            <h3 className="form-title">Forgot Password</h3>
+            <div className="form-group mt-3">
+              <label>Email address</label>
+              <input
+                name="email"
+                type="email"
+                className="form-control mt-1"
+                placeholder="Email Address"
+                onChange={ onFormChange }
+              />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+              <button className="btn btn-primary" onClick={ forgotPassword }>
+                Submit
+              </button>
+            </div>
+            <div className="text-center">
+              Remember your password?{" "}
+              <span className="link-primary" onClick={() => setAuthMode("signIn")}>
+                Sign In
+              </span>
+            </div>
+            <div className="text-center">
+              Not yet registered?{" "}
+              <span className="link-primary" onClick={() => setAuthMode("signUp")}>
+                Sign Up
+              </span>
+            </div>
           </div>
         </div>
       </div>
