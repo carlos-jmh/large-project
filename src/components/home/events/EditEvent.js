@@ -131,6 +131,7 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
               value={endDate}
               mode="datetime"
               display="default"
+              minimumDate={startDate}
               onChange={(event, selectedDate) => {
                 const currentDate = selectedDate || endDate;
                 setShowDatePicker(Platform.OS === 'ios');
