@@ -103,7 +103,7 @@ const Add = ({addTask, name, list, theme}) => {
     e.preventDefault();
 
     // Pass correct values here. 
-    const newItem = await createNewItem(list.listId, title.current.value);
+    const newItem = await createNewItem(list.id, title.current.value);
   }
 
   const addtask = async(e) => {
@@ -248,7 +248,7 @@ const Add = ({addTask, name, list, theme}) => {
                 <select required id="listList" onChange={handleChange4} className="form-control childSelect" ref={listAttach}>
                   {/*pulling from JSON file data.json, needs to be connected to list database to retrieve list names*/}
                   { list.map(d => {
-                    return <option value={d.listId}>{d.listName}</option>
+                    return <option value={d.id}>{d.title}</option>
                   })}
                 </select>
                 <select id="taskType" className="form-control childSelect">
@@ -264,7 +264,7 @@ const Add = ({addTask, name, list, theme}) => {
                 <select required id="itemList" className="form-control childSelect" ref={itemAttach}>
                   { list.map(d => {
                     return d.listItems.map(item => {
-                      return <option value={item.task}>{item.task}</option>
+                      return <option value={item.title}>{item.title}</option>
                     })
                   })}
                 </select>
@@ -301,4 +301,4 @@ const Add = ({addTask, name, list, theme}) => {
   }
 }
 
-export default Add
+export default Add;

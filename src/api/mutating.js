@@ -1,6 +1,98 @@
 import { API } from "aws-amplify";
 import { getCognitoToken } from "../components/AuthUser";
-import { addUserToHouseHold, removeUserFromHouseHold, updateHouseHoldMember } from "../graphql/mutations";
+import { addUserToHouseHold, removeUserFromHouseHold, updateHouseHoldMember, createNewHouseHold, deleteTask } from "../graphql/mutations";
+
+export const createNewList = async (houseHoldId, title) => {
+  try {
+    const newList = await API.graphql({
+      query:
+        `mutation CreateList($completed: Boolean = false, $houseHoldId: ID!, $title: String!) {
+          createList(input: {completed: $completed, houseHoldId: $houseHoldId, title: $title}) {
+            _deleted
+            _lastChangedAt
+            _version
+            completed
+            createdAt
+            description
+            houseHoldId
+            id
+            taskId
+            title
+            updatedAt
+          }
+        }
+        `,
+      variables: {
+        houseHoldId: houseHoldId,
+        title: title
+      },
+      authMode: "LAMBDA"
+    },);
+    return newList.data.createList;
+  }
+  catch (error) {
+    console.log("ERROR creating list ", error);
+    return [];
+  }
+}
+
+export const deleteExistingList = async (listId) => {
+  try {
+    const deletedList = await API.graphql({
+      query: `mutation MyMutation($listId: String!) {
+        deleteListCustom(listId: $listId)
+      }`,
+      variables: {
+        listId: listId
+      },
+      authMode: "LAMBDA"
+    });
+
+    return deletedList.data.deleteListCustom;
+  } catch (error) {
+    console.log("ERROR deleting list ", error);
+    return [];
+  }
+}
+
+export const editExistingList = async (list) => {
+  try {
+    const updatedList = await API.graphql({
+      query: `mutation UpdateList($_version: Int = 0, $completed: Boolean = false, $description: String = "", $houseHoldId: ID = "", $id: ID = "", $listTaskId: ID = "", $taskId: ID = "", $title: String = "") {
+        updateList(input: {id: $id, title: $title, taskId: $taskId, listTaskId: $listTaskId, houseHoldId: $houseHoldId, description: $description, completed: $completed, _version: $_version}) {
+          _deleted
+          _lastChangedAt
+          _version
+          completed
+          createdAt
+          description
+          houseHoldId
+          id
+          listTaskId
+          taskId
+          title
+          updatedAt
+        }
+      }`,
+      variables: {
+        _version: list._version,
+        completed: list.completed,
+        description: list.description,
+        houseHoldId: list.houseHoldId,
+        id: list.id,
+        listTaskId: list.listTaskId,
+        taskId: list.taskId,
+        title: list.title
+      },
+      authMode: "LAMBDA"
+    });
+
+    return updatedList.data.updateList;
+  } catch (error) {
+    console.log("ERROR updating list ", error);
+    return null;
+  }
+}
 
 export const updateExistingItem = async (item) => {
   try {
@@ -122,7 +214,80 @@ export const createNewTask = async (
 
     return newTask.data.createTask;
   } catch (error) {
-    console.log(error);
+    console.log("ERROR creating task ", error);
+    return null;
+  }
+}
+// TODO: finish backend implementations for these functions
+// export const updateExistingTask = async (task) => {
+//   try {
+//     const updatedTask = await API.graphql(
+//       {
+//         query:
+//           `mutation UpdateTask($_version: Int!, $completed: Boolean = false, $id: ID!, $title: String!,  $foreverTask: Boolean = false,  $completeSourceOnComplete: Boolean = false,  $houseHoldId: String!) {
+//             updateTask(input: {($_version: Int!, $completed: Boolean!, $id: ID!, $title: String!,  $foreverTask: Boolean!,  $completeSourceOnComplete: Boolean!,  $houseHoldId: String!}) {
+//               id
+//               listId
+//               title
+//               completed
+//               _version
+//               _deleted
+//               _lastChangedAt
+//               createdAt
+//               description
+//               itemTaskId
+//               updatedAt
+//             }
+//           }`,
+//         variables: {
+//           _version: task._version,
+//           completed: task.complete,
+//           id: task.id,
+//           title: task.title,
+//           foreverTask: task.foreverTask
+//         },
+//         authMode: "LAMBDA"
+//       },
+//     );
+
+//     return updatedTask.data.updateTask;
+//   } catch (error) {
+//     console.log("ERROR updating task ", error)
+//     return [];
+//   }
+// }
+
+// export const deleteExistingTask = async (taskId) => {
+//   try {
+//     const deletedTask = await API.graphql({
+//       query: deleteTask,
+//       variables: {
+//         taskId: taskId
+//       },
+//       authMode: "LAMBDA"
+//     });
+
+//     return deletedTask.data.deleteTask;
+//   } catch (error) {
+//     console.log("ERROR deleting task ", error);
+//     return null;
+//   }
+// }
+
+export const createHouseHold = async (name) => {
+  try {
+    const newHouseHold = await API.graphql({
+      query: createNewHouseHold,
+      variables: {
+        houseHoldName: name
+      },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+      authToken: await getCognitoToken()
+    });
+
+    return newHouseHold.data.createNewHouseHold;
+  } catch (error) {
+    console.log("ERROR creating house hold ", error);
     return null;
   }
 }
@@ -160,7 +325,7 @@ export const editHouseHold = async (houseHold) => {
 
     return updatedHouseHold.data.updateHouseHold;
   } catch (error) {
-    console.log(error);
+    console.log("ERROR updating HouseHold ", error);
     return null;
   }
 }
@@ -178,7 +343,7 @@ export const addUser = async (houseHoldId, username) => {
 
     return addedUser.data.addUserToHouseHold;
   } catch (error) {
-    console.log(error);
+    console.log("ERROR adding user to house hold ", error);
     return null;
   }
 }
@@ -197,7 +362,7 @@ export const removeUser = async (houseHoldId, houseHoldMemberId) => {
 
     return removedUser.data.removeUserFromHouseHold;
   } catch (error) {
-    console.log(error);
+    console.log("ERROR removing user from house hold ", error);
     return null;
   }
 }
@@ -219,7 +384,7 @@ export const editHouseHoldMember = async (houseHoldMember) => {
 
     return editedHouseHoldMember.data.updateHouseHoldMember;
   } catch (error) {
-    console.log(error);
+    console.log("ERROR editing house hold member ", error);
     return null;
   }
 }

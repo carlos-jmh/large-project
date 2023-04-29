@@ -8,6 +8,7 @@ import Cal from '../../components/cal/Cal';
 import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList';
 import Upcoming from '../../components/usernav/Upcoming';
+import Dropdown from '../../components/dropdown/Dropdown';
 
 import {
   fetchItemsByListId,
@@ -15,25 +16,14 @@ import {
 import { updateExistingItem } from '../../api/mutating'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 import { useEventData, useEventHandlerData, useListsData, useTasksData } from '../../api/hooks'
+import { useEffect } from 'react'
 
 const processLists = async (lists) => {
   const processedLists = await Promise.all(lists.map(async (list) => {
     const listItems = await fetchItemsByListId(list.id);
-
-    const processedItems = listItems.map((item) => {
-      return {
-        id: item.id,
-        task: item.title,
-        complete: item.completed,
-        _version: item._version,
-      };
-    });
-
     return {
-      listId: list.id,
-      listName: list.title,
-      listItems: processedItems,
-      _version: list._version,
+      ...list,
+      listItems,
     };
   }));
 
@@ -227,14 +217,16 @@ const Middle = ({theme}) => {
             return (
               <div key = {index} className='list'>
                 <hr className="taskLine"></hr>
-                <List name={currList.listName} listItems={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
-                <Add addTask={addTask} useState={false} name={currList.listName} list={currList} theme={theme}/>
+                <List name={currList.title} listItems={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
+                <Add addTask={addTask} useState={false} name={currList.title} list={currList} theme={theme}/>
                 <br/>
               </div>
             )
           })}
         </div>
       </div>
+
+      <Dropdown/>
     </>
   );  
 } 

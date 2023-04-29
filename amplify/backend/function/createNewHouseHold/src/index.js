@@ -41,7 +41,7 @@ exports.handler = async (event) => {
 	const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 	// validate userProfileId
-	const userProfileId = await validateUserProfile(dynamoDb, ownerId);
+	const userProfile = await validateUserProfile(dynamoDb, ownerId);
 
 	// create new houseHoldmember
 	try {
@@ -52,8 +52,9 @@ exports.handler = async (event) => {
 					id: houseHoldMemberId,
 					points: 0,
 					owner: ownerId,
-					userProfileId: userProfileId,
+					userProfileId: userProfile.id,
 					houseHoldId: houseHoldId,
+					nickname: userProfile.preferredName,
 					
 					createdAt: createdAt,
 					updatedAt: createdAt,
@@ -163,5 +164,5 @@ async function validateUserProfile(dynamoDb, sub) {
 		throw new Error('Invalid userProfileId');
 	}
 
-	return userProfile.Items[0].id;
+	return userProfile.Items[0];
 }

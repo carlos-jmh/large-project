@@ -3,8 +3,7 @@ import Householdinfo from '../../components/householdinfo/Householdinfo'
 import './sidebar.css'
 import AddHousehold from '../../components/addHousehold/AddHousehold'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext'
-import { fetchHouseHoldMembersByHouseHoldId, fetchHouseHolds } from '../../api/fetching'
-import { addUser, removeUser } from '../../api/mutating'
+import { fetchHouseHolds } from '../../api/fetching'
 
 // Vertically list component of householdInfo
 const Sidebar = ({theme}) => {
@@ -31,12 +30,12 @@ const Sidebar = ({theme}) => {
       const houseHolds = await fetchHouseHolds();
       if (!ignore) setHouseHolds(houseHolds);
 
-      // ** EXAMPLE of fetching and editing a HouseHoldMember
+      // ** EXAMPLE of fetching all HouseHoldMembers for this User
       // const houseHoldMembers = await fetchHouseHoldMembers();
       // if (!ignore) setHouseHoldMembers(houseHoldMembers);
       // console.log("HOUSEHOLDER MEMBERS: ", houseHoldMembers);
 
-      // const chickenHouseHoldMember = houseHoldMembers.find((member) => member.houseHoldId === "39e8cb0c-fdb2-4cd2-8587-572ea02635cc");
+      // ** EXAMPLE of editing a HouseHoldMember
       // const copyChickenHouseHoldMember = {...chickenHouseHoldMember, nickname: "pepa pig"};
       // const editedChickenHouseHoldMember = await editHouseHoldMember(copyChickenHouseHoldMember);
       // console.log("EDITED CHICKEN HOUSEHOLD MEMBER: ", editedChickenHouseHoldMember);
