@@ -102,8 +102,15 @@ const Add = ({addTask, name, list, theme, setState}) => {
   const addItem = async(e) => {
     e.preventDefault();
 
+    document.getElementByClassName("addingTask").style.display = "none";
+
     // Pass correct values here. 
     const newItem = await createNewItem(list.id, title.current.value);
+
+    if (newItem !== null)
+    {
+
+    }
   }
   
   const handleNewList = async(e) => {
@@ -318,7 +325,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
       )
     } else {
       return (
-        <form onSubmit={handleSubmit} className="addingTask">
+        <form className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Item Name" ref={title}/>
           <hr></hr>
           <div className="buttons">
