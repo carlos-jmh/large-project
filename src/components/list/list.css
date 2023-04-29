@@ -24,7 +24,7 @@
     gap: .4rem;
 }
 
-#editList {
+.editList {
     position: relative;
     bottom: 3rem;
     border: solid;
@@ -34,7 +34,7 @@
     padding: .6rem;
 }
 
-#editList button {
+.editList button {
     color: white;
 }
 

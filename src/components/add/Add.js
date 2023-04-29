@@ -4,7 +4,7 @@ import * as Icon from 'react-bootstrap-icons'
 import { createNewItem, createNewList, createNewTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
-const Add = ({addTask, name, list, theme}) => {
+const Add = ({addTask, name, list, theme, setState}) => {
   // console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
@@ -106,11 +106,17 @@ const Add = ({addTask, name, list, theme}) => {
     const newItem = await createNewItem(list.id, title.current.value);
   }
   
-  const addList = async(e) => {
-    e.preventDefault();
+  const handleNewList = async(e) => {
+    // Refresh forced.
 
-    console.log(title.current.value);
-    // const newList = await createNewList(houseHold.id, title.current.value);
+    // Call that should create a new list.
+    const newList = await createNewList(houseHold.id, title.current.value);
+
+    if (newList !== null)
+    {
+      // Update setListsData
+      // setListsData(... newList);
+    }
   }
 
   const addtask = async(e) => {
@@ -302,7 +308,7 @@ const Add = ({addTask, name, list, theme}) => {
           <hr></hr>
           <div className="buttons">
             <button className="btn btn-danger" onClick={changeAdd}>close</button>
-            <button className="btn" id="purple" onClick={async (e) => await addList(e)}>add</button>
+            <button className="btn" id="purple" onClick={async (e) => await handleNewList(e)}>add</button>
           </div>
         </form>
       )

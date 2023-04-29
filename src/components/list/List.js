@@ -2,9 +2,10 @@ import React, {useState, useRef} from 'react'
 import ListItem from '../listItem/ListItem';
 import * as Icon from 'react-bootstrap-icons';
 import './list.css'
+import { deleteExistingList, editExistingList } from '../../api/mutating';
 
 
-const List = ({name, listItems, listIndex, handleToggle}) => {
+const List = ({list, name, listItems, listIndex, handleToggle}) => {
   const [open, setOpen] = useState(false);
   
   const newName = useRef('');
@@ -18,20 +19,37 @@ const List = ({name, listItems, listIndex, handleToggle}) => {
   function showList() {
 
     // Show edit form.
-    document.getElementById("editList").style.display = "block";
+    document.getElementById(list.id).style.display = "block";
   }
 
-  function deleteList() {
-    // Call API to delete list.
+  const deleteList = async(e) => {
+    console.log(list);
+    // Call API to delete list. Requires listId. 
+    
+    const deleteList = await deleteExistingList(list.id);
     // Refresh the page.
-    document.getElementById("editList").style.display = "none";
+    document.getElementById(list.id).style.display = "none";
   }
 
-  function doneList() {
+  const doneList = async(e) => {
+    e.preventDefault();
+
+    // Create new list object. 
+    let copyList = list;
+    copyList.title = newName.current.value;
+    console.log(copyList);
+
     // Call API to updateList
+    const updatedList = await editExistingList(copyList);
+
+    // Confirm no error. 
+    if (updatedList !== null)
+      console.log("success");
+    else
+      // something else?
 
     // After done, refresh page?, set display to none.
-    document.getElementById("editList").style.display = "none";
+    document.getElementById(list.id).style.display = "none";
   }
 
   return (
@@ -53,9 +71,9 @@ const List = ({name, listItems, listIndex, handleToggle}) => {
           </div>
 
           {/* Contain list name, available for edit, delete and done button */}
-          <div id="editList" style={{"display":"none"}}>
+          <div id={list.id} className="editList" style={{"display":"none"}}>
             <label htmlFor="listName">List Name:</label>
-            <input type="text" className="form-control" id="listName" placeHolder={name} ref={newName}></input>
+            <input type="text" className="form-control" id="listName" placeholder={name} ref={newName}></input>
 
             <div className="editListBut">
               <button onClick={deleteList}>Delete</button>
