@@ -127,7 +127,7 @@ export const updateExistingItem = async (item) => {
     return updatedItem.data.updateItem;
   } catch (error) {
     console.log("ERROR updating item ", error)
-    return [];
+    return null;
   }
 }
 
