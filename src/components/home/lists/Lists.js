@@ -4,7 +4,7 @@ import HeaderBar from "../HeaderBar";
 import List from "./List";
 import Navbar from "../Navbar";
 import { getStyles } from "../../styles";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useTheme } from "@react-navigation/native";
 import { useListsData } from '../../../api/hooks';
 import { HouseHoldContext } from "../../HouseHoldContext";
@@ -49,7 +49,7 @@ export default function Lists({ navigation, route }) {
     });
   };
 
-  const { houseHold } = useContext(HouseHoldContext);
+  const { houseHold, setHouseHold } = useContext(HouseHoldContext);
 
   const [listData] = useListsData({
     houseHoldId: houseHold.id,
@@ -58,6 +58,24 @@ export default function Lists({ navigation, route }) {
     onListItemUpdated: onItemUpdated,
   });
 
+
+  useEffect(() => {
+    if( listData && listData.length > 0) {
+      setHouseHold((oldHouseHold) => {
+        return {
+          ...oldHouseHold,
+          lists: listData,
+        }
+      })
+      console.log(houseHold);
+    }
+  }, [listData])
+
+
+  useEffect(() => {
+    console.log(houseHold)
+  }, [houseHold])
+  
   return (
     <View style={{ flex: 1 }}>
       <HeaderBar title={houseHold.name} screenName={route.name} />

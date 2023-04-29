@@ -5,10 +5,11 @@ import Navbar from "../Navbar";
 import { getStyles } from "../../styles";
 import { useTheme } from "@react-navigation/native";
 import MyCalendar from "./Calendar";
-import mockData from "../mockData";
 import Event from "./Event";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { HouseHoldContext } from "../../HouseHoldContext";
+import { useEventData } from '../../../api/hooks';
+import { Auth as CognitoAuth } from "aws-amplify";
 
 /* Events page */
 export default function Events({ navigation, route }) {
@@ -16,39 +17,39 @@ export default function Events({ navigation, route }) {
   const styles = getStyles(colors);
   const [events, setEvents] = useState();
   const [date, setDate] = useState(getTodaysDate());
+  const { houseHold, setHouseHold } = useContext(HouseHoldContext);
+
+
+  const [eventData] = useEventData({
+    calendarId: houseHold.calendarId,
+  })
   // Get actual eventHandlers from the backend here
-
-  const { houseHold } = useContext(HouseHoldContext);
-
-  function getEventsByDate(date) {
-    // First, filter the tasks to get all the tasks with events (i.e., tasks with an "eventHandlerId" property)
-    const tasksWithEvents = data.tasks.filter(task => task.eventHandlerId !== undefined);
-  
-    // Next, use the "reduce" method to group the events by date
-    const eventsByDate = tasksWithEvents.reduce((acc, task) => {
-      const eventHandler = data.eventHandlers.find(handler => handler.id === task.eventHandlerId);
-      if (eventHandler) {
-        const event = eventHandler.events.find(event => {
-          const eventDate = new Date(event.date).toISOString().slice(0,10);
-          return eventDate.startsWith(date);
-        });
-        if (event) {
-          if (!acc[date]) {
-            acc[date] = [];
-          }
-          acc[date].push({
-            title: eventHandler.title,
-            date: event.date,
-          });
+  useEffect(() => {
+    if( eventData && eventData.length > 0) {
+      setHouseHold((oldHouseHold) => {
+        return {
+          ...oldHouseHold,
+          events: eventData,
         }
+      })
+      console.log(houseHold);
+    }
+  }, [eventData])
+
+
+  useEffect(() => {
+    console.log("After clicking events",houseHold)
+    console.log("After clicking auth", CognitoAuth.currentSession())
+  }, [houseHold])
+
+  function getEventsByDate(today) {
+    const eventsToday = [];
+    for (const [key, value] of Object.entries(houseHold.events)) {
+      if (value.date === today) {
+        eventsToday.push(value);
       }
-      return acc;
-    }, {});
-  
-    // Finally, return the events for the given date (or an empty array if there are no events on that date)
-    setEvents(eventsByDate[date])
-    setDate(date)
-    return eventsByDate[date] || [];
+    }
+    return eventsToday;
   }
 
   function getTodaysDate(){
@@ -59,6 +60,7 @@ export default function Events({ navigation, route }) {
     
     return getYear +"-" + getMonth + "-" + getDay;    
   }
+
   function formatDate(date) {
     if (date) {
       let month = date.substring(5, 7);
@@ -70,6 +72,10 @@ export default function Events({ navigation, route }) {
     return undefined;
   }
   
+  const handleCalendarCallback = (date) => {
+    setDate(date);
+  };
+
   function getDaySuffix(day) {
     if (day >= 11 && day <= 13) {
       return "th";
@@ -91,7 +97,7 @@ export default function Events({ navigation, route }) {
       <HeaderBar title={houseHold.name} screenName={route.name} />
       <View style={{ flex: 1}}>
         <View style= {{margin:20, borderRadius:20}}>
-          <MyCalendar getEventsByDate={getEventsByDate}/>
+          <MyCalendar events = {houseHold.events} callBack = {handleCalendarCallback}/>
         </View>
         <Text style = {[styles.text, {fontSize:25}]}>Events on {formatDate(date)}</Text>
         <ScrollView>

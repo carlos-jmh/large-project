@@ -1,11 +1,13 @@
 
-import React, { useState } from "react"
+import React, { useState , useContext} from "react"
 
 import { Auth as CognitoAuth } from 'aws-amplify';
+import { UserContext } from './UserContext';
 
 function Auth(props) {
   const [authMode, setAuthMode] = useState("signIn");
   const [formInput, setFormInput] = useState({ username: '', password: '', email: '', verificationCode: '' })
+  const {user, setUser} = useContext(UserContext);
 
   const onFormChange = (event) => {
     setFormInput({ ...formInput, [event.target.name]: event.target.value });
@@ -32,8 +34,9 @@ function Auth(props) {
     try {
       console.log("signing in!");
       await CognitoAuth.signIn(formInput.username, formInput.password);
+      const user = await CognitoAuth.currentAuthenticatedUser();
       console.log("signed in!");
-
+      setUser(user)
       console.log(formInput);
     
       setAuthMode("signedIn");
