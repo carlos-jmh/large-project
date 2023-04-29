@@ -104,6 +104,8 @@ const Add = ({addTask, name, list, theme, setState}) => {
 
     document.getElementByClassName("addingTask").style.display = "none";
 
+    console.log(title.current.value);
+
     // Pass correct values here. 
     const newItem = await createNewItem(list.id, title.current.value);
 
@@ -131,7 +133,9 @@ const Add = ({addTask, name, list, theme, setState}) => {
   }
 
   const addtask = async(e) => {
-    console.log("creating new Task!");
+    e.preventDefaul();
+    alert("creating new Task!");
+    alert(title.current.value);
 
     // TODO (carlos): Implement Linking between Task and EventHandler
     // if start/endDate + recurrence (recurrence = ONCE)
@@ -229,7 +233,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
       )
     } else if (name === "Task") {
       return (
-        <form onSubmit={handleSubmit} className="addingTask">
+        <form className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Task Name" ref={title}/>
           
           {/* Start and End Date Required */}
