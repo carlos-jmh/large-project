@@ -16,7 +16,6 @@ import {
 import { updateExistingItem, createNewList } from '../../api/mutating'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 import { useEventData, useEventHandlerData, useListsData, useTasksData } from '../../api/hooks'
-import { useEffect } from 'react'
 
 const processLists = async (lists) => {
   const processedLists = await Promise.all(lists.map(async (list) => {
