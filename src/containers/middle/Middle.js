@@ -225,8 +225,6 @@ const Middle = ({theme}) => {
           })}
         </div>
       </div>
-
-      <Dropdown/>
     </>
   );  
 } 

@@ -4,6 +4,7 @@ import './sidebar.css'
 import AddHousehold from '../../components/addHousehold/AddHousehold'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext'
 import { fetchHouseHolds } from '../../api/fetching'
+import Dropdown from '../../components/dropdown/Dropdown'
 
 // Vertically list component of householdInfo
 const Sidebar = ({theme}) => {
@@ -86,9 +87,11 @@ const Sidebar = ({theme}) => {
           <AddHousehold addNewHousehold={addNewHousehold} theme={theme}/>
         </div>
 
+
         <div id = "joinHousehold">
           
         </div>
+        <Dropdown setHouseHolds={setHouseHolds}/>
     </div>
   );
 }
