@@ -388,3 +388,165 @@ export const editHouseHoldMember = async (houseHoldMember) => {
     return null;
   }
 }
+
+// EventHandler
+
+export const generateEventHandler = async (
+  calendarId,
+  taskId,
+  frequency,
+  sourceDate,
+  endDate,
+  eventType
+) => {
+  try {
+    const newEventHandler = await API.graphql(
+      {
+        query: createEventHandler,
+        variables: {
+          calendarId,
+          taskId,
+          frequency,
+          sourceDate,
+          endDate,
+          eventType,
+        },
+        authMode: "LAMBDA"
+      }
+    );
+
+    return newEventHandler.data.createEventHandler;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const editEventHandler = async (
+  eventHandlerId,
+  calendarId,
+  taskId,
+  frequency,
+  sourceDate,
+  endDate,
+  eventType
+) => {
+  try {
+    const updatedEventHandler = await API.graphql(
+      {
+        query: updateEventHandler,
+        variables: {
+          eventHandlerId,
+          calendarId,
+          taskId,
+          frequency,
+          sourceDate,
+          endDate,
+          eventType,
+        },
+        authMode: "LAMBDA"
+      }
+    );
+
+    return updatedEventHandler.data.updateEventHandler;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const removeEventHandler = async (
+  eventHandlerId,
+) => {
+  try {
+    const deletedEventHandler = await API.graphql(
+      {
+        query: deleteEventHandler,
+        variables: {
+          eventHandlerId,
+        },
+        authMode: "LAMBDA"
+      }
+    );
+
+    return deletedEventHandler.data.deleteEventHandler;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+// Event
+
+export const editEvent = async (
+  eventId,
+  eventHandlerId,
+  calendarId,
+  completed,
+  date,
+  eventType,
+  prevEventId,
+  nextEventId,
+  _version
+) => {
+  try {
+    const updatedEvent = await API.graphql(
+      {
+        query:
+        `mutation UpdateEvent($id: ID!, $eventHandlerId: ID!, $calendarId: ID!, $completed: Boolean!, $date: AWSDateTime!, $eventType: EVENTTYPE!, $prevEventId: ID!, $nextEventId: ID!, $_version: Int!) {
+          updateEvent(input: {id: $id, eventHandlerId: $eventHandlerId, calendarId: $calendarId, completed: $completed, date: $date, eventType: $eventType, prevEventId: $prevEventId, nextEventId: $nextEventId, _version: $_version}) {
+            id
+            date
+            eventType
+            completed
+            prevEventId
+            nextEventId
+            eventHandlerId
+            calendarId
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+        }`,
+        variables: {
+          id: eventId,
+          eventHandlerId,
+          calendarId,
+          completed,
+          date,
+          eventType,
+          prevEventId,
+          nextEventId,
+          _version
+        },
+        authMode: "LAMBDA"
+      }
+    );
+
+    return updatedEvent.data.updateEvent;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const removeEvent = async (eventId) => {
+  try {
+    const deletedEvent = await API.graphql(
+      {
+        query: deleteEvent,
+        variables: {
+          eventId: eventId,
+        },
+        authMode: "LAMBDA"
+      }
+    );
+
+    return deletedEvent.data.deleteEvent;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
