@@ -4,6 +4,7 @@ import * as Icon from 'react-bootstrap-icons';
 const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
   
   const [shown, setShown] = useState(false);
+  const [active, setActive] = useState(false);
 
 
   const handleClick = (e) => {
@@ -13,9 +14,11 @@ const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
   }
 
   const editListItem = async () => {
+    setActive(true);
     let p = document.getElementById(item.title);
     console.log(p);
-    p.contentEditable = true;
+    p.contentEditable = !p.contentEditable;
+    setActive(false);
   }
 
    return (
@@ -23,7 +26,7 @@ const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
       className={item.completed ? "todo strike" : "todo"}
       onMouseEnter={() => setShown(true)}
       onMouseLeave={() => setShown(false)}>
-        <p id={item.title} onClick={handleClick}>{item.title}</p>
+        <p id={item.title} onClick={!active ? handleClick : () => {}}>{item.title}</p>
         { shown && (<Icon.ThreeDots className="threedots" onClick={editListItem}/>) }
         
       </div>

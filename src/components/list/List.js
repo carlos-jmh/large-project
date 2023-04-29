@@ -62,9 +62,8 @@ const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
       {
         setState(prevState => {
           const newListData = [...prevState];
-          let newListy = newListData.filter(element => element.id !== list.id);
-          newListy = [...newListy, {...updatedList, listItems: []}]
-          return newListy;
+          newListData.find(element => element.id === list.id).title = newName.current.value;
+          return newListData;
         })
       }
     }
@@ -96,7 +95,7 @@ const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
           {/* Contain list name, available for edit, delete and done button */}
           <div id={list.id} className="editList" style={{"display":"none"}}>
             <label htmlFor="listName">List Name:</label>
-            <input type="text" className="form-control" id="listName" value={name} placeholder={name} ref={newName}></input>
+            <input type="text" className="form-control" id="listName" placeholder={name} ref={newName}></input>
             <div className="editListBut">
               <button onClick={deleteList}>Delete</button>
               <button onClick={doneList}>Done</button>
