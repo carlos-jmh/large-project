@@ -1,7 +1,7 @@
 import React, {useRef, useState, useEffect, useContext } from 'react'
 import './add.css'
 import * as Icon from 'react-bootstrap-icons'
-import { createNewItem, createNewTask } from '../../api/mutating';
+import { createNewItem, createNewList, createNewTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
 const Add = ({addTask, name, list, theme}) => {
@@ -104,6 +104,13 @@ const Add = ({addTask, name, list, theme}) => {
 
     // Pass correct values here. 
     const newItem = await createNewItem(list.id, title.current.value);
+  }
+  
+  const addList = async(e) => {
+    e.preventDefault();
+
+    console.log(title.current.value);
+    // const newList = await createNewList(houseHold.id, title.current.value);
   }
 
   const addtask = async(e) => {
@@ -288,7 +295,18 @@ const Add = ({addTask, name, list, theme}) => {
         </form>
       )
     }
-    else {
+    else if (name === "List") {
+      return (
+        <form onSubmit={handleSubmit} className="addingTask">
+          <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="List Name" ref={title}/>
+          <hr></hr>
+          <div className="buttons">
+            <button className="btn btn-danger" onClick={changeAdd}>close</button>
+            <button className="btn" id="purple" onClick={async (e) => await addList(e)}>add</button>
+          </div>
+        </form>
+      )
+    } else {
       return (
         <form onSubmit={handleSubmit} className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Item Name" ref={title}/>

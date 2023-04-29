@@ -13,7 +13,7 @@ import Dropdown from '../../components/dropdown/Dropdown';
 import {
   fetchItemsByListId,
 } from '../../api/fetching';
-import { updateExistingItem } from '../../api/mutating'
+import { updateExistingItem, createNewList } from '../../api/mutating'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 import { useEventData, useEventHandlerData, useListsData, useTasksData } from '../../api/hooks'
 import { useEffect } from 'react'
@@ -223,6 +223,8 @@ const Middle = ({theme}) => {
               </div>
             )
           })}
+          <hr className="taskLine"></hr>
+          <Add useState={false} name={"List"} theme={theme}/>
         </div>
       </div>
 
