@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import * as Icon from 'react-bootstrap-icons';
+import './ListItem.css';
+import { updateExistingItem } from '../../api/mutating';
  
 const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
   
@@ -14,22 +16,46 @@ const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
   }
 
   const editListItem = async () => {
-    setActive(true);
-    let p = document.getElementById(item.title);
-    console.log(p);
-    p.contentEditable = !p.contentEditable;
+    setActive(true);    
+  }
+
+  const doneListItem = (e) => {
+    e.preventDefault();
+    item.title = document.getElementsByClassName('editableP')[0].textContent;
+    setActive(false);
+    handleToggle(item, listIndex, itemIndex);
+  }
+
+  // Not functional yet.
+  const deleteListItem = (e) => {
+    e.preventDefault();
     setActive(false);
   }
 
-   return (
-      <div id={item.id} value={item.id}  
-      className={item.completed ? "todo strike" : "todo"}
-      onMouseEnter={() => setShown(true)}
-      onMouseLeave={() => setShown(false)}>
-        <p id={item.title} onClick={!active ? handleClick : () => {}}>{item.title}</p>
-        { shown && (<Icon.ThreeDots className="threedots" onClick={editListItem}/>) }
-        
-      </div>
+   return ( 
+    <>
+    {
+      !active ? 
+      (<div id={item.id} value={item.id}  
+        className={item.completed ? "todo strike" : "todo"}
+        onMouseEnter={() => setShown(true)}
+        onMouseLeave={() => setShown(false)}>
+          <p id={item.title} onClick={!active ? handleClick : () => {}}>{item.title}</p>
+          { shown && (<Icon.ThreeDots className="threedots" onClick={editListItem}/>) }
+          </div>
+      )
+      :
+      (
+        <div className="todo">
+          <p contentEditable="true" className="editableP">{item.title}</p>
+          <div>
+            <button style={{"color": "white"}} onClick={deleteListItem}>delete</button>
+            <button style={{"color": "white"}} onClick={doneListItem}>done</button>
+          </div>
+        </div>
+      )
+    }
+    </>
    );
 };
 

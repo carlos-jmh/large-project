@@ -1,0 +1,6 @@
+.editableP {
+    border: solid;
+    border-width: 1px;
+    border-radius: .2rem;
+    padding: .3rem;
+}
