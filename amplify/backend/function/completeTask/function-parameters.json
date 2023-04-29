@@ -1,7 +1,23 @@
 {
   "permissions": {
+    "function": {
+      "completeEvent": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
     "storage": {
       "Task:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "EventHandler:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "Event:@model(appsync)": [
         "read",
         "update"
       ],

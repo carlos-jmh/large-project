@@ -108,9 +108,30 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "completeEvent": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "householdapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "completeTask": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "completeEvent"
+        },
         {
           "attributes": [
             "GraphQLAPIIdOutput"
@@ -326,6 +347,22 @@
         {
           "category": "function",
           "resourceName": "addUserToHouseHold"
+        }
+      ]
+    },
+    "AMPLIFY_function_completeEvent_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "completeEvent"
+        }
+      ]
+    },
+    "AMPLIFY_function_completeEvent_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "completeEvent"
         }
       ]
     },

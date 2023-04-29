@@ -17,7 +17,7 @@ const lambda = new AWS.Lambda({
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  const { eventHandlerId, calendarId, taskId, frequency, sourceDate, endDate } = event.arguments;
+  const { eventHandlerId, calendarId, taskId, frequency, sourceDate, endDate, title } = event.arguments;
   const dynamoDb = new AWS.DynamoDB.DocumentClient();
   let updatedEventHandlerId;
 

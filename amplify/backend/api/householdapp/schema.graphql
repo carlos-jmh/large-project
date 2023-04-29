@@ -31,7 +31,7 @@ type ChatRoom
 
 type Task 
   @model (
-    mutations: { create: "createTask", delete: null, update: null },
+    mutations: { create: "createTask", delete: null, update: "updateTask" },
   )
   @auth(rules: [
   { allow: custom },
@@ -98,6 +98,7 @@ type EventHandler
   ])
 {
   id: ID!
+  title: String!
   frequency: String!
   calendarId: ID! @index(name: "byCalendar")
   Calendar: Calendar @belongsTo(fields: ["calendarId"])
@@ -121,7 +122,7 @@ type Event
   id: ID!
   date: AWSDateTime!
   eventType: EVENTTYPE!
-  completed: Boolean!
+  completed: Boolean
   prevEventId: ID
   nextEventId: ID
   eventHandlerId: ID! @index(name: "byEventHandler", sortKeyFields: ["id"])
@@ -222,8 +223,8 @@ type Mutation {
   createNewHouseHold(houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
   addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): AddUserToHouseHoldResponse @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: custom }])
   removeUserFromHouseHold(houseHoldId: String!, houseHoldMemberId: String!): String @function(name: "removeUserFromHouseHold-${env}") @auth(rules: [{ allow: custom }])
-  createEventHandler(calendarId: String!, taskId: String, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!, eventType: EVENTTYPE!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
-  updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!, eventType: EVENTTYPE!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
+  createEventHandler(calendarId: String!, taskId: String, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!, eventType: EVENTTYPE!, title: String!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
+  updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!, eventType: EVENTTYPE!, title: String!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
   deleteTask(taskId: String!): String @function(name: "deleteTask-${env}") @auth(rules: [{ allow: custom }])
   deleteEvent(eventId: String!): String @function(name: "deleteEvent-${env}") @auth(rules: [{ allow: custom }])
