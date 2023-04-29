@@ -1,12 +1,6 @@
 type Message
-  @model(
-    mutations: { create: null, delete: null, update: null },
-  )
-  @auth(rules: [
-    { allow: custom },
-    { allow: private, provider: iam },
-  ])
-{
+  @model(mutations: { create: null, delete: null, update: null })
+  @auth(rules: [{ allow: custom }, { allow: private, provider: iam }]) {
   id: ID!
   message: String!
   authorHouseHoldMemberId: String!
@@ -15,29 +9,19 @@ type Message
 }
 
 type ChatRoom
-  @model(
-    mutations: { create: null, delete: null, update: null },
-  )
-  @auth(rules: [
-    { allow: custom},
-    { allow: private, provider: iam },
-  ])
-{
+  @model(mutations: { create: null, delete: null, update: null })
+  @auth(rules: [{ allow: custom }, { allow: private, provider: iam }]) {
   id: ID!
   Messages: [Message] @hasMany(indexName: "byChatRoom", fields: ["id"])
   houseHoldId: ID!
   HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
 }
 
-type Task 
-  @model (
-    mutations: { create: "createTask", delete: null, update: "updateTask" },
+type Task
+  @model(
+    mutations: { create: "createTask", delete: null, update: "updateTask" }
   )
-  @auth(rules: [
-  { allow: custom },
-  { allow: private, provider: iam },
-  ]) 
-{
+  @auth(rules: [{ allow: custom }, { allow: private, provider: iam }]) {
   id: ID!
   title: String!
   houseHoldId: ID! @index(name: "byHouseHold")
@@ -55,29 +39,38 @@ type Task
 }
 
 type UserProfile
-  @model(
-    mutations: { create: null, delete: null },
-  )
-  @auth(rules: [
-    { allow: owner, ownerField: "owner" operations: [read] },
-    { allow: private, provider: iam },
-  ])
-{
+  @model(mutations: { create: null, delete: null })
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "owner", operations: [read] }
+      { allow: private, provider: iam }
+    ]
+  ) {
   id: ID!
-  owner: String! @index(name: "byOwner", queryField: "userProfileByOwner", sortKeyFields: ["id"])
-  preferredName: String @auth(rules: [{ allow: owner, ownerField: "owner", operations: [read, update] }])
-  HouseHoldMembers: [HouseHoldMember] @hasMany(indexName: "byUserProfile", fields: ["id"])
+  owner: String!
+    @index(
+      name: "byOwner"
+      queryField: "userProfileByOwner"
+      sortKeyFields: ["id"]
+    )
+  preferredName: String
+    @auth(
+      rules: [{ allow: owner, ownerField: "owner", operations: [read, update] }]
+    )
+  HouseHoldMembers: [HouseHoldMember]
+    @hasMany(indexName: "byUserProfile", fields: ["id"])
 }
 
 type HouseHoldMember
   @model(
-    mutations: { create: null, update: "updateHouseHoldMember", delete: null },
+    mutations: { create: null, update: "updateHouseHoldMember", delete: null }
   )
-  @auth(rules: [
-    { allow: owner, ownerField: "owner", operations: [read, update] },
-    { allow: private, provider: iam },
-  ])
-{
+  @auth(
+    rules: [
+      { allow: owner, ownerField: "owner", operations: [read, update] }
+      { allow: private, provider: iam }
+    ]
+  ) {
   id: ID!
   points: Int
   owner: String!
@@ -89,14 +82,8 @@ type HouseHoldMember
 }
 
 type EventHandler
-  @model(
-    mutations: { create: null, update: null, delete: null },
-  )
-  @auth(rules: [
-    { allow: custom },
-    { allow: private, provider: iam },
-  ])
-{
+  @model(mutations: { create: null, update: null, delete: null })
+  @auth(rules: [{ allow: custom }, { allow: private, provider: iam }]) {
   id: ID!
   title: String!
   frequency: String!
@@ -111,14 +98,8 @@ type EventHandler
 }
 
 type Event
-  @model(
-    mutations: { create: null, delete: null, update: "updateEvent" },
-  )
-  @auth(rules: [
-    { allow: custom },
-    { allow: private, provider: iam },
-  ])
-{
+  @model(mutations: { create: null, delete: null, update: "updateEvent" })
+  @auth(rules: [{ allow: custom }, { allow: private, provider: iam }]) {
   id: ID!
   date: AWSDateTime!
   eventType: EVENTTYPE!
@@ -132,47 +113,40 @@ type Event
 }
 
 type Calendar
-  @model(
-    mutations: { create: null, delete: null, update: "updateCalendar" },
-  )
-  @auth(rules: [
-    { allow: custom },
-    { allow: private, provider: iam },
-  ])
-{
+  @model(mutations: { create: null, delete: null, update: "updateCalendar" })
+  @auth(rules: [{ allow: custom }, { allow: private, provider: iam }]) {
   id: ID!
   Events: [Event] @hasMany(indexName: "byCalendar", fields: ["id"])
-  EventHandlers: [EventHandler] @hasMany(indexName: "byCalendar", fields: ["id"])
+  EventHandlers: [EventHandler]
+    @hasMany(indexName: "byCalendar", fields: ["id"])
   houseHoldId: ID!
   HouseHold: HouseHold @belongsTo(fields: ["houseHoldId"])
 }
 
 type HouseHold
-  @model(
-    mutations: { create: null, delete: null, update: "updateHouseHold" },
-  )
+  @model(mutations: { create: null, delete: null, update: "updateHouseHold" })
   @auth(
     rules: [
-      { allow: owner, ownerField: "owners", operations: [read, update] },
-      { allow: private, provider: iam },
-  ])
-{
+      { allow: owner, ownerField: "owners", operations: [read, update] }
+      { allow: private, provider: iam }
+    ]
+  ) {
   id: ID!
   name: String!
   owners: [String!]!
   Lists: [List] @hasMany(indexName: "byHouseHold", fields: ["id"])
   Tasks: [Task] @hasMany(indexName: "byHouseHold", fields: ["id"])
-  HouseHoldMembers: [HouseHoldMember] @hasMany(indexName: "byHouseHold", fields: ["id"])
+  HouseHoldMembers: [HouseHoldMember]
+    @hasMany(indexName: "byHouseHold", fields: ["id"])
   calendarId: ID!
   Calendar: Calendar @hasOne
   chatRoomId: ID!
   ChatRoom: ChatRoom @hasOne
 }
 
-type Item @model @auth(rules: [
-  { allow: custom },
-  { allow: private, provider: iam },
-]) {
+type Item
+  @model
+  @auth(rules: [{ allow: custom }, { allow: private, provider: iam }]) {
   id: ID!
   title: String!
   description: String
@@ -185,11 +159,9 @@ type Item @model @auth(rules: [
 
 type List
   @model(
-    mutations: { create: "createList", delete: null, update: "updateList" },
+    mutations: { create: "createList", delete: null, update: "updateList" }
   )
-  @auth(rules: [
-  { allow: custom },{ allow: private, provider: iam }
-]) {
+  @auth(rules: [{ allow: custom }, { allow: private, provider: iam }]) {
   id: ID!
   title: String!
   description: String
@@ -220,17 +192,62 @@ type AddUserToHouseHoldResponse {
 }
 
 type Mutation {
-  createNewHouseHold(houseHoldName: String!): String @function(name: "createNewHouseHold-${env}") @auth(rules: [{ allow: private }])
-  addUserToHouseHold(cognitoUsername: String!, houseHoldId: String!): AddUserToHouseHoldResponse @function(name: "addUserToHouseHold-${env}") @auth(rules: [{ allow: custom }])
-  removeUserFromHouseHold(houseHoldId: String!, houseHoldMemberId: String!): String @function(name: "removeUserFromHouseHold-${env}") @auth(rules: [{ allow: custom }])
-  createEventHandler(calendarId: String!, taskId: String, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!, eventType: EVENTTYPE!, title: String!): String @function(name: "createEventHandler-${env}") @auth(rules: [{ allow: custom }])
-  updateEventHandler(eventHandlerId: String!, calendarId: String!, taskId: String, frequency: FREQUENCY!, sourceDate: AWSDateTime!, endDate: AWSDateTime!, eventType: EVENTTYPE!, title: String!): String @function(name: "updateEventHandler-${env}") @auth(rules: [{ allow: custom }])
-  deleteEventHandler(eventHandlerId: String!): String @function(name: "deleteEventHandler-${env}") @auth(rules: [{ allow: custom }])
-  deleteTask(taskId: String!): String @function(name: "deleteTask-${env}") @auth(rules: [{ allow: custom }])
-  deleteEvent(eventId: String!): String @function(name: "deleteEvent-${env}") @auth(rules: [{ allow: custom }])
-  deleteListCustom(listId: String!): String @function(name: "deleteListCustom-${env}") @auth(rules: [{ allow: custom }])
-  addMessageToChatRoom(message: String!, chatRoomId: String!) : String @function(name: "addMessageToChatRoom-${env}") @auth(rules: [{allow: custom}])
-  completeTask(taskId: String!) : String @function(name: "completeTask-${env}") @auth(rules: [{allow: custom}])
+  createNewHouseHold(houseHoldName: String!): String
+    @function(name: "createNewHouseHold-${env}")
+    @auth(rules: [{ allow: private }])
+  addUserToHouseHold(
+    cognitoUsername: String!
+    houseHoldId: String!
+  ): AddUserToHouseHoldResponse
+    @function(name: "addUserToHouseHold-${env}")
+    @auth(rules: [{ allow: custom }])
+  removeUserFromHouseHold(
+    houseHoldId: String!
+    houseHoldMemberId: String!
+  ): String
+    @function(name: "removeUserFromHouseHold-${env}")
+    @auth(rules: [{ allow: custom }])
+  createEventHandler(
+    calendarId: String!
+    taskId: String
+    frequency: FREQUENCY!
+    sourceDate: AWSDateTime!
+    endDate: AWSDateTime!
+    eventType: EVENTTYPE!
+    title: String!
+  ): String
+    @function(name: "createEventHandler-${env}")
+    @auth(rules: [{ allow: custom }])
+  updateEventHandler(
+    eventHandlerId: String!
+    calendarId: String!
+    taskId: String
+    frequency: FREQUENCY!
+    sourceDate: AWSDateTime!
+    endDate: AWSDateTime!
+    eventType: EVENTTYPE!
+    title: String!
+  ): String
+    @function(name: "updateEventHandler-${env}")
+    @auth(rules: [{ allow: custom }])
+  deleteEventHandler(eventHandlerId: String!): String
+    @function(name: "deleteEventHandler-${env}")
+    @auth(rules: [{ allow: custom }])
+  deleteTask(taskId: String!): String
+    @function(name: "deleteTask-${env}")
+    @auth(rules: [{ allow: custom }])
+  deleteEvent(eventId: String!): String
+    @function(name: "deleteEvent-${env}")
+    @auth(rules: [{ allow: custom }])
+  deleteListCustom(listId: String!): String
+    @function(name: "deleteListCustom-${env}")
+    @auth(rules: [{ allow: custom }])
+  addMessageToChatRoom(message: String!, chatRoomId: String!): String
+    @function(name: "addMessageToChatRoom-${env}")
+    @auth(rules: [{ allow: custom }])
+  completeTask(taskId: String!): String
+    @function(name: "completeTask-${env}")
+    @auth(rules: [{ allow: custom }])
 }
 
 type Subscription {
@@ -247,16 +264,15 @@ type Subscription {
 
 # enum for frequency of Events
 enum FREQUENCY {
-  ONCE,
-  DAILY,
-  WEEKLY,
-  MONTHLY,
+  ONCE
+  DAILY
+  WEEKLY
+  MONTHLY
   YEARLY
 }
 
 # enum for type of Event
 enum EVENTTYPE {
-  EVENT,
+  EVENT
   TASK
 }
-             
