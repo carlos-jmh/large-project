@@ -5,7 +5,7 @@ import './list.css'
 import { deleteExistingList, editExistingList } from '../../api/mutating';
 
 
-const List = ({list, name, listItems, listIndex, handleToggle}) => {
+const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
   const [open, setOpen] = useState(false);
   
   const newName = useRef('');
@@ -26,30 +26,47 @@ const List = ({list, name, listItems, listIndex, handleToggle}) => {
     console.log(list);
     // Call API to delete list. Requires listId. 
     
-    const deleteList = await deleteExistingList(list.id);
     // Refresh the page.
     document.getElementById(list.id).style.display = "none";
+
+    const deleteList = await deleteExistingList(list.id);
+
+    if (deleteList !== null)
+    {
+      setState(prevState => {
+        const newListData = [...prevState];
+        const newListy = newListData.filter(element => element.id !== list.id);
+        return newListy;
+      });
+    }
+    
   }
 
   const doneList = async(e) => {
-    e.preventDefault();
 
     // Create new list object. 
     let copyList = list;
     copyList.title = newName.current.value;
     console.log(copyList);
 
+    document.getElementById(list.id).style.display = "none";
+
     // Call API to updateList
     const updatedList = await editExistingList(copyList);
 
     // Confirm no error. 
     if (updatedList !== null)
-      console.log("success");
-    else
-      // something else?
+    {
+      setState(prevState => {
+        const newListData = [...prevState];
+        let newListy = newListData.filter(element => element.id !== list.id);
+        newListy = [...newListy, {...updatedList, listItems: []}]
+        return newListy;
+      })
+    }
 
     // After done, refresh page?, set display to none.
-    document.getElementById(list.id).style.display = "none";
+    
   }
 
   return (
@@ -73,7 +90,7 @@ const List = ({list, name, listItems, listIndex, handleToggle}) => {
           {/* Contain list name, available for edit, delete and done button */}
           <div id={list.id} className="editList" style={{"display":"none"}}>
             <label htmlFor="listName">List Name:</label>
-            <input type="text" className="form-control" id="listName" placeholder={name} ref={newName}></input>
+            <input type="text" className="form-control" id="listName" default={name} placeholder={name} ref={newName}></input>
 
             <div className="editListBut">
               <button onClick={deleteList}>Delete</button>

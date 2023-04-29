@@ -108,6 +108,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
   
   const handleNewList = async(e) => {
     // Refresh forced.
+    e.preventDefault();
 
     // Call that should create a new list.
     const newList = await createNewList(houseHold.id, title.current.value);
@@ -115,7 +116,10 @@ const Add = ({addTask, name, list, theme, setState}) => {
     if (newList !== null)
     {
       // Update setListsData
-      // setListsData(... newList);
+      setState(prevState => {
+        const newListData = [...prevState, {...newList, listItems: []}];
+        return newListData;
+      });
     }
   }
 
@@ -303,7 +307,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
     }
     else if (name === "List") {
       return (
-        <form onSubmit={handleSubmit} className="addingTask">
+        <form className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="List Name" ref={title}/>
           <hr></hr>
           <div className="buttons">

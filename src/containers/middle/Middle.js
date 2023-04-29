@@ -217,14 +217,14 @@ const Middle = ({theme}) => {
             return (
               <div key = {index} className='list'>
                 <hr className="taskLine"></hr>
-                <List list={currList} name={currList.title} listItems={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
+                <List list={currList} name={currList.title} setState={setListData} listItems={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
                 <Add addTask={addTask} useState={false} name={currList.title} list={currList} theme={theme}/>
                 <br/>
               </div>
             )
           })}
           <hr className="taskLine"></hr>
-          <Add useState={false} name={"List"} theme={theme} setState={useListsData.setListData}/>
+          <Add useState={false} name={"List"} theme={theme} setState={setListData}/>
         </div>
       </div>
 
