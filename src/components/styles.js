@@ -262,7 +262,57 @@ export function getStyles(colors) {
       flexDirection: 'row',
       alignItems: 'center',
       marginBottom: 10,
-    },                                                            
+    },  
+        sidebarContainer: {
+      flex: 1,
+      padding: 20,
+      backgroundColor: colors.background,
+    },
+    profileContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    profileText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginRight: 10,
+      color: colors.text,
+    },
+    signoutButton: {
+      backgroundColor: colors.primary,
+      padding: 10,
+      borderRadius: 5,
+    },
+    signoutText: {
+      color: colors.background,
+    },
+    separator: {
+      height: 1,
+      backgroundColor: colors.border,
+      marginBottom: 20,
+    },
+    manageHouseholdButton: {
+      backgroundColor: colors.background,
+      padding: 10,
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: colors.border,
+      marginBottom: 20,
+    },
+    manageHouseholdText: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors.primary,
+    },
+    householdsContainer: {
+      marginBottom: 20,
+    },
+    householdText: {
+      fontSize: 16,
+      color: colors.text,
+      marginBottom: 10,
+    },                                                       
   });
 
 }

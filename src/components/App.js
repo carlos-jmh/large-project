@@ -12,6 +12,8 @@ import {
   TouchableWithoutFeedback,
   useColorScheme,
   View,
+  TouchableOpacity,
+  Icon
 } from "react-native";
 import { Roboto_500Medium, Roboto_700Bold } from "@expo-google-fonts/roboto";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -89,7 +91,11 @@ export default function App() {
             <UserContext.Provider value={{ user, setUser }}>
             <HouseHoldContext.Provider value={{ houseHold, setHouseHold }}>
               <NavigationContainer theme={theme}>
-                <Drawer.Navigator drawerContent={() => <SideBar/>}>
+                <Drawer.Navigator drawerContent={() => <SideBar/>} screenOptions=
+                {{
+                  headerShown:false,
+                  headerStyle:{backgroundColor: colors.background},
+                  }}>
                   <Drawer.Screen
                     name="Login"
                     component={Login}
@@ -108,32 +114,32 @@ export default function App() {
                   <Drawer.Screen
                     name="InitialPage"
                     component={InitialPage}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: true }}
                   />
                   <Drawer.Screen
                     name="CreateHousehold"
                     component={CreateHousehold}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: true }}
                   />
                   <Drawer.Screen
                     name="Events"
                     component={Events}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: true }}
                   />
                   <Drawer.Screen
                     name="Tasks"
                     component={Tasks}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: true }}
                   />
                   <Drawer.Screen
                     name="Lists"
                     component={Lists}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: true }}
                   />
                   <Drawer.Screen
                     name="Chat"
                     component={Chat}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: true }}
                   />
                 </Drawer.Navigator>
               </NavigationContainer>
