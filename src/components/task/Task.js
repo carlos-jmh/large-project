@@ -15,6 +15,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete}) => {
 
   const deleteT = () => {
     handleDelete(task.id, taskIndex);
+    setShow(false);
   }
 
   const handleEditName = (e) => {
@@ -41,9 +42,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete}) => {
           </div>
                    
           <div className="icons">
-            <Icon.Trash size="24px" className='delete' onClick={deleteT}/>
-            <Icon.Pencil size="24px" className='edit' onClick={() => setShow(true)}/>
-            <Icon.InfoCircle size="24px"className='info'/>
+            <Icon.ThreeDots size="24px" className='edit' onClick={() => setShow(true)}/>
           </div>
         </div>
     ) 
@@ -57,9 +56,8 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete}) => {
               </div>
               
               <div className="icons">
-                <Icon.Trash size="24px" className='delete' onClick={deleteT}/>
-                <Icon.Pencil size="24px" className='edit'onClick={() => setShow(true)}/>
-                <ItemInfo title="Edit Task" onClose={() => setShow(false)} show={show}>
+                <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
+                <ItemInfo delete={deleteT} title="Edit Task" onClose={() => setShow(false)} show={show}>
                   <div className="addingTask">
                     <input required onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/  >
                     {/* Start and End Date Required */}
@@ -88,7 +86,6 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete}) => {
                     </div>
                   </div>
                 </ItemInfo>
-                <Icon.InfoCircle size="24px"className='info'/>
             </div>
             </div>
     )
