@@ -116,9 +116,9 @@ export const updateExistingItem = async (item) => {
           }`,
         variables: { 
           _version: item._version,
-          completed: item.complete,
+          completed: item.completed,
           id: item.id,
-          title: item.task,
+          title: item.title,
         },
         authMode: "LAMBDA"
       },

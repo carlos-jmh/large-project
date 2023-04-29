@@ -92,6 +92,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
       }
     });
     */
+
     e.preventDefault();
     addTask(userInput, name, list, userDate, listConnect);
     setUserInput("");
@@ -102,17 +103,12 @@ const Add = ({addTask, name, list, theme, setState}) => {
   const addItem = async(e) => {
     e.preventDefault();
 
-    document.getElementByClassName("addingTask").style.display = "none";
+    document.getElementsByClassName("addingTask")[0].style.display = "none";
 
     console.log(title.current.value);
 
     // Pass correct values here. 
     const newItem = await createNewItem(list.id, title.current.value);
-
-    if (newItem !== null)
-    {
-
-    }
   }
   
   const handleNewList = async(e) => {
@@ -155,6 +151,10 @@ const Add = ({addTask, name, list, theme, setState}) => {
       title.current.value
     );
 
+    if (newTask !== null)
+    {
+
+    }
     console.log("new Task: ", newTask);
 
     // updateEventHandler -> add TaskId to itself
@@ -311,7 +311,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
           <hr></hr>
           <div className="buttons">
             <button className="btn btn-danger" onClick={changeAdd}>close</button>
-            <button className="btn" id="purple" onClick={async (e) => await addtask(e)}>add</button>
+            <button className="btn" id="purple" onClick={handleSubmit}>add</button>
           </div>
         </form>
       )
