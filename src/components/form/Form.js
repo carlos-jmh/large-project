@@ -1,8 +1,10 @@
-import React, {useRef, useState } from 'react'
+import React, {useRef, useState, useContext } from 'react'
 import './form.css';
 import data from '../../containers/middle/data.json';
 import { getCognitoToken } from '../AuthUser';
 import { API, graphqlOperation } from 'aws-amplify'
+import { addUser } from '../../api/mutating';
+import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
 // This all-in-one form allows household creation, task creation, and list creation.
 const Form = () => {
@@ -23,6 +25,8 @@ const Form = () => {
   const itemAttach = useRef('');
   const username = useRef('');
   const linkedTask = useRef('')
+
+  const { houseHold } = useContext(HouseHoldContext);
 
   // Add event object:
   // Should include household id?
@@ -142,6 +146,7 @@ const Form = () => {
     else 
     {
       // Data: username to be added
+      // addUser(houseHold.id, username.current.value)
     }
   }
 

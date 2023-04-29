@@ -32,7 +32,7 @@ export const createNewList = async (houseHoldId, title) => {
   }
   catch (error) {
     console.log("ERROR creating list ", error);
-    return [];
+    return null;
   }
 }
 
@@ -51,7 +51,7 @@ export const deleteExistingList = async (listId) => {
     return deletedList.data.deleteListCustom;
   } catch (error) {
     console.log("ERROR deleting list ", error);
-    return [];
+    return null;
   }
 }
 

@@ -18,3 +18,28 @@
 .strike {
     text-decoration: line-through;
 }
+
+.sectionHeader {
+    display: flex;
+    gap: .4rem;
+}
+
+.editList {
+    position: relative;
+    bottom: 3rem;
+    border: solid;
+    border: 1px;
+    border-radius: 1rem;
+    background-color: rgba(245, 245, 245);
+    padding: .6rem;
+}
+
+.editList button {
+    color: white;
+}
+
+.editListBut {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}

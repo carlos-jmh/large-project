@@ -1,10 +1,10 @@
 import React, {useRef, useState, useEffect, useContext } from 'react'
 import './add.css'
 import * as Icon from 'react-bootstrap-icons'
-import { createNewItem, createNewTask } from '../../api/mutating';
+import { createNewItem, createNewList, createNewTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
-const Add = ({addTask, name, list, theme}) => {
+const Add = ({addTask, name, list, theme, setState}) => {
   // console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
@@ -105,6 +105,23 @@ const Add = ({addTask, name, list, theme}) => {
     // Pass correct values here. 
     const newItem = await createNewItem(list.id, title.current.value);
   }
+  
+  const handleNewList = async(e) => {
+    // Refresh forced.
+    e.preventDefault();
+
+    // Call that should create a new list.
+    const newList = await createNewList(houseHold.id, title.current.value);
+
+    if (newList !== null)
+    {
+      // Update setListsData
+      setState(prevState => {
+        const newListData = [...prevState, {...newList, listItems: []}];
+        return newListData;
+      });
+    }
+  }
 
   const addtask = async(e) => {
     console.log("creating new Task!");
@@ -114,7 +131,7 @@ const Add = ({addTask, name, list, theme}) => {
       // create EventHandler -> startDate, endDate, recurrence
       // const eventHandler = await createEventHandler(sDate, eDate, freq);
     
-    // create Task -> with EventHandlerId
+    // create Task -> with EventHandlerId 
     // Pass correct values here. 
     const newTask = await createNewTask(
       false,
@@ -124,18 +141,20 @@ const Add = ({addTask, name, list, theme}) => {
       "",
       "",
       "",
-      "throw out the trash 3"
+      title.current.value
     );
 
     console.log("new Task: ", newTask);
 
     // updateEventHandler -> add TaskId to itself
+    // Shows up as undefined until reload. 
   }
 
   const addEvent = async(e) => {
     e.preventDefault();
 
     // const newEvent = await createEventHandler("asd", "asda");
+    // Event handler should then make events? 
   }
 
   if (!add)
@@ -286,7 +305,18 @@ const Add = ({addTask, name, list, theme}) => {
         </form>
       )
     }
-    else {
+    else if (name === "List") {
+      return (
+        <form className="addingTask">
+          <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="List Name" ref={title}/>
+          <hr></hr>
+          <div className="buttons">
+            <button className="btn btn-danger" onClick={changeAdd}>close</button>
+            <button className="btn" id="purple" onClick={async (e) => await handleNewList(e)}>add</button>
+          </div>
+        </form>
+      )
+    } else {
       return (
         <form onSubmit={handleSubmit} className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Item Name" ref={title}/>

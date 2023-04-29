@@ -13,7 +13,7 @@ import Dropdown from '../../components/dropdown/Dropdown';
 import {
   fetchItemsByListId,
 } from '../../api/fetching';
-import { updateExistingItem } from '../../api/mutating'
+import { updateExistingItem, createNewList } from '../../api/mutating'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 import { useEventData, useEventHandlerData, useListsData, useTasksData } from '../../api/hooks'
 import { useEffect } from 'react'
@@ -184,7 +184,7 @@ const Middle = ({theme}) => {
             <div className="section1">
               <h5 className="sectionHeader">Upcoming</h5>
               <Upcoming tasks={taskData} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
-              <Upcoming tasks = {[]} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
+              <Upcoming tasks={eventData} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@ const Middle = ({theme}) => {
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
-              <Events events = {[]} handleCheck={handleEventCheck} handleDelete={taskDeleteHandler}/>
+              <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={taskDeleteHandler}/>
               <Add addTask={addTask3} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>
@@ -217,18 +217,20 @@ const Middle = ({theme}) => {
             return (
               <div key = {index} className='list'>
                 <hr className="taskLine"></hr>
-                <List name={currList.title} listItems={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
+                <List list={currList} name={currList.title} setState={setListData} listItems={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
                 <Add addTask={addTask} useState={false} name={currList.title} list={currList} theme={theme}/>
                 <br/>
               </div>
             )
           })}
+          <hr className="taskLine"></hr>
+          <Add useState={false} name={"List"} theme={theme} setState={setListData}/>
         </div>
       </div>
 
       <Dropdown/>
     </>
-  );  
+  )
 } 
 
 export default Middle;
