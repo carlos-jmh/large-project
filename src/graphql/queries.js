@@ -228,6 +228,7 @@ export const getTask = /* GraphQL */ `
       eventHandlerId
       EventHandler {
         id
+        title
         frequency
         calendarId
         taskId
@@ -637,6 +638,7 @@ export const getEventHandler = /* GraphQL */ `
   query GetEventHandler($id: ID!) {
     getEventHandler(id: $id) {
       id
+      title
       frequency
       calendarId
       Calendar {
@@ -691,6 +693,7 @@ export const listEventHandlers = /* GraphQL */ `
     listEventHandlers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        title
         frequency
         calendarId
         taskId
@@ -724,6 +727,7 @@ export const syncEventHandlers = /* GraphQL */ `
     ) {
       items {
         id
+        title
         frequency
         calendarId
         taskId
@@ -759,6 +763,7 @@ export const eventHandlersByCalendarId = /* GraphQL */ `
     ) {
       items {
         id
+        title
         frequency
         calendarId
         taskId
@@ -790,6 +795,7 @@ export const getEvent = /* GraphQL */ `
       calendarId
       EventHandler {
         id
+        title
         frequency
         calendarId
         taskId

@@ -17,7 +17,7 @@ const { v4: uuidv4 } = require('uuid');
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-    const { calendarId, taskId, sourceDate, endDate, eventType } = event.arguments;
+    const { calendarId, taskId, sourceDate, endDate, eventType, title } = event.arguments;
 	const frequency = event.arguments.frequency.toLowerCase();
     const eventHandlerId = uuidv4();
 	const firstEventId = uuidv4();
@@ -79,10 +79,16 @@ exports.handler = async (event) => {
 				calendarId,
 				taskId,
 				upcomingEventId: firstEventId,
+				title,
 				sourceDate,
 				endDate,
+
 				createdAt,
-				lastChangedAt,
+				updatedAt: createdAt,
+
+				__typename: "EventHandler",
+				_lastChangedAt: lastChangedAt,
+				_version: 1,
 			},
 		}
 	} else {
@@ -94,8 +100,14 @@ exports.handler = async (event) => {
 				calendarId,
 				sourceDate,
 				endDate,
+				title,
+
 				createdAt,
-				lastChangedAt,
+				updatedAt: createdAt,
+				
+				__typename: "EventHandler",
+				_lastChangedAt: lastChangedAt,
+				_version: 1,
 			},
 		}
 	}
@@ -113,8 +125,8 @@ exports.handler = async (event) => {
 	const checkpoint = new Date(sourceDateObj);
 	const eventFields = {
 		currId: firstEventId,
-		prevId: null,
-		nextId: null,
+		prevId: "",
+		nextId: "",
 		eventHandlerId,
 		calendarId,
 		eventType,
@@ -130,8 +142,8 @@ exports.handler = async (event) => {
 					TableName: process.env.API_HOUSEHOLDAPP_EVENTTABLE_NAME,
 					Item: {
 						id: firstEventId,
-						prevEventId: null,
-						nextEventId: null,
+						prevEventId: "",
+						nextEventId: "",
 						eventHandlerId,
 						calendarId,
 						eventType,
@@ -144,8 +156,8 @@ exports.handler = async (event) => {
 					TableName: process.env.API_HOUSEHOLDAPP_EVENTTABLE_NAME,
 					Item: {
 						id: eventFields.currId,
-						prevEventId: null,
-						nextEventId: null,
+						prevEventId: "",
+						nextEventId: "",
 						eventHandlerId,
 						calendarId,
 						eventType,
@@ -223,7 +235,7 @@ const genDailyParams = (eventFields, checkpoint, endDateObj) => {
 	while (endDateObj >= checkpoint) {
 		const nextDate = (new Date(checkpoint));
 		nextDate.addDays(daysToJump);
-		if (endDateObj < nextDate) eventFields.nextId = null;
+		if (endDateObj < nextDate) eventFields.nextId = "";
 		else eventFields.nextId = uuidv4();
 
 		putRequests.push(genPutRequest(eventFields, checkpoint.toISOString()));
@@ -254,7 +266,7 @@ const genWeeklyParams = (eventFields, checkpoint, endDateObj) => {
 	while (endDateObj >= checkpoint) {
 		const nextDate = (new Date(checkpoint));
 		nextDate.addDays(daysToJump);
-		if (endDateObj < nextDate) eventFields.nextId = null;
+		if (endDateObj < nextDate) eventFields.nextId = "";
 		else eventFields.nextId = uuidv4();
 
 		putRequests.push(genPutRequest(eventFields, checkpoint.toISOString()));
@@ -285,7 +297,7 @@ const genMonthlyParams = (eventFields, checkpoint, endDateObj) => {
 	while (endDateObj >= checkpoint) {
 		const nextDate = (new Date(checkpoint));
 		nextDate.setMonth(nextMonth);
-		if (endDateObj < nextDate) eventFields.nextId = null;
+		if (endDateObj < nextDate) eventFields.nextId = "";
 		else eventFields.nextId = uuidv4();
 
 		putRequests.push(genPutRequest(eventFields, checkpoint.toISOString()));
@@ -318,7 +330,7 @@ const genYearlyParams = (eventFields, checkpoint, endDateObj) => {
 	while (endDateObj >= checkpoint) {
 		const nextDate = (new Date(checkpoint));
 		nextDate.setFullYear(nextYear);
-		if (endDateObj < nextDate) eventFields.nextId = null;
+		if (endDateObj < nextDate) eventFields.nextId = "";
 		else eventFields.nextId = uuidv4();
 		
 		putRequests.push(genPutRequest(eventFields, checkpoint.toISOString()));
@@ -339,6 +351,10 @@ const genYearlyParams = (eventFields, checkpoint, endDateObj) => {
 }
 
 const genPutRequest = (eventFields, date) => {
+	const creationDate = new Date();
+	const createdAt = creationDate.toISOString();
+	const lastChangedAt = creationDate.getTime();
+
 	if (eventFields.eventType == "TASK") {
 		return {
 			PutRequest: {
@@ -350,7 +366,14 @@ const genPutRequest = (eventFields, date) => {
 					calendarId: eventFields.calendarId,
 					eventType: eventFields.eventType,
 					completed: false,
-					date
+					date,
+
+					createdAt,
+					updatedAt: createdAt,
+
+					__typename: "Event",
+					_lastChangedAt: lastChangedAt,
+					_version: 1
 				}
 			},
 		}
@@ -364,7 +387,14 @@ const genPutRequest = (eventFields, date) => {
 					eventHandlerId: eventFields.eventHandlerId,
 					calendarId: eventFields.calendarId,
 					eventType: eventFields.eventType,
-					date
+					date,
+
+					createdAt,
+					updatedAt: createdAt,
+
+					__typename: "Event",
+					_lastChangedAt: lastChangedAt,
+					_version: 1
 				}
 			},
 		}

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "storage": {
+      "EventHandler:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "Event:@model(appsync)": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
