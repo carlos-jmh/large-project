@@ -44,38 +44,44 @@ const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
 
   const doneList = async(e) => {
 
-    // Create new list object. 
-    let copyList = list;
-    copyList.title = newName.current.value;
-    console.log(copyList);
-
-    document.getElementById(list.id).style.display = "none";
-
-    // Call API to updateList
-    const updatedList = await editExistingList(copyList);
-
-    // Confirm no error. 
-    if (updatedList !== null)
+    // If the name was changed.
+    if (list.title !== newName.current.value)
     {
-      setState(prevState => {
-        const newListData = [...prevState];
-        let newListy = newListData.filter(element => element.id !== list.id);
-        newListy = [...newListy, {...updatedList, listItems: []}]
-        return newListy;
-      })
-    }
+      // Create new list object. 
+      let copyList = list;
+      copyList.title = newName.current.value;
+      console.log(copyList);
 
-    // After done, refresh page?, set display to none.
-    
+      document.getElementById(list.id).style.display = "none";
+
+      // Call API to updateList
+      const updatedList = await editExistingList(copyList);
+
+      // Confirm no error. 
+      if (updatedList !== null)
+      {
+        setState(prevState => {
+          const newListData = [...prevState];
+          let newListy = newListData.filter(element => element.id !== list.id);
+          newListy = [...newListy, {...updatedList, listItems: []}]
+          return newListy;
+        })
+      }
+    }
+    document.getElementById(list.id).style.display = "none";   
+
+    // After done, refresh page?, set display to none.    
   }
 
   return (
     <div className="arrayList">
       <div className="section">
           <h6 className="sectionHeader">
-            <Icon.InfoCircle onClick={showList}/>
-            {name}
-            {open ? <Icon.CaretDown onClick={showOrHide}/> : <Icon.CaretRight onClick={showOrHide}/>}
+            <div>
+              {open ? <Icon.CaretDown onClick={showOrHide}/> : <Icon.CaretRight onClick={showOrHide}/>}
+              {name}
+            </div>
+            <Icon.ThreeDots onClick={showList}/>
           </h6>
           <hr className="listLine"></hr>
           
@@ -90,8 +96,7 @@ const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
           {/* Contain list name, available for edit, delete and done button */}
           <div id={list.id} className="editList" style={{"display":"none"}}>
             <label htmlFor="listName">List Name:</label>
-            <input type="text" className="form-control" id="listName" default={name} placeholder={name} ref={newName}></input>
-
+            <input type="text" className="form-control" id="listName" value={name} placeholder={name} ref={newName}></input>
             <div className="editListBut">
               <button onClick={deleteList}>Delete</button>
               <button onClick={doneList}>Done</button>
