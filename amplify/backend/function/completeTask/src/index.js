@@ -182,7 +182,6 @@ exports.handler = async (event) => {
 
     if (!query.Item.foreverTask && flaggedToComplete) {
         try {
-            console.log("going where I'm not supposed to!");
             await ddb.update(updateTask).promise();
         }
         catch (error) {
