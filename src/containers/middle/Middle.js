@@ -85,8 +85,8 @@ const Middle = ({theme}) => {
       const newListData = [...prevState];
       newListData[listIndex].listItems[currentItemIndex] = {
         id: item.id,
-        task: item.title,
-        complete: item.completed,
+        title: item.title,
+        completed: item.completed,
         _version: item._version,
       };
       return newListData;
@@ -110,6 +110,7 @@ const Middle = ({theme}) => {
 
   //Handles list ITEM edition
   const handleListItemToggle = (item, listIndex, itemIndex) => {
+    console.log(item);
     updateExistingItem(item);
     setListData(prevState => {
       const newListData = [...prevState];
