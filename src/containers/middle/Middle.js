@@ -226,8 +226,6 @@ const Middle = ({theme}) => {
           <Add useState={false} name={"List"} theme={theme} setState={setListData}/>
         </div>
       </div>
-
-      <Dropdown/>
     </>
   )
 } 

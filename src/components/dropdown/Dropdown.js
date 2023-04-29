@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import './dropdown.css';
 import * as Icon from 'react-bootstrap-icons';
 import { Auth as CognitoAuth } from 'aws-amplify';
-import { editHouseHoldMember, removeUser } from '../../api/mutating';
-import { fetchHouseHoldMembers } from '../../api/fetching';
+import { editHouseHold, editHouseHoldMember, removeUser } from '../../api/mutating';
+import { fetchHouseHoldMembers, fetchHouseHolds } from '../../api/fetching';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
-const Dropdown = () => {
+const Dropdown = ({setHouseHolds}) => {
 
     const [houseHoldMember, setHouseHoldMember] = useState({});
     const [nickname, setNickname] = useState("");
@@ -27,7 +27,7 @@ const Dropdown = () => {
             const members = await fetchHouseHoldMembers();
 
             const member = members.find(element => element.houseHoldId === houseHold.id);
-
+            
             if (!ignore) {
                 if (member !== undefined)
                 {
@@ -67,7 +67,7 @@ const Dropdown = () => {
     const submitUsername = async () => {        
         let paragraph = document.getElementById('username');
         
-        const member = houseHoldMember;
+        const member = houseHoldMember; 
 
         member.nickname = paragraph.textContent;
 
@@ -83,6 +83,53 @@ const Dropdown = () => {
         done.style.display = "none";
         edit.style.display = "block";
     }
+
+    function editHouseholdName() {
+        
+        let paragraph = document.getElementById('householdname');
+
+        paragraph.contentEditable = true;
+        paragraph.style.border = "solid";
+        paragraph.style.borderWidth = "1px";
+        paragraph.style.borderColor = "#007bff";
+
+        // Show done button.
+        let done = document.getElementById("done-button2");
+        let edit = document.getElementById('edit-button2');
+
+        edit.style.display = "none";
+        done.style.display = "block";
+    }
+
+    // Function to update house name.
+    const submitHouseholdName = async () => {        
+        let paragraph = document.getElementById('householdname');
+        
+        const newHouse = {...houseHold};
+
+        newHouse.name = paragraph.textContent;
+        console.log(newHouse.name);
+        console.log(newHouse._version);
+
+        editHouseHold(newHouse);
+        
+        paragraph.contentEditable = false;
+        paragraph.style.border = "none";
+
+        // Show edit button.
+        let done = document.getElementById("done-button2");
+        let edit = document.getElementById('edit-button2');
+
+        done.style.display = "none";
+        edit.style.display = "block";
+        setHouseHolds(prev => {
+            const copy = [...prev];
+            let current = copy.findIndex(element => element.id === newHouse.id)
+            copy[current] = newHouse;
+            return copy;
+        }); 
+    }
+
 
     // Function to leave the specific houseHold. Should leave, than refresh.
     const leaveHousehold = async () => {
@@ -111,6 +158,14 @@ const Dropdown = () => {
                         <p id="username">{nickname}</p>
                         <button id="edit-button" onClick={editUsername}><Icon.GearFill/></button>
                         <button id="done-button" onClick={submitUsername} style={{"display": "none"}}>done</button>
+                    </div>
+                </div>
+                <div className="grouping">
+                    <label htmlFor="username">HOUSEHOLD NAME</label>
+                    <div className="child-group">
+                        <p id="householdname">{houseHold.name}</p>
+                        <button id="edit-button2" onClick={editHouseholdName}><Icon.Pencil/></button>
+                        <button id="done-button2" onClick={submitHouseholdName} style={{"display": "none"}}>done</button>
                     </div>
                 </div>
                 <hr/>

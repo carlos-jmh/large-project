@@ -63,7 +63,9 @@ const Add = ({addTask, name, list, theme, setState}) => {
   }
 
   const handleChange2 = (e) => {
-    setDateInput(new Date(e.target.value));
+    //let date = (e.target.value).split('-')
+    //let dateInput = date[1] + 
+    setDateInput(e.target.value);
   }
 
   const handleChange3 = (e) => {

@@ -297,26 +297,28 @@ export const editHouseHold = async (houseHold) => {
     const updatedHouseHold = await API.graphql(
       {
         query:
-          `mutation UpdateHouseHold($id: ID!, $name: String!) {
-            updateHouseHold(input: {id: $id, name: $name}) {
-              _lastChangedAt
-              _deleted
-              _version
-              createdAt
-              houseHoldCalendarId
-              houseHoldChatRoomId
-              id
-              name
-              owners
-              updatedAt
-            }
-          }`,
+        `mutation MyMutation($_version: Int!, $id: ID!, $name: String!) {
+          updateHouseHold(input: {id: $id, name: $name, _version: $_version}) {
+            id
+            name
+            _version
+            calendarId
+            chatRoomId
+            createdAt
+            owners
+            updatedAt
+            houseHoldChatRoomId
+            houseHoldCalendarId
+            _lastChangedAt
+            _deleted
+          }
+        }`,
         variables: {
-          input: {
+          
             id: houseHold.id,
             name: houseHold.name,
             _version: houseHold._version
-          }
+          
         },
         authMode: "AMAZON_COGNITO_USER_POOLS",
         authToken: await getCognitoToken()
