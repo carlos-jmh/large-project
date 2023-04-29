@@ -244,6 +244,13 @@ async function checkAuthorization(ast, variables, userInfo) {
         }
         break;
       }
+      case "updateEvent": {
+        const eventId = retrieveInputArgument("id", selection.arguments, variables);
+        if (!await isAuthorizedForEvent(dynamo, eventId, sub)) {
+          return false;
+        }
+        break;
+      }
       case "deleteEventHandler": {
         const eventHandlerId = retrieveArgument("eventHandlerId", selection.arguments, variables);
         if (!await isAuthorizedForEventHandler(dynamo, eventHandlerId, sub)) {
@@ -545,6 +552,9 @@ async function isAuthorizedForCalendar(dynamo, calendarId, sub) {
 }
 
 async function isAuthorizedForHouseHold(dynamo, houseHoldId, sub) {
+
+  console.log("houseHoldId: ", houseHoldId);
+
   const params = {
     TableName: process.env.API_HOUSEHOLDAPP_HOUSEHOLDTABLE_NAME,
     Key: {
@@ -555,6 +565,9 @@ async function isAuthorizedForHouseHold(dynamo, houseHoldId, sub) {
   try {
     const result = await dynamo.get(params).promise();
     const houseHold = result.Item;
+
+    console.log("houseHold: ", houseHold);
+    console.log("check statement: ", houseHold && houseHold.owners && houseHold.owners.includes(sub));
 
     if (houseHold && houseHold.owners && houseHold.owners.includes(sub)) {
       return true;

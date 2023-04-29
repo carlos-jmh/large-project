@@ -33,8 +33,8 @@ export const useListsData = ({
     const subs = [];
 
     listData.forEach(async (list, listIndex) => {
-      const createItemSub = createSubListItems(list.listId, listIndex, setListData, onListItemCreated);
-      const updateItemSub = updateSubListItems(list.listId, listIndex, setListData, onListItemUpdated);
+      const createItemSub = createSubListItems(list.id, listIndex, setListData, onListItemCreated);
+      const updateItemSub = updateSubListItems(list.id, listIndex, setListData, onListItemUpdated);
       subs.push(createItemSub);
       subs.push(updateItemSub);
     });

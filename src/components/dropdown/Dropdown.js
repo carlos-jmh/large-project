@@ -26,9 +26,6 @@ const Dropdown = () => {
         async function loadHouseholdMembers() {
             const members = await fetchHouseHoldMembers();
 
-            console.log(members);
-            console.log(houseHold.id);
-
             const member = members.find(element => element.houseHoldId === houseHold.id);
 
             if (!ignore) {
