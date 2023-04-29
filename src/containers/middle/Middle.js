@@ -228,7 +228,7 @@ const Middle = ({theme}) => {
 
       <Dropdown/>
     </>
-  );  
+  )
 } 
 
 export default Middle;
