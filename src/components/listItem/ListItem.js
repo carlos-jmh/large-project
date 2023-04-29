@@ -48,7 +48,7 @@ const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
       (
         <div className="todo">
           <p contentEditable="true" className="editableP">{item.title}</p>
-          <div>
+          <div style={{"display": "flex", "gap": "1rem"}}>
             <button style={{"color": "white"}} onClick={deleteListItem}>delete</button>
             <button style={{"color": "white"}} onClick={doneListItem}>done</button>
           </div>
