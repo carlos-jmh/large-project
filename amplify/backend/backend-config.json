@@ -457,6 +457,38 @@
         }
       ]
     },
+    "AMPLIFY_function_largeproject9e7232c0PostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeproject9e7232c0PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeproject9e7232c0PostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeproject9e7232c0PostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeprojectCommonLayer_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeprojectCommonLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_largeprojectCommonLayer_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "largeprojectCommonLayer"
+        }
+      ]
+    },
     "AMPLIFY_function_removeUserFromHouseHold_deploymentBucketName": {
       "usedBy": [
         {
