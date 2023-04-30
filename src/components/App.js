@@ -94,7 +94,10 @@ export default function App() {
                 <Drawer.Navigator drawerContent={() => <SideBar/>} screenOptions=
                 {{
                   headerShown:false,
-                  headerStyle:{backgroundColor: colors.background},
+                  headerStyle:{backgroundColor: colors.background, height:0},
+                  headerTintColor: colors.text,
+                  headerLeftContainerStyle: {display:'flex', flexDirection:'row', alignItems:'center', marginLeft:10},
+
                   }}>
                   <Drawer.Screen
                     name="Login"
