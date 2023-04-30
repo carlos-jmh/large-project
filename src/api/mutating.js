@@ -1,6 +1,16 @@
 import { API } from "aws-amplify";
 import { getCognitoToken } from "../components/AuthUser";
-import { addUserToHouseHold, removeUserFromHouseHold, updateHouseHoldMember, createNewHouseHold, deleteTask } from "../graphql/mutations";
+import {
+  addUserToHouseHold,
+  removeUserFromHouseHold,
+  updateHouseHoldMember,
+  createNewHouseHold,
+  deleteTask,
+  createEventHandler,
+  updateEventHandler,
+  deleteEventHandler,
+  deleteEvent,
+} from "../graphql/mutations";
 
 export const createNewList = async (houseHoldId, title) => {
   try {
