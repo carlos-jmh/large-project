@@ -45,6 +45,89 @@ export const createTask = /* GraphQL */ `
       eventHandlerId
       EventHandler {
         id
+        title
+        frequency
+        calendarId
+        taskId
+        upcomingEventId
+        sourceDate
+        endDate
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        eventHandlerTaskId
+      }
+      completed
+      pointValue
+      HouseHold {
+        id
+        name
+        owners
+        calendarId
+        chatRoomId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        houseHoldCalendarId
+        houseHoldChatRoomId
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateTask = /* GraphQL */ `
+  mutation UpdateTask(
+    $input: UpdateTaskInput!
+    $condition: ModelTaskConditionInput
+  ) {
+    updateTask(input: $input, condition: $condition) {
+      id
+      title
+      houseHoldId
+      foreverTask
+      listId
+      List {
+        id
+        title
+        description
+        houseHoldId
+        completed
+        taskId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        listTaskId
+      }
+      itemId
+      Item {
+        id
+        title
+        description
+        completed
+        listId
+        taskId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        itemTaskId
+      }
+      completeSourceOnComplete
+      eventHandlerId
+      EventHandler {
+        id
+        title
         frequency
         calendarId
         taskId
@@ -142,6 +225,7 @@ export const updateEvent = /* GraphQL */ `
       calendarId
       EventHandler {
         id
+        title
         frequency
         calendarId
         taskId
@@ -576,6 +660,7 @@ export const createEventHandler = /* GraphQL */ `
     $sourceDate: AWSDateTime!
     $endDate: AWSDateTime!
     $eventType: EVENTTYPE!
+    $title: String!
   ) {
     createEventHandler(
       calendarId: $calendarId
@@ -584,6 +669,7 @@ export const createEventHandler = /* GraphQL */ `
       sourceDate: $sourceDate
       endDate: $endDate
       eventType: $eventType
+      title: $title
     )
   }
 `;
@@ -596,6 +682,7 @@ export const updateEventHandler = /* GraphQL */ `
     $sourceDate: AWSDateTime!
     $endDate: AWSDateTime!
     $eventType: EVENTTYPE!
+    $title: String!
   ) {
     updateEventHandler(
       eventHandlerId: $eventHandlerId
@@ -605,6 +692,7 @@ export const updateEventHandler = /* GraphQL */ `
       sourceDate: $sourceDate
       endDate: $endDate
       eventType: $eventType
+      title: $title
     )
   }
 `;

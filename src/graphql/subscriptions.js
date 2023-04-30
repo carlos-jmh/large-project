@@ -42,6 +42,86 @@ export const onCreateTask = /* GraphQL */ `
       eventHandlerId
       EventHandler {
         id
+        title
+        frequency
+        calendarId
+        taskId
+        upcomingEventId
+        sourceDate
+        endDate
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        eventHandlerTaskId
+      }
+      completed
+      pointValue
+      HouseHold {
+        id
+        name
+        owners
+        calendarId
+        chatRoomId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        houseHoldCalendarId
+        houseHoldChatRoomId
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateTask = /* GraphQL */ `
+  subscription OnUpdateTask($filter: ModelSubscriptionTaskFilterInput) {
+    onUpdateTask(filter: $filter) {
+      id
+      title
+      houseHoldId
+      foreverTask
+      listId
+      List {
+        id
+        title
+        description
+        houseHoldId
+        completed
+        taskId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        listTaskId
+      }
+      itemId
+      Item {
+        id
+        title
+        description
+        completed
+        listId
+        taskId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        itemTaskId
+      }
+      completeSourceOnComplete
+      eventHandlerId
+      EventHandler {
+        id
+        title
         frequency
         calendarId
         taskId
@@ -136,6 +216,7 @@ export const onUpdateEvent = /* GraphQL */ `
       calendarId
       EventHandler {
         id
+        title
         frequency
         calendarId
         taskId
@@ -573,6 +654,55 @@ export const onNewItemCreated = /* GraphQL */ `
 export const onItemUpdated = /* GraphQL */ `
   subscription OnItemUpdated($listId: String!) {
     onItemUpdated(listId: $listId) {
+      id
+      title
+      description
+      completed
+      listId
+      List {
+        id
+        title
+        description
+        houseHoldId
+        completed
+        taskId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        listTaskId
+      }
+      taskId
+      Task {
+        id
+        title
+        houseHoldId
+        foreverTask
+        listId
+        itemId
+        completeSourceOnComplete
+        eventHandlerId
+        completed
+        pointValue
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      itemTaskId
+    }
+  }
+`;
+export const onItemDeleted = /* GraphQL */ `
+  subscription OnItemDeleted($listId: String!) {
+    onItemDeleted(listId: $listId) {
       id
       title
       description

@@ -58,6 +58,39 @@ export const fetchTasksByHouseHoldId = async (houseHoldId) => {
   }
 }
 
+export const fetchEventHandlerById = async (eventHandlerId) => {
+  try {
+    const eventHandler = await API.graphql({
+      query:
+        `query MyQuery($id: ID!) {
+          getEventHandler(id: $id) {
+            _deleted
+            _lastChangedAt
+            _version
+            calendarId
+            createdAt
+            endDate
+            eventHandlerTaskId
+            frequency
+            id
+            sourceDate
+            taskId
+            upcomingEventId
+            title
+            updatedAt
+          }
+        }`,
+      variables: { id: eventHandlerId },
+      authMode: "LAMBDA"
+    });
+
+    return eventHandler.data.getEventHandler;
+  } catch (error) {
+    console.log("ERROR fetching Event Handler ", error)
+    return null;
+  }
+}
+
 export const fetchEventHandlersByCalendarId = async (calendarId) => {
   try {
     const eventHandlers = await API.graphql({
@@ -103,7 +136,41 @@ export const fetchHouseHolds = async () => {
   }
 }
 
-export const fetchHouseHoldMembers = async (houseHoldId) => {
+export const fetchHouseHold = async (houseHoldId) => {
+  try {
+    const houseHold = await API.graphql({
+      query:
+        `query GetHouseHold($id: ID!) {
+          getHouseHold(id: $id) {
+            id
+            name
+            owners
+            calendarId
+            chatRoomId
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+            houseHoldCalendarId
+            houseHoldChatRoomId
+          }
+        }`,
+      variables: {
+        id: houseHoldId
+      },
+      authMode: "AMAZON_COGNITO_USER_POOLS",
+      authToken: await getCognitoToken(),
+    });
+
+    return houseHold.data.getHouseHold;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const fetchHouseHoldMembers = async () => {
   try {
     const houseHoldMembers = await API.graphql({
       query: listHouseHoldMembers,
