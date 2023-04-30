@@ -75,7 +75,6 @@ function EventInfo({ listTitle, date }) {
   
     let dateInfo = null;
     let eventDate = new Date(date);
-    console.log(eventDate)
     if (eventDate) {
       let hours = eventDate.getHours();
       const m = hours >= 12 ? "PM" : "AM";
