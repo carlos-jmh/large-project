@@ -243,6 +243,9 @@ type Subscription {
   onItemUpdated(listId: String!): Item
     @aws_subscribe(mutations: ["updateItem"])
     @auth(rules: [{ allow: custom }])
+  onItemDeleted(listId: String!): Item
+    @aws_subscribe(mutations: ["deleteItem"])
+    @auth(rules: [{ allow: custom }])
 }
 
 # enum for frequency of Events

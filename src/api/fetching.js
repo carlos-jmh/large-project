@@ -59,6 +59,39 @@ export const fetchTasksByHouseHoldId = async (houseHoldId) => {
   }
 }
 
+export const fetchEventHandlerById = async (eventHandlerId) => {
+  try {
+    const eventHandler = await API.graphql({
+      query:
+        `query MyQuery($id: ID!) {
+          getEventHandler(id: $id) {
+            _deleted
+            _lastChangedAt
+            _version
+            calendarId
+            createdAt
+            endDate
+            eventHandlerTaskId
+            frequency
+            id
+            sourceDate
+            taskId
+            upcomingEventId
+            title
+            updatedAt
+          }
+        }`,
+      variables: { id: eventHandlerId },
+      authMode: "LAMBDA"
+    });
+
+    return eventHandler.data.getEventHandler;
+  } catch (error) {
+    console.log("ERROR fetching Event Handler ", error)
+    return null;
+  }
+}
+
 export const fetchEventHandlersByCalendarId = async (calendarId) => {
   try {
     const eventHandlers = await API.graphql({

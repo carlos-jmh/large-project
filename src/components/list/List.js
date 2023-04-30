@@ -5,7 +5,14 @@ import './list.css'
 import { deleteExistingList, editExistingList } from '../../api/mutating';
 
 
-const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
+const List = ({
+  list,
+  setState,
+  listItems,
+  listIndex,
+  handleListItemUpdate,
+  handleListItemDelete
+}) => {
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   
@@ -84,7 +91,7 @@ const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
             <h6 className="sectionHeader">
               <div>
                 {open ? <Icon.CaretDown onClick={showOrHide}/> : <Icon.CaretRight onClick={showOrHide}/>}
-                {name}
+                {list.title}
               </div>
               <Icon.ThreeDots onClick={showList}/>
             </h6>
@@ -93,9 +100,22 @@ const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
             <div className="items">
               {/* Place map of listitems after ? */}
               {/* Items: title, id, houseHoldId, description, completed */}
-              {open ? listItems.map((item, index) => {
-                return <ListItem key={index} item={item} listIndex={listIndex} itemIndex={index} handleToggle={handleToggle} lname={name}/>
-              }) : <></>}
+              {open ? 
+                listItems.map((item, index) => {
+                  return (
+                    <ListItem
+                      key={index}
+                      item={item}
+                      listIndex={listIndex}
+                      itemIndex={index}
+                      handleListItemUpdate={handleListItemUpdate}
+                      handleListItemDelete={handleListItemDelete}
+                    />
+                  )
+                })
+              : 
+                <></>
+              }
             </div>
           </div>
         </div>
@@ -104,7 +124,7 @@ const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
       (
         <div id={list.id} className="editList">
           <label htmlFor="listName">List Name:</label>
-          <input type="text" className="form-control" id="listName" placeholder={name} ref={newName}></input>
+          <input type="text" className="form-control" id="listName" placeholder={list.title} ref={newName}></input>
           <div className="editListBut">
             <button onClick={deleteList}>Delete</button>
             <button onClick={doneList}>Done</button>

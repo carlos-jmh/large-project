@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import * as Icon from 'react-bootstrap-icons';
+import { deleteExistingItem } from '../../api/mutating';
 import './ListItem.css';
  
-const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
+const ListItem = ({item, listIndex, itemIndex, handleListItemUpdate, handleListItemDelete}) => {
   
   const [shown, setShown] = useState(false);
   const [active, setActive] = useState(false);
@@ -10,7 +11,7 @@ const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
   const handleClick = (e) => {
     e.preventDefault();
     item.completed = !item.completed;
-    handleToggle(item, listIndex, itemIndex);
+    handleListItemUpdate(item, listIndex, itemIndex);
   }
 
   const editListItem = async () => {
@@ -21,13 +22,13 @@ const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
     e.preventDefault();
     item.title = document.getElementsByClassName('editableP')[0].textContent;
     setActive(false);
-    handleToggle(item, listIndex, itemIndex);
+    handleListItemUpdate(item, listIndex, itemIndex);
   }
 
-  // Not functional yet.
   const deleteListItem = (e) => {
     e.preventDefault();
     setActive(false);
+    handleListItemDelete(item, listIndex, itemIndex);
   }
 
    return ( 

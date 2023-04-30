@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { fetchEventHandlersByCalendarId, fetchEventsByCalendarId, fetchLists, fetchTasksByHouseHoldId } from './fetching';
-import { createSubListItems, updateSubListItems } from './subscribing';
+import { createSubListItems, deleteSubListItems, updateSubListItems } from './subscribing';
 
 export const useListsData = ({
   houseHoldId,
   processDataCallback,
   onListItemCreated,
-  onListItemUpdated
+  onListItemUpdated,
+  onListItemDeleted,
 }) => {
   const [listData, setListData] = useState([]);
 
@@ -35,8 +36,10 @@ export const useListsData = ({
     listData.forEach(async (list, listIndex) => {
       const createItemSub = createSubListItems(list.id, listIndex, setListData, onListItemCreated);
       const updateItemSub = updateSubListItems(list.id, listIndex, setListData, onListItemUpdated);
+      const deleteItemSub = deleteSubListItems(list.id, listIndex, setListData, onListItemDeleted);
       subs.push(createItemSub);
       subs.push(updateItemSub);
+      subs.push(deleteItemSub);
     });
     
     return () => {
