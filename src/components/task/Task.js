@@ -15,7 +15,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
   const [select, setSelect] = useState("ONCE");
   const [name, setName] = useState(task.title);
   const { houseHold } = useContext(HouseHoldContext);
-
+  let TIME = "";
 
   // Update database as well.
   const checkOff = () => {
@@ -82,12 +82,42 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     handleUpdate(updatedTask[0]);
   } 
 
+  function updateTime(oldT)
+  {
+    let time = oldT.split(":");
+
+    // fetch
+    let hours = Number(time[0]);
+    let minutes = Number(time[1]);
+    let seconds = Number(time[2]);
+
+    // calculate
+    let timeValue;
+
+    if (hours > 0 && hours <= 12) {
+      timeValue= "" + hours;
+    } else if (hours > 12) {
+      timeValue= "" + (hours - 12);
+    } else if (hours === 0) {
+      timeValue= "12";
+    }
+    
+    timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+    timeValue += (seconds < 10) ? ":0" + seconds : ":" + seconds;  // get seconds
+    timeValue += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
+
+    TIME = timeValue;    
+  }
+
   if(type === "Event") {
+    updateTime((task.sourceDate).substring(11, 19));
+
     return (
-      <div className='eventItem' date={task.date} id={task.id} name="task" value={task.id}>
-        <div className="info">
-          <input className="check" type="checkbox" id={task.id} onChange={checkOff} checked = {task.complete ? true : false}/>
-          <label className={task.complete ? "label strike" : "label"}>{" " + task.task}{" " + task.date}{" " + task.description}</label>
+      <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
+        <div className="eventInfo">
+          <p>{task.title}</p>
+          <p>Starts: {(task.sourceDate).substring(0, 10)} @ {TIME}</p>
+          <p>Occurs: {task.frequency}</p>
         </div>
                   
         <div className="icons">
@@ -98,12 +128,12 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
             <div className="selections">
               <div className="childSelect">
                 <label htmlFor="startDate">Start Date</label>
-                <input onChange={handleEditSDate} defaultValue={task.sDate} type="datetime-local" className="form-control" id="startDate"/>
+                <input onChange={handleEditSDate} defaultValue={task.sourceDate} type="datetime-local" className="form-control" id="startDate"/>
               </div>
               
               <div className="childSelect">
                 <label htmlFor="endDate">End Date</label>
-                <input onChange={handleEditEDate} defaultValue={task.eDate} type="datetime-local" className="form-control" id="endDate"/>
+                <input onChange={handleEditEDate} type="datetime-local" className="form-control" id="endDate"/>
               </div>
             </div>
             
