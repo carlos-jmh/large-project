@@ -4,7 +4,7 @@ import * as Icon from 'react-bootstrap-icons'
 import { createNewItem, createNewList, createNewTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
-const Add = ({addTask, name, list, theme, setState}) => {
+const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   // console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
@@ -103,12 +103,17 @@ const Add = ({addTask, name, list, theme, setState}) => {
   const addItem = async(e) => {
     e.preventDefault();
 
-    document.getElementsByClassName("addingTask")[0].style.display = "none";
-
-    console.log(title.current.value);
+    changeAdd();
 
     // Pass correct values here. 
     const newItem = await createNewItem(list.id, title.current.value);
+
+    // Display's blank, why? 
+    setState(prevState => {
+      const newListData = [...prevState];
+      newListData[index].listItems.push(newItem);
+      return newListData;
+    });
   }
   
   const handleNewList = async(e) => {

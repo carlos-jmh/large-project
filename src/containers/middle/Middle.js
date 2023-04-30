@@ -57,16 +57,19 @@ const Middle = ({theme}) => {
 
   const onListItemCreated = (item, index, setListData) => {
     console.log("SUBSCRIPTION CREATE ITEM", item);
-    setListData(prevState => {
-      const newListData = [...prevState];
-      newListData[index].listItems.push({
-        id: item.id,
-        task: item.title,
-        complete: item.completed,
-        _version: item._version,
+
+    if (listData[index].listItems.find(element => element.id === item.id))
+    {
+      return;
+    }
+    else
+    {
+      setListData(prevState => {
+        const newListData = [...prevState];
+        newListData[index].listItems.push(item);
+        return newListData;
       });
-      return newListData;
-    });
+    }
   };
 
   const onListItemUpdated = (item, listIndex, setListData) => {
@@ -219,13 +222,13 @@ const Middle = ({theme}) => {
               <div key = {index} className='list'>
                 <hr className="taskLine"></hr>
                 <List list={currList} name={currList.title} setState={setListData} listItems={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
-                <Add addTask={addTask} useState={false} name={currList.title} list={currList} theme={theme}/>
+                <Add addTask={addTask} useState={false} name={currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
                 <br/>
               </div>
             )
           })}
           <hr className="taskLine"></hr>
-          <Add useState={false} name={"List"} theme={theme} setState={setListData}/>
+          <Add useState={false} name={"List"} theme={theme} setState={setListData} handle={handleListItemToggle}/>
         </div>
       </div>
 

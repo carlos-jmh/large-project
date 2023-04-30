@@ -8,7 +8,6 @@ const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
   const [shown, setShown] = useState(false);
   const [active, setActive] = useState(false);
 
-
   const handleClick = (e) => {
       e.preventDefault();
       item.completed = !item.completed;
