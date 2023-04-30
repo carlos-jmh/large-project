@@ -2,7 +2,7 @@ import { API } from "aws-amplify";
 import { getCognitoToken } from '../utils/auth';
 import { onNewItemCreated, onItemUpdated, onItemDeleted } from '../graphql/subscriptions';
 
-export const createSubListItems = async (listId, setListData, callback) => {
+export const createSubListItems = async (listId, setHouseHold, callback) => {
   const token = await getCognitoToken();
 
   const subscription = API.graphql(
@@ -13,14 +13,14 @@ export const createSubListItems = async (listId, setListData, callback) => {
     { Authorization: `Banana ${token}` }
   ).subscribe({
     next: (data) =>
-      callback(data.value.data.onNewItemCreated, listId, setListData),
+      callback(data.value.data.onNewItemCreated, listId, setHouseHold),
     error: (error) => console.log(error),
   });
 
   return Promise.resolve(subscription);
 };
 
-export const updateSubListItems = async (listId, setListData, callback) => {
+export const updateSubListItems = async (listId, setHouseHold, callback) => {
   const token = await getCognitoToken();
 
   const subscription = API.graphql(
@@ -31,14 +31,14 @@ export const updateSubListItems = async (listId, setListData, callback) => {
     { Authorization: `Banana ${token}` }
   ).subscribe({
     next: (data) =>
-      callback(data.value.data.onItemUpdated, listId, setListData),
+      callback(data.value.data.onItemUpdated, listId, setHouseHold),
     error: (error) => console.log(error),
   });
 
   return Promise.resolve(subscription);
 }
 
-export const deleteSubListItems = async (listId, listIndex, setListData, callback) => {
+export const deleteSubListItems = async (listId, listIndex, setHouseHold, callback) => {
   const token = await getCognitoToken();
 
   const subscription = API.graphql({
@@ -46,7 +46,7 @@ export const deleteSubListItems = async (listId, listIndex, setListData, callbac
     variables: { listId: listId },
   }, { Authorization: `Banana ${token}` }
   ).subscribe({
-    next: (data) => callback(data.value.data.onItemDeleted, listIndex, setListData),
+    next: (data) => callback(data.value.data.onItemDeleted, listIndex, setHouseHold),
     error: (error) => console.log(error)
   });
 

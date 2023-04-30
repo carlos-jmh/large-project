@@ -51,6 +51,15 @@ export default function ListItem({ item, itemListId, onChecked }) {
           >
             {item.title}
           </Text>
+          <Text
+            style={{
+              color: primaryTextColor,
+              fontFamily: "Inter_500Medium",
+              fontSize: 14,
+            }}
+          >
+            {item.task.id}
+          </Text>
           <ListItemInfo taskTitle={item.taskTitle} date={item.date} />
         </View>
       </Pressable>

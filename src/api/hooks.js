@@ -25,6 +25,9 @@ export const useListsData = ({
       const processedData = processDataCallback
         ? await processDataCallback(lists)
         : lists;
+
+      console.log("processedData", processedData);
+
       setListData(processedData);
     }
 

@@ -34,8 +34,6 @@ export default function Events({ navigation, route }) {
       })
     }
   }, [eventData])
-
-
   
   function getEventsByDate(today) {
     const eventsToday = [];

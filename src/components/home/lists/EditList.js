@@ -2,8 +2,8 @@ import { Keyboard, Pressable, Text, View } from "react-native";
 import {
   createNewItem,
   createNewList,
-  deleteList,
-  editList,
+  deleteExistingList,
+  editExistingList,
   updateExistingItem,
 } from "../../../api/mutating";
 import { useContext, useState } from "react";
@@ -14,7 +14,6 @@ import CustomModal from "../../CustomModal";
 import { HouseHoldContext } from "../../HouseHoldContext";
 import LabeledInput from "../../LabeledInput";
 import LabeledSelectList from "../../LabeledSelectList";
-import data from "../mockData";
 import { getStyles } from "../../styles";
 import { useTheme } from "@react-navigation/native";
 
@@ -77,7 +76,7 @@ export default function EditList({ list, setModalVisible, itemListId }) {
             ),
           };
         });
-        await editList(updatedList);
+        await editExistingList(updatedList);
       }
     }
   }
@@ -94,7 +93,7 @@ export default function EditList({ list, setModalVisible, itemListId }) {
           lists: oldHouseHold.lists.filter((x) => x.id != list.id),
         };
       });
-      await deleteList(list.id);
+      await deleteExistingList(list.id);
     }
   }
 
