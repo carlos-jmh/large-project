@@ -138,7 +138,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
       "",
       userInput
     );
-
+    
     const newHandlerId = await generateEventHandler(
       houseHold.calendarId,
       newTask.id,
