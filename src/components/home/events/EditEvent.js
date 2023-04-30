@@ -158,6 +158,7 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
           setModalVisible={setDeleteConfirmVisible}
           handleDelete={onClose}
           eventTitle={title}
+          frequency = {frequency}
         />
       </View>
     </CustomModal>
@@ -167,47 +168,71 @@ function ConfirmDelete({
   modalVisible,
   setModalVisible,
   handleDelete,
-  listTitle,
+  eventTitle,
+  frequency
 }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
+  const [isRecurrent, setIsRecurrent] = useState(false);
 
+
+  if(frequency !== "Once"){
+    setIsRecurrent(true);
+  }
+  
   return (
     <CustomModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
       <Pressable
         style={[styles.modalView, { alignSelf: "stretch", margin: 16 }]}
         onPress={Keyboard.dismiss}
       >
-        <Text style={[styles.groupTitleText, { flex: 0 }]}>Delete list</Text>
+        <Text style={[styles.groupTitleText, { flex: 0 }]}>Delete Event</Text>
         <View style={{ height: 20 }}></View>
-        <View
-          style={{
-            alignSelf: "stretch",
-          }}
-        >
-          <Text
-            style={{
-              color: colors.primaryText,
-              fontFamily: "Inter_500Medium",
-              fontSize: 14,
-            }}
-          >
-            {`Are you sure you want to delete the list titled "${listTitle}"?`}
-          </Text>
-          <View style={{ height: 24 }}></View>
-          <View style={{ flexDirection: "row" }}>
-            <CustomButton
-              title={"CANCEL"}
-              onPress={() => setModalVisible(false)}
-              style={{ flex: 1 }}
-            />
-            <View style={{ width: 16 }}></View>
-            <CustomButton
-              title={"DELETE"}
-              onPress={handleDelete}
-              style={{ flex: 1 }}
-            />
-          </View>
+        <View style={{ alignSelf: "stretch"}}>
+          {isRecurrent ? (
+            <View>
+              <Text style={{color: colors.primaryText, fontFamily: "Inter_500Medium", fontSize: 14,}}>
+                {`This is a recurring event. Do you want to delete all instances of this event?`}
+              </Text>
+              <CustomButton
+                title={"ALL INSTANCES"}
+                onPress={() => setModalVisible(false)}
+                style={{ flex: 1 }}
+              />
+              <View style={{ width: 16 }}></View>
+              <CustomButton
+                title={"THIS INSTANCE"}
+                onPress={() => setModalVisible(false)}
+                style={{ flex: 1 }}
+              />
+            </View>
+          ) : (
+            <View>
+              <Text
+                style={{
+                  color: colors.primaryText,
+                  fontFamily: "Inter_500Medium",
+                  fontSize: 14,
+                }}
+              >
+                {`Are you sure you want to delete the list titled "${eventTitle}"?`}
+              </Text>
+              <View style={{ height: 24 }}></View>
+              <View style={{ flexDirection: "row" }}>
+                <CustomButton
+                  title={"CANCEL"}
+                  onPress={() => setModalVisible(false)}
+                  style={{ flex: 1 }}
+                />
+                <View style={{ width: 16 }}></View>
+                <CustomButton
+                  title={"DELETE"}
+                  onPress={handleDelete}
+                  style={{ flex: 1 }}
+                />
+              </View>
+            </View>
+          )}
         </View>
       </Pressable>
     </CustomModal>
