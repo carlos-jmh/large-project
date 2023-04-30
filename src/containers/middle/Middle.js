@@ -243,7 +243,7 @@ const Middle = ({theme}) => {
         <div className="section1">
             <h5 className="sectionHeader">Tasks</h5>
             <div>
-              <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler}/>
+              <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} theme={theme}/>
               <Add addTask={addTask2} useState={false} name="Task" list={listData} theme={theme}/>
               <br/>
             </div>
@@ -274,13 +274,13 @@ const Middle = ({theme}) => {
                   handleListItemDelete={handleListItemDelete}
                   handleListItemUpdate={handleListItemUpdate}
                 />
-                <Add addTask={addTask} useState={false} name={currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
+                <Add addTask={addTask} useState={false} name={"to" + currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
                 <br/>
               </div>
             )
           })}
           <hr className="taskLine"></hr>
-          <Add useState={false} name={"List"} theme={theme} setState={setListData} handle={handleListItemUpdate}/>
+          <Add useState={false} name={"a New List"} theme={theme} setState={setListData} handle={handleListItemUpdate}/>
         </div>
       </div>
     </>

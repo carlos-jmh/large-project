@@ -4,7 +4,7 @@ import * as Icon from 'react-bootstrap-icons'
 import ItemInfo from '../ItemInfo/ItemInfo'
 import { render } from '@testing-library/react'
 
-const Task = ({task, taskIndex, handleCheck, type, handleDelete}) => {
+const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme}) => {
 
   const [show, setShow] = useState(false);
 
@@ -58,7 +58,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete}) => {
               <div className="icons">
                 <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
                 <ItemInfo delete={deleteT} title="Edit Task" onClose={() => setShow(false)} show={show}>
-                  <div className="addingTask">
+                  <div className="popup">
                     <input required onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/  >
                     {/* Start and End Date Required */}
                     <div className="selections">
