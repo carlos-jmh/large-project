@@ -46,7 +46,7 @@ const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
     console.log(newName.current.value);
 
     // If the name was changed.
-    if (list.title !== newName.current)
+    if (list.title !== newName.current.value)
     {
       // Create new list object. 
       const listToUpdate = {

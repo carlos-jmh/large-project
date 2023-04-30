@@ -67,7 +67,6 @@ export const deleteExistingList = async (listId) => {
 
 export const editExistingList = async (list) => {
   try {
-    console.log(list);
     const updatedList = await API.graphql({
       query: `mutation UpdateList($_version: Int = 0, $completed: Boolean = false, $description: String = "", $houseHoldId: ID = "", $id: ID = "", $listTaskId: ID = "", $taskId: ID = "", $title: String = "") {
         updateList(input: {id: $id, title: $title, taskId: $taskId, listTaskId: $listTaskId, houseHoldId: $houseHoldId, description: $description, completed: $completed, _version: $_version}) {

@@ -169,10 +169,6 @@ const Middle = ({theme}) => {
     setEvents(copy);
   }
 
-  useEffect(() => {
-    console.log("listData", listData);
-  }, [listData]);
-
   return (
     <>
     {/*

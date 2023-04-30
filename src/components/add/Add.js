@@ -110,7 +110,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
     // Pass correct values here. 
     const newItem = await createNewItem(list.id, title.current.value);
 
-    // Display's blank, why?
+    // Display's blank, why? 
     setState(prevState => {
       const newListData = [...prevState];
       newListData[index].listItems.push(newItem);
