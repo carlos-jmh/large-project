@@ -66,7 +66,9 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const handleChange2 = (e) => {
     //let date = (e.target.value).split('-')
     //let dateInput = date[1] + 
+    
     setSDateInput(e.target.value);
+    setEDateInput(e.target.value);
   }
 
   const handleChange5 = (e) => {
@@ -126,8 +128,6 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   }
 
   const addTaskDatabase = async(e) => {
-    alert("Creating New Task!");
-
     const newTask = await createNewTask(
       false,
       false,
@@ -152,6 +152,9 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
     newTask.eventHandlerId = newHandlerId;
     addTask(newTask);
     await updateExistingTask(newTask);
+
+    console.log(new Date(userSDate))
+    
     }
 
   const addEvent = async(e) => {
@@ -197,12 +200,12 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
           <div className="selections">
             <div className="childSelect">
               <label htmlFor="startDate">Start Date</label>
-              <input required type="date" value={userSDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
+              <input required type="datetime-local" value={userSDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
               <label htmlFor="endDate">End Date</label>
-              <input required type="date" value={userEDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
+              <input required type="datetime-local" value={userEDate} onChange={handleChange5} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
           
@@ -220,25 +223,25 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
           {/* Cannot connect to a list. */}
           <div className="buttons">
             <button className="btn btn-danger" onClick={changeAdd}>close</button>
-            <button className="btn" id="purple" onClick={async (e) => await addEvent(e)}>add</button>
+            <button type="submit" className="btn" id="purple" onClick={async (e) => await addEvent(e)}>add</button>
           </div>
         </form>
       )
     } else if (name === "Task") {
       return (
-        <form className="addingTask">
+        <form className="addingTask" action="page_submission_URL" method="POST">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Task Name" ref={title}/>
           
           {/* Start and End Date Required */}
           <div className="selections">
             <div className="childSelect">
               <label htmlFor="startDate">Start Date</label>
-              <input type="date" value={userSDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
+              <input type="datetime-local" value={userSDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
               <label htmlFor="endDate">End Date</label>
-              <input type="date" value={userEDate} onChange={handleChange5} className="form-control" id="endDate" ref={eDate}/>
+              <input type="datetime-local" value={userEDate} onChange={handleChange5} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
 
@@ -304,7 +307,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
           <hr></hr>
           <div className="buttons">
             <button className="btn btn-danger" onClick={changeAdd}>close</button>
-            <button className="btn" id="purple" onClick={handleSubmit}>add</button>
+            <button type="submit" className="btn" id="purple" onClick={handleSubmit}>add</button>
           </div>
         </form>
       )
