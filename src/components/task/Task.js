@@ -98,12 +98,12 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
             <div className="selections">
               <div className="childSelect">
                 <label htmlFor="startDate">Start Date</label>
-                <input onChange={handleEditSDate} defaultValue={task.sDate} type="date" className="form-control" id="startDate"/>
+                <input onChange={handleEditSDate} defaultValue={task.sDate} type="datetime-local" className="form-control" id="startDate"/>
               </div>
               
               <div className="childSelect">
                 <label htmlFor="endDate">End Date</label>
-                <input onChange={handleEditEDate} defaultValue={task.eDate} type="date" className="form-control" id="endDate"/>
+                <input onChange={handleEditEDate} defaultValue={task.eDate} type="datetime-local" className="form-control" id="endDate"/>
               </div>
             </div>
             
@@ -129,7 +129,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
         <div className="info">
           <input className="check" type="checkbox" id={task.id} value = "" onChange={checkOff} checked = {task.complete ? true : false}/>
           {/* Place the date and any links here as well */}
-          <label className={task.complete ? "label strike" : "label"}>{" " + task.title}</label>
+          <label className={task.complete ? "label strike" : "label"}>{" " + task.title}{task.sDate != null ? " " + task.sDate : "" }{task.eDate != null ? " " + task.eDate : "" }</label>
         </div>
         
         <div className="icons">
@@ -141,12 +141,12 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
               <div className="selections">
                 <div className="childSelect">
                   <label htmlFor="startDate">Start Date</label>
-                  <input onChange={handleEditSDate} value={task.sDate} type="date" className="form-control" id="startDate"/>
+                  <input onChange={handleEditSDate} value={task.sDate} type="datetime-local" className="form-control" id="startDate"/>
                 </div>
                 
                 <div className="childSelect">
                   <label htmlFor="endDate">End Date</label>
-                  <input onChange={handleEditEDate} value={task.eDate} type="date" className="form-control" id="endDate"/>
+                  <input onChange={handleEditEDate} value={task.eDate} type="datetime-local" className="form-control" id="endDate"/>
                 </div>
               </div>
               

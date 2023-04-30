@@ -81,7 +81,6 @@ const Middle = ({theme}) => {
   const taskDeleteHandler = (id, index) => {
     let removed = taskData.filter((current) => current.id != id)
     setTaskData(removed);
-    console.log(removed);
   ;}
 
   const onListItemCreated = (item, listIndex, setListData) => {
@@ -254,7 +253,7 @@ const Middle = ({theme}) => {
         <div className="section1">
             <h5 className="sectionHeader">Tasks</h5>
             <div>
-              <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme}/>
+              <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme} handler={eventHandlerData}/>
               <Add addTask={addTask} useState={false} name="Task" list={listData} theme={theme}/>
               <br/>
             </div>
