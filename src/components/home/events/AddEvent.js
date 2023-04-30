@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { TextInput, Keyboard , Pressable, View, Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { getStyles } from '../../styles';
@@ -7,6 +7,8 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import CustomButton from '../../CustomButton';
 import LabeledInput from '../../LabeledInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {HouseHoldContext} from '../../HouseHoldContext';
+import {generateEventHandler} from '../../../api/mutating';
 
 export default function AddEvent({ visible, onClose, onSave }) {
   const [title, setTitle] = useState('');
@@ -15,18 +17,25 @@ export default function AddEvent({ visible, onClose, onSave }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [frequency, setFrequency] = useState("Once"); // default value
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
+  const {houseHold}= useContext(HouseHoldContext);
+  
   const [modalVisible, setModalVisible] = useState(false);
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  const handleSave = () => {
+  async  function handleSave  () {
     let newEvent = {
+        calendarId : houseHold.calendarId,
         title: title,
-        date: startDate,
-        frequency: frequency,
-        startDate: startDate,
+        frequency: frequency.toUpperCase(),
+        sourceDate: startDate,
         endDate: endDate,
+        eventType: "EVENT",
     }
+    console.log("Event created", newEvent)
+    const result = await generateEventHandler(
+      newEvent.calendarId, "", newEvent.frequency, newEvent.sourceDate, newEvent.endDate, newEvent.eventType, newEvent.title)
+    console.log(result)
     onClose();
   };
 
@@ -55,7 +64,7 @@ export default function AddEvent({ visible, onClose, onSave }) {
 
   return(
     <CustomModal modalVisible={visible} setModalVisible={onClose}>
-      <View style={[styles.modalView]}>
+      <View style={styles.modalView}>
         <Text style={styles.householdButtonText}>Add Event</Text>
         <LabeledInput
           value={title}
