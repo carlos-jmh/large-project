@@ -168,6 +168,8 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
       "EVENT",
       title.current.value
     )
+
+    console.log(newHandlerId);
   }
 
   if (!add)
@@ -199,7 +201,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   else {
     if(name === "Event") {
       return (
-        <form onSubmit={handleSubmit} className="addingTask">
+        <form className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Event Name" ref={title}/>
           <input type="text" value={userDesc} onChange={handleChange3} className="form-control" id="name" placeholder="Event Description" ref={desc}/>
 
