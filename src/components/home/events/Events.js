@@ -8,7 +8,7 @@ import MyCalendar from "./Calendar";
 import Event from "./Event";
 import { useContext, useState, useEffect } from "react";
 import { HouseHoldContext } from "../../HouseHoldContext";
-import { useEventData } from '../../../api/hooks';
+import { useEventData, useEventHandlerData } from '../../../api/hooks';
 import { Auth as CognitoAuth } from "aws-amplify";
 
 /* Events page */
@@ -23,7 +23,13 @@ export default function Events({ navigation, route }) {
   const [eventData] = useEventData({
     calendarId: houseHold.calendarId,
   })
-  // Get actual eventHandlers from the backend here
+
+  const [eventHandlerData] = useEventHandlerData({
+    calendarId: houseHold.calendarId,
+  })
+
+
+
   useEffect(() => {
     if( eventData && eventData.length > 0) {
       setHouseHold((oldHouseHold) => {
@@ -34,14 +40,21 @@ export default function Events({ navigation, route }) {
       })
       console.log(houseHold);
     }
+    console.log(eventData)
   }, [eventData])
 
-
   useEffect(() => {
-    console.log("After clicking events",houseHold)
-    console.log("After clicking auth", CognitoAuth.currentSession())
-  }, [houseHold])
-
+    if( eventHandlerData && eventHandlerData.length > 0) {
+      setHouseHold((oldHouseHold) => {
+        return {
+          ...oldHouseHold,
+          eventHandlers: eventHandlerData,
+        }
+      })
+    }
+    console.log(eventHandlerData)
+  }, [eventHandlerData])
+  
   function getEventsByDate(today) {
     const eventsToday = [];
     for (const [key, value] of Object.entries(houseHold.events)) {
