@@ -138,7 +138,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
       "",
       userInput
     );
-
+    
     const newHandlerId = await generateEventHandler(
       houseHold.calendarId,
       newTask.id,
@@ -156,7 +156,8 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
 
   const addEvent = async(e) => {
     e.preventDefault();
-
+    
+    // Create eventHandler.
     // const newEvent = await createEventHandler("asd", "asda");
     // Event handler should then make events? 
   }
