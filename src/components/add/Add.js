@@ -128,6 +128,8 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   }
 
   const addTaskDatabase = async(e) => {
+    alert("Creating New Task!");
+
     const newTask = await createNewTask(
       false,
       false,
