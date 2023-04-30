@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "storage": {
+      "Message:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "ChatRoom:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "HouseHoldMember:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "HouseHold:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

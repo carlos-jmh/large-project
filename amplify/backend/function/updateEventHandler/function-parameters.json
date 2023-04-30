@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "function": {
+      "createEventHandler": [
+        "read"
+      ],
+      "deleteEventHandler": [
+        "read"
+      ]
+    },
+    "storage": {
+      "Calendar:@model(appsync)": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

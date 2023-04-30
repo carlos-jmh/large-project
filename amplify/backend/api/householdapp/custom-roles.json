@@ -1,0 +1,3 @@
+{
+  "adminRoleNames": ["arn:aws:iam::737064277081:role/amplify-amplifyee0a994c71-InitializeNewHouseHoldLa-1MVY2EBDXVKKM", "arn:aws:iam::737064277081:user/admin-user", "arn:aws:iam::737064277081:user/amplify-user", "arn:aws:iam::737064277081:user/database-guy"]
+}
