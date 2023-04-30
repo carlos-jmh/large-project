@@ -11,24 +11,11 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   useColorScheme,
-  View,
-  TouchableOpacity,
-  Icon
 } from "react-native";
 import { Roboto_500Medium, Roboto_700Bold } from "@expo-google-fonts/roboto";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { useCallback,  useState } from "react";
+import { useCallback, useState } from "react";
 
-import Chat from "./home/chat/Chat";
-import ConfirmRegister from "./auth/ConfirmRegister.js";
-import CreateHousehold from "./households/CreateHousehold";
-import Events from "./home/events/Events";
-import InitialPage from "./households/InitialPage";
-import Lists from "./home/lists/Lists";
-import Login from "./auth/Login.js";
-import { NavigationContainer } from "@react-navigation/native";
-import Register from "./auth/Register.js";
-import Tasks from "./home/tasks/Tasks";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
 import { Platform } from "react-native";
@@ -36,11 +23,44 @@ import { HouseHoldContext } from "./HouseHoldContext";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import SideBar from "./SideBar";
 import { UserContext } from "./UserContext";
+import Wrappy from "./Wrappy";
 
 const Stack = createNativeStackNavigator();
 
 // Prevent splash screen from hiding until everything is loaded
 SplashScreen.preventAutoHideAsync();
+
+// const processLists = async (lists) => {
+//   const processedLists = await Promise.all(
+//     lists.map(async (list) => {
+//       const listItems = await fetchItemsByListId(list.id);
+
+//       return {
+//         ...list,
+//         listItems: listItems,
+//       };
+//     })
+//   );
+
+//   return processedLists;
+// };
+
+// export const processTasks = async (tasks) => {
+//   const processedTasks = await Promise.all(tasks.map(async (task) => {
+//     if (!task.eventHandlerId || task.eventHandlerId === '') {
+//       return task;
+//     }
+
+//     const eventHandler = await fetchEventHandlerById(task.eventHandlerId);
+
+//     return {
+//       ...task,
+//       eventHandler,
+//     };
+//   }));
+
+//   return processedTasks;
+// };
 
 /* Root app component, sets up theme and fonts */
 export default function App() {
@@ -48,7 +68,15 @@ export default function App() {
   const theme = DarkTheme; //scheme === "dark" ? DarkTheme : LightTheme;
   const colors = theme.colors;
 
-  const [houseHold, setHouseHold] = useState({});
+  const [houseHold, setHouseHold] = useState({
+    id: "",
+    calendarId: "",
+    lists: [],
+    tasks: [],
+    events: [],
+    eventHandlers: [],
+  });
+
   const [user, setUser] = useState({});
 
   // Load Google fonts
@@ -90,62 +118,7 @@ export default function App() {
           >
             <UserContext.Provider value={{ user, setUser }}>
             <HouseHoldContext.Provider value={{ houseHold, setHouseHold }}>
-              <NavigationContainer theme={theme}>
-                <Drawer.Navigator drawerContent={() => <SideBar/>} screenOptions=
-                {{
-                  headerShown:false,
-                  headerStyle:{backgroundColor: colors.background, height:0},
-                  headerTintColor: colors.text,
-                  headerLeftContainerStyle: {display:'flex', flexDirection:'row', alignItems:'center', marginLeft:10},
-
-                  }}>
-                  <Drawer.Screen
-                    name="Login"
-                    component={Login}
-                    options={{ headerShown: false }}
-                  />
-                  <Drawer.Screen
-                    name="Register"
-                    component={Register}
-                    options={{ headerShown: false }}
-                  />
-                  <Drawer.Screen
-                    name="ConfirmRegister"
-                    component={ConfirmRegister}
-                    options={{ headerShown: false }}
-                  />
-                  <Drawer.Screen
-                    name="InitialPage"
-                    component={InitialPage}
-                    options={{ headerShown: true }}
-                  />
-                  <Drawer.Screen
-                    name="CreateHousehold"
-                    component={CreateHousehold}
-                    options={{ headerShown: true }}
-                  />
-                  <Drawer.Screen
-                    name="Events"
-                    component={Events}
-                    options={{ headerShown: true }}
-                  />
-                  <Drawer.Screen
-                    name="Tasks"
-                    component={Tasks}
-                    options={{ headerShown: true }}
-                  />
-                  <Drawer.Screen
-                    name="Lists"
-                    component={Lists}
-                    options={{ headerShown: true }}
-                  />
-                  <Drawer.Screen
-                    name="Chat"
-                    component={Chat}
-                    options={{ headerShown: true }}
-                  />
-                </Drawer.Navigator>
-              </NavigationContainer>
+              <Wrappy />
             </HouseHoldContext.Provider>
             </UserContext.Provider>
           </KeyboardAvoidingView>

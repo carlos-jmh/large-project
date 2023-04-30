@@ -22,8 +22,10 @@ export default function InitialPage({ navigation, route }) {
   const handleHouseHoldPress = (houseHold) => {
     //first fetch events, lists, and tasks
     // 
-    setHouseHold(houseHold);
-    console.log(houseHold)
+    setHouseHold((oldHouseHold) => {
+      return { ...oldHouseHold, ...houseHold };
+    });
+    // console.log(houseHold)
     navigation.navigate("Events")
   }
 
