@@ -16,6 +16,7 @@ import {
 import { updateExistingItem, createNewList } from '../../api/mutating'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 import { useEventData, useEventHandlerData, useListsData, useTasksData } from '../../api/hooks'
+import { useEffect } from 'react'
 
 const processLists = async (lists) => {
   const processedLists = await Promise.all(lists.map(async (list) => {
@@ -54,21 +55,20 @@ const Middle = ({theme}) => {
     console.log(removed);
   ;}
 
-  const onListItemCreated = (item, index, setListData) => {
+  const onListItemCreated = (item, listIndex, setListData) => {
     console.log("SUBSCRIPTION CREATE ITEM", item);
 
-    if (listData[index].listItems.find(element => element.id === item.id))
-    {
+    // check if new item is already in list
+    const itemAlreadyInList = listData[listIndex].listItems.some(listItem => listItem.id === item.id);
+    if (itemAlreadyInList) {
       return;
     }
-    else
-    {
-      setListData(prevState => {
-        const newListData = [...prevState];
-        newListData[index].listItems.push(item);
-        return newListData;
-      });
-    }
+
+    setListData(prevState => {
+      const newListData = [...prevState];
+      newListData[listIndex].listItems.push(item);
+      return newListData;
+    });
   };
 
   const onListItemUpdated = (item, listIndex, setListData) => {
@@ -112,13 +112,12 @@ const Middle = ({theme}) => {
 
   //Handles list ITEM edition
   const handleListItemToggle = (item, listIndex, itemIndex) => {
-    console.log(item);
-    updateExistingItem(item);
     setListData(prevState => {
       const newListData = [...prevState];
       newListData[listIndex].listItems[itemIndex] = item;
       return newListData;
     });
+    updateExistingItem(item);
   }
 
   //Handles list completions
@@ -169,6 +168,10 @@ const Middle = ({theme}) => {
     copy = [...copy, { id: events.length + 1, task: userInput, complete: false, date: userDate, description: userDesc}];
     setEvents(copy);
   }
+
+  useEffect(() => {
+    console.log("listData", listData);
+  }, [listData]);
 
   return (
     <>

@@ -40,7 +40,6 @@ function Auth(props) {
 
   const confirmUserSignUp = async () => {
     try {
-      console.log(formInput.username);
       await CognitoAuth.confirmSignUp(formInput.username, formInput.verificationCode);
       setAuthMode("confirmedSignUp");
     } catch (error) {
@@ -48,19 +47,21 @@ function Auth(props) {
     }
   }
 
-  const signOutUser = async () => {
+  const forgotPassword = async() => {
     try {
-      await CognitoAuth.signOut();
+      await CognitoAuth.forgotPassword(formInput.username);
+
+      setAuthMode("forgotPasswordSubmit");
     } catch (error) {
       console.log(error);
     }
   }
 
-  const forgotPassword = async() => {
+  const forgotPasswordSubmit = async() => {
     try {
-      console.log(formInput.email);
-      //await CognitoAuth.forgotPassword(formInput.email);
-      //setAuthMode("signIn");
+      await CognitoAuth.forgotPasswordSubmit(formInput.username, formInput.verificationCode, formInput.password);
+
+      setAuthMode("signIn");
     } catch (error) {
       console.log(error);
     }
@@ -175,17 +176,69 @@ function Auth(props) {
           <div className="form-content">
             <h3 className="form-title">Forgot Password</h3>
             <div className="form-group mt-3">
-              <label>Email address</label>
               <input
-                name="email"
-                type="email"
+                name="username"
+                type="username"
                 className="form-control mt-1"
-                placeholder="Email Address"
+                placeholder="Username"
                 onChange={ onFormChange }
               />
             </div>
             <div className="d-grid gap-2 mt-3">
               <button className="btn btn-primary" onClick={ forgotPassword }>
+                Submit
+              </button>
+            </div>
+            <div className="text-center">
+              Remember your password?{" "}
+              <span className="link-primary" onClick={() => setAuthMode("signIn")}>
+                Sign In
+              </span>
+            </div>
+            <div className="text-center">
+              Not yet registered?{" "}
+              <span className="link-primary" onClick={() => setAuthMode("signUp")}>
+                Sign Up
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (authMode === "forgotPasswordSubmit") {
+    return (
+      <div className="forgotPasswordContainer">
+        <div className="form">
+          <div className="form-content">
+            <h3 className="form-title">Reset Password</h3>
+            <div className="form-group mt-3">
+              <label>Email address</label>
+              <input
+                name="verificationCode"
+                type="verificationCode"
+                className="form-control mt-1"
+                placeholder="Code"
+                onChange={ onFormChange }
+              />
+              <input
+                name="password"
+                type="password"
+                className="form-control mt-1"
+                placeholder="New Password"
+                onChange={ onFormChange }
+              />
+              <input
+                name="passwordConfirmation"
+                type="password"
+                className="form-control mt-1"
+                placeholder="Confirm New Password"
+                onChange={ onFormChange }
+              />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+              <button className="btn btn-primary" onClick={ forgotPasswordSubmit }>
                 Submit
               </button>
             </div>
@@ -227,7 +280,7 @@ function Auth(props) {
   }
 
   if (authMode === "confirmedSignUp") {
-    window.location.href = "/dashboard"
+    window.location.href = "/login"
   }
 
   if (authMode === "signedIn") {

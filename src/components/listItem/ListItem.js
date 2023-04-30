@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import * as Icon from 'react-bootstrap-icons';
 import './ListItem.css';
-import { updateExistingItem } from '../../api/mutating';
  
 const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
   
@@ -9,9 +8,9 @@ const ListItem = ({item, listIndex, itemIndex, handleToggle, lname}) => {
   const [active, setActive] = useState(false);
 
   const handleClick = (e) => {
-      e.preventDefault();
-      item.completed = !item.completed;
-      handleToggle(item, listIndex, itemIndex);
+    e.preventDefault();
+    item.completed = !item.completed;
+    handleToggle(item, listIndex, itemIndex);
   }
 
   const editListItem = async () => {
