@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import './middle.css'
 import List from '../../components/list/List'
 import Events from '../../components/events/Events'
@@ -13,7 +13,7 @@ import Dropdown from '../../components/dropdown/Dropdown';
 import {
   fetchItemsByListId,
 } from '../../api/fetching';
-import { updateExistingItem, createNewList } from '../../api/mutating'
+import { updateExistingItem, createNewList, updateExistingTask, deleteExistingTask } from '../../api/mutating'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 import { useEventData, useEventHandlerData, useListsData, useTasksData } from '../../api/hooks'
 

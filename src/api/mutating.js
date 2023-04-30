@@ -228,61 +228,69 @@ export const createNewTask = async (
     return null;
   }
 }
-// TODO: finish backend implementations for these functions
-// export const updateExistingTask = async (task) => {
-//   try {
-//     const updatedTask = await API.graphql(
-//       {
-//         query:
-//           `mutation UpdateTask($_version: Int!, $completed: Boolean = false, $id: ID!, $title: String!,  $foreverTask: Boolean = false,  $completeSourceOnComplete: Boolean = false,  $houseHoldId: String!) {
-//             updateTask(input: {($_version: Int!, $completed: Boolean!, $id: ID!, $title: String!,  $foreverTask: Boolean!,  $completeSourceOnComplete: Boolean!,  $houseHoldId: String!}) {
-//               id
-//               listId
-//               title
-//               completed
-//               _version
-//               _deleted
-//               _lastChangedAt
-//               createdAt
-//               description
-//               itemTaskId
-//               updatedAt
-//             }
-//           }`,
-//         variables: {
-//           _version: task._version,
-//           completed: task.complete,
-//           id: task.id,
-//           title: task.title,
-//           foreverTask: task.foreverTask
-//         },
-//         authMode: "LAMBDA"
-//       },
-//     );
+  
+export const updateExistingTask = async (task) => {
+  try {
+    console.log("task: ", task);
+    const updatedTask = await API.graphql(
+      {
+        query:
+          `mutation UpdateTask($id: ID!, $completeSourceOnComplete: Boolean = false, $foreverTask: Boolean = false, $eventHandlerId: ID = "", $itemId: ID = "", $listId: ID = "", $title: String = "", $_version: Int!) {
+            updateTask(input: {id: $id, title: $title, listId: $listId, itemId: $itemId, foreverTask: $foreverTask, eventHandlerId: $eventHandlerId, completeSourceOnComplete: $completeSourceOnComplete, _version: $_version}) {
+              _deleted
+              _lastChangedAt
+              _version
+              completeSourceOnComplete
+              completed
+              createdAt
+              eventHandlerId
+              foreverTask
+              houseHoldId
+              id
+              itemId
+              listId
+              pointValue
+              title
+              updatedAt
+            }
+          }`,
+        variables: {
+          id: task.id,
+          completeSourceOnComplete: task.completeSourceOnComplete,
+          foreverTask: task.foreverTask,
+          eventHandlerId: task.eventHandlerId,
+          itemId: task.itemId,
+          listId: task.listId,
+          title: task.title,
+          _version: task._version,
+        },
+        authMode: "LAMBDA"
+      },
+    );
 
-//     return updatedTask.data.updateTask;
-//   } catch (error) {
-//     console.log("ERROR updating task ", error)
-//     return [];
-//   }
-// }
+    return updatedTask.data.updateTask;
+  } catch (error) {
+    console.log("ERROR updating task ", error)
+    return null;
+  }
+}
 
-// export const deleteExistingTask = async (taskId) => {
-//   try {
-//     const deletedTask = await API.graphql({
-//       query: deleteTask,
-//       variables: {
-//         taskId: taskId
-//       },
-//       authMode: "LAMBDA"
-//     });
+export const deleteExistingTask = async (taskId) => {
+  try {
+    const deletedTask = await API.graphql({
+      query: deleteTask,
+      variables: {
+        taskId: taskId
+      },
+      authMode: "LAMBDA"
+    });
 
-//     return deletedTask.data.deleteTask;
-//   } catch (error) {
-//     console.log("ERROR deleting task ", error);
-//     return null;
-//   }
-// }
+    return deletedTask.data.deleteTask;
+  } catch (error) {
+    console.log("ERROR deleting task ", error);
+    return null;
+  }
+}
 
 export const createHouseHold = async (name) => {
   try {
