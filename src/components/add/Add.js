@@ -66,7 +66,9 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const handleChange2 = (e) => {
     //let date = (e.target.value).split('-')
     //let dateInput = date[1] + 
+    
     setSDateInput(e.target.value);
+    setEDateInput(e.target.value);
   }
 
   const handleChange5 = (e) => {
@@ -126,8 +128,6 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   }
 
   const addTaskDatabase = async(e) => {
-    alert("Creating New Task!");
-
     const newTask = await createNewTask(
       false,
       false,
