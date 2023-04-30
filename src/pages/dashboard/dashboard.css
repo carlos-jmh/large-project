@@ -1,16 +1,18 @@
 .content {
     display: flex;
+    min-height: 100vh;
+    height: 100% !important;
 }
 
 .sidebar {
     width: 15%;
-    height: 100vh;
+    min-height: 100%;
     background-color: rgb(247, 247, 247);
 }
 
 .middle {
     width: 85%;
-    height: 100vh;
+    height: 100% !important;
 }
 
 .full {
