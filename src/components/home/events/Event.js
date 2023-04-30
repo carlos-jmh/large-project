@@ -10,8 +10,8 @@ const Event = ({ event }) => {
     const { colors } = useTheme();
     const styles = getStyles(colors);
     const [modalVisible, setModalVisible] = useState(false);
-    const { title, date } = event;
-
+    const { date, eventType } = event;
+    const title = "Event"
 
     const handleSave = (editedEvent) => {
       // handle the save logic
@@ -41,7 +41,7 @@ const Event = ({ event }) => {
         >
           {title}
         </Text>
-        <EventInfo listTitle={"Task"} date={date} />
+        <EventInfo listTitle={eventType} date={date} />
       </View>
       <EditEvent event={event} visible={modalVisible} onClose={() => setModalVisible(false)} onSave={handleSave} />
     </Pressable>
@@ -92,13 +92,18 @@ function EventInfo({ listTitle, date }) {
         />
       );
     }
-  
 
+    let listInfo = null;
+    if (listTitle) {
+      listInfo = <TaskInfoLabel text={listTitle} iconName="list" />;
+    }
   
-    if (date) {
+    if (listTitle || date) {
       return (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           {dateInfo}
+          {listTitle && date ? <View style={{ width: 12 }} /> : null}
+          {listInfo}
         </View>
       );
     } else {

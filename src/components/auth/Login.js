@@ -4,8 +4,9 @@ import { Auth as CognitoAuth } from "aws-amplify";
 import CustomButton from "../CustomButton";
 import LabeledInput from "../LabeledInput";
 import { getStyles } from "../styles";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useTheme } from "@react-navigation/native";
+import { UserContext } from "../UserContext";
 
 /* Login page */
 // TODO: Connect to backend
@@ -15,6 +16,7 @@ export default function Login({ navigation }) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { user, setUser } = useContext(UserContext);
 
   async function signIn() {
     try {
@@ -24,6 +26,7 @@ export default function Login({ navigation }) {
       }
 
       const user = await CognitoAuth.signIn(username, password);
+      setUser(user);
       navigation.navigate("InitialPage", { user: user });
     } catch (error) {
       console.log("Error signing in:", error);

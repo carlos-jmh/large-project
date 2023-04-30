@@ -8,18 +8,25 @@ import CustomButton from '../../CustomButton';
 import LabeledInput from '../../LabeledInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-export default function EditEvent({ event, visible, onClose, onSave }) {
-  const [title, setTitle] = useState(event.title);
-  const [startDate, setStartDate] = useState(new Date(event.date));
-  const [endDate, setEndDate] = useState(new Date(event.date));
+export default function AddEvent({ visible, onClose, onSave }) {
+  const [title, setTitle] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [frequency, setFrequency] = useState("Once"); // default value
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
-  const [frequency, setFrequency] = useState(event.frequency); // default value
+  const [modalVisible, setModalVisible] = useState(false);
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
   const handleSave = () => {
-    onSave({ id: event.id, title, startDate, endDate, frequency });
+    let newEvent = {
+        title: title,
+        date: startDate,
+        frequency: frequency,
+        startDate: startDate,
+        endDate: endDate,
+    }
     onClose();
   };
 
@@ -46,10 +53,10 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
     setShowDatePicker(true);
   };
 
-  return (
+  return(
     <CustomModal modalVisible={visible} setModalVisible={onClose}>
       <View style={[styles.modalView]}>
-        <Text style={styles.householdButtonText}>Edit Event</Text>
+        <Text style={styles.householdButtonText}>Add Event</Text>
         <LabeledInput
           value={title}
           label={"TITLE"}
@@ -153,89 +160,63 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
             style={{ flex: 1 , marginLeft: 8}}
           />
         </View>
-        <ConfirmDelete
+        <ConfirmCancel
           modalVisible={deleteConfirmVisible}
           setModalVisible={setDeleteConfirmVisible}
           handleDelete={onClose}
           eventTitle={title}
-          frequency = {frequency}
         />
       </View>
     </CustomModal>
   );
 }
-function ConfirmDelete({
-  modalVisible,
-  setModalVisible,
-  handleDelete,
-  eventTitle,
-  frequency
-}) {
-  const { colors } = useTheme();
-  const styles = getStyles(colors);
-  const [isRecurrent, setIsRecurrent] = useState(false);
-
-
-  if(frequency !== "Once"){
-    setIsRecurrent(true);
-  }
+function ConfirmCancel({
+    modalVisible,
+    setModalVisible,
+    handleDelete,
+    eventTitle,
+  }) {
+    const { colors } = useTheme();
+    const styles = getStyles(colors);
   
-  return (
-    <CustomModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
-      <Pressable
-        style={[styles.modalView, { alignSelf: "stretch", margin: 16 }]}
-        onPress={Keyboard.dismiss}
-      >
-        <Text style={[styles.groupTitleText, { flex: 0 }]}>Delete Event</Text>
-        <View style={{ height: 20 }}></View>
-        <View style={{ alignSelf: "stretch"}}>
-          {isRecurrent ? (
-            <View>
-              <Text style={{color: colors.primaryText, fontFamily: "Inter_500Medium", fontSize: 14,}}>
-                {`This is a recurring event. Do you want to delete all instances of this event?`}
-              </Text>
+    return (
+      <CustomModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
+        <Pressable
+          style={[styles.modalView, { alignSelf: "stretch", margin: 16 }]}
+          onPress={Keyboard.dismiss}
+        >
+          <Text style={[styles.groupTitleText, { flex: 0 }]}>Cancel event</Text>
+          <View style={{ height: 20 }}></View>
+          <View
+            style={{
+              alignSelf: "stretch",
+            }}
+          >
+            <Text
+              style={{
+                color: colors.primaryText,
+                fontFamily: "Inter_500Medium",
+                fontSize: 14,
+              }}
+            >
+              {`Are you sure you want to cancel creating the event : "${eventTitle}"?`}
+            </Text>
+            <View style={{ height: 24 }}></View>
+            <View style={{ flexDirection: "row" }}>
               <CustomButton
-                title={"ALL INSTANCES"}
+                title={"NO"}
                 onPress={() => setModalVisible(false)}
                 style={{ flex: 1 }}
               />
               <View style={{ width: 16 }}></View>
               <CustomButton
-                title={"THIS INSTANCE"}
-                onPress={() => setModalVisible(false)}
+                title={"YES"}
+                onPress={handleDelete}
                 style={{ flex: 1 }}
               />
             </View>
-          ) : (
-            <View>
-              <Text
-                style={{
-                  color: colors.primaryText,
-                  fontFamily: "Inter_500Medium",
-                  fontSize: 14,
-                }}
-              >
-                {`Are you sure you want to delete the list titled "${eventTitle}"?`}
-              </Text>
-              <View style={{ height: 24 }}></View>
-              <View style={{ flexDirection: "row" }}>
-                <CustomButton
-                  title={"CANCEL"}
-                  onPress={() => setModalVisible(false)}
-                  style={{ flex: 1 }}
-                />
-                <View style={{ width: 16 }}></View>
-                <CustomButton
-                  title={"DELETE"}
-                  onPress={handleDelete}
-                  style={{ flex: 1 }}
-                />
-              </View>
-            </View>
-          )}
-        </View>
-      </Pressable>
-    </CustomModal>
-  );
-}
-
+          </View>
+        </Pressable>
+      </CustomModal>
+    );
+  }

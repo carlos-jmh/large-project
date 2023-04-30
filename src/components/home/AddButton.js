@@ -10,10 +10,12 @@ import EditList from "./lists/EditList";
 import { getStyles } from "../styles";
 import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
+import AddEvent from "./events/AddEvent";
 
 /* Button to add event/task/list */
 export default function AddButton({}) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [eventModalVisible, setEventModalVisible] = useState(false);
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
@@ -54,6 +56,7 @@ export default function AddButton({}) {
             <View style={{ flexDirection: "row" }}>
               <AddOptionButton
                 title={"Event"}
+                onPress={() => {setEventModalVisible(true)}}
                 icon={() => (
                   <FontAwesome5
                     name="calendar-alt"
@@ -62,6 +65,7 @@ export default function AddButton({}) {
                   />
                 )}
               />
+              <AddEvent visible={eventModalVisible} setModalVisible={setEventModalVisible} onClose={() => setEventModalVisible(false)}/>
               <View style={{ width: 16 }}></View>
               <AddOptionButton
                 title={"Task"}

@@ -14,14 +14,16 @@ import { HouseHoldContext } from "../HouseHoldContext";
 export default function InitialPage({ navigation, route }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
-
   const [username, setUsername] = useState(route.params?.user.username ?? "Unknown user");
   const [houseHolds, setHouseHolds] = useState([]);
 
   const { setHouseHold } = useContext(HouseHoldContext);
 
   const handleHouseHoldPress = (houseHold) => {
+    //first fetch events, lists, and tasks
+    // 
     setHouseHold(houseHold);
+    console.log(houseHold)
     navigation.navigate("Events")
   }
 

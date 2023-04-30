@@ -936,16 +936,10 @@ export const eventsByCalendarId = /* GraphQL */ `
         id
         date
         eventType
-        completed
         prevEventId
         nextEventId
         eventHandlerId
         calendarId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
       startedAt

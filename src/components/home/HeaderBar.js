@@ -12,7 +12,7 @@ export default function HeaderBar({ title, screenName }) {
   return (
     <View
       style={{
-        height: 50,
+        height: 100,
         flexDirection: "row",
         alignItems: "center",
       }}

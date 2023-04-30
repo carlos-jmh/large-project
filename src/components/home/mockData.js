@@ -1,4 +1,4 @@
-export default {
+export default  data = {
   tasks: [
     {
       id: 0,
