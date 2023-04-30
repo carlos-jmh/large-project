@@ -176,6 +176,40 @@ export const createNewItem = async (listId, title) => {
   }
 }
 
+export const deleteExistingItem = async (item) => {
+  try {
+    const deletedItem = await API.graphql({
+      query:
+        `mutation MyMutation($id: ID!, $_version: Int!) {
+          deleteItem(input: {id: $id, _version: $_version}) {
+            _deleted
+            _lastChangedAt
+            _version
+            completed
+            createdAt
+            description
+            id
+            itemTaskId
+            listId
+            taskId
+            title
+            updatedAt
+          }
+        }`,
+      variables: {
+        id: item.id,
+        _version: item._version
+      },
+      authMode: "LAMBDA"
+    });
+
+    return deletedItem.data.deleteItem;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 export const createNewTask = async (
   completeSourceOnComplete,
   completed,

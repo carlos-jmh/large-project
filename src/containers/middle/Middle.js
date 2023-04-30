@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import './middle.css'
 import List from '../../components/list/List'
 import Events from '../../components/events/Events'
@@ -8,26 +8,44 @@ import Cal from '../../components/cal/Cal';
 import "react-datepicker/dist/react-datepicker.css";
 import TaskList from '../../components/tasklist/TaskList';
 import Upcoming from '../../components/usernav/Upcoming';
-import Dropdown from '../../components/dropdown/Dropdown';
 
 import {
+  fetchEventHandlerById,
   fetchItemsByListId,
 } from '../../api/fetching';
-import { updateExistingItem, createNewList, updateExistingTask, deleteExistingTask } from '../../api/mutating'
+import { updateExistingItem, deleteExistingItem } from '../../api/mutating'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 import { useEventData, useEventHandlerData, useListsData, useTasksData } from '../../api/hooks'
-import { useEffect } from 'react'
 
 const processLists = async (lists) => {
   const processedLists = await Promise.all(lists.map(async (list) => {
     const listItems = await fetchItemsByListId(list.id);
+    const processedListItems = listItems.filter(listItem => listItem._deleted !== true);
+
     return {
       ...list,
-      listItems,
+      listItems: processedListItems,
     };
   }));
 
   return processedLists;
+};
+
+const processTasks = async (tasks) => {
+  const processedTasks = await Promise.all(tasks.map(async (task) => {
+    if (!task.eventHandlerId || task.eventHandlerId === '') {
+      return task;
+    }
+
+    const eventHandler = await fetchEventHandlerById(task.eventHandlerId);
+
+    return {
+      ...task,
+      eventHandler,
+    };
+  }));
+
+  return processedTasks;
 };
 
 const Middle = ({theme}) => {
@@ -39,6 +57,7 @@ const Middle = ({theme}) => {
 
   const [taskData, setTaskData] = useTasksData({
     houseHoldId: houseHold.id,
+    processDataCallback: processTasks,
   });
   
   const [eventData, setEventData] = useEventData({
@@ -95,11 +114,27 @@ const Middle = ({theme}) => {
     });
   };
 
+  const onListItemDeleted = (item, listIndex, setListData) => {
+    console.log("SUBSCRIPTION DELETE ITEM", item);
+    
+    const currentItemIndex = listData[listIndex].listItems.findIndex(listItem => listItem.id === item.id);
+    if (currentItemIndex === -1) {
+      return;
+    }
+
+    setListData(prevState => {
+      const newListData = [...prevState];
+      newListData[listIndex].listItems.splice(currentItemIndex, 1);
+      return newListData;
+    });
+  };
+
   const [listData, setListData] = useListsData({
     houseHoldId: houseHold.id,
     processDataCallback: processLists,
     onListItemCreated,
     onListItemUpdated,
+    onListItemDeleted,
   });
 
   /*
@@ -111,13 +146,24 @@ const Middle = ({theme}) => {
   */
 
   //Handles list ITEM edition
-  const handleListItemToggle = (item, listIndex, itemIndex) => {
+  const handleListItemUpdate = (item, listIndex, itemIndex) => {
     setListData(prevState => {
       const newListData = [...prevState];
       newListData[listIndex].listItems[itemIndex] = item;
       return newListData;
     });
     updateExistingItem(item);
+  }
+
+  // Handles list ITEM deletion
+  const handleListItemDelete = (item, listIndex, itemIndex) => {
+    setListData(prevState => {
+      const newListData = [...prevState];
+      newListData[listIndex].listItems.splice(itemIndex, 1);
+      return newListData;
+    });
+    const deletedItem = deleteExistingItem(item);
+    console.log(deletedItem);
   }
 
   //Handles list completions
@@ -219,14 +265,22 @@ const Middle = ({theme}) => {
             return (
               <div key = {index} className='list'>
                 <hr className="taskLine"></hr>
-                <List list={currList} name={currList.title} setState={setListData} listItems={currList.listItems} listIndex={index} handleToggle={handleListItemToggle}/>
+                <List
+                  list={currList}
+                  name={currList.title}
+                  setState={setListData}
+                  listItems={currList.listItems}
+                  listIndex={index}
+                  handleListItemDelete={handleListItemDelete}
+                  handleListItemUpdate={handleListItemUpdate}
+                />
                 <Add addTask={addTask} useState={false} name={currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
                 <br/>
               </div>
             )
           })}
           <hr className="taskLine"></hr>
-          <Add useState={false} name={"List"} theme={theme} setState={setListData} handle={handleListItemToggle}/>
+          <Add useState={false} name={"List"} theme={theme} setState={setListData} handle={handleListItemUpdate}/>
         </div>
       </div>
     </>

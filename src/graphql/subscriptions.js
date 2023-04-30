@@ -700,3 +700,52 @@ export const onItemUpdated = /* GraphQL */ `
     }
   }
 `;
+export const onItemDeleted = /* GraphQL */ `
+  subscription OnItemDeleted($listId: String!) {
+    onItemDeleted(listId: $listId) {
+      id
+      title
+      description
+      completed
+      listId
+      List {
+        id
+        title
+        description
+        houseHoldId
+        completed
+        taskId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        listTaskId
+      }
+      taskId
+      Task {
+        id
+        title
+        houseHoldId
+        foreverTask
+        listId
+        itemId
+        completeSourceOnComplete
+        eventHandlerId
+        completed
+        pointValue
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      itemTaskId
+    }
+  }
+`;

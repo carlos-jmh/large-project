@@ -365,6 +365,13 @@ async function checkAuthorization(ast, variables, userInfo) {
         }
         break;
       }
+      case "onItemDeleted": {
+        const listId = retrieveArgument("listId", selection.arguments, variables);
+        if (!await isAuthorizedForList(dynamo, listId, sub)) {
+          return false;
+        }
+        break;
+      }
 
       default:
         return false;
