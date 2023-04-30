@@ -451,7 +451,8 @@ export const generateEventHandler = async (
   frequency,
   sourceDate,
   endDate,
-  eventType
+  eventType,
+  title
 ) => {
   try {
     const newEventHandler = await API.graphql(
@@ -464,6 +465,7 @@ export const generateEventHandler = async (
           sourceDate,
           endDate,
           eventType,
+          title,
         },
         authMode: "LAMBDA"
       }

@@ -31,7 +31,8 @@ const processLists = async (lists) => {
   return processedLists;
 };
 
-const processTasks = async (tasks) => {
+
+export const processTasks = async (tasks) => {
   const processedTasks = await Promise.all(tasks.map(async (task) => {
     if (!task.eventHandlerId || task.eventHandlerId === '') {
       return task;
@@ -67,6 +68,15 @@ const Middle = ({theme}) => {
   const [eventHandlerData, setEventHandlerData] = useEventHandlerData({
     calendarId: houseHold.houseHoldCalendarId,
   });
+
+  const updateTaskHandler = (task) => {
+    setTaskData(prevState => {
+      const newTaskData = [...prevState];
+      let update = newTaskData.findIndex(elem => elem.id == task.id);
+      newTaskData[update] = task;
+      return newTaskData;
+    });
+  }
 
   const taskDeleteHandler = (id, index) => {
     let removed = taskData.filter((current) => current.id != id)
@@ -186,7 +196,7 @@ const Middle = ({theme}) => {
   }
   
   //This is for adding individual items in a given list
-  const addTask = (userInput, name, list, userDate) => {
+  const addListItem = (userInput, name, list, userDate) => {
     let copy = toDoList.find(name => name.listName === list.listName);
 
     copy.listItems = [...copy.listItems, { id: list.listItems.length + 1, task: userInput, complete: false }];
@@ -201,15 +211,16 @@ const Middle = ({theme}) => {
   }
 
   //This is for adding tasks
-  const addTask2 = (userInput, name, list, userDate, connect) => {
+  const addTask = async(task) => {
+    let newT = await processTasks([task]);
     let copy = [...taskData];
-    copy = [...copy, { id: taskData.length + 1, task: userInput, complete: false, date: userDate, list: connect }];
-
+    copy = [...copy, newT[0]];
+    console.log(copy)
     setTaskData(copy);
   }
 
   //This is for adding events
-  const addTask3 = (userInput, name, list, userDate, userDesc) => {
+  const addEvent = (userInput, name, list, userDate, userDesc) => {
     let copy = [...events];
     copy = [...copy, { id: events.length + 1, task: userInput, complete: false, date: userDate, description: userDesc}];
     setEvents(copy);
@@ -243,15 +254,15 @@ const Middle = ({theme}) => {
         <div className="section1">
             <h5 className="sectionHeader">Tasks</h5>
             <div>
-              <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} theme={theme}/>
-              <Add addTask={addTask2} useState={false} name="Task" list={listData} theme={theme}/>
+              <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme}/>
+              <Add addTask={addTask} useState={false} name="Task" list={listData} theme={theme}/>
               <br/>
             </div>
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
               <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={taskDeleteHandler}/>
-              <Add addTask={addTask3} useState={false} name={"Event"} list={[]} theme={theme}/>
+              <Add addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>
         </div>
@@ -274,7 +285,7 @@ const Middle = ({theme}) => {
                   handleListItemDelete={handleListItemDelete}
                   handleListItemUpdate={handleListItemUpdate}
                 />
-                <Add addTask={addTask} useState={false} name={"to" + currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
+                <Add addTask={addListItem} useState={false} name={"to" + currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
                 <br/>
               </div>
             )
