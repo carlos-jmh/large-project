@@ -161,6 +161,13 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
     // Event handler should then make events? 
   }
 
+  // Function to add an Event.
+  const addEventDatabase = async(e) => {
+    alert("Creating new event");
+
+    // const newEvent = await 
+  }
+
   if (!add)
     if(theme === "light") {
       return (
