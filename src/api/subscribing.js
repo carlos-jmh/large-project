@@ -1,25 +1,27 @@
+import { onItemUpdated, onNewItemCreated } from "../graphql/subscriptions";
+
 import { API } from "aws-amplify";
-import { getCognitoToken } from '../utils/auth';
-import { onNewItemCreated, onItemUpdated } from '../graphql/subscriptions';
+import { getCognitoToken } from "../utils/auth";
 
-export const createSubListItems = async (listId, listIndex, setListData, callback) => {
-    const token = await getCognitoToken();
+export const createSubListItems = async (listId, setListData, callback) => {
+  const token = await getCognitoToken();
 
-    const subscription = API.graphql(
-      {
-        query: onNewItemCreated,
-        variables: { listId: listId },
-      },
-      { Authorization: `Banana ${token}` }
-    ).subscribe({
-      next: (data) => callback(data.value.data.onNewItemCreated, listIndex, setListData),
-      error: (error) => console.log(error)
-    });
+  const subscription = API.graphql(
+    {
+      query: onNewItemCreated,
+      variables: { listId: listId },
+    },
+    { Authorization: `Banana ${token}` }
+  ).subscribe({
+    next: (data) =>
+      callback(data.value.data.onNewItemCreated, listId, setListData),
+    error: (error) => console.log(error),
+  });
 
-    return Promise.resolve(subscription);
-}
+  return Promise.resolve(subscription);
+};
 
-export const updateSubListItems = async (listId, listIndex, setListData, callback) => {
+export const updateSubListItems = async (listId, setListData, callback) => {
   const token = await getCognitoToken();
 
   const subscription = API.graphql(
@@ -29,9 +31,10 @@ export const updateSubListItems = async (listId, listIndex, setListData, callbac
     },
     { Authorization: `Banana ${token}` }
   ).subscribe({
-    next: (data) => callback(data.value.data.onItemUpdated, listIndex, setListData),
-    error: (error) => console.log(error)
+    next: (data) =>
+      callback(data.value.data.onItemUpdated, listId, setListData),
+    error: (error) => console.log(error),
   });
 
   return Promise.resolve(subscription);
-}
+};

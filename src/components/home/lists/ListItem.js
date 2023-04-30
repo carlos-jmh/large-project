@@ -2,22 +2,20 @@ import Animated, { FadeIn, FadeOut, Layout } from "react-native-reanimated";
 import { Pressable, Text, View } from "react-native";
 
 import Checkbox from "../../Checkbox";
+import CustomModal from "../../CustomModal";
+import EditList from "./EditList";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { getStyles } from "../../styles";
+import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
 
 /* List item component */
-export default function ListItem({
-  title,
-  taskTitle,
-  date,
-  onChecked,
-  isChecked,
-}) {
+export default function ListItem({ item, itemListId, onChecked }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const primaryTextColor = isChecked
+  const primaryTextColor = item.completed
     ? colors.primaryTextFaded
     : colors.primaryText;
 
@@ -29,6 +27,7 @@ export default function ListItem({
       exiting={FadeOut.duration(200)}
     >
       <Pressable
+        onPress={() => setModalVisible(true)}
         style={{
           padding: 8,
           borderRadius: 8,
@@ -38,7 +37,7 @@ export default function ListItem({
         android_ripple={{ color: colors.highlight }}
       >
         <Checkbox
-          isChecked={isChecked}
+          isChecked={item.completed}
           onChecked={onChecked}
           fadedWhenChecked={true}
         />
@@ -50,11 +49,21 @@ export default function ListItem({
               fontSize: 14,
             }}
           >
-            {title}
+            {item.title}
           </Text>
-          <ListItemInfo taskTitle={taskTitle} date={date} />
+          <ListItemInfo taskTitle={item.taskTitle} date={item.date} />
         </View>
       </Pressable>
+      <CustomModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      >
+        <EditList
+          list={{ ...item, taskId: "" }}
+          setModalVisible={setModalVisible}
+          itemListId={itemListId}
+        />
+      </CustomModal>
     </Animated.View>
   );
 }

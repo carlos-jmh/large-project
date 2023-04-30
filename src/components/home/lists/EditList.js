@@ -1,64 +1,100 @@
 import { Keyboard, Pressable, Text, View } from "react-native";
+import {
+  createNewItem,
+  createNewList,
+  deleteList,
+  editList,
+  updateExistingItem,
+} from "../../../api/mutating";
+import { useContext, useState } from "react";
 
 import Checkbox from "../../Checkbox";
 import CustomButton from "../../CustomButton";
 import CustomModal from "../../CustomModal";
+import { HouseHoldContext } from "../../HouseHoldContext";
 import LabeledInput from "../../LabeledInput";
 import LabeledSelectList from "../../LabeledSelectList";
 import data from "../mockData";
 import { getStyles } from "../../styles";
-import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
 
 /* Button to add event/task/list */
-export default function EditList({ list, setModalVisible }) {
+export default function EditList({ list, setModalVisible, itemListId }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  const [taskId, setTaskId] = useState(list == null ? null : list.taskId);
+  const [taskId, setTaskId] = useState(list == null ? "" : list.taskId);
   const [title, setTitle] = useState(list == null ? "" : list.title);
   const [hasTask, setHasTask] = useState(
-    list == null ? false : list.taskId != null
+    list == null ? false : list.taskId !== ""
   );
 
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
+  const { houseHold, setHouseHold } = useContext(HouseHoldContext);
 
   // Get tasks from backend here
-  const tasks = data.tasks.map((task) => {
-    return { key: task.id, value: task.title };
-  });
+  const tasks = [];
 
-  function handleSubmit() {
-    if (list == null) {
-      let newList = {
-        id: data.lists.length,
-        title: title,
-        items: [],
-      };
-      if (hasTask && taskId != null) {
-        newList.taskId = taskId;
+  async function handleSubmit() {
+    setModalVisible(false);
+    if (itemListId != null) {
+      // TODO: list items could have tasks, but API doesn't support it yet
+      if (list == null) {
+        // Create item
+        createNewItem(itemListId, title);
+      } else {
+        // Update item
+        updateExistingItem({ ...list, title: title });
       }
-      data.lists.push(newList);
     } else {
-      const newListIndex = data.lists.findIndex((x) => x.id == list.id);
-      data.lists[newListIndex].title = title;
-      delete data.lists[newListIndex].taskId;
-      if (hasTask && taskId != null) {
-        data.lists[newListIndex].taskId = taskId;
+      if (list == null) {
+        // Create list
+        const newList = await createNewList(
+          "",
+          false,
+          taskId,
+          houseHold.id,
+          title
+        );
+        setHouseHold((oldHouseHold) => {
+          return {
+            ...oldHouseHold,
+            lists: [...oldHouseHold.lists, { ...newList, listItems: [] }],
+          };
+        });
+      } else {
+        // Update list
+        const updatedList = {
+          ...list,
+          title: title,
+          taskId: taskId,
+        };
+        setHouseHold((oldHouseHold) => {
+          return {
+            ...oldHouseHold,
+            lists: oldHouseHold.lists.map((oldList) =>
+              oldList.id == list.id ? updatedList : oldList
+            ),
+          };
+        });
+        await editList(updatedList);
       }
     }
-    setModalVisible(false);
   }
 
-  function handleDelete() {
-    if (list != null) {
-      const deleteListIndex = data.lists.findIndex((x) => x.id == list.id);
-      if (deleteListIndex != -1) {
-        data.lists.splice(deleteListIndex, 1);
-      }
-      setModalVisible(false);
-    } else {
-      setModalVisible(false);
+  async function handleDelete() {
+    setModalVisible(false);
+    if (itemListId != null && list != null) {
+      // Delete item
+    } else if (list != null) {
+      // Delete list
+      setHouseHold((oldHouseHold) => {
+        return {
+          ...oldHouseHold,
+          lists: oldHouseHold.lists.filter((x) => x.id != list.id),
+        };
+      });
+      await deleteList(list.id);
     }
   }
 
@@ -68,7 +104,8 @@ export default function EditList({ list, setModalVisible }) {
       onPress={Keyboard.dismiss}
     >
       <Text style={[styles.groupTitleText, { flex: 0 }]}>
-        {list == null ? "New list" : "Edit list"}
+        {(list == null ? "New " : "Edit ") +
+          (itemListId == null ? "list" : "item")}
       </Text>
       <View style={{ height: 20 }}></View>
       <View
@@ -80,7 +117,7 @@ export default function EditList({ list, setModalVisible }) {
           value={title}
           label={"TITLE"}
           onChangeText={setTitle}
-          placeholder={"List title"}
+          placeholder={(itemListId == null ? "List" : "Item") + " title"}
           backgroundColor={colors.border}
         />
         <View style={{ height: 18 }}></View>
@@ -114,10 +151,11 @@ export default function EditList({ list, setModalVisible }) {
               save="key"
               backgroundColor={colors.border}
               defaultOption={
-                hasTask && list != null && list.taskId != null
+                /* TODO: get task name */
+                hasTask && list != null && list.taskId !== ""
                   ? {
                       key: taskId,
-                      value: data.tasks.find((task) => task.id == taskId).title,
+                      value: taskId,
                     }
                   : null
               }
@@ -148,6 +186,7 @@ export default function EditList({ list, setModalVisible }) {
             setModalVisible={setDeleteConfirmVisible}
             handleDelete={handleDelete}
             listTitle={list == null ? "" : list.title}
+            itemListId={itemListId}
           />
         </View>
       </View>
@@ -161,6 +200,7 @@ function ConfirmDelete({
   setModalVisible,
   handleDelete,
   listTitle,
+  itemListId,
 }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
@@ -185,7 +225,9 @@ function ConfirmDelete({
               fontSize: 14,
             }}
           >
-            {`Are you sure you want to delete the list titled "${listTitle}"?`}
+            {`Are you sure you want to delete the ${
+              itemListId ? "item" : "list"
+            } titled "${listTitle}"?`}
           </Text>
           <View style={{ height: 24 }}></View>
           <View style={{ flexDirection: "row" }}>

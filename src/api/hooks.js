@@ -1,17 +1,22 @@
-import { useEffect, useState } from 'react';
-import { fetchEventHandlersByCalendarId, fetchEventsByCalendarId, fetchLists, fetchTasksByHouseHoldId } from './fetching';
-import { createSubListItems, updateSubListItems } from './subscribing';
+import { createSubListItems, updateSubListItems } from "./subscribing";
+import {
+  fetchEventHandlersByCalendarId,
+  fetchEventsByCalendarId,
+  fetchLists,
+  fetchTasksByHouseHoldId,
+} from "./fetching";
+import { useEffect, useState } from "react";
 
 export const useListsData = ({
   houseHoldId,
   processDataCallback,
   onListItemCreated,
-  onListItemUpdated
+  onListItemUpdated,
 }) => {
   const [listData, setListData] = useState([]);
 
   // TODO (carlos): subscrive to new/updated lists
-  
+
   // first we fetch the lists
   useEffect(() => {
     async function loadListData() {
@@ -21,7 +26,9 @@ export const useListsData = ({
       }
 
       const lists = await fetchLists(houseHoldId);
-      const processedData = processDataCallback ? await processDataCallback(lists) : lists;
+      const processedData = processDataCallback
+        ? await processDataCallback(lists)
+        : lists;
       setListData(processedData);
     }
 
@@ -32,31 +39,41 @@ export const useListsData = ({
   useEffect(() => {
     const subs = [];
 
-    if (!listData || listData.length === 0 || !onListItemCreated || !onListItemUpdated) {
+    if (
+      !listData ||
+      listData.length === 0 ||
+      !onListItemCreated ||
+      !onListItemUpdated
+    ) {
       return;
     }
 
     listData.forEach(async (list, listIndex) => {
-      const createItemSub = createSubListItems(list.id, listIndex, setListData, onListItemCreated);
-      const updateItemSub = updateSubListItems(list.id, listIndex, setListData, onListItemUpdated);
+      const createItemSub = createSubListItems(
+        list.id,
+        setListData,
+        onListItemCreated
+      );
+      const updateItemSub = updateSubListItems(
+        list.id,
+        setListData,
+        onListItemUpdated
+      );
       subs.push(createItemSub);
       subs.push(updateItemSub);
     });
-    
+
     return () => {
       subs.forEach(async (sub) => {
         (await sub).unsubscribe();
       });
-    }
+    };
   }, [listData.length]);
 
   return [listData, setListData];
-}
+};
 
-export const useTasksData = ({
-  houseHoldId,
-  processDataCallback,
-}) => {
+export const useTasksData = ({ houseHoldId, processDataCallback }) => {
   const [taskData, setTaskData] = useState([]);
 
   // first we fetch the tasks
@@ -68,7 +85,9 @@ export const useTasksData = ({
       }
 
       const tasks = await fetchTasksByHouseHoldId(houseHoldId);
-      const processedTasks = processDataCallback ? await processDataCallback(tasks) : tasks;
+      const processedTasks = processDataCallback
+        ? await processDataCallback(tasks)
+        : tasks;
       setTaskData(processedTasks);
     }
 
@@ -78,12 +97,9 @@ export const useTasksData = ({
   // TODO (carlos): subscribe to new/updated Tasks
 
   return [taskData, setTaskData];
-}
+};
 
-export const useEventData = ({
-  calendarId,
-  processDataCallback,
-}) => {
+export const useEventData = ({ calendarId, processDataCallback }) => {
   const [eventData, setEventData] = useState([]);
 
   // first we fetch the events
@@ -95,22 +111,21 @@ export const useEventData = ({
       }
 
       const events = await fetchEventsByCalendarId(calendarId);
-      const processedEvents = processDataCallback ? await processDataCallback(events) : events;
+      const processedEvents = processDataCallback
+        ? await processDataCallback(events)
+        : events;
       setEventData(processedEvents);
     }
-  
+
     loadEventData();
   }, [calendarId, processDataCallback]);
 
   // TODO (carlos): subscribe to new/updated Events
 
   return [eventData, setEventData];
-}
+};
 
-export const useEventHandlerData = ({
-  calendarId,
-  processDataCallback,
-}) => {
+export const useEventHandlerData = ({ calendarId, processDataCallback }) => {
   const [eventHandlerData, setEventHandlerData] = useState([]);
 
   // first we fetch the events
@@ -122,14 +137,16 @@ export const useEventHandlerData = ({
       }
 
       const events = await fetchEventHandlersByCalendarId(calendarId);
-      const processedEvents = processDataCallback ? await processDataCallback(events) : events;
+      const processedEvents = processDataCallback
+        ? await processDataCallback(events)
+        : events;
       setEventHandlerData(processedEvents);
     }
-  
+
     loadEventHandlerData();
   }, [calendarId, processDataCallback]);
 
   // TODO (carlos): subscribe to new/updated Events
 
   return [eventHandlerData, setEventHandlerData];
-}
+};
