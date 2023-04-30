@@ -32,6 +32,12 @@ export default function Lists({ navigation, route }) {
 
   const onItemCreated = (item, listId, setListData) => {
     console.log("SUBSCRIPTION CREATE ITEM", item);
+
+    const itemAlreadyInList = listData[listIndex].listItems.find(listItem => listItem.id === item.id);
+    if (itemAlreadyInList) {
+      return;
+    }
+
     setListData((oldListData) => {
       const newListData = [...oldListData];
       const listIndex = newListData.findIndex((list) => list.id == listId);
@@ -42,13 +48,33 @@ export default function Lists({ navigation, route }) {
 
   const onItemUpdated = (item, listId, setListData) => {
     console.log("SUBSCRIPTION UPDATE ITEM", item);
+
+    const currentItemIndex = listData[listIndex].listItems.findIndex(listItem => listItem.id === item.id);
+    const currentItem = listData[listIndex].listItems[currentItemIndex];
+
+    // if the item is the same version, do nothing (we already have the latest version)
+    if (currentItem._version === item._version) {
+      return;
+    }
+    
     setListData((oldListData) => {
       const newListData = [...oldListData];
-      const listIndex = newListData.findIndex((list) => list.id == listId);
-      const itemIndex = newListData[listIndex].listItems.findIndex(
-        (listItem) => listItem.id === item.id
-      );
-      newListData[listIndex].listItems[itemIndex] = item;
+      newListData[listIndex].listItems[currentItemIndex] = item;
+      return newListData;
+    });
+  };
+
+  const onItemDeleted = (item, listIndex, setListData) => {
+    console.log("SUBSCRIPTION DELETE ITEM", item);
+    
+    const currentItemIndex = listData[listIndex].listItems.findIndex(listItem => listItem.id === item.id);
+    if (currentItemIndex === -1) {
+      return;
+    }
+
+    setListData(prevState => {
+      const newListData = [...prevState];
+      newListData[listIndex].listItems.splice(currentItemIndex, 1);
       return newListData;
     });
   };
@@ -60,6 +86,7 @@ export default function Lists({ navigation, route }) {
     processDataCallback: processLists,
     onListItemCreated: onItemCreated,
     onListItemUpdated: onItemUpdated,
+    onListItemDeleted: onItemDeleted,
   });
 
   useEffect(() => {

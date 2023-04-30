@@ -1,17 +1,13 @@
-import { createSubListItems, updateSubListItems } from "./subscribing";
-import {
-  fetchEventHandlersByCalendarId,
-  fetchEventsByCalendarId,
-  fetchLists,
-  fetchTasksByHouseHoldId,
-} from "./fetching";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { fetchEventHandlersByCalendarId, fetchEventsByCalendarId, fetchLists, fetchTasksByHouseHoldId } from './fetching';
+import { createSubListItems, deleteSubListItems, updateSubListItems } from './subscribing';
 
 export const useListsData = ({
   houseHoldId,
   processDataCallback,
   onListItemCreated,
   onListItemUpdated,
+  onListItemDeleted,
 }) => {
   const [listData, setListData] = useState([]);
 
@@ -39,28 +35,17 @@ export const useListsData = ({
   useEffect(() => {
     const subs = [];
 
-    if (
-      !listData ||
-      listData.length === 0 ||
-      !onListItemCreated ||
-      !onListItemUpdated
-    ) {
+    if (!listData || listData.length === 0 || !onListItemCreated || !onListItemUpdated || !onListItemDeleted) {
       return;
     }
 
     listData.forEach(async (list, listIndex) => {
-      const createItemSub = createSubListItems(
-        list.id,
-        setListData,
-        onListItemCreated
-      );
-      const updateItemSub = updateSubListItems(
-        list.id,
-        setListData,
-        onListItemUpdated
-      );
+      const createItemSub = createSubListItems(list.id, listIndex, setListData, onListItemCreated);
+      const updateItemSub = updateSubListItems(list.id, listIndex, setListData, onListItemUpdated);
+      const deleteItemSub = deleteSubListItems(list.id, listIndex, setListData, onListItemDeleted);
       subs.push(createItemSub);
       subs.push(updateItemSub);
+      subs.push(deleteItemSub);
     });
 
     return () => {
