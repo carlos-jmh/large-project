@@ -1,5 +1,3 @@
-import { onItemUpdated, onNewItemCreated } from "../graphql/subscriptions";
-
 import { API } from "aws-amplify";
 import { getCognitoToken } from '../utils/auth';
 import { onNewItemCreated, onItemUpdated, onItemDeleted } from '../graphql/subscriptions';

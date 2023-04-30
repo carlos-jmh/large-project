@@ -1,11 +1,3 @@
-import {
-  addUserToHouseHold,
-  createList,
-  deleteListCustom,
-  removeUserFromHouseHold,
-  updateHouseHoldMember,
-} from "../graphql/mutations";
-
 import { API } from "aws-amplify";
 import { getCognitoToken } from "../utils/auth";
 import {
