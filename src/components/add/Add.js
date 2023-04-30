@@ -66,9 +66,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const handleChange2 = (e) => {
     //let date = (e.target.value).split('-')
     //let dateInput = date[1] + 
-    
     setSDateInput(e.target.value);
-    setEDateInput(e.target.value);
   }
 
   const handleChange5 = (e) => {
@@ -128,6 +126,8 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   }
 
   const addTaskDatabase = async(e) => {
+    alert("Creating New Task!");
+
     const newTask = await createNewTask(
       false,
       false,
@@ -138,7 +138,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
       "",
       userInput
     );
-    
+
     const newHandlerId = await generateEventHandler(
       houseHold.calendarId,
       newTask.id,
@@ -152,24 +152,21 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
     newTask.eventHandlerId = newHandlerId;
     addTask(newTask);
     await updateExistingTask(newTask);
-
-    console.log(new Date(userSDate))
-    
-    }
-
-  const addEvent = async(e) => {
-    e.preventDefault();
-    
-    // Create eventHandler.
-    // const newEvent = await createEventHandler("asd", "asda");
-    // Event handler should then make events? 
   }
 
   // Function to add an Event.
   const addEventDatabase = async(e) => {
     alert("Creating new event");
 
-    // const newEvent = await 
+    // Generate eventHandler
+    const newHandlerId = await generateEventHandler(
+      houseHold.calendarId,
+      // what should this id be?,
+      freq.current.value,
+      new Date(userSDate),
+      new Date(userEDate),
+      "EVENT",
+    )
   }
 
   if (!add)
@@ -231,7 +228,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
           {/* Cannot connect to a list. */}
           <div className="buttons">
             <button className="btn btn-danger" onClick={changeAdd}>close</button>
-            <button type="submit" className="btn" id="purple" onClick={async (e) => await addEvent(e)}>add</button>
+            <button type="submit" className="btn" id="purple" onClick={async (e) => await addEventDatabase(e)}>add</button>
           </div>
         </form>
       )
