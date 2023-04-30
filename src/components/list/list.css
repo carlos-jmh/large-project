@@ -13,6 +13,8 @@
 
 .todo {
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
 }
 
 .strike {
@@ -21,12 +23,10 @@
 
 .sectionHeader {
     display: flex;
-    gap: .4rem;
+    justify-content: space-between;
 }
 
 .editList {
-    position: relative;
-    bottom: 3rem;
     border: solid;
     border: 1px;
     border-radius: 1rem;

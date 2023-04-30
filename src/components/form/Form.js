@@ -145,8 +145,9 @@ const Form = () => {
     // Add member to household.
     else 
     {
+      e.preventDefault();
       // Data: username to be added
-      // addUser(houseHold.id, username.current.value)
+      const user = await addUser(houseHold.id, username.current.value);
     }
   }
 

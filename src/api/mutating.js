@@ -1,6 +1,16 @@
 import { API } from "aws-amplify";
 import { getCognitoToken } from "../components/AuthUser";
-import { addUserToHouseHold, removeUserFromHouseHold, updateHouseHoldMember, createNewHouseHold, deleteTask } from "../graphql/mutations";
+import {
+  addUserToHouseHold,
+  removeUserFromHouseHold,
+  updateHouseHoldMember,
+  createNewHouseHold,
+  deleteTask,
+  createEventHandler,
+  updateEventHandler,
+  deleteEventHandler,
+  deleteEvent,
+} from "../graphql/mutations";
 
 export const createNewList = async (houseHoldId, title) => {
   try {
@@ -116,9 +126,9 @@ export const updateExistingItem = async (item) => {
           }`,
         variables: { 
           _version: item._version,
-          completed: item.complete,
+          completed: item.completed,
           id: item.id,
-          title: item.task,
+          title: item.title,
         },
         authMode: "LAMBDA"
       },
@@ -127,7 +137,7 @@ export const updateExistingItem = async (item) => {
     return updatedItem.data.updateItem;
   } catch (error) {
     console.log("ERROR updating item ", error)
-    return [];
+    return null;
   }
 }
 

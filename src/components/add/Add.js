@@ -4,7 +4,7 @@ import * as Icon from 'react-bootstrap-icons'
 import { createNewItem, createNewList, createNewTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
-const Add = ({addTask, name, list, theme, setState}) => {
+const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   // console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
@@ -94,6 +94,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
       }
     });
     */
+
     e.preventDefault();
     addTask(userInput, name, list, userDate, listConnect);
     setUserInput("");
@@ -104,8 +105,17 @@ const Add = ({addTask, name, list, theme, setState}) => {
   const addItem = async(e) => {
     e.preventDefault();
 
+    changeAdd();
+
     // Pass correct values here. 
     const newItem = await createNewItem(list.id, title.current.value);
+
+    // Display's blank, why? 
+    setState(prevState => {
+      const newListData = [...prevState];
+      newListData[index].listItems.push(newItem);
+      return newListData;
+    });
   }
   
   const handleNewList = async(e) => {
@@ -126,7 +136,9 @@ const Add = ({addTask, name, list, theme, setState}) => {
   }
 
   const addtask = async(e) => {
-    console.log("creating new Task!");
+    e.preventDefaul();
+    alert("creating new Task!");
+    alert(title.current.value);
 
     // TODO (carlos): Implement Linking between Task and EventHandler
     // if start/endDate + recurrence (recurrence = ONCE)
@@ -146,6 +158,10 @@ const Add = ({addTask, name, list, theme, setState}) => {
       title.current.value
     );
 
+    if (newTask !== null)
+    {
+
+    }
     console.log("new Task: ", newTask);
 
     // updateEventHandler -> add TaskId to itself
@@ -224,7 +240,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
       )
     } else if (name === "Task") {
       return (
-        <form onSubmit={handleSubmit} className="addingTask">
+        <form className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Task Name" ref={title}/>
           
           {/* Start and End Date Required */}
@@ -302,7 +318,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
           <hr></hr>
           <div className="buttons">
             <button className="btn btn-danger" onClick={changeAdd}>close</button>
-            <button className="btn" id="purple" onClick={async (e) => await addtask(e)}>add</button>
+            <button className="btn" id="purple" onClick={handleSubmit}>add</button>
           </div>
         </form>
       )
@@ -320,7 +336,7 @@ const Add = ({addTask, name, list, theme, setState}) => {
       )
     } else {
       return (
-        <form onSubmit={handleSubmit} className="addingTask">
+        <form className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Item Name" ref={title}/>
           <hr></hr>
           <div className="buttons">
