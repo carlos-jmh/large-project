@@ -7,8 +7,9 @@ import ProfileIcon from "../ProfileIcon";
 import { getCognitoToken } from "../../utils/auth";
 import { getStyles } from "../styles";
 import { graphqlOperation } from "@aws-amplify/api";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useTheme } from "@react-navigation/native";
+import { HouseHoldContext } from "../HouseHoldContext";
 
 export default function CreateHousehold({ navigation, route }) {
   const { colors } = useTheme();
@@ -17,6 +18,7 @@ export default function CreateHousehold({ navigation, route }) {
   const [invitedUsers, setInvitedUsers] = useState([]);
   const [houseHoldName, setHouseHoldName] = useState("");
   const [usernameToAdd, setUsernameToAdd] = useState("");
+  const { houseHold, setHouseHold } = useContext(HouseHoldContext);
 
   function handleInvitedUserAdd() {
     setInvitedUsers([...invitedUsers, { name: usernameToAdd }]);
@@ -108,7 +110,8 @@ export default function CreateHousehold({ navigation, route }) {
     }
 
     console.log("New household created: ", newHouseHold);
-    // navigation.navigate("Events", { household: newHouseHold });
+    setHouseHold(newHouseHold)
+    navigation.navigate("Events");
   }
 
   return (

@@ -269,9 +269,9 @@ export function getStyles(colors) {
       backgroundColor: colors.background,
     },
     profileContainer: {
-      flexDirection: 'row',
+      flexDirection: 'column',
       alignItems: 'center',
-      marginBottom: 20,
+      marginVertical: 20,
     },
     profileText: {
       fontSize: 18,
@@ -282,10 +282,11 @@ export function getStyles(colors) {
     signoutButton: {
       backgroundColor: colors.primary,
       padding: 10,
+      marginVertical: 20,
       borderRadius: 5,
     },
     signoutText: {
-      color: colors.background,
+      color: colors.text,
     },
     separator: {
       height: 1,
@@ -294,25 +295,43 @@ export function getStyles(colors) {
     },
     manageHouseholdButton: {
       backgroundColor: colors.background,
+      marginBottom: 20,
+      borderRadius: 5,
+    },
+    manageHouseholdText: {
+      textAlign: 'center',
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: colors.text,
+    },
+    householdsContainer: {
+      padding:10,
+      justifyContent:'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      marginBottom: 20,
+    },
+    houseHoldButton: {
+      display: 'flex',
+      width: 200,
+      flexDirection:'row',
+      textAlign:'left',
+      alignItems:'left', 
+      justifyContent:'left', 
+      backgroundColor: colors.background, 
       padding: 10,
       borderRadius: 5,
       borderWidth: 1,
       borderColor: colors.border,
       marginBottom: 20,
     },
-    manageHouseholdText: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: colors.primary,
-    },
-    householdsContainer: {
-      marginBottom: 20,
-    },
     householdText: {
-      fontSize: 16,
-      color: colors.text,
-      marginBottom: 10,
-    },                                                       
+      textAlign: 'center',
+      alignContent: 'center',
+      fontSize: 20,      
+      color: colors.textFaded,
+      fontFamily: "Roboto_500Medium",
+    },                              
   });
 
 }

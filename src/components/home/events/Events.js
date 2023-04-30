@@ -32,16 +32,11 @@ export default function Events({ navigation, route }) {
           events: eventData,
         }
       })
-      console.log(houseHold);
     }
   }, [eventData])
 
 
-  useEffect(() => {
-    console.log("After clicking events",houseHold)
-    console.log("After clicking auth", CognitoAuth.currentSession())
-  }, [houseHold])
-
+  
   function getEventsByDate(today) {
     const eventsToday = [];
     for (const [key, value] of Object.entries(houseHold.events)) {

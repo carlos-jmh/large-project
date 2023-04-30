@@ -133,7 +133,7 @@ export default function AddEvent({ visible, onClose, onSave }) {
           <Pressable style={styles.dateInput} onPress={showDatepicker}>
             <Text style={styles.dateInputText}>{formatDate(endDate)}</Text>
           </Pressable>
-          {showDatePicker && (
+          {showDatePicker && (Platform.OS === 'ios') &&(
             <DateTimePicker
               value={endDate}
               mode="datetime"
@@ -144,6 +144,21 @@ export default function AddEvent({ visible, onClose, onSave }) {
                 setShowDatePicker(Platform.OS === 'ios');
                 setEndDate(currentDate);
               }}
+              
+            />
+          )}  
+          {showDatePicker && (Platform.OS === 'android') &&(
+            <DateTimePicker
+              value={endDate}
+              mode="datetime"
+              display="default"
+              minimumDate={startDate}
+              onChange={(event, selectedDate) => {
+                const currentDate = selectedDate || endDate;
+                setShowDatePicker(false);
+                setEndDate(currentDate);
+              }}
+              
             />
           )}
         </View>

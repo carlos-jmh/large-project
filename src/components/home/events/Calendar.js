@@ -13,7 +13,6 @@ export default function MyCalendar({ events , callBack}) {
   useEffect(() => {
     // Loop through the data and add each date to the markedDates object
     const newMarkedDates = {};
-    console.log("events", events)
     if (events) {
     events.forEach((event) => {
         newMarkedDates[event.date.substring(0, 10)] = {

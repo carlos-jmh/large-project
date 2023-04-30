@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import {Text, View , TouchableOpacity} from "react-native";
 
 import { getStyles } from "./styles";
 import { useTheme } from "@react-navigation/native";
@@ -10,13 +10,13 @@ export default function CustomButton({ title, onPress, style }) {
 
   return (
     <View style={[{ height: 40, borderRadius: 8, overflow: "hidden" }, style]}>
-      <Pressable
+      <TouchableOpacity
         onPress={onPress}
         style={styles.buttonContainer}
         android_ripple={{ color: colors.highlight }}
       >
         <Text style={styles.buttonText}>{title}</Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 }
