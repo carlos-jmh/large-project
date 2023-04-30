@@ -163,11 +163,12 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
     // Generate eventHandler
     const newHandlerId = await generateEventHandler(
       houseHold.calendarId,
-      // what should this id be?,
+      "",
       freq.current.value,
       new Date(userSDate),
       new Date(userEDate),
       "EVENT",
+      title.current.value
     )
   }
 
