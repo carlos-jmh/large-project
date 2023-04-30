@@ -49,19 +49,21 @@ const List = ({list, name, setState, listItems, listIndex, handleToggle}) => {
     if (list.title !== newName.current.value)
     {
       // Create new list object. 
-      let copyList = list;
-      copyList.title = newName.current.value;
-      console.log(copyList);
+      const listToUpdate = {
+        ...list,
+        title: newName.current.value,
+      }
 
       // Call API to updateList
-      const updatedList = await editExistingList(copyList);
+      const updatedList = await editExistingList(listToUpdate);
 
       // Confirm no error. 
       if (updatedList !== null)
       {
         setState(prevState => {
           const newListData = [...prevState];
-          newListData.find(element => element.id === list.id).title = newName.current.value;
+          const changedList = newListData.find(element => element.id === list.id);
+          changedList.title = newName.current.value;
           return newListData;
         })
       }
