@@ -149,6 +149,13 @@ exports.handler = async (event) => {
 						eventType,
 						completed: false,
 						date: checkpoint.toISOString(),
+
+						createdAt,
+						updatedAt: createdAt,
+
+						__typename: "Event",
+						_lastChangedAt: lastChangedAt,
+						_version: 1,
 					}
 				}
 			} else {
@@ -162,6 +169,13 @@ exports.handler = async (event) => {
 						calendarId,
 						eventType,
 						date: checkpoint.toISOString(),
+
+						createdAt,
+						updatedAt: createdAt,
+
+						__typename: "Event",
+						_lastChangedAt: lastChangedAt,
+						_version: 1,
 					}
 				}
 			}
