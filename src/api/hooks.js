@@ -68,6 +68,7 @@ export const useTasksData = ({
 
       const tasks = await fetchTasksByHouseHoldId(houseHoldId);
       const processedTasks = processDataCallback ? await processDataCallback(tasks) : tasks;
+      console.log(processedTasks);
       setTaskData(processedTasks);
     }
 

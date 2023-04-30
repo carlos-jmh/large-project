@@ -1,7 +1,7 @@
 import React, {useRef, useState, useEffect, useContext } from 'react'
 import './add.css'
 import * as Icon from 'react-bootstrap-icons'
-import { createNewItem, createNewList, createNewTask } from '../../api/mutating';
+import { createNewItem, createNewList, createNewTask, generateEventHandler, updateExistingTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
 const Add = ({addTask, name, list, theme, setState, handle, index}) => {
@@ -9,7 +9,8 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
   const [ userInput, setUserInput ] = useState('');
-  const [ userDate, setDateInput ] = useState('');
+  const [ userSDate, setSDateInput ] = useState('');
+  const [ userEDate, setEDateInput ] = useState('');
   const [ userDesc, setDescInput ] = useState('');
   const [ listConnect, setListConnect ] = useState('');
   const title = useRef(null);
@@ -65,7 +66,13 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const handleChange2 = (e) => {
     //let date = (e.target.value).split('-')
     //let dateInput = date[1] + 
-    setDateInput(e.target.value);
+    setSDateInput(e.target.value);
+  }
+
+  const handleChange5 = (e) => {
+    //let date = (e.target.value).split('-')
+    //let dateInput = date[1] + 
+    setEDateInput(e.target.value);
   }
 
   const handleChange3 = (e) => {
@@ -77,28 +84,11 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   }
 
   const handleSubmit = (e) => {
-    //code to add task when pressing enter
-
-    /*
-    // Get the input field
-    let input = document.getElementById("myInput");
-
-    // Execute a function when the user presses a key on the keyboard
-    input.addEventListener("keypress", function(event) {
-      // If the user presses the "Enter" key on the keyboard
-      if (event.key === "Enter") {
-        // Cancel the default action, if needed
-        event.preventDefault();
-        // Trigger the button element with a click
-        document.getElementById("myBtn").click();
-      }
-    });
-    */
-
     e.preventDefault();
-    addTask(userInput, name, list, userDate, listConnect);
+    addTaskDatabase()
     setUserInput("");
-    setDateInput("");
+    setSDateInput("");
+    setEDateInput("");
     setListConnect("")
   }
 
@@ -135,44 +125,48 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
     }
   }
 
-  const addtask = async(e) => {
-    e.preventDefaul();
-    alert("creating new Task!");
-    alert(title.current.value);
+  const addTaskDatabase = async(e) => {
+    alert("Creating New Task!");
 
-    // TODO (carlos): Implement Linking between Task and EventHandler
-    // if start/endDate + recurrence (recurrence = ONCE)
-      // create EventHandler -> startDate, endDate, recurrence
-      // const eventHandler = await createEventHandler(sDate, eDate, freq);
-    
-    // create Task -> with EventHandlerId 
-    // Pass correct values here. 
     const newTask = await createNewTask(
       false,
       false,
-      false,
+      false, //forever task
       houseHold.id,
       "",
       "",
       "",
-      title.current.value
+      userInput
     );
 
-    if (newTask !== null)
-    {
+    const newHandlerId = await generateEventHandler(
+      houseHold.calendarId,
+      newTask.id,
+      freq.current.value,
+      new Date(userSDate),
+      new Date (userEDate),
+      "TASK",
+      userInput
+    )
 
-    }
-    console.log("new Task: ", newTask);
-
-    // updateEventHandler -> add TaskId to itself
-    // Shows up as undefined until reload. 
+    newTask.eventHandlerId = newHandlerId;
+    addTask(newTask);
+    await updateExistingTask(newTask);
   }
 
-  const addEvent = async(e) => {
-    e.preventDefault();
+  // Function to add an Event.
+  const addEventDatabase = async(e) => {
+    alert("Creating new event");
 
-    // const newEvent = await createEventHandler("asd", "asda");
-    // Event handler should then make events? 
+    // Generate eventHandler
+    const newHandlerId = await generateEventHandler(
+      houseHold.calendarId,
+      // what should this id be?,
+      freq.current.value,
+      new Date(userSDate),
+      new Date(userEDate),
+      "EVENT",
+    )
   }
 
   if (!add)
@@ -211,12 +205,12 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
           <div className="selections">
             <div className="childSelect">
               <label htmlFor="startDate">Start Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
+              <input required type="datetime-local" value={userSDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
               <label htmlFor="endDate">End Date</label>
-              <input required type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
+              <input required type="datetime-local" value={userEDate} onChange={handleChange5} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
           
@@ -234,25 +228,25 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
           {/* Cannot connect to a list. */}
           <div className="buttons">
             <button className="btn btn-danger" onClick={changeAdd}>close</button>
-            <button className="btn" id="purple" onClick={async (e) => await addEvent(e)}>add</button>
+            <button type="submit" className="btn" id="purple" onClick={async (e) => await addEventDatabase(e)}>add</button>
           </div>
         </form>
       )
     } else if (name === "Task") {
       return (
-        <form className="addingTask">
+        <form className="addingTask" action="page_submission_URL" method="POST">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Task Name" ref={title}/>
           
           {/* Start and End Date Required */}
           <div className="selections">
             <div className="childSelect">
               <label htmlFor="startDate">Start Date</label>
-              <input type="date" value={userDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
+              <input type="datetime-local" value={userSDate} onChange={handleChange2} className="form-control" id="startDate" ref={sDate}/>
             </div>
             
             <div className="childSelect">
               <label htmlFor="endDate">End Date</label>
-              <input type="date" value={userDate} onChange={handleChange2} className="form-control" id="endDate" ref={eDate}/>
+              <input type="datetime-local" value={userEDate} onChange={handleChange5} className="form-control" id="endDate" ref={eDate}/>
             </div>
           </div>
 
@@ -318,7 +312,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
           <hr></hr>
           <div className="buttons">
             <button className="btn btn-danger" onClick={changeAdd}>close</button>
-            <button className="btn" id="purple" onClick={handleSubmit}>add</button>
+            <button type="submit" className="btn" id="purple" onClick={handleSubmit}>add</button>
           </div>
         </form>
       )

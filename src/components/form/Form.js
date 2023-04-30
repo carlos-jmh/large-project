@@ -184,7 +184,7 @@ const Form = () => {
 
           <div className="formBtn">
             <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" className="btn btn-success" onClick={async (e) => await add(e, "l")}>Add List</button>
+            <button type="submit" className="btn btn-purple" onClick={async (e) => await add(e, "l")}>Add List</button>
           </div>
           
         </div>
@@ -221,7 +221,7 @@ const Form = () => {
 
           <div className="formBtn">
             <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" className="btn btn-success" onClick={async (e) => await add(e, "e")}>Add Event</button>
+            <button type="submit" className="btn btn-purple" onClick={async (e) => await add(e, "e")}>Add Event</button>
           </div>
         </div>
 
@@ -303,7 +303,7 @@ const Form = () => {
 
           <div className="formBtn">
             <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" className="btn btn-success" onClick={async (e) => await add(e, "t")}>Add Task</button>
+            <button type="submit" className="btn btn-purple" onClick={async (e) => await add(e, "t")}>Add Task</button>
           </div>
         </div>
 
@@ -316,7 +316,7 @@ const Form = () => {
 
           <div className="formBtn">
             <button type="submit" className="btn btn-danger" onClick={() => closeForm()}>Close</button>
-            <button type="submit" className="btn btn-success" onClick={async (e) => await add(e, "m")}>Add Member</button>
+            <button type="submit" className="btn btn-purple" onClick={async (e) => await add(e, "m")}>Add Member</button>
           </div>
         </div>
       </div>

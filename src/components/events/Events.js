@@ -3,7 +3,7 @@ import Task from '../task/Task';
 import './events.css'
 
 
-const Events = ({events, handleCheck, handleDelete}) => {
+const Events = ({events, handleCheck, handleDelete, theme, handleUpdate}) => {
   return (
     <div className="section">
         <hr className="taskLine"></hr>
@@ -11,7 +11,7 @@ const Events = ({events, handleCheck, handleDelete}) => {
           {events?.map((event, index) => {
               return (
                 <div key={index}>
-                  <Task task={event} taskIndex={index} handleCheck={handleCheck} handleDelete={handleDelete} type="Event" />
+                  <Task task={event} taskIndex={index} handleCheck={handleCheck} handleDelete={handleDelete} handleUpdate={handleUpdate} type="Event" />
                 </div>
               )
           })}
