@@ -91,7 +91,7 @@ const Sidebar = ({theme}) => {
         <div id = "joinHousehold">
           
         </div>
-        <Dropdown setHouseHolds={setHouseHolds}/>
+        <Dropdown theme={theme} setHouseHolds={setHouseHolds}/>
     </div>
   );
 }

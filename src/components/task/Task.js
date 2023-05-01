@@ -108,6 +108,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
             </div>
             
             {/* If List or Item Selected, option for complete source ? */}
+            <label>Frequency</label>
             <div className="selections">
               {/* Frequency Type Options: Once, Daily, Weekly, Monthly, Yearly */}
               <select defaultValue="ONCE" id="taskType" className="form-control childSelect" onChange={handleSelect}>
@@ -134,8 +135,9 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
         
         <div className="icons">
           <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
-          <ItemInfo delete={deleteT} title="Edit Task" onClose={onClose} show={show}>
+          <ItemInfo theme={theme} delete={deleteT} title="Edit Task" onClose={onClose} show={show} id={task.id}>
             <div className="popup">
+              <label htmlFor='name'>Task Name</label>
               <input required onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/  >
               {/* Start and End Date Required */}
               <div className="selections">
@@ -151,6 +153,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
               </div>
               
               {/* If List or Item Selected, option for complete source ? */}
+              <label>Frequency</label>
               <div className="selections">
                 {/* Frequency Type Options: Once, Daily, Weekly, Monthly, Yearly */}
                 <select defaultValue="ONCE" id="taskType" className="form-control childSelect" onChange={handleSelect}>
