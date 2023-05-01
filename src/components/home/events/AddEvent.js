@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { TextInput, Keyboard , Pressable, View, Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { getStyles } from '../../styles';
@@ -7,26 +7,41 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import CustomButton from '../../CustomButton';
 import LabeledInput from '../../LabeledInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {HouseHoldContext} from '../../HouseHoldContext';
+import {generateEventHandler} from '../../../api/mutating';
 
 export default function AddEvent({ visible, onClose, onSave }) {
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [frequency, setFrequency] = useState("Once"); // default value
+  const [frequency, setFrequency] = useState("once"); // default value
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
+  const {houseHold,setHouseHold}= useContext(HouseHoldContext);
+  
   const [modalVisible, setModalVisible] = useState(false);
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  const handleSave = () => {
+  async  function handleSave  () {
     let newEvent = {
+        calendarId : houseHold.calendarId,
         title: title,
-        date: startDate,
-        frequency: frequency,
-        startDate: startDate,
+        frequency: frequency.toUpperCase(),
+        sourceDate: startDate,
         endDate: endDate,
+        eventType: "EVENT",
     }
+    console.log("Event created", newEvent)
+    const result = await generateEventHandler(
+      newEvent.calendarId, "", newEvent.frequency, newEvent.sourceDate, newEvent.endDate, newEvent.eventType, newEvent.title)
+      setHouseHold((oldHouseHold) => {
+        return {
+          ...oldHouseHold,
+          eventHandlers: [...oldHouseHold.eventHandlers, result],
+        }
+      })
+    console.log(result)
     onClose();
   };
 
@@ -55,7 +70,7 @@ export default function AddEvent({ visible, onClose, onSave }) {
 
   return(
     <CustomModal modalVisible={visible} setModalVisible={onClose}>
-      <View style={[styles.modalView]}>
+      <View style={styles.modalView}>
         <Text style={styles.householdButtonText}>Add Event</Text>
         <LabeledInput
           value={title}
@@ -81,13 +96,13 @@ export default function AddEvent({ visible, onClose, onSave }) {
         </View>
         <View style={{marginTop: 10}}>
           <Text style={[styles.label, { textAlign: 'left', marginBottom:10 }]}>FREQUENCY</Text>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 25}}>
             <BouncyCheckbox
               text="Once"
-              isChecked={frequency === "Once"}
+              isChecked={frequency === "once"}
               disableBuiltInState = {true}
               onPress={() => {
-                setFrequency("Once");
+                setFrequency("once");
                 setEndDate(startDate);
               }}
               iconStyle={{borderColor: colors.border}}
@@ -95,10 +110,10 @@ export default function AddEvent({ visible, onClose, onSave }) {
             />
             <BouncyCheckbox
               text="Daily"
-              isChecked={frequency === "Daily"}
+              isChecked={frequency === "daily"}
               disableBuiltInState = {true}
               onPress={() => {
-                setFrequency("Daily");
+                setFrequency("daily");
                 setEndDate(new Date(startDate.getTime() + (1000 * 60 * 60 * 24)));
               }}
               iconStyle={{borderColor: colors.border}}
@@ -106,10 +121,10 @@ export default function AddEvent({ visible, onClose, onSave }) {
             />
             <BouncyCheckbox
               text="Weekly"
-              isChecked={frequency === "Weekly"}
+              isChecked={frequency === "weekly"}
               disableBuiltInState = {true}
               onPress={() => {
-                setFrequency("Weekly");
+                setFrequency("weekly");
                 setEndDate(new Date(startDate.getTime() + (1000 * 60 * 60 * 24 * 7)));
               }}
               iconStyle={{borderColor: colors.border}}
@@ -117,10 +132,10 @@ export default function AddEvent({ visible, onClose, onSave }) {
             />
             <BouncyCheckbox
               text="Monthly"
-              isChecked={frequency === "Monthly"}
+              isChecked={frequency === "monthly"}
               disableBuiltInState = {true}
               onPress={() => {
-                setFrequency("Monthly");
+                setFrequency("monthly");
                 setEndDate(new Date(startDate.getTime() + (1000 * 60 * 60 * 24 * 30)));
               }}
               iconStyle={{borderColor: colors.border}}
@@ -128,6 +143,8 @@ export default function AddEvent({ visible, onClose, onSave }) {
             />
           </View>
         </View>
+        { frequency !== "once" && (
+          <>
         <Text style={[styles.label, { textAlign: 'left', marginTop: 10 }]}>END DATE</Text>
         <View style={styles.dateInputContainer}>
           <Pressable style={styles.dateInput} onPress={showDatepicker}>
@@ -162,7 +179,8 @@ export default function AddEvent({ visible, onClose, onSave }) {
             />
           )}
         </View>
-
+          </>
+        )}
         <View style={styles.modalButtonsContainer}>
           <CustomButton
             title={"DELETE"}

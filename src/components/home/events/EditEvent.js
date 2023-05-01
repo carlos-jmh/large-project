@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useContext, useEffect} from 'react';
 import { TextInput, Keyboard , Pressable, View, Text } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { getStyles } from '../../styles';
@@ -7,21 +7,45 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import CustomButton from '../../CustomButton';
 import LabeledInput from '../../LabeledInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+import {HouseHoldContext} from '../../HouseHoldContext';
+import {editEventHandler, editEvent, removeEvent, deleteEventHandler} from  '../../../api/mutating'
 export default function EditEvent({ event, visible, onClose, onSave }) {
-  const [title, setTitle] = useState(event.title);
-  const [startDate, setStartDate] = useState(new Date(event.date));
-  const [endDate, setEndDate] = useState(new Date(event.date));
+  const [title, setTitle] = useState(event.eventHandler.title);
+  const [startDate, setStartDate] = useState(new Date(event.eventHandler.sourceDate));
+  const [endDate, setEndDate] = useState(new Date(event.eventHandler.endDate));
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
-  const [frequency, setFrequency] = useState(event.frequency); // default value
+  const [frequency, setFrequency] = useState(event.eventHandler.frequency); // default value
   const { colors } = useTheme();
+  const {houseHold}= useContext(HouseHoldContext);
   const styles = getStyles(colors);
 
-  const handleSave = () => {
-    onSave({ id: event.id, title, startDate, endDate, frequency });
-    onClose();
-  };
+  async function handleSave(){
+    console.log("DATA PASSed to function: ", event.eventHandlerId,
+    event.eventHandler.calendarId,
+    "",
+    frequency.toUpperCase(),
+    startDate,
+    endDate,
+    event.eventType)
+
+      const result = await editEventHandler( 
+        event.eventHandlerId,
+        event.eventHandler.calendarId,
+        "",
+        frequency.toUpperCase(),
+        startDate,
+        endDate,
+        event.eventType,
+        title
+        )
+      console.log("result", result)
+      onClose();
+  }
+  
+  useEffect(() => {
+    console.log("Event", event)
+  }, [event])
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -72,15 +96,15 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
             />
           )}
         </View>
-        <View style={{marginTop: 10}}>
+        <View >
           <Text style={[styles.label, { textAlign: 'left', marginBottom:10 }]}>FREQUENCY</Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <BouncyCheckbox
               text="Once"
-              isChecked={frequency === "Once"}
+              isChecked={frequency === "once"}
               disableBuiltInState = {true}
               onPress={() => {
-                setFrequency("Once");
+                setFrequency("once");
                 setEndDate(startDate);
               }}
               iconStyle={{borderColor: colors.border}}
@@ -88,10 +112,10 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
             />
             <BouncyCheckbox
               text="Daily"
-              isChecked={frequency === "Daily"}
+              isChecked={frequency === "daily"}
               disableBuiltInState = {true}
               onPress={() => {
-                setFrequency("Daily");
+                setFrequency("daily");
                 setEndDate(new Date(startDate.getTime() + (1000 * 60 * 60 * 24)));
               }}
               iconStyle={{borderColor: colors.border}}
@@ -99,10 +123,10 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
             />
             <BouncyCheckbox
               text="Weekly"
-              isChecked={frequency === "Weekly"}
+              isChecked={frequency === "weekly"}
               disableBuiltInState = {true}
               onPress={() => {
-                setFrequency("Weekly");
+                setFrequency("weekly");
                 setEndDate(new Date(startDate.getTime() + (1000 * 60 * 60 * 24 * 7)));
               }}
               iconStyle={{borderColor: colors.border}}
@@ -110,10 +134,10 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
             />
             <BouncyCheckbox
               text="Monthly"
-              isChecked={frequency === "Monthly"}
+              isChecked={frequency === "monthly"}
               disableBuiltInState = {true}
               onPress={() => {
-                setFrequency("Monthly");
+                setFrequency("monthly");
                 setEndDate(new Date(startDate.getTime() + (1000 * 60 * 60 * 24 * 30)));
               }}
               iconStyle={{borderColor: colors.border}}
@@ -121,7 +145,7 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
             />
           </View>
         </View>
-        <Text style={[styles.label, { textAlign: 'left', marginTop: 10 }]}>END DATE</Text>
+        <Text style={[styles.label, { textAlign: 'left', display:"flex", alignSelf:'baseline' ,marginTop: 20 }]}>END DATE</Text>
         <View style={styles.dateInputContainer}>
           <Pressable style={styles.dateInput} onPress={showDatepicker}>
             <Text style={styles.dateInputText}>{formatDate(endDate)}</Text>
@@ -187,12 +211,10 @@ function ConfirmDelete({
   const { colors } = useTheme();
   const styles = getStyles(colors);
   const [isRecurrent, setIsRecurrent] = useState(false);
-
-
-  if(frequency !== "Once"){
-    setIsRecurrent(true);
-  }
   
+  useEffect(() => {
+    setIsRecurrent(frequency !== "once");
+  }, [frequency]);
   return (
     <CustomModal modalVisible={modalVisible} setModalVisible={setModalVisible}>
       <Pressable

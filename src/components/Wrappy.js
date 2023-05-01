@@ -251,14 +251,14 @@ export default function Wrappy({  }) {
           options={{ headerShown: false }}
         />
         <Drawer.Screen
-          name="ConfirmRegister"
-          component={ConfirmRegister}
-          options={{ headerShown: false }}
-        />
-        <Drawer.Screen
           name="InitialPage"
           component={InitialPage}
           options={{ headerShown: true }}
+        />
+        <Drawer.Screen
+          name="ConfirmRegister"
+          component={ConfirmRegister}
+          options={{ headerShown: false }}
         />
         <Drawer.Screen
           name="CreateHousehold"
