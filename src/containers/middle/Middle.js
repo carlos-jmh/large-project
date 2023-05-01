@@ -62,11 +62,11 @@ const Middle = ({theme}) => {
   });
   
   const [eventData, setEventData] = useEventData({
-    calendarId: houseHold.houseHoldCalendarId,
+    calendarId: houseHold.calendarId,
   });
 
   const [eventHandlerData, setEventHandlerData] = useEventHandlerData({
-    calendarId: houseHold.houseHoldCalendarId,
+    calendarId: houseHold.calendarId,
   });
 
   const updateTaskHandler = (task) => {

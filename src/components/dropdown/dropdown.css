@@ -4,6 +4,16 @@
     top: 3.5rem;
     right: 1rem;
     width: 20rem;
+    background-color: white;
+}
+
+.dropdown-menu-dark {
+    display: none;
+    position: absolute;
+    top: 3.5rem;
+    right: 1rem;
+    width: 20rem;
+    background-color: darkslategray;
 }
 
 .user-info {

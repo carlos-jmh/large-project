@@ -6,7 +6,7 @@ import { editHouseHold, editHouseHoldMember, removeUser } from '../../api/mutati
 import { fetchHouseHoldMembers, fetchHouseHolds } from '../../api/fetching';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
-const Dropdown = ({setHouseHolds}) => {
+const Dropdown = ({setHouseHolds, theme}) => {
 
     const [houseHoldMember, setHouseHoldMember] = useState({});
     const [nickname, setNickname] = useState("");
@@ -142,49 +142,95 @@ const Dropdown = ({setHouseHolds}) => {
         }
     }
     
-    return (
-        <div className="dropdown-menu">
-            <div className="user-info">
-                <Icon.PersonCircle/>
-                {/* Get's the locally stored username of the last authorized user. */}
-                <p>{localStorage.getItem('CognitoIdentityServiceProvider.1ncc815mbno6k3oeg06ga39jbe.LastAuthUser')}</p>
-            </div>
-            <hr/>
-            <div className="edit-info">
-                <div className="grouping">
-                    <label htmlFor="username">HOUSEHOLD USERENAME</label>
-                    <div className="child-group">
-                        {/* Change to be household specific user information: should default to locally stored username */}
-                        <p id="username">{nickname}</p>
-                        <button id="edit-button" onClick={editUsername}><Icon.GearFill/></button>
-                        <button id="done-button" onClick={submitUsername} style={{"display": "none"}}>done</button>
-                    </div>
-                </div>
-                <div className="grouping">
-                    <label htmlFor="username">HOUSEHOLD NAME</label>
-                    <div className="child-group">
-                        <p id="householdname">{houseHold.name}</p>
-                        <button id="edit-button2" onClick={editHouseholdName}><Icon.Pencil/></button>
-                        <button id="done-button2" onClick={submitHouseholdName} style={{"display": "none"}}>done</button>
-                    </div>
+    if(theme == "light") {
+        return (
+            <div className="dropdown-menu">
+                <div className="user-info">
+                    <Icon.PersonCircle/>
+                    {/* Get's the locally stored username of the last authorized user. */}
+                    <p>{localStorage.getItem('CognitoIdentityServiceProvider.1ncc815mbno6k3oeg06ga39jbe.LastAuthUser')}</p>
                 </div>
                 <hr/>
-                <div className="grouping">
-                    <div className="child-group leave-house">
-                        <p>Leave Household</p>
-                        <button id="leave-button" onClick={leaveHousehold}><Icon.ArrowLeftCircle/></button>
+                <div className="edit-info">
+                    <div className="grouping">
+                        <label htmlFor="username">HOUSEHOLD USERENAME</label>
+                        <div className="child-group">
+                            {/* Change to be household specific user information: should default to locally stored username */}
+                            <p id="username">{nickname}</p>
+                            <button id="edit-button" onClick={editUsername}><Icon.GearFill/></button>
+                            <button id="done-button" onClick={submitUsername} style={{"display": "none"}}>done</button>
+                        </div>
                     </div>
-                </div>
-                <hr/>
-                <div className="grouping">
-                    <div className="child-group">
-                        <p>Logout</p>
-                        <button id="logout-button" onClick={signOutUser}><Icon.DoorClosedFill/></button>
+                    <div className="grouping">
+                        <label htmlFor="username">HOUSEHOLD NAME</label>
+                        <div className="child-group">
+                            <p id="householdname">{houseHold.name}</p>
+                            <button id="edit-button2" onClick={editHouseholdName}><Icon.Pencil/></button>
+                            <button id="done-button2" onClick={submitHouseholdName} style={{"display": "none"}}>done</button>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div className="grouping">
+                        <div className="child-group leave-house">
+                            <p>Leave Household</p>
+                            <button id="leave-button" onClick={leaveHousehold}><Icon.ArrowLeftCircle/></button>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div className="grouping">
+                        <div className="child-group">
+                            <p>Logout</p>
+                            <button id="logout-button" onClick={signOutUser}><Icon.DoorClosedFill/></button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    } else {
+        return (
+            <div style={{backgroundColor:'black'}} className="dropdown-menu">
+                <div className="user-info">
+                    <Icon.PersonCircle/>
+                    {/* Get's the locally stored username of the last authorized user. */}
+                    <p>{localStorage.getItem('CognitoIdentityServiceProvider.1ncc815mbno6k3oeg06ga39jbe.LastAuthUser')}</p>
+                </div>
+                <hr/>
+                <div className="edit-info">
+                    <div className="grouping">
+                        <label htmlFor="username">HOUSEHOLD USERENAME</label>
+                        <div className="child-group">
+                            {/* Change to be household specific user information: should default to locally stored username */}
+                            <p id="username">{nickname}</p>
+                            <button id="edit-button" onClick={editUsername}><Icon.GearFill/></button>
+                            <button id="done-button" onClick={submitUsername} style={{"display": "none"}}>done</button>
+                        </div>
+                    </div>
+                    <div className="grouping">
+                        <label htmlFor="username">HOUSEHOLD NAME</label>
+                        <div className="child-group">
+                            <p id="householdname">{houseHold.name}</p>
+                            <button id="edit-button2" onClick={editHouseholdName}><Icon.Pencil/></button>
+                            <button id="done-button2" onClick={submitHouseholdName} style={{"display": "none"}}>done</button>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div className="grouping">
+                        <div className="child-group leave-house">
+                            <p>Leave Household</p>
+                            <button id="leave-button" onClick={leaveHousehold}><Icon.ArrowLeftCircle/></button>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div className="grouping">
+                        <div className="child-group">
+                            <p>Logout</p>
+                            <button id="logout-button" onClick={signOutUser}><Icon.DoorClosedFill/></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
 export default Dropdown

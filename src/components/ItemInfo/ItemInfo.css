@@ -23,7 +23,7 @@
   }
   
   .modal-content {
-    width: 500px;
+    width: 700px;
     background-color: #fff;
     transition: all 0.3s ease-in-out;
     transform: translateY(-200px);
@@ -52,7 +52,8 @@
     border-bottom: 1px solid #eee;
   }
   
-  .modal-dark {
+
+  .Dmodal {
     position: fixed;
     left: 0;
     top: 0;
@@ -67,42 +68,52 @@
     pointer-events: none;
   }
   
-  .modal.enter-done-dark {
+  .Dmodal.enter-done {
     opacity: 1;
     pointer-events: visible;
   }
   
-  .modal.exit-dark {
+  .Dmodal.exit {
     opacity: 0;
   }
   
-  .modal-content-dark {
-    width: 500px;
-    background-color: #222222;
+  .Dmodal-content {
+    width: 700px;
+    border-radius: 10px;
+    background-color: #2e2e2e;
     transition: all 0.3s ease-in-out;
     transform: translateY(-200px);
   }
   
-  .modal.modal.enter-done-dark .modal-content-dark {
+  .Dmodal.enter-done .Dmodal-content {
     transform: translateY(0);
   }
   
-  .modal.modal.exit-dark .modal-content-dark {
+  .Dmodal.exit .Dmodal-content {
     transform: translateY(-200px);
   }
   
-  .modal-header-dark,
-  .modal-footer-dark {
+  .Dmodal-header,
+  .Dmodal-footer {
     padding: 10px;
   }
+
+  .Dmodal-footer {
+    float: right;
+    margin-right: 10px
+  }
   
-  .modal-title-dark {
+  .Dmodal-title {
     margin: 0;
   }
   
-  .modal-body-dark {
+  .Dmodal-body {
     padding: 10px;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
+  }
+
+  .btn {
+    margin-left: 5px;
   }
   
