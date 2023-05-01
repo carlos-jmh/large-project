@@ -18,7 +18,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const desc = useRef(null);
   const sDate = useRef(null);
   const eDate = useRef(null);
-  const freq = useRef(null);
+  const freq = useRef("ONCE");
   const listAttach = useRef(null);
   const itemAttach = useRef(null);
 
@@ -159,6 +159,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
 
   // Function to add an Event.
   const addEventDatabase = async(e) => {
+    e.preventDefault();
     alert("Creating new event");
 
     // Generate eventHandler

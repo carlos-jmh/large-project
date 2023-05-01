@@ -298,7 +298,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
           
           <div className="icons">
             <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
-            <ItemInfo delete={deleteEventHandler} title="Edit Task" onClose={onClose} show={show}>
+            <ItemInfo delete={deleteT} title="Edit Task" onClose={onClose} show={show}>
               <div className="popup">
                 <input required onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/  >
                 {/* Start and End Date Required */}
