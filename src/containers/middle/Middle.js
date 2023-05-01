@@ -99,6 +99,16 @@ const Middle = ({theme}) => {
     setEventHandlerData(removed);
   }
 
+  const updateEventHandler = (eventHandler, oldID) => {
+    // Find old event handler and replace with new one (in eventHandlerData).
+    // Refresh the calendar.
+
+    // setEventHandlerData(prevState => {
+    //   const newListData = [...prevState];
+    //   newListData
+    // })
+  }
+
   const onListItemCreated = (item, listIndex, setListData) => {
     console.log("SUBSCRIPTION CREATE ITEM", item);
 
@@ -277,7 +287,7 @@ const Middle = ({theme}) => {
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
-              <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={eventDeleteHandler}/>
+              <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={eventDeleteHandler} handleEventUpdate={updateEventHandler}/>
               <Add setEventHandlerData={setEventHandlerData} addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>

@@ -9,7 +9,7 @@ import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext'
 import { fetchEventHandlerById, getExistingEvent } from '../../api/fetching'
 import { getEvent } from '../../graphql/queries'
 
-const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate}) => {
+const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate, handleEventUpdate}) => {
 
   const [show, setShow] = useState(false);
   const [SDate, setSDate] = useState(task.sDate);
@@ -64,7 +64,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
 
   const getEventHandler = async() => {
     console.log(task.eventHandlerId);
-    let retval = await fetchEventHandlerById(task.EventHandlerId);
+    let retval = await fetchEventHandlerById(task.eventHandlerId);
 
     if (retval !== null)
       setHandler(retval.title);
@@ -107,7 +107,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
   const updateEventHandler = async() => {
     setShow(false);
     console.log(task);
-    editEventHandler(
+    let update = await editEventHandler(
       task.id, 
       task.calendarId,
       task.taskId,
@@ -117,6 +117,12 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       "EVENT",
       "dummy else"
     );
+
+    console.log("passed id", update);
+    let updated = await fetchEventHandlerById(update);
+    console.log(updated);
+
+    handleEventUpdate(update, task.id);
   }
 
   function updateTime(startTime)
@@ -153,15 +159,14 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       // Fetch the eventHandler.
       let time = updateTime(task.date.substring(11, 19));
       
-      //getEventHandler();
-      //console.log(handler);
-      //console.log(task);
-      //console.log(handler);
-
+      getEventHandler();
+      console.log("Resulting title",handler);
+      
       return (
+        handler ? 
         <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
           <div className="eventInfo">
-            {/* <p>{handler.title}</p> */}
+            <p>{handler}</p>
             <p>Time: {time}</p>
             {/* <p>Starts: {(task.sourceDate).substring(0, 10)} @ {startTime}</p> */}
             {/* <p>Ends: {(task.endDate).substring(0, 10)} @ {endTime}</p> */}
@@ -196,6 +201,10 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
           </ItemInfo> */}
           </div>
         </div>
+        :
+        <>
+        <p>{handler}</p>
+        </>
       );
     }
     else
