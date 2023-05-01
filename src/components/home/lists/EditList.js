@@ -41,10 +41,10 @@ export default function EditList({ list, setModalVisible, itemListId }) {
       // TODO: list items could have tasks, but API doesn't support it yet
       if (list == null) {
         // Create item
-        createNewItem(itemListId, title);
+        await createNewItem(itemListId, title);
       } else {
         // Update item
-        updateExistingItem({ ...list, title: title });
+        await updateExistingItem({ ...list, title: title });
       }
     } else {
       if (list == null) {

@@ -36,21 +36,12 @@ export default function List({ list }) {
   const numCompleted = items.reduce((n, item) => n + item.completed, 0);
 
   // Called when an item is checked/unchecked
-  function handleCheckItem(isChecked, item) {
-    console.log("CHECK ITEM", isChecked);
+  async function handleCheckItem(isChecked, item) {
     const updatedItem = {
       ...item,
       completed: isChecked,
     };
-    updateExistingItem(updatedItem);
-
-    updatedItem._version += 1;
-
-    setItems((oldItems) => {
-      return oldItems.map((oldItem) =>
-        oldItem.id == item.id ? updatedItem : oldItem
-      );
-    });
+    await updateExistingItem(updatedItem);
   }
 
   return (
@@ -113,8 +104,8 @@ export default function List({ list }) {
                     <ListItem
                       item={item}
                       itemListId={list.id}
-                      onChecked={(isChecked) =>
-                        handleCheckItem(isChecked, item)
+                      onChecked={async (isChecked) =>
+                        await handleCheckItem(isChecked, item)
                       }
                     />
                   </View>
@@ -150,8 +141,8 @@ export default function List({ list }) {
                     <ListItem
                       item={item}
                       itemListId={list.id}
-                      onChecked={(isChecked) =>
-                        handleCheckItem(isChecked, item)
+                      onChecked={async (isChecked) =>
+                        await handleCheckItem(isChecked, item)
                       }
                     />
                   </View>
