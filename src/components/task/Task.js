@@ -9,7 +9,7 @@ import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext'
 import { fetchEventHandlerById, getExistingEvent } from '../../api/fetching'
 import { getEvent } from '../../graphql/queries'
 
-const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate}) => {
+const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate, handlerData}) => {
 
   const [show, setShow] = useState(false);
   const [SDate, setSDate] = useState(task.sDate);
@@ -17,7 +17,6 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
   const [select, setSelect] = useState("ONCE");
   const [name, setName] = useState(task.title);
   const [date, setDate] = useState(false);
-  const [handler, setHandler] = useState({});
   const { houseHold } = useContext(HouseHoldContext);
   let startTime = "";
   let endTime = "";
@@ -128,11 +127,13 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     if (task.eventType)
     {
       let time = updateTime(task.date.substring(11, 19));
+      let handler = handlerData.filter(element => element.id === task.eventHandlerId)[0];
+      console.log(handler);
 
       return (
         <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
           <div className="eventInfo">
-            <p>{task.title}</p>
+            <p>{handler.title}</p>
             <p>Time: {time}</p>
             {/* <p>Starts: {(task.sourceDate).substring(0, 10)} @ {startTime}</p> */}
             {/* <p>Ends: {(task.endDate).substring(0, 10)} @ {endTime}</p> */}
@@ -191,12 +192,12 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
               <div className="selections">
                 <div className="childSelect">
                   <label htmlFor="startDate">Start Date</label>
-                  <input onChange={handleEditSDate} defaultValue={task.sourceDate} type="datetime-local" className="form-control" id="startDate"/>
+                  <input onChange={handleEditSDate} value={task.sourceDate.substring(0, 16)} type="datetime-local" className="form-control" id="startDate"/>
                 </div>
                 
                 <div className="childSelect">
                   <label htmlFor="endDate">End Date</label>
-                  <input onChange={handleEditEDate} type="datetime-local" className="form-control" id="endDate"/>
+                  <input onChange={handleEditEDate} value={task.endDate.substring(0, 16)} type="datetime-local" className="form-control" id="endDate"/>
                 </div>
               </div>
               
@@ -228,20 +229,16 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
 
       time = updateTime((task.date).substring(11, 19));
 
-      // Get the event handler
-      let handler = getEventHandler();
-
-      // console.log(handler);
+      // Get the event handler from handlerData. 
+      let handler = handlerData.filter(element => element.id === task.eventHandlerId)[0];
+      console.log(handler);
         
       return (
         <div id={task.id} name="task" value={task.id} className='taskItem'>
-          <div className="info">
-            <input className="check" type="checkbox" id={task.id} value = "" onChange={checkOff} checked = {task.completed ? true : false}/>
+          <div className="eventInfo">
               {/* Need to get the title given eventHandlerId */}
-              <label className={task.completed ? "label strike" : "label"}>
-                <p>{task.title}</p>
-                <p>Time: {time}</p>
-              </label> 
+              <p>{handler.title}</p>
+              <p>Time: {time}</p>
           </div>
           
           <div className="icons">
@@ -301,7 +298,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
           
           <div className="icons">
             <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
-            <ItemInfo delete={deleteT} title="Edit Task" onClose={onClose} show={show}>
+            <ItemInfo delete={deleteEventHandler} title="Edit Task" onClose={onClose} show={show}>
               <div className="popup">
                 <input required onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/  >
                 {/* Start and End Date Required */}
