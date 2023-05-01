@@ -265,14 +265,14 @@ const Middle = ({theme}) => {
             <h5 className="sectionHeader">Tasks</h5>
             <div>
               <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme} handler={eventHandlerData}/>
-              <Add addTask={addTask} useState={false} name="Task" list={listData} theme={theme}/>
+              <Add setEventHandlerData={setEventHandlerData} addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
               <br/>
             </div>
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
               <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={taskDeleteHandler}/>
-              <Add addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
+              <Add setEventHandlerData={setEventHandlerData} addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>
         </div>

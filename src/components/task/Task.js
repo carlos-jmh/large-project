@@ -26,14 +26,17 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     handleCheck(taskIndex, !task.complete); 
   }
 
-  const deleteT = () => {
-    handleDelete(task.id, taskIndex);
-    deleteExistingTask(task.id);
+  const deleteT = async() => {
     setShow(false);
+    handleDelete(task.id, taskIndex);
+    await deleteExistingTask(task.id);
+    if(task.eventHandlerId != "" && task.eventHandlerId != null) {
+      await removeEventHandler(task.eventHandlerId)
+      }
   }
 
-  const deleteEventHandler = () => {
-    removeEventHandler(task.id);
+  const deleteEventHandler = async() => {
+    await removeEventHandler(task.id);
   }
 
   const handleSelect = (e) => {
@@ -57,7 +60,8 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
   }
 
   async function getEventHandler() {
-    let retval = await fetchEventHandlerById(task.eventHandlerId);
+    let ret = await processTasks([task]);
+    let retval = await fetchEventHandlerById(ret[0].eventHandlerId);
     return retval;
   }
 
