@@ -25,30 +25,14 @@ const ItemInfo = props => {
               </button>
             </div>
           </div>
-        </div>
-      </CSSTransition>
-    );
-  } else {
-    return (
-      <CSSTransition
-        in={props.show}
-        unmountOnExit
-        timeout={300} 
-      >
-        <div className="Dmodal">
-          <div className="Dmodal-content" >
-            <div className="Dmodal-header">
-              <h4 className="Dmodal-title">{props.title}</h4>
-            </div>
-            <div className="Dmodal-body">{props.children}</div>
-            <div className="Dmodal-footer">
-              <button onClick={props.onClose} className="btn btn-dark" >
-                Confirm
-              </button>
-              <button onClick={props.delete} className="btn btn-dark">
-                Delete
-              </button>
-            </div>
+          <div className="modal-body">{props.children}</div>
+          <div className="modal-footer">
+            <button onClick={props.onSubmit} className="btn" >
+              Confirm
+            </button>
+            <button onClick={props.delete} className="btn">
+              Delete
+            </button>
           </div>
         </div>
       </CSSTransition>

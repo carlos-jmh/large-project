@@ -68,7 +68,6 @@ export const useTasksData = ({
 
       const tasks = await fetchTasksByHouseHoldId(houseHoldId);
       const processedTasks = processDataCallback ? await processDataCallback(tasks) : tasks;
-      console.log(processedTasks);
       setTaskData(processedTasks);
     }
 
@@ -133,4 +132,13 @@ export const useEventHandlerData = ({
   // TODO (carlos): subscribe to new/updated Events
 
   return [eventHandlerData, setEventHandlerData];
+}
+
+export const refreshCalendarData = async (calendarId, setEventHandlerData, setEventData) => {
+  if (calendarId && calendarId !== "") {
+    const events = await fetchEventsByCalendarId(calendarId);
+    setEventData(events);
+    const eventHandlers = await fetchEventHandlersByCalendarId(calendarId);
+    setEventHandlerData(eventHandlers);
+  }
 }

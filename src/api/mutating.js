@@ -486,7 +486,7 @@ export const editEventHandler = async (
   sourceDate,
   endDate,
   eventType,
-  title,
+  title
 ) => {
   try {
     const updatedEventHandler = await API.graphql(
@@ -500,7 +500,7 @@ export const editEventHandler = async (
           sourceDate,
           endDate,
           eventType,
-          title,
+          title
         },
         authMode: "LAMBDA"
       }

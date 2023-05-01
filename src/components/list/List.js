@@ -50,7 +50,7 @@ const List = ({
   }
 
   const doneList = async(e) => {
-    console.log(newName.current.value);
+    // console.log(newName.current.value);
 
     // If the name was changed.
     if (list.title !== newName.current.value)
