@@ -24,6 +24,11 @@ const Dropdown = ({setHouseHolds}) => {
     // Load on first render.
     useEffect(() => {        
         async function loadHouseholdMembers() {
+            if (!houseHold.id || houseHold.id === "") {
+                console.log("No houseHoldId defined to fetch members");
+                return;
+            }
+
             const members = await fetchHouseHoldMembers();
 
             const member = members.find(element => element.houseHoldId === houseHold.id);

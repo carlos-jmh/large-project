@@ -1,8 +1,8 @@
 import React from 'react'
 import Task from '../task/Task';
 
-const TaskList = ({tasks, handleCheck, handleDelete, theme, handleUpdate, handler}) => {
-  console.log(handler);
+const TaskList = ({tasks, eventHandlerData, handleCheck, handleDelete, theme, handleUpdate, handler}) => {
+  // console.log(eventHandlerData);
 return (
   <div className="section">
       <hr className="taskLine"></hr>
@@ -10,8 +10,17 @@ return (
         {tasks?.map((task, index) => {
             return (
                 <Task 
-                key={index} task={task} taskIndex={index} handleCheck={handleCheck} handleDelete={handleDelete} handleUpdate={handleUpdate} theme={theme} handlerData={handler}
-                type="Task"/>
+                  key={index}
+                  task={task}
+                  eventHandlerData={eventHandlerData}
+                  taskIndex={index}
+                  handleCheck={handleCheck}
+                  handleDelete={handleDelete}
+                  handleUpdate={handleUpdate}
+                  theme={theme}
+                  handlerData={handler}
+                  type="Task"
+                />
             )
         })}
         <hr></hr>

@@ -1,18 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useState } from 'react';
 import Task from '../task/Task';
 
-const Upcoming = ({tasks, handleCheck, selectedDate, name}) => {
+const Upcoming = ({tasks, eventHandlerData, handleCheck, selectedDate, name}) => {
+    
     // Given the name, make sure task.EventType.toUpper matches.
-    let s = (new Date(selectedDate).toISOString()).substring(0, 10);
-    let copy = [];
-    for (let i = 0; i < tasks.length; i++) {
-        let date = (tasks[i].date).substring(0, 10)
-        
-        // Get correct date and type of event.
-        if(date === s && tasks[i].eventType === name.toUpperCase()) {
-            copy.push(tasks[i])
+    const [copy, setCopy] = useState([]);
+
+    useEffect(() => {
+        if (eventHandlerData && eventHandlerData.length > 0 && tasks && tasks.length > 0) {
+            let s = (new Date(selectedDate).toISOString()).substring(0, 10);
+
+            setCopy([]);
+
+            for (let i = 0; i < tasks.length; i++) {
+                let date = (tasks[i].date).substring(0, 10)
+                
+                // Get correct date and type of event.
+                if(date === s && tasks[i].eventType === name.toUpperCase()) {
+                    setCopy((prevCopy) => {
+                        const newCopy = [...prevCopy, tasks[i]];
+                        return newCopy;
+                    });
+                }
+            }
         }
-    }
+    }, [tasks, eventHandlerData, selectedDate]);
     
     if(copy.length === 0) {
         return (
@@ -25,14 +38,19 @@ const Upcoming = ({tasks, handleCheck, selectedDate, name}) => {
         );
     } else {
         return (
-            <div className="section" style={{"margin-top": "1.5rem"}}>
+            <div className="section" style={{"marginTop": "1.5rem"}}>
                 <h6>{name}'s</h6>
                 <hr className="taskLine"></hr>
                 <div className="tasks">
-                    {copy?.map(task => {
+                    {copy?.map((task, index) => {
                         return (
-                        <div>
-                            <Task task={task} handleCheck={handleCheck} type={name}/>
+                        <div key={index}>
+                            <Task
+                                task={task}
+                                eventHandlerData={eventHandlerData}
+                                handleCheck={handleCheck}
+                                type={name}
+                            />
                         </div>
                         )
                     })}

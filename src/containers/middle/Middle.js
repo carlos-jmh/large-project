@@ -16,7 +16,7 @@ import {
 } from '../../api/fetching';
 import { updateExistingItem, deleteExistingItem } from '../../api/mutating'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
-import { useEventData, useEventHandlerData, useListsData, useTasksData } from '../../api/hooks'
+import { useEventData, useEventHandlerData, useListsData, useTasksData, refreshCalendarData } from '../../api/hooks'
 
 const processLists = async (lists) => {
   const processedLists = await Promise.all(lists.map(async (list) => {
@@ -72,13 +72,13 @@ const Middle = ({theme}) => {
     calendarId: houseHold.calendarId,
   });
 
-  console.log(eventData);
+  // console.log(eventData);
 
   const [eventHandlerData, setEventHandlerData] = useEventHandlerData({
     calendarId: houseHold.calendarId,
   });
 
-  console.log(eventHandlerData);
+  // console.log(eventHandlerData);
 
   const updateTaskHandler = (task) => {
     setTaskData(prevState => {
@@ -99,14 +99,15 @@ const Middle = ({theme}) => {
     setEventHandlerData(removed);
   }
 
-  const updateEventHandler = (eventHandler, oldID) => {
+  const updateEventHandler = () => {
     // Find old event handler and replace with new one (in eventHandlerData).
     // Refresh the calendar.
 
-    // setEventHandlerData(prevState => {
-    //   const newListData = [...prevState];
-    //   newListData
-    // })
+    refreshCalendarData(
+      houseHold.calendarId,
+      setEventHandlerData,
+      setEventData,
+    );
   }
 
   const onListItemCreated = (item, listIndex, setListData) => {
@@ -268,8 +269,8 @@ const Middle = ({theme}) => {
           <div className="taskevent">
             <div className="section1">
               <h5 className="sectionHeader">Upcoming</h5>
-              <Upcoming tasks={eventData} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
-              <Upcoming tasks={eventData} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
+              <Upcoming tasks={eventData} eventHandlerData={eventHandlerData} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
+              <Upcoming tasks={eventData} eventHandlerData={eventHandlerData}handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
             </div>
           </div>
         </div>
@@ -280,15 +281,15 @@ const Middle = ({theme}) => {
         <div className="section1">
             <h5 className="sectionHeader">Tasks</h5>
             <div>
-              <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme} handler={eventHandlerData}/>
-              <Add setEventHandlerData={setEventHandlerData} addTask={addEvent} useState={false} name={"Task"} list={[]} theme={theme}/>
+              <TaskList tasks={taskData} eventHandlerData={eventHandlerData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme} handler={eventHandlerData}/>
+              <Add setEventHandlerData={setEventHandlerData} handleEventUpdate={updateEventHandler} addTask={addEvent} useState={false} name={"Task"} list={[]} theme={theme}/>
               <br/>
             </div>
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
-              <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={eventDeleteHandler} handleEventUpdate={updateEventHandler}/>
-              <Add setEventHandlerData={setEventHandlerData} addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
+              <Events events={eventHandlerData} handleCheck={handleEventCheck} handleDelete={eventDeleteHandler} handleEventUpdate={updateEventHandler}/>
+              <Add setEventHandlerData={setEventHandlerData} handleEventUpdate={updateEventHandler} addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>
         </div>
@@ -311,13 +312,13 @@ const Middle = ({theme}) => {
                   handleListItemDelete={handleListItemDelete}
                   handleListItemUpdate={handleListItemUpdate}
                 />
-                <Add addTask={addListItem} useState={false} name={"to" + currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
+                <Add addTask={addListItem} handleEventUpdate={updateEventHandler} useState={false} name={"to" + currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
                 <br/>
               </div>
             )
           })}
           <hr className="taskLine"></hr>
-          <Add useState={false} name={"a New List"} theme={theme} setState={setListData} handle={handleListItemUpdate}/>
+          <Add useState={false} handleEventUpdate={updateEventHandler} name={"a New List"} theme={theme} setState={setListData} handle={handleListItemUpdate}/>
         </div>
       </div>
     </>

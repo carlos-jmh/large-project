@@ -7,9 +7,9 @@ import { deleteExistingTask, updateExistingTask, editEventHandler, generateEvent
 import { processTasks } from '../../containers/middle/Middle'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext'
 import { fetchEventHandlerById, getExistingEvent } from '../../api/fetching'
-import { getEvent } from '../../graphql/queries'
+import { useEffect } from 'react'
 
-const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate, handleEventUpdate}) => {
+const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate, handleEventUpdate}) => {
 
   const [show, setShow] = useState(false);
   const [SDate, setSDate] = useState(task.sDate);
@@ -40,6 +40,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     setShow(false);
     handleDelete(task.id, taskIndex);
     await removeEventHandler(task.id);
+    handleEventUpdate();
   }
 
   const handleSelect = (e) => {
@@ -62,38 +63,37 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     setEDate(new Date(editeDate));
   }
 
-  const getEventHandler = async() => {
-    console.log(task.eventHandlerId);
-    let retval = await fetchEventHandlerById(task.eventHandlerId);
-    console.log("fetch return", retval);
-    if (retval !== null)
-      setTitle(retval.title);
+  const getEventHandler = (eventHandlerData) => {
+    const eventHandler = eventHandlerData.find(element => element.id === task.eventHandlerId);
+    if (eventHandler !== undefined)
+      setTitle(eventHandler.title);
   }
 
-  const onClose = async() => {
+  const onItemInfoSubmit = async() => {
     setShow(false);
 
     let eventHandlerID;
     if(SDate != null) {
       if(task.eventHandlerId === "" || !task.eventHandlerId) {
           eventHandlerID = await generateEventHandler(      
-          houseHold.calendarId,
-          task.id,
-          select,
-          SDate,
-          EDate,
-          "TASK",
-          task.title)
+            houseHold.calendarId,
+            task.id,
+            select,
+            SDate,
+            EDate,
+            "TASK",
+            task.title
+          );
       } else {
           eventHandlerID = await editEventHandler(
-          task.eventHandlerId,
-          task.eventHandler.calendarId,
-          task.id,
-          select,
-          SDate,
-          EDate,
-          "TASK"
-          )
+            task.eventHandlerId,
+            task.eventHandler.calendarId,
+            task.id,
+            select,
+            SDate,
+            EDate,
+            "TASK"
+          );
       }
     }
 
@@ -106,7 +106,10 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
 
   const updateEventHandler = async() => {
     setShow(false);
-    console.log(task);
+    // console.log(task);
+    
+    // if data is same, don't update.
+
     let update = await editEventHandler(
       task.id, 
       task.calendarId,
@@ -118,11 +121,11 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       "dummy else"
     );
 
-    console.log("passed id", update);
+    // console.log("passed id", update);
     let updated = await fetchEventHandlerById(update);
-    console.log(updated);
+    // console.log(updated);
 
-    handleEventUpdate(update, task.id);
+    handleEventUpdate();
   }
 
   function updateTime(startTime)
@@ -152,6 +155,12 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     return timeValue1;
   }
 
+  useEffect(() => {
+    if (eventHandlerData && eventHandlerData.length > 0) {
+      getEventHandler(eventHandlerData);
+    }
+  }, [eventHandlerData]);
+
   if (type === "Event" || type === "EVENT") {    
     // Means it's an event not eventHandler
     if (task.eventType)
@@ -159,8 +168,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       // Fetch the eventHandler.
       let time = updateTime(task.date.substring(11, 19));
       
-      getEventHandler();
-      console.log("Resulting title",eventTitle);
+      // getEventHandler();
       
       return (
         eventTitle ? 
@@ -223,10 +231,10 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
                     
           <div className="icons">
           <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
-          <ItemInfo delete={deleteEventHandler} title={task.title} onClose={updateEventHandler} show={show}>
+          <ItemInfo delete={deleteEventHandler} title={task.title} onSubmit={updateEventHandler} onClose={() => {setShow(false)}} show={show}>
             <div className="popup">
               {/* Start and End Date Required */}
-              <input required onChange={handleEditName} type="text" className="form-control" id="name"/>
+              <input required={true} onChange={handleEditName} type="text" className="form-control" id="name"/>
               <div className="selections">
                 <div className="childSelect">
                   <label htmlFor="startDate">Start Date</label>
@@ -268,7 +276,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       time = updateTime((task.date).substring(11, 19));
 
       // Get the event handler from handlerData.
-      getEventHandler();
+      // getEventHandler();
         
       return (
         eventTitle ? 
@@ -338,9 +346,9 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
           
           <div className="icons">
             <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
-            <ItemInfo delete={deleteT} title="Edit Task" onClose={onClose} show={show}>
+            <ItemInfo delete={deleteT} title="Edit Task" onClose={() => {setShow(false);}} onSubmit={onItemInfoSubmit} show={show}>
               <div className="popup">
-                <input required onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/  >
+                <input required={true} onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/>
                 {/* Start and End Date Required */}
                 <div className="selections">
                   <div className="childSelect">

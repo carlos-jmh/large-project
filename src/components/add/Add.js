@@ -6,7 +6,7 @@ import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 import { Auth } from 'aws-amplify';
 import { fetchEventHandlerById } from '../../api/fetching';
 
-const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle, index}) => {
+const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle, index, handleEventUpdate}) => {
   // console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
@@ -175,13 +175,15 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       userInput
     )
 
-    const eventHandler = await fetchEventHandlerById(newHandlerId);
+    // const eventHandler = await fetchEventHandlerById(newHandlerId);
 
-    setEventHandlerData(prevState => {
-      const newEventData = [...prevState];
-      newEventData.push(eventHandler);
-      return newEventData;
-    });
+    // setEventHandlerData(prevState => {
+    //   const newEventData = [...prevState];
+    //   newEventData.push(eventHandler);
+    //   return newEventData;
+    // });
+
+    handleEventUpdate();
   }
 
   if (!add)
