@@ -44,11 +44,13 @@ export default function List({ list }) {
     };
     updateExistingItem(updatedItem);
 
-    // setItems((oldItems) => {
-    //   return oldItems.map((oldItem) =>
-    //     oldItem.id == item.id ? updatedItem : oldItem
-    //   );
-    // });
+    updatedItem._version += 1;
+
+    setItems((oldItems) => {
+      return oldItems.map((oldItem) =>
+        oldItem.id == item.id ? updatedItem : oldItem
+      );
+    });
   }
 
   return (

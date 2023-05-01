@@ -4,7 +4,7 @@ import DatedTasks from "./DatedTasks";
 import HeaderBar from "../HeaderBar";
 import Navbar from "../Navbar";
 import UndatedTasks from "./UndatedTasks";
-import data from "../mockData";
+// import data from "../mockData";
 import { getStyles } from "../../styles";
 import { useContext, useState } from "react";
 import { useTheme } from "@react-navigation/native";

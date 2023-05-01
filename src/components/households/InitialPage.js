@@ -9,6 +9,7 @@ import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { fetchHouseHolds } from "../../api/fetching";
 import { HouseHoldContext } from "../HouseHoldContext";
+import { UserContext } from "../UserContext";
 
 /* Login page */
 export default function InitialPage({ navigation, route }) {
@@ -17,13 +18,21 @@ export default function InitialPage({ navigation, route }) {
   const [username, setUsername] = useState(route.params?.user.username ?? "Unknown user");
   const [houseHolds, setHouseHolds] = useState([]);
 
-  const { setHouseHold } = useContext(HouseHoldContext);
+  const { houseHold, setHouseHold } = useContext(HouseHoldContext);
+  const { user, setUser } = useContext(UserContext);
 
   const handleHouseHoldPress = (houseHold) => {
     //first fetch events, lists, and tasks
     // 
     setHouseHold((oldHouseHold) => {
-      return { ...oldHouseHold, ...houseHold };
+      return {
+        ...oldHouseHold,
+        ...houseHold,
+        lists: [],
+        tasks: [],
+        events: [],
+        eventHandlers: [],
+      };
     });
     // console.log(houseHold)
     navigation.navigate("Events")
@@ -32,10 +41,12 @@ export default function InitialPage({ navigation, route }) {
   // on page load
   useEffect(() => {
     async function fetchData() {
+      if (user) {
         const fetchedHouseHolds = await fetchHouseHolds();
         if (isMounted) {
           setHouseHolds(fetchedHouseHolds);
         }
+      }
     }
 
     let isMounted = true;
@@ -44,7 +55,7 @@ export default function InitialPage({ navigation, route }) {
     return () => {
       isMounted = false
     };
-  }, []);
+  }, [user]);
 
   return (
     <View style={styles.container}>

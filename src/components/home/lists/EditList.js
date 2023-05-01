@@ -80,7 +80,7 @@ export default function EditList({ list, setModalVisible, itemListId }) {
     setModalVisible(false);
     if (itemListId != null && list != null) {
       // Delete item
-      deleteExistingItem(list);
+      await deleteExistingItem(list);
     } else if (list != null) {
       // Delete list
       setHouseHold((oldHouseHold) => {

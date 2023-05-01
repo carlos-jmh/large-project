@@ -30,38 +30,6 @@ const Stack = createNativeStackNavigator();
 // Prevent splash screen from hiding until everything is loaded
 SplashScreen.preventAutoHideAsync();
 
-// const processLists = async (lists) => {
-//   const processedLists = await Promise.all(
-//     lists.map(async (list) => {
-//       const listItems = await fetchItemsByListId(list.id);
-
-//       return {
-//         ...list,
-//         listItems: listItems,
-//       };
-//     })
-//   );
-
-//   return processedLists;
-// };
-
-// export const processTasks = async (tasks) => {
-//   const processedTasks = await Promise.all(tasks.map(async (task) => {
-//     if (!task.eventHandlerId || task.eventHandlerId === '') {
-//       return task;
-//     }
-
-//     const eventHandler = await fetchEventHandlerById(task.eventHandlerId);
-
-//     return {
-//       ...task,
-//       eventHandler,
-//     };
-//   }));
-
-//   return processedTasks;
-// };
-
 /* Root app component, sets up theme and fonts */
 export default function App() {
   const scheme = useColorScheme();
@@ -77,7 +45,7 @@ export default function App() {
     eventHandlers: [],
   });
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
 
   // Load Google fonts
   let [fontsLoaded] = useFonts({
