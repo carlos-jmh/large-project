@@ -265,7 +265,7 @@ const Middle = ({theme}) => {
             <h5 className="sectionHeader">Events</h5>
             <div>
               <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={taskDeleteHandler}/>
-              <Add addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
+              <Add setEventHandlerData = {setEventHandlerData} addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>
         </div>

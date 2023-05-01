@@ -3,8 +3,9 @@ import './add.css'
 import * as Icon from 'react-bootstrap-icons'
 import { createNewItem, createNewList, createNewTask, generateEventHandler, updateExistingTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
+import { fetchEventHandlerById } from '../../api/fetching';
 
-const Add = ({addTask, name, list, theme, setState, handle, index}) => {
+const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle, index}) => {
   // console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
@@ -12,6 +13,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const [ userSDate, setSDateInput ] = useState('');
   const [ userEDate, setEDateInput ] = useState('');
   const [ userDesc, setDescInput ] = useState('');
+  const [ userFreq, setUserFreq ] = useState("ONCE")
   const [ listConnect, setListConnect ] = useState('');
   const title = useRef(null);
   const desc = useRef(null);
@@ -128,8 +130,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   }
 
   const addTaskDatabase = async(e) => {
-    alert("Creating New Task!");
-
+    setAdd(!add);
     const newTask = await createNewTask(
       false,
       false,
@@ -140,11 +141,11 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
       "",
       userInput
     );
-    
+    console.log(userFreq);
     const newHandlerId = await generateEventHandler(
       houseHold.calendarId,
       newTask.id,
-      freq.current.value,
+      userFreq,
       new Date(userSDate),
       new Date (userEDate),
       "TASK",
@@ -158,8 +159,8 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
 
   // Function to add an Event.
   const addEventDatabase = async(e) => {
-    alert("Creating new event");
-
+    e.preventDefault();
+    setAdd(!add);
     // Generate eventHandler
     const newHandlerId = await generateEventHandler(
       houseHold.calendarId,
@@ -168,10 +169,16 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
       new Date(userSDate),
       new Date(userEDate),
       "EVENT",
-      title.current.value
+      userInput
     )
 
-    console.log(newHandlerId);
+    const eventHandler = await fetchEventHandlerById(newHandlerId)
+    
+    setEventHandlerData(prevState => {
+      const newEventData = [...prevState];
+      newEventData.push(eventHandler);
+      return newEventData;
+    });
   }
 
   if (!add)
@@ -271,7 +278,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
           {/* If List or Item Selected, option for complete source ? */}
           <div className="selections">
             {/* Frequency Type Options: Once, Daily, Weekly, Monthly, Yearly */}
-            <select id="taskType" className="form-control childSelect" ref={freq}>
+            <select onChange={(e) => setUserFreq(e.target.value)} defaultValue="ONCE" id="taskType" className="form-control childSelect" ref={freq}>
               <option value="ONCE">Once</option>
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>

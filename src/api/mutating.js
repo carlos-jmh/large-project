@@ -265,7 +265,6 @@ export const createNewTask = async (
   
 export const updateExistingTask = async (task) => {
   try {
-    console.log("task: ", task);
     const updatedTask = await API.graphql(
       {
         query:
