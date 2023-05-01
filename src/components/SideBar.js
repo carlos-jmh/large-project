@@ -44,7 +44,7 @@ const SideBar = () => {
     
     useEffect(() => {
       async function fetchData() {
-          if(user){
+        if (user) {
           const fetchedHouseHolds = await fetchHouseHolds();
           if (isMounted) {
             setHouseHolds(fetchedHouseHolds);
