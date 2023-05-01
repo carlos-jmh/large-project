@@ -83,16 +83,31 @@ const Middle = ({theme}) => {
   const updateTaskHandler = (task) => {
     setTaskData(prevState => {
       const newTaskData = [...prevState];
-      let update = newTaskData.findIndex(elem => elem.id == task.id);
+      let update = newTaskData.findIndex(elem => elem.id === task.id);
       newTaskData[update] = task;
       return newTaskData;
     });
   }
 
   const taskDeleteHandler = (id, index) => {
-    let removed = taskData.filter((current) => current.id != id)
+    let removed = taskData.filter((current) => current.id !== id)
     setTaskData(removed);
   ;}
+
+  const eventDeleteHandler = (id, index) => {
+    let removed = eventHandlerData.filter((current) => current.id !== id)
+    setEventHandlerData(removed);
+  }
+
+  const updateEventHandler = (eventHandler, oldID) => {
+    // Find old event handler and replace with new one (in eventHandlerData).
+    // Refresh the calendar.
+
+    // setEventHandlerData(prevState => {
+    //   const newListData = [...prevState];
+    //   newListData
+    // })
+  }
 
   const onListItemCreated = (item, listIndex, setListData) => {
     console.log("SUBSCRIPTION CREATE ITEM", item);
@@ -237,6 +252,7 @@ const Middle = ({theme}) => {
   }
 
   return (
+    eventHandlerData !== [] ? 
     <>
     {/*
     - In upcoming view list both tasks and events together in one column going in chronological order.
@@ -252,7 +268,7 @@ const Middle = ({theme}) => {
           <div className="taskevent">
             <div className="section1">
               <h5 className="sectionHeader">Upcoming</h5>
-              <Upcoming tasks={taskData} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
+              <Upcoming tasks={eventData} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task"/>
               <Upcoming tasks={eventData} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event"/>
             </div>
           </div>
@@ -265,14 +281,14 @@ const Middle = ({theme}) => {
             <h5 className="sectionHeader">Tasks</h5>
             <div>
               <TaskList tasks={taskData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme} handler={eventHandlerData}/>
-              <Add addTask={addTask} useState={false} name="Task" list={listData} theme={theme}/>
+              <Add setEventHandlerData={setEventHandlerData} addTask={addEvent} useState={false} name={"Task"} list={[]} theme={theme}/>
               <br/>
             </div>
           <div className="section1">
             <h5 className="sectionHeader">Events</h5>
             <div>
-              <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={taskDeleteHandler}/>
-              <Add addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
+              <Events events = {eventHandlerData} handleCheck={handleEventCheck} handleDelete={eventDeleteHandler} handleEventUpdate={updateEventHandler}/>
+              <Add setEventHandlerData={setEventHandlerData} addTask={addEvent} useState={false} name={"Event"} list={[]} theme={theme}/>
             </div>
           </div>
         </div>
@@ -305,6 +321,8 @@ const Middle = ({theme}) => {
         </div>
       </div>
     </>
+    :
+    <></>
   )
 } 
 

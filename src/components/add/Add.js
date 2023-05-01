@@ -4,8 +4,9 @@ import * as Icon from 'react-bootstrap-icons'
 import { createNewItem, createNewList, createNewTask, generateEventHandler, updateExistingTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 import { Auth } from 'aws-amplify';
+import { fetchEventHandlerById } from '../../api/fetching';
 
-const Add = ({addTask, name, list, theme, setState, handle, index}) => {
+const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle, index}) => {
   // console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
@@ -13,6 +14,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const [ userSDate, setSDateInput ] = useState('');
   const [ userEDate, setEDateInput ] = useState('');
   const [ userDesc, setDescInput ] = useState('');
+  const [ userFreq, setUserFreq ] = useState("ONCE")
   const [ listConnect, setListConnect ] = useState('');
   const title = useRef(null);
   const desc = useRef(null);
@@ -159,7 +161,8 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
 
   // Function to add an Event.
   const addEventDatabase = async(e) => {
-    alert("Creating new event");
+    e.preventDefault();
+    setAdd(!add);
 
     // Generate eventHandler
     const newHandlerId = await generateEventHandler(
@@ -169,10 +172,16 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
       new Date(userSDate),
       new Date(userEDate),
       "EVENT",
-      title.current.value
+      userInput
     )
 
-    console.log(newHandlerId);
+    const eventHandler = await fetchEventHandlerById(newHandlerId);
+
+    setEventHandlerData(prevState => {
+      const newEventData = [...prevState];
+      newEventData.push(eventHandler);
+      return newEventData;
+    });
   }
 
   if (!add)
@@ -257,7 +266,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
           </div>
 
           {/* Choose to attach to a list or item */}
-          <div className="selections">
+          {/* <div className="selections">
             <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
               <label htmlFor="chooselist">Attach to list</label>
               <input type="checkbox" id="chooselist" name="chooselist" onClick={handleClick}></input>
@@ -267,7 +276,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
               <label htmlFor="chooseitem">Attach to item</label>
               <input type="checkbox" id="chooseitem" name="chooseitem" onClick={handleClick}></input>
             </div>
-          </div>
+          </div> */}
           
           {/* If List or Item Selected, option for complete source ? */}
           <div className="selections">
