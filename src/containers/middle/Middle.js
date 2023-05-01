@@ -252,7 +252,6 @@ const Middle = ({theme}) => {
           <div className="taskevent">
             <div className="section1">
               <h5 className="sectionHeader">Upcoming</h5>
-              <hr/>
               <Upcoming tasks={eventData} handleCheck={handleTaskCheck} selectedDate={selectedDate} name = "Task" handler={eventHandlerData}/>
               <Upcoming tasks={eventData} handleCheck={handleEventCheck} selectedDate={selectedDate} name = "Event" handler={eventHandlerData}/>
             </div>

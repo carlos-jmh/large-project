@@ -18,7 +18,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const desc = useRef(null);
   const sDate = useRef(null);
   const eDate = useRef(null);
-  const freq = useRef("ONCE");
+  const freq = useRef(null);
   const listAttach = useRef(null);
   const itemAttach = useRef(null);
 

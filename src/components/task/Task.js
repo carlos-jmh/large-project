@@ -128,7 +128,8 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     {
       let time = updateTime(task.date.substring(11, 19));
       let handler = handlerData.filter(element => element.id === task.eventHandlerId)[0];
-      console.log(handler);
+      //console.log(task);
+      //console.log(handler);
 
       return (
         <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
@@ -237,8 +238,8 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
         <div id={task.id} name="task" value={task.id} className='taskItem'>
           <div className="eventInfo">
               {/* Need to get the title given eventHandlerId */}
-              <p>{handler.title}</p>
-              <p>Time: {time}</p>
+                <p>{handler.title}</p>
+                <p>Time: {time}</p>
           </div>
           
           <div className="icons">
