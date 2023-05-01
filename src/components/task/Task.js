@@ -9,7 +9,7 @@ import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext'
 import { fetchEventHandlerById, getExistingEvent } from '../../api/fetching'
 import { getEvent } from '../../graphql/queries'
 
-const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate, handlerData}) => {
+const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate}) => {
 
   const [show, setShow] = useState(false);
   const [SDate, setSDate] = useState(task.sDate);
@@ -17,6 +17,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
   const [select, setSelect] = useState("ONCE");
   const [name, setName] = useState(task.title);
   const [date, setDate] = useState(false);
+  const [handler, setHandler] = useState("");
   const { houseHold } = useContext(HouseHoldContext);
   let startTime = "";
   let endTime = "";
@@ -30,12 +31,14 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     setShow(false);
     handleDelete(task.id, taskIndex);
     await deleteExistingTask(task.id);
-    if(task.eventHandlerId != "" && task.eventHandlerId != null) {
+    if(task.eventHandlerId !== "" && task.eventHandlerId != null) {
       await removeEventHandler(task.eventHandlerId)
-      }
+    }
   }
 
   const deleteEventHandler = async() => {
+    setShow(false);
+    handleDelete(task.id, taskIndex);
     await removeEventHandler(task.id);
   }
 
@@ -59,10 +62,12 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     setEDate(new Date(editeDate));
   }
 
-  async function getEventHandler() {
-    let ret = await processTasks([task]);
-    let retval = await fetchEventHandlerById(ret[0].eventHandlerId);
-    return retval;
+  const getEventHandler = async() => {
+    console.log(task.eventHandlerId);
+    let retval = await fetchEventHandlerById(task.EventHandlerId);
+
+    if (retval !== null)
+      setHandler(retval.title);
   }
 
   const onClose = async() => {
@@ -70,7 +75,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
 
     let eventHandlerID;
     if(SDate != null) {
-      if(task.eventHandlerId == "" || !task.eventHandlerId) {
+      if(task.eventHandlerId === "" || !task.eventHandlerId) {
           eventHandlerID = await generateEventHandler(      
           houseHold.calendarId,
           task.id,
@@ -130,15 +135,18 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     // Means it's an event not eventHandler
     if (task.eventType)
     {
+      // Fetch the eventHandler.
       let time = updateTime(task.date.substring(11, 19));
-      let handler = handlerData.filter(element => element.id === task.eventHandlerId)[0];
+      
+      getEventHandler();
+      console.log(handler);
       //console.log(task);
       //console.log(handler);
 
       return (
         <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
           <div className="eventInfo">
-            <p>{handler.title}</p>
+            {/* <p>{handler.title}</p> */}
             <p>Time: {time}</p>
             {/* <p>Starts: {(task.sourceDate).substring(0, 10)} @ {startTime}</p> */}
             {/* <p>Ends: {(task.endDate).substring(0, 10)} @ {endTime}</p> */}
@@ -183,7 +191,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       return (
         <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
           <div className="eventInfo">
-            <p>{task.title}</p>
+            {/* <p>{task.title}</p> */}
             <p>Starts: {(task.sourceDate).substring(0, 10)} @ {startTime}</p>
             <p>Ends: {(task.endDate).substring(0, 10)} @ {endTime}</p>
             <p>Occurs: {task.frequency}</p>
@@ -234,15 +242,15 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
 
       time = updateTime((task.date).substring(11, 19));
 
-      // Get the event handler from handlerData. 
-      let handler = handlerData.filter(element => element.id === task.eventHandlerId)[0];
+      // Get the event handler from handlerData.
+      getEventHandler();
       console.log(handler);
         
       return (
         <div id={task.id} name="task" value={task.id} className='taskItem'>
           <div className="eventInfo">
               {/* Need to get the title given eventHandlerId */}
-                <p>{handler.title}</p>
+                <p>{handler}</p>
                 <p>Time: {time}</p>
           </div>
           

@@ -53,6 +53,7 @@ const Householdinfo = ({houseHold, houseHoldClickHandler, theme}) => {
       <div>
         <button
           onClick={(event) => {
+            console.log("CLICKED HOUSEHOLD");
             houseHoldClickHandler(event, houseHold);
             updateHouse();
           }}

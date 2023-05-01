@@ -1,11 +1,11 @@
 import React from 'react'
 import Task from '../task/Task';
 
-const Upcoming = ({tasks, handleCheck, selectedDate, name, handler}) => {
+const Upcoming = ({tasks, handleCheck, selectedDate, name}) => {
     // Given the name, make sure task.EventType.toUpper matches.
     let s = (new Date(selectedDate).toISOString()).substring(0, 10);
     let copy = [];
-    for(let i = 0; i < tasks.length; i++) {
+    for (let i = 0; i < tasks.length; i++) {
         let date = (tasks[i].date).substring(0, 10)
         
         // Get correct date and type of event.
@@ -32,7 +32,7 @@ const Upcoming = ({tasks, handleCheck, selectedDate, name, handler}) => {
                     {copy?.map(task => {
                         return (
                         <div>
-                            <Task task={task} handleCheck={handleCheck} type={name} handlerData={handler}/>
+                            <Task task={task} handleCheck={handleCheck} type={name}/>
                         </div>
                         )
                     })}

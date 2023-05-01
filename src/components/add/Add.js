@@ -266,7 +266,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
           </div>
 
           {/* Choose to attach to a list or item */}
-          <div className="selections">
+          {/* <div className="selections">
             <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
               <label htmlFor="chooselist">Attach to list</label>
               <input type="checkbox" id="chooselist" name="chooselist" onClick={handleClick}></input>
@@ -276,7 +276,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
               <label htmlFor="chooseitem">Attach to item</label>
               <input type="checkbox" id="chooseitem" name="chooseitem" onClick={handleClick}></input>
             </div>
-          </div>
+          </div> */}
           
           {/* If List or Item Selected, option for complete source ? */}
           <div className="selections">
