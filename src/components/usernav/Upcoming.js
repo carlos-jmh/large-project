@@ -1,19 +1,19 @@
 import React from 'react'
 import Task from '../task/Task';
 
-
 const Upcoming = ({tasks, handleCheck, selectedDate, name}) => {
-    console.log(tasks);
-
-    // 
+    // Given the name, make sure task.EventType.toUpper matches.
+    let s = (new Date(selectedDate).toISOString()).substring(0, 10);
     let copy = [];
     for(let i = 0; i < tasks.length; i++) {
-        // console.log(tasks[i].date)
-        // console.log(selectedDate)
-        if(tasks[i].date === selectedDate.toString()) {
+        let date = (tasks[i].date).substring(0, 10)
+        
+        // Get correct date and type of event.
+        if(date === s && tasks[i].eventType === name.toUpperCase()) {
             copy.push(tasks[i])
         }
     }
+    
     if(copy.length === 0) {
         return (
             <div className="section">
