@@ -17,7 +17,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
   const [select, setSelect] = useState("ONCE");
   const [name, setName] = useState(task.title);
   const [date, setDate] = useState(false);
-  const [handler, setHandler] = useState("");
+  const [eventTitle, setTitle] = useState('');
   const { houseHold } = useContext(HouseHoldContext);
   let startTime = "";
   let endTime = "";
@@ -65,9 +65,9 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
   const getEventHandler = async() => {
     console.log(task.eventHandlerId);
     let retval = await fetchEventHandlerById(task.eventHandlerId);
-
+    console.log("fetch return", retval);
     if (retval !== null)
-      setHandler(retval.title);
+      setTitle(retval.title);
   }
 
   const onClose = async() => {
@@ -160,13 +160,13 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       let time = updateTime(task.date.substring(11, 19));
       
       getEventHandler();
-      console.log("Resulting title",handler);
+      console.log("Resulting title",eventTitle);
       
       return (
-        handler ? 
+        eventTitle ? 
         <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
           <div className="eventInfo">
-            <p>{handler}</p>
+            <p>{eventTitle}</p>
             <p>Time: {time}</p>
             {/* <p>Starts: {(task.sourceDate).substring(0, 10)} @ {startTime}</p> */}
             {/* <p>Ends: {(task.endDate).substring(0, 10)} @ {endTime}</p> */}
@@ -203,7 +203,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
         </div>
         :
         <>
-        <p>{handler}</p>
+        <p>{eventTitle}</p>
         </>
       );
     }
@@ -268,14 +268,14 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       time = updateTime((task.date).substring(11, 19));
 
       // Get the event handler from handlerData.
-      //getEventHandler();
-      //console.log(handler);
+      getEventHandler();
         
       return (
+        eventTitle ? 
         <div id={task.id} name="task" value={task.id} className='taskItem'>
           <div className="eventInfo">
               {/* Need to get the title given eventHandlerId */}
-                <p>{handler}</p>
+                <p>{eventTitle}</p>
                 <p>Time: {time}</p>
           </div>
           
@@ -308,6 +308,8 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
             </ItemInfo> */}
         </div>
         </div>
+        :
+        <>{eventTitle}</>
       )
     }
     else
