@@ -10,6 +10,8 @@ import { graphqlOperation } from "@aws-amplify/api";
 import { useState, useContext } from "react";
 import { useTheme } from "@react-navigation/native";
 import { HouseHoldContext } from "../HouseHoldContext";
+import { addUser, createHouseHold } from "../../api/mutating";
+import { fetchHouseHold } from "../../api/fetching";
 
 export default function CreateHousehold({ navigation, route }) {
   const { colors } = useTheme();
@@ -74,21 +76,7 @@ export default function CreateHousehold({ navigation, route }) {
     await Promise.all(
       invitedUsers.map(async (user) => {
         try {
-          await API.graphql(
-            graphqlOperation(
-              `mutation AddUserToHouseHold($cognitoUsername: String!, $houseHoldId: String!) {
-                addUserToHouseHold(cognitoUsername: $cognitoUsername, houseHoldId: $houseHoldId) {
-                  cognitoUsername
-                  HouseHoldDisplayInfo {
-                    id
-                    name
-                  }
-                }
-              }`,
-              { cognitoUsername: user.name, houseHoldId: houseHoldId }
-            ),
-            { Authorization: `Banana ${token}` }
-          );
+          addUser(houseHoldId, user.name);
         } catch (error) {
           failedUsers.push({ name: user.name, error: error });
         }
@@ -98,19 +86,29 @@ export default function CreateHousehold({ navigation, route }) {
     return failedUsers;
   };
 
-  async function handleCreateHousehold() {
-    const newHouseHold = await createHouseHold();
+  async function handleCreateHousehold() {    
+    const newHouseHoldId = await createHouseHold(houseHoldName);
+    const newHouseHold = await fetchHouseHold(newHouseHoldId);
     const failedUsers = await addUsersToHouseHold(
       invitedUsers,
-      newHouseHold.id
+      newHouseHoldId, 
     );
 
     if (failedUsers.length > 0) {
       console.log("Failed to add users to household: ", failedUsers);
     }
 
-    console.log("New household created: ", newHouseHold);
-    setHouseHold(newHouseHold)
+    console.log("New household created: ", newHouseHold);    
+    setHouseHold((oldHouseHold) => {
+      return {
+        ...oldHouseHold,
+        ...newHouseHold,
+        lists: [],
+        events: [],
+        eventHandlers: [],
+        tasks: []
+      };
+    })
     navigation.navigate("Events");
   }
 

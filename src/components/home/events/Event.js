@@ -11,7 +11,7 @@ const Event = ({ event }) => {
     const styles = getStyles(colors);
     const [modalVisible, setModalVisible] = useState(false);
     const { date, eventType } = event;
-    const title = "Event"
+    const title = event.eventHandler.title
 
     const handleSave = (editedEvent) => {
       // handle the save logic

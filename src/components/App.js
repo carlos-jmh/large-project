@@ -77,7 +77,7 @@ export default function App() {
     eventHandlers: [],
   });
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
 
   // Load Google fonts
   let [fontsLoaded] = useFonts({

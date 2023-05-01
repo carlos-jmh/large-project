@@ -9,6 +9,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Auth as CognitoAuth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from './CustomButton';
+import { HouseHoldContext } from './HouseHoldContext';
 
 // Define a state variable to keep track of authentication status
 
@@ -18,6 +19,7 @@ const SideBar = () => {
     const navigation = useNavigation();
     const styles = getStyles(colors);
     const {user, setUser} = useContext(UserContext);
+    const { houseHold, setHouseHold } = useContext(HouseHoldContext);
     const [houseHolds, setHouseHolds] = useState([]);
     const [isMounted, setIsMounted] = useState(true);
 
@@ -25,6 +27,14 @@ const SideBar = () => {
       try {
         await CognitoAuth.signOut();
         setUser(null);
+        setHouseHold({
+          id: "",
+          calendarId: "",
+          lists: [],
+          tasks: [],
+          events: [],
+          eventHandlers: [],
+        });
         console.log("User signed out successfully")
         navigation.navigate("Login")
       } catch (error) {
@@ -34,10 +44,12 @@ const SideBar = () => {
     
     useEffect(() => {
       async function fetchData() {
+          if(user){
           const fetchedHouseHolds = await fetchHouseHolds();
           if (isMounted) {
             setHouseHolds(fetchedHouseHolds);
           }
+        }
       }
   
       let isMounted = true;
@@ -67,8 +79,8 @@ const SideBar = () => {
         <Text style={styles.householdText}>Your Households</Text>
         <View style={styles.householdsContainer}>
           {/* Loop through the user's households and render them */}
-          {user && houseHolds.map((household) => (
-              <View style={styles.houseHoldButton}>
+          {user && houseHolds.map((household, index) => (
+              <View key={index} style={styles.houseHoldButton}>
               <FontAwesome5 name="house-user" size={24} color={colors.textFaded} style={{paddingHorizontal: 20}}/>
               <Text style={styles.householdText} key={household.id}>
                 {household.name}

@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Text, View } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { getStyles } from "../../styles";
 import { useTheme } from "@react-navigation/native";
+import { HouseHoldContext } from "../../HouseHoldContext";
 
 export default function MyCalendar({ events , callBack}) {
   const [markedDates, setMarkedDates] = useState({});
   const [selected, setSelected] = useState("");
   const { colors } = useTheme();
+  const { houseHold, setHouseHold } = useContext(HouseHoldContext);
   const styles = getStyles(colors);
 
   useEffect(() => {
@@ -23,11 +25,11 @@ export default function MyCalendar({ events , callBack}) {
       });
     setMarkedDates(newMarkedDates);
   }
-  }, [events]);
-
+  }, [houseHold]);
+  
   const handleDayPress = (day) => {
     const newMarkedDates = { ...markedDates };
-    if (selected) {
+    if (selected && selected !== day.dateString) { // check if a different date is being selected
       newMarkedDates[selected] = {
         ...newMarkedDates[selected],
         selected: false,
@@ -51,7 +53,6 @@ export default function MyCalendar({ events , callBack}) {
     setSelected(day.dateString);
     callBack(day.dateString);
   };
-
   return (
     <View style={{ borderRadius: 20 }}>
       <Calendar
