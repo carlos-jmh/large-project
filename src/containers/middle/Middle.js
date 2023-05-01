@@ -12,6 +12,7 @@ import Upcoming from '../../components/usernav/Upcoming';
 import {
   fetchEventHandlerById,
   fetchItemsByListId,
+  getExistingEvent,
 } from '../../api/fetching';
 import { updateExistingItem, deleteExistingItem } from '../../api/mutating'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
@@ -40,9 +41,15 @@ export const processTasks = async (tasks) => {
 
     const eventHandler = await fetchEventHandlerById(task.eventHandlerId);
 
+    let upcomingEvent = null;
+
+    if (eventHandler.upcomingEventId !== null)
+      upcomingEvent = await getExistingEvent(eventHandler.upcomingEventId);
+
     return {
       ...task,
       eventHandler,
+      upcomingEvent
     };
   }));
 

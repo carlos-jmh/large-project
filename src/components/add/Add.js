@@ -3,6 +3,7 @@ import './add.css'
 import * as Icon from 'react-bootstrap-icons'
 import { createNewItem, createNewList, createNewTask, generateEventHandler, updateExistingTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
+import { Auth } from 'aws-amplify';
 
 const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   // console.log(list);
