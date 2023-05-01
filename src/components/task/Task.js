@@ -104,6 +104,21 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     handleUpdate(updatedTask[0]);
   } 
 
+  const updateEventHandler = async() => {
+    setShow(false);
+    console.log(task);
+    editEventHandler(
+      task.id, 
+      task.calendarId,
+      task.taskId,
+      select,
+      SDate,
+      EDate,
+      "EVENT",
+      "dummy else"
+    );
+  }
+
   function updateTime(startTime)
   {
     let time1 = startTime.split(":");
@@ -138,8 +153,8 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       // Fetch the eventHandler.
       let time = updateTime(task.date.substring(11, 19));
       
-      getEventHandler();
-      console.log(handler);
+      //getEventHandler();
+      //console.log(handler);
       //console.log(task);
       //console.log(handler);
 
@@ -199,18 +214,19 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
                     
           <div className="icons">
           <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
-          <ItemInfo delete={deleteEventHandler} title={task.title} onClose={onClose} show={show}>
+          <ItemInfo delete={deleteEventHandler} title={task.title} onClose={updateEventHandler} show={show}>
             <div className="popup">
               {/* Start and End Date Required */}
+              <input required onChange={handleEditName} type="text" className="form-control" id="name"/>
               <div className="selections">
                 <div className="childSelect">
                   <label htmlFor="startDate">Start Date</label>
-                  <input onChange={handleEditSDate} value={task.sourceDate.substring(0, 16)} type="datetime-local" className="form-control" id="startDate"/>
+                  <input onChange={handleEditSDate} defaultValue={task.sourceDate.substring(0, 16)} type="datetime-local" className="form-control" id="startDate"/>
                 </div>
                 
                 <div className="childSelect">
                   <label htmlFor="endDate">End Date</label>
-                  <input onChange={handleEditEDate} value={task.endDate.substring(0, 16)} type="datetime-local" className="form-control" id="endDate"/>
+                  <input onChange={handleEditEDate} defaultValue={task.endDate.substring(0, 16)} type="datetime-local" className="form-control" id="endDate"/>
                 </div>
               </div>
               
@@ -243,8 +259,8 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       time = updateTime((task.date).substring(11, 19));
 
       // Get the event handler from handlerData.
-      getEventHandler();
-      console.log(handler);
+      //getEventHandler();
+      //console.log(handler);
         
       return (
         <div id={task.id} name="task" value={task.id} className='taskItem'>
