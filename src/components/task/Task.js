@@ -43,10 +43,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
     handleEventUpdate();
   }
 
-  const deleteEventHandler = () => {
-    removeEventHandler(task.id);
-  }
-
   const handleSelect = (e) => {
     let selectN = e.target.value
     setSelect(selectN)

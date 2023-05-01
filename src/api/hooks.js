@@ -121,7 +121,6 @@ export const useEventHandlerData = ({
       }
 
       const events = await fetchEventHandlersByCalendarId(calendarId);
-      console.log(processedEvents);
       const processedEvents = processDataCallback ? await processDataCallback(events) : events;
       setEventHandlerData(processedEvents);
     }
