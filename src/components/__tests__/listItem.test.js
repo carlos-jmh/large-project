@@ -1,37 +1,39 @@
 import { React, useState } from 'react';
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import ListItem from '../listItem/ListItem';
-import data from '../../containers/middle/data.json';
 
-let toDoList = data;
-
-const handleToggle = (id) => {
-    let mapped = toDoList.map(task => {
-        return task.id === id ? { ...task, complete: !task.complete } : { ...task};
-    });
-    toDoList = mapped;
+let todo = {
+    completed: false,
+    createdAt: "2023-04-29T23:16:57.451Z",
+    description: null,
+    id: "1f2ba9e6-7f59-4e42-83ad-3dac0abe4350",
+    itemTaskId: null,
+    listId: "be151400-9745-4207-88a7-f9a9fd6fec1e",
+    taskId: null,
+    title: "new task g",
+    updatedAt: "2023-04-29T23:27:00.516Z",
+    _deleted: null,
+    _lastChangedAt: 1682810820550,
+    _version: 2
 }
 
 // Verify List Item has the correct values
 test('Verify ListItem values', () => {
-    let todo = {"id": 1, "task": "Give dog a bath", "complete": true};
-    let todo2 = {"id": 4, "task": "Feed cat", "complete": false};
-    render(<ListItem todo={todo} handleToggle={handleToggle}/>)
-    render(<ListItem todo={todo2} handleToggle={handleToggle}/>)
+    render(<ListItem item={todo} listIndex={1} handleListItemUpdate={() => {}} handleListItemDelete={() => {}}/>)
 
-    // Get 
-    let item = document.getElementById(todo.id);
-    let item2 = document.getElementById(todo2.id);
+    // Expect Div to have correct id. 
+    expect(document.getElementById(todo.id)).toBeInTheDocument();
 
     // Id correct.
-    expect(parseInt(item.id)).toBe(todo.id);
-    expect(parseInt(item2.id)).toBe(todo2.id);
-
-    // Correct class.
-    expect(item.className).toBe("todo strike");
-    expect(item2.className).toBe("todo");
-
-    // Correct text content.
-    expect(item.textContent).toBe(todo.task);
-    expect(item2.textContent).toBe(todo2.task);
+    expect(screen.getByText(todo.title)).toBeInTheDocument();
 })
+
+// test('Verify clicking three dots works', () => {
+//     render(<ListItem item={todo} listIndex={1} handleListItemUpdate={() => {}} handleListItemDelete={() => {}}/>)
+
+//     expect(document.getElementsByClassName("threedots")[0]).toBeInTheDocument();
+
+//     fireEvent.click(document.getElementsByClassName("threedots")[0]);
+
+//     expect(document.getElementsByClassName("editableP")[0]).toBeInTheDocument();
+// })

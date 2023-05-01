@@ -201,3 +201,37 @@ export const fetchHouseHoldMembersByHouseHoldId = async (houseHoldId) => {
     return [];
   }
 }
+
+export const getExistingEvent = async (eventId) => {
+  try {
+    const event = await API.graphql({
+      query:
+        `query GetEvent($id: ID!) {
+          getEvent(id: $id) {
+            _deleted
+            _lastChangedAt
+            _version
+            calendarId
+            completed
+            createdAt
+            date
+            eventHandlerId
+            eventType
+            id
+            nextEventId
+            prevEventId
+            updatedAt
+          }
+        }`,
+      variables: {
+        id: eventId
+      },
+      authMode: "LAMBDA"
+    });
+
+    return event.data.getEvent;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}

@@ -48,6 +48,20 @@ hr {
     align-items: center;
 }
 
+.eventInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 3.5rem;
+    flex-grow: 1;
+    color: black;
+}
+
+.eventInfo p {
+    margin: 0px;
+    padding: 0px;
+}
+
 .strike {
     text-decoration: line-through;   
 }

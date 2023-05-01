@@ -4,7 +4,7 @@ import { deleteExistingItem } from '../../api/mutating';
 import './ListItem.css';
  
 const ListItem = ({item, listIndex, itemIndex, handleListItemUpdate, handleListItemDelete}) => {
-  
+  console.log(item);
   const [shown, setShown] = useState(false);
   const [active, setActive] = useState(false);
 

@@ -3,9 +3,10 @@ import './task.css'
 import * as Icon from 'react-bootstrap-icons'
 import ItemInfo from '../ItemInfo/ItemInfo'
 import { render } from '@testing-library/react'
-import { deleteExistingTask, updateExistingTask, editEventHandler, generateEventHandler } from '../../api/mutating'
+import { deleteExistingTask, updateExistingTask, editEventHandler, generateEventHandler, removeEventHandler } from '../../api/mutating'
 import { processTasks } from '../../containers/middle/Middle'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext'
+import { getExistingEvent } from '../../api/fetching'
 
 const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate}) => {
 
@@ -14,8 +15,12 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
   const [EDate, setEDate] = useState(task.eDate);
   const [select, setSelect] = useState("ONCE");
   const [name, setName] = useState(task.title);
+  const [date, setDate] = useState(false);
   const { houseHold } = useContext(HouseHoldContext);
+  let startTime = "";
+  let endTime = "";
 
+  console.log(task);
 
   // Update database as well.
   const checkOff = () => {
@@ -26,6 +31,10 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     handleDelete(task.id, taskIndex);
     deleteExistingTask(task.id);
     setShow(false);
+  }
+
+  const deleteEventHandler = () => {
+    removeEventHandler(task.id);
   }
 
   const handleSelect = (e) => {
@@ -82,28 +91,60 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
     handleUpdate(updatedTask[0]);
   } 
 
+  function updateTime(startTime)
+  {
+    let time1 = startTime.split(":");
+
+    // fetch
+    let hours1 = Number(time1[0]);
+    let minutes1 = Number(time1[1]);
+    let seconds1 = Number(time1[2]);
+
+    // calculate
+    let timeValue1;
+
+    if (hours1 > 0 && hours1 <= 12) {
+      timeValue1= "" + hours1;
+    } else if (hours1 > 12) {
+      timeValue1= "" + (hours1 - 12);
+    } else if (hours1 === 0) {
+      timeValue1= "12";
+    }
+    
+    timeValue1 += (minutes1 < 10) ? ":0" + minutes1 : ":" + minutes1;  // get minutes
+    timeValue1 += (seconds1 < 10) ? ":0" + seconds1 : ":" + seconds1;  // get seconds
+    timeValue1 += (hours1 >= 12) ? " P.M." : " A.M.";  // get AM/PM
+
+    return timeValue1;
+  }
+
   if(type === "Event") {
+    let startTime = updateTime((task.sourceDate).substring(11, 19));
+    let endTime = updateTime((task.endDate).substring(1, 19));
+
     return (
-      <div className='eventItem' date={task.date} id={task.id} name="task" value={task.id}>
-        <div className="info">
-          <input className="check" type="checkbox" id={task.id} onChange={checkOff} checked = {task.complete ? true : false}/>
-          <label className={task.complete ? "label strike" : "label"}>{" " + task.task}{" " + task.date}{" " + task.description}</label>
+      <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
+        <div className="eventInfo">
+          <p>{task.title}</p>
+          <p>Starts: {(task.sourceDate).substring(0, 10)} @ {startTime}</p>
+          <p>Ends: {(task.endDate).substring(0, 10)} @ {endTime}</p>
+          <p>Occurs: {task.frequency}</p>
         </div>
                   
         <div className="icons">
         <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
-        <ItemInfo delete={deleteT} title={task.title} onClose={onClose} show={show}>
+        <ItemInfo delete={deleteEventHandler} title={task.title} onClose={onClose} show={show}>
           <div className="popup">
             {/* Start and End Date Required */}
             <div className="selections">
               <div className="childSelect">
                 <label htmlFor="startDate">Start Date</label>
-                <input onChange={handleEditSDate} defaultValue={task.sDate} type="datetime-local" className="form-control" id="startDate"/>
+                <input onChange={handleEditSDate} defaultValue={task.sourceDate} type="datetime-local" className="form-control" id="startDate"/>
               </div>
               
               <div className="childSelect">
                 <label htmlFor="endDate">End Date</label>
-                <input onChange={handleEditEDate} defaultValue={task.eDate} type="datetime-local" className="form-control" id="endDate"/>
+                <input onChange={handleEditEDate} type="datetime-local" className="form-control" id="endDate"/>
               </div>
             </div>
             
@@ -125,12 +166,29 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       </div>
     ) 
   } else {
+    // Some tasks can have eventHandlers. 
+    // task.eventHandler.upcomingEventId gets the ID for the next event. 
+    // get event of upcomingEventId, get the date of it and display it as next recurrence. 
+    let time;
+
+    if (task.upcomingEvent)
+      time = updateTime((task.upcomingEvent.date).substring(11, 19));
+      
     return (
       <div id={task.id} name="task" value={task.id} className='taskItem'>
         <div className="info">
           <input className="check" type="checkbox" id={task.id} value = "" onChange={checkOff} checked = {task.complete ? true : false}/>
           {/* Place the date and any links here as well */}
-          <label className={task.complete ? "label strike" : "label"}>{" " + task.title}{task.sDate != null ? " " + task.sDate : "" }{task.eDate != null ? " " + task.eDate : "" }</label>
+          {
+            task.upcomingEvent ? 
+            <label className={task.complete ? "label strike" : "label"}>
+              <p>{task.title}</p>
+              <p>{(task.upcomingEvent.date).substring(0, 10)} @ {time}</p>
+            </label> : 
+            <label className={task.complete ? "label strike" : "label"}>
+              <p>{task.title}</p>
+            </label> 
+          }
         </div>
         
         <div className="icons">

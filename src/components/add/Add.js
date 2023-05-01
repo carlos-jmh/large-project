@@ -3,6 +3,7 @@ import './add.css'
 import * as Icon from 'react-bootstrap-icons'
 import { createNewItem, createNewList, createNewTask, generateEventHandler, updateExistingTask } from '../../api/mutating';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
+import { Auth } from 'aws-amplify';
 
 const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   // console.log(list);
@@ -66,7 +67,9 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   const handleChange2 = (e) => {
     //let date = (e.target.value).split('-')
     //let dateInput = date[1] + 
+    
     setSDateInput(e.target.value);
+    setEDateInput(e.target.value);
   }
 
   const handleChange5 = (e) => {
@@ -138,7 +141,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
       "",
       userInput
     );
-
+    
     const newHandlerId = await generateEventHandler(
       houseHold.calendarId,
       newTask.id,
@@ -161,12 +164,15 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
     // Generate eventHandler
     const newHandlerId = await generateEventHandler(
       houseHold.calendarId,
-      // what should this id be?,
+      "",
       freq.current.value,
       new Date(userSDate),
       new Date(userEDate),
       "EVENT",
+      title.current.value
     )
+
+    console.log(newHandlerId);
   }
 
   if (!add)
@@ -198,7 +204,7 @@ const Add = ({addTask, name, list, theme, setState, handle, index}) => {
   else {
     if(name === "Event") {
       return (
-        <form onSubmit={handleSubmit} className="addingTask">
+        <form className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Event Name" ref={title}/>
           <input type="text" value={userDesc} onChange={handleChange3} className="form-control" id="name" placeholder="Event Description" ref={desc}/>
 
