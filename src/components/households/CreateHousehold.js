@@ -1,15 +1,15 @@
 import { Pressable, Text, View } from "react-native";
 
-import { API } from "aws-amplify";
 import CustomButton from "../CustomButton";
 import LabeledInput from "../LabeledInput";
 import ProfileIcon from "../ProfileIcon";
 import { getCognitoToken } from "../../utils/auth";
 import { getStyles } from "../styles";
-import { graphqlOperation } from "@aws-amplify/api";
 import { useState, useContext } from "react";
 import { useTheme } from "@react-navigation/native";
 import { HouseHoldContext } from "../HouseHoldContext";
+import { addUser, createHouseHold } from "../../api/mutating";
+import { fetchHouseHold } from "../../api/fetching";
 
 export default function CreateHousehold({ navigation, route }) {
   const { colors } = useTheme();
@@ -29,44 +29,6 @@ export default function CreateHousehold({ navigation, route }) {
     setInvitedUsers(invitedUsers.filter((item) => item.name !== username));
   }
 
-  const createHouseHold = async () => {
-    try {
-      const token = await getCognitoToken();
-
-      const createNewHouseHoldResponse = await API.graphql(
-        graphqlOperation(
-          `mutation CreateNewHouseHold($houseHoldName: String!) {
-            createNewHouseHold(houseHoldName: $houseHoldName)
-          }`,
-          { houseHoldName: houseHoldName }
-        ),
-        { Authorization: token }
-      );
-
-      const newHouseHoldId = createNewHouseHoldResponse.data.createNewHouseHold;
-
-      const getHouseHoldResponse = await API.graphql(
-        graphqlOperation(
-          `query GetHouseHold($id: ID!) {
-            getHouseHold(id: $id) {
-              id
-              name
-            }
-          }`,
-          { id: newHouseHoldId }
-        ),
-        { Authorization: token }
-      );
-
-      const newHouseHold = getHouseHoldResponse.data.getHouseHold;
-
-      return newHouseHold;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  };
-
   const addUsersToHouseHold = async (invitedUsers, houseHoldId) => {
     const failedUsers = [];
     const token = await getCognitoToken();
@@ -74,21 +36,7 @@ export default function CreateHousehold({ navigation, route }) {
     await Promise.all(
       invitedUsers.map(async (user) => {
         try {
-          await API.graphql(
-            graphqlOperation(
-              `mutation AddUserToHouseHold($cognitoUsername: String!, $houseHoldId: String!) {
-                addUserToHouseHold(cognitoUsername: $cognitoUsername, houseHoldId: $houseHoldId) {
-                  cognitoUsername
-                  HouseHoldDisplayInfo {
-                    id
-                    name
-                  }
-                }
-              }`,
-              { cognitoUsername: user.name, houseHoldId: houseHoldId }
-            ),
-            { Authorization: `Banana ${token}` }
-          );
+          addUser(houseHoldId, user.name);
         } catch (error) {
           failedUsers.push({ name: user.name, error: error });
         }
@@ -99,10 +47,11 @@ export default function CreateHousehold({ navigation, route }) {
   };
 
   async function handleCreateHousehold() {
-    const newHouseHold = await createHouseHold();
+    const newHouseHoldId = await createHouseHold(houseHoldName);
+    const newHouseHold = await fetchHouseHold(newHouseHoldId);
     const failedUsers = await addUsersToHouseHold(
       invitedUsers,
-      newHouseHold.id
+      newHouseHoldId
     );
 
     if (failedUsers.length > 0) {
@@ -110,7 +59,16 @@ export default function CreateHousehold({ navigation, route }) {
     }
 
     console.log("New household created: ", newHouseHold);
-    setHouseHold(newHouseHold)
+    setHouseHold((oldHouseHold) => {
+      return {
+        ...oldHouseHold,
+        ...newHouseHold,
+        lists: [],
+        events: [],
+        eventHandlers: [],
+        tasks: []
+      };
+    });
     navigation.navigate("Events");
   }
 

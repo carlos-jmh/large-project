@@ -25,9 +25,11 @@ const processLists = async (lists) => {
     lists.map(async (list) => {
       const listItems = await fetchItemsByListId(list.id);
 
+      const processedListItems = listItems.filter((item) => item._deleted !== true);
+
       return {
         ...list,
-        listItems: listItems,
+        listItems: processedListItems,
       };
     })
   );
@@ -59,7 +61,6 @@ export default function Wrappy({  }) {
   const colors = theme.colors;
 
   const { houseHold, setHouseHold } = useContext(HouseHoldContext);
-  console.log("HOUSEHOLD", houseHold);
 
   const onItemCreated = (item, listId, setHouseHold) => {
     console.log("SUBSCRIPTION CREATE ITEM", item);
@@ -84,15 +85,21 @@ export default function Wrappy({  }) {
     const listIndex = houseHold.lists.findIndex((list) => list.id == listId);
     const itemIndex = houseHold.lists[listIndex].listItems.findIndex((elem) => elem.id === item.id);
 
-    if (houseHold.lists[listIndex].listItems[itemIndex]._version === item._version) {
+    console.log("item index: ", itemIndex);
+    if (itemIndex === -1) {
+      return;
+    }
+
+    const existingItem = houseHold.lists[listIndex].listItems[itemIndex];
+
+    if (existingItem._version === item._version) {
       return;
     }
 
     setHouseHold((oldHouseHold) => {
       const newHouseHold = { ...oldHouseHold };
-      const listIndex = newHouseHold.lists.findIndex((list) => list.id === listId);
-      const itemIndex = newHouseHold.lists[listIndex].listItems.findIndex((elem) => elem.id === item.id);
-      newHouseHold.lists[listIndex].listItems[itemIndex] = item;
+      const list = newHouseHold.lists[listIndex];
+      list.listItems[itemIndex] = item;
       return newHouseHold;
     });
   };
