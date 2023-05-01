@@ -43,6 +43,10 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
     handleEventUpdate();
   }
 
+  const deleteEventHandler = () => {
+    removeEventHandler(task.id);
+  }
+
   const handleSelect = (e) => {
     let selectN = e.target.value
     setSelect(selectN)
@@ -127,7 +131,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
 
     handleEventUpdate();
   }
-
+  
   function updateTime(startTime)
   {
     let time1 = startTime.split(":");
@@ -248,6 +252,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
               </div>
               
               {/* If List or Item Selected, option for complete source ? */}
+              <label>Frequency</label>
               <div className="selections">
                 {/* Frequency Type Options: Once, Daily, Weekly, Monthly, Yearly */}
                 <select defaultValue="ONCE" id="taskType" className="form-control childSelect" onChange={handleSelect}>
