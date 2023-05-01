@@ -1,6 +1,11 @@
+import {
+  onItemDeleted,
+  onItemUpdated,
+  onNewItemCreated,
+} from "../graphql/subscriptions";
+
 import { API } from "aws-amplify";
-import { getCognitoToken } from '../utils/auth';
-import { onNewItemCreated, onItemUpdated, onItemDeleted } from '../graphql/subscriptions';
+import { getCognitoToken } from "../utils/auth";
 
 export const createSubListItems = async (listId, setHouseHold, callback) => {
   const token = await getCognitoToken();
@@ -36,19 +41,22 @@ export const updateSubListItems = async (listId, setHouseHold, callback) => {
   });
 
   return Promise.resolve(subscription);
-}
+};
 
-export const deleteSubListItems = async (listId, listIndex, setHouseHold, callback) => {
+export const deleteSubListItems = async (listId, setHouseHold, callback) => {
   const token = await getCognitoToken();
 
-  const subscription = API.graphql({
-    query: onItemDeleted,
-    variables: { listId: listId },
-  }, { Authorization: `Banana ${token}` }
+  const subscription = API.graphql(
+    {
+      query: onItemDeleted,
+      variables: { listId: listId },
+    },
+    { Authorization: `Banana ${token}` }
   ).subscribe({
-    next: (data) => callback(data.value.data.onItemDeleted, listIndex, setHouseHold),
-    error: (error) => console.log(error)
+    next: (data) =>
+      callback(data.value.data.onItemDeleted, listId, setHouseHold),
+    error: (error) => console.log(error),
   });
 
   return Promise.resolve(subscription);
-}
+};

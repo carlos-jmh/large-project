@@ -51,7 +51,7 @@ export default function ListItem({ item, itemListId, onChecked }) {
           >
             {item.title}
           </Text>
-          <Text
+          {/* <Text
             style={{
               color: primaryTextColor,
               fontFamily: "Inter_500Medium",
@@ -59,7 +59,7 @@ export default function ListItem({ item, itemListId, onChecked }) {
             }}
           >
             {item.task.id}
-          </Text>
+          </Text> */}
           <ListItemInfo taskTitle={item.taskTitle} date={item.date} />
         </View>
       </Pressable>

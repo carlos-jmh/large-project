@@ -2,6 +2,7 @@ import { Keyboard, Pressable, Text, View } from "react-native";
 import {
   createNewItem,
   createNewList,
+  deleteExistingItem,
   deleteExistingList,
   editExistingList,
   updateExistingItem,
@@ -48,13 +49,7 @@ export default function EditList({ list, setModalVisible, itemListId }) {
     } else {
       if (list == null) {
         // Create list
-        const newList = await createNewList(
-          "",
-          false,
-          taskId,
-          houseHold.id,
-          title
-        );
+        const newList = await createNewList(houseHold.id, title);
         setHouseHold((oldHouseHold) => {
           return {
             ...oldHouseHold,
@@ -85,6 +80,7 @@ export default function EditList({ list, setModalVisible, itemListId }) {
     setModalVisible(false);
     if (itemListId != null && list != null) {
       // Delete item
+      deleteExistingItem(list);
     } else if (list != null) {
       // Delete list
       setHouseHold((oldHouseHold) => {
@@ -119,7 +115,7 @@ export default function EditList({ list, setModalVisible, itemListId }) {
           placeholder={(itemListId == null ? "List" : "Item") + " title"}
           backgroundColor={colors.border}
         />
-        <View style={{ height: 18 }}></View>
+        {/* <View style={{ height: 18 }}></View>
         <Pressable
           style={{ flexDirection: "row" }}
           onPress={() => setHasTask(!hasTask)}
@@ -150,7 +146,6 @@ export default function EditList({ list, setModalVisible, itemListId }) {
               save="key"
               backgroundColor={colors.border}
               defaultOption={
-                /* TODO: get task name */
                 hasTask && list != null && list.taskId !== ""
                   ? {
                       key: taskId,
@@ -160,7 +155,7 @@ export default function EditList({ list, setModalVisible, itemListId }) {
               }
             />
           </View>
-        ) : null}
+        ) : null} */}
         <View style={{ height: 24 }}></View>
         <View style={{ flexDirection: "row" }}>
           <CustomButton
