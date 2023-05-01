@@ -215,7 +215,7 @@ const Task = ({task, taskIndex, handleCheck, type, handleDelete, theme, handleUp
       return (
         <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
           <div className="eventInfo">
-            {/* <p>{task.title}</p> */}
+            <p>{task.title}</p>
             <p>Starts: {(task.sourceDate).substring(0, 10)} @ {startTime}</p>
             <p>Ends: {(task.endDate).substring(0, 10)} @ {endTime}</p>
             <p>Occurs: {task.frequency}</p>
