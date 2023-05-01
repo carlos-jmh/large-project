@@ -5,12 +5,13 @@ import {
 } from "@expo/vector-icons";
 import { Pressable, Text, View } from "react-native";
 
+import AddEvent from "./events/AddEvent";
 import CustomModal from "../CustomModal";
 import EditList from "./lists/EditList";
+import EditTask from "./tasks/EditTask";
 import { getStyles } from "../styles";
 import { useState } from "react";
 import { useTheme } from "@react-navigation/native";
-import AddEvent from "./events/AddEvent";
 
 /* Button to add event/task/list */
 export default function AddButton({}) {
@@ -56,7 +57,9 @@ export default function AddButton({}) {
             <View style={{ flexDirection: "row" }}>
               <AddOptionButton
                 title={"Event"}
-                onPress={() => {setEventModalVisible(true)}}
+                onPress={() => {
+                  setEventModalVisible(true);
+                }}
                 icon={() => (
                   <FontAwesome5
                     name="calendar-alt"
@@ -65,10 +68,17 @@ export default function AddButton({}) {
                   />
                 )}
               />
-              <AddEvent visible={eventModalVisible} setModalVisible={setEventModalVisible} onClose={() => setEventModalVisible(false)}/>
+              <AddEvent
+                visible={eventModalVisible}
+                setModalVisible={setEventModalVisible}
+                onClose={() => setEventModalVisible(false)}
+              />
               <View style={{ width: 16 }}></View>
               <AddOptionButton
                 title={"Task"}
+                onPress={() => {
+                  setNewType(newTypeEnum.Task);
+                }}
                 icon={() => (
                   <MaterialCommunityIcons
                     name="checkbox-outline"
@@ -96,6 +106,9 @@ export default function AddButton({}) {
         ) : null}
         {newType == newTypeEnum.List ? (
           <EditList setModalVisible={setModalVisible} />
+        ) : null}
+        {newType == newTypeEnum.Task ? (
+          <EditTask setModalVisible={setModalVisible} />
         ) : null}
       </CustomModal>
     </Pressable>

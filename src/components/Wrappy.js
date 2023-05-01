@@ -1,31 +1,43 @@
-import { DarkTheme } from "../components/themes";
 import {
-  useColorScheme,
-} from "react-native";
+  createSubListItems,
+  deleteSubListItems,
+  updateSubListItems,
+} from "../api/subscribing";
+import {
+  fetchEventHandlerById,
+  fetchEventHandlersByCalendarId,
+  fetchEventsByCalendarId,
+  fetchItemsByListId,
+  fetchLists,
+  fetchTasksByHouseHoldId,
+} from "../api/fetching";
+import { useContext, useEffect, useState } from "react";
+import { useEventData, useListsData, useTasksData } from "../api/hooks";
+
 import Chat from "./home/chat/Chat";
 import ConfirmRegister from "./auth/ConfirmRegister.js";
 import CreateHousehold from "./households/CreateHousehold";
+import { DarkTheme } from "../components/themes";
 import Events from "./home/events/Events";
+import { HouseHoldContext } from "./HouseHoldContext";
 import InitialPage from "./households/InitialPage";
 import Lists from "./home/lists/Lists";
 import Login from "./auth/Login.js";
 import { NavigationContainer } from "@react-navigation/native";
 import Register from "./auth/Register.js";
-import Tasks from "./home/tasks/Tasks";
-import { HouseHoldContext } from "./HouseHoldContext";
 import SideBar from "./SideBar";
-import { useEventData, useListsData, useTasksData } from "../api/hooks";
-import { useContext, useEffect, useState } from "react";
+import Tasks from "./home/tasks/Tasks";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { fetchEventHandlerById, fetchEventHandlersByCalendarId, fetchEventsByCalendarId, fetchItemsByListId, fetchLists, fetchTasksByHouseHoldId } from "../api/fetching";
-import { createSubListItems, deleteSubListItems, updateSubListItems } from "../api/subscribing";
+import { useColorScheme } from "react-native";
 
 const processLists = async (lists) => {
   const processedLists = await Promise.all(
     lists.map(async (list) => {
       const listItems = await fetchItemsByListId(list.id);
 
-      const processedListItems = listItems.filter((item) => item._deleted !== true);
+      const processedListItems = listItems.filter(
+        (item) => item._deleted !== true
+      );
 
       return {
         ...list,
@@ -38,24 +50,26 @@ const processLists = async (lists) => {
 };
 
 export const processTasks = async (tasks) => {
-  const processedTasks = await Promise.all(tasks.map(async (task) => {
-    if (!task.eventHandlerId || task.eventHandlerId === '') {
-      return task;
-    }
+  const processedTasks = await Promise.all(
+    tasks.map(async (task) => {
+      if (!task.eventHandlerId || task.eventHandlerId === "") {
+        return task;
+      }
 
-    const eventHandler = await fetchEventHandlerById(task.eventHandlerId);
+      const eventHandler = await fetchEventHandlerById(task.eventHandlerId);
 
-    return {
-      ...task,
-      eventHandler,
-    };
-  }));
+      return {
+        ...task,
+        eventHandler: eventHandler,
+      };
+    })
+  );
 
   return processedTasks;
 };
 
 /* Login page */
-export default function Wrappy({  }) {
+export default function Wrappy({}) {
   const scheme = useColorScheme();
   const theme = DarkTheme; //scheme === "dark" ? DarkTheme : LightTheme;
   const colors = theme.colors;
@@ -66,14 +80,18 @@ export default function Wrappy({  }) {
     console.log("SUBSCRIPTION CREATE ITEM", item);
 
     const listIndex = houseHold.lists.findIndex((list) => list.id == listId);
-    const itemIndex = houseHold.lists[listIndex].listItems.findIndex((elem) => elem.id === item.id);
+    const itemIndex = houseHold.lists[listIndex].listItems.findIndex(
+      (elem) => elem.id === item.id
+    );
     if (itemIndex !== -1) {
       return;
     }
 
     setHouseHold((oldHouseHold) => {
       const newHouseHold = { ...oldHouseHold };
-      const listIndex = newHouseHold.lists.findIndex((list) => list.id === listId);
+      const listIndex = newHouseHold.lists.findIndex(
+        (list) => list.id === listId
+      );
       newHouseHold.lists[listIndex].listItems.push(item);
       return newHouseHold;
     });
@@ -83,7 +101,9 @@ export default function Wrappy({  }) {
     console.log("SUBSCRIPTION UPDATE ITEM", item);
 
     const listIndex = houseHold.lists.findIndex((list) => list.id == listId);
-    const itemIndex = houseHold.lists[listIndex].listItems.findIndex((elem) => elem.id === item.id);
+    const itemIndex = houseHold.lists[listIndex].listItems.findIndex(
+      (elem) => elem.id === item.id
+    );
 
     console.log("item index: ", itemIndex);
     if (itemIndex === -1) {
@@ -106,9 +126,11 @@ export default function Wrappy({  }) {
 
   const onItemDeleted = (item, listId, setHouseHold) => {
     console.log("SUBSCRIPTION DELETE ITEM", item);
-    
+
     const listIndex = houseHold.lists.findIndex((list) => list.id == listId);
-    const itemIndex = houseHold.lists[listIndex].listItems.findIndex((elem) => elem.id === item.id);
+    const itemIndex = houseHold.lists[listIndex].listItems.findIndex(
+      (elem) => elem.id === item.id
+    );
 
     if (itemIndex === -1) {
       return;
@@ -116,8 +138,12 @@ export default function Wrappy({  }) {
 
     setHouseHold((oldHouseHold) => {
       const newHouseHold = { ...oldHouseHold };
-      const listIndex = newHouseHold.lists.findIndex((list) => list.id === listId);
-      const itemIndex = newHouseHold.lists[listIndex].listItems.findIndex((elem) => elem.id === item.id);
+      const listIndex = newHouseHold.lists.findIndex(
+        (list) => list.id === listId
+      );
+      const itemIndex = newHouseHold.lists[listIndex].listItems.findIndex(
+        (elem) => elem.id === item.id
+      );
       newHouseHold.lists[listIndex].listItems.splice(itemIndex, 1);
       return newHouseHold;
     });
@@ -149,14 +175,32 @@ export default function Wrappy({  }) {
   useEffect(() => {
     const subs = [];
 
-    if (!houseHold.lists || houseHold.lists.length === 0 || !onItemCreated || !onItemUpdated || !onItemDeleted) {
+    if (
+      !houseHold.lists ||
+      houseHold.lists.length === 0 ||
+      !onItemCreated ||
+      !onItemUpdated ||
+      !onItemDeleted
+    ) {
       return;
     }
 
     houseHold.lists.forEach(async (list) => {
-      const createItemSub = createSubListItems(list.id, setHouseHold, onItemCreated);
-      const updateItemSub = updateSubListItems(list.id, setHouseHold, onItemUpdated);
-      const deleteItemSub = deleteSubListItems(list.id, setHouseHold, onItemDeleted);
+      const createItemSub = createSubListItems(
+        list.id,
+        setHouseHold,
+        onItemCreated
+      );
+      const updateItemSub = updateSubListItems(
+        list.id,
+        setHouseHold,
+        onItemUpdated
+      );
+      const deleteItemSub = deleteSubListItems(
+        list.id,
+        setHouseHold,
+        onItemDeleted
+      );
       subs.push(createItemSub);
       subs.push(updateItemSub);
       subs.push(deleteItemSub);
@@ -217,7 +261,9 @@ export default function Wrappy({  }) {
         return;
       }
 
-      const eventHandlers = await fetchEventHandlersByCalendarId(houseHold.calendarId);
+      const eventHandlers = await fetchEventHandlersByCalendarId(
+        houseHold.calendarId
+      );
       setHouseHold((oldHouseHold) => {
         const newHouseHold = { ...oldHouseHold };
         newHouseHold.eventHandlers = eventHandlers;
@@ -232,14 +278,20 @@ export default function Wrappy({  }) {
 
   return (
     <NavigationContainer theme={theme}>
-      <Drawer.Navigator drawerContent={() => <SideBar/>} screenOptions=
-      {{
-        headerShown:false,
-        headerStyle:{backgroundColor: colors.background, height:0},
-        headerTintColor: colors.text,
-        headerLeftContainerStyle: {display:'flex', flexDirection:'row', alignItems:'center', marginLeft:10},
-
-        }}>
+      <Drawer.Navigator
+        drawerContent={() => <SideBar />}
+        screenOptions={{
+          headerShown: false,
+          headerStyle: { backgroundColor: colors.background, height: 0 },
+          headerTintColor: colors.text,
+          headerLeftContainerStyle: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            marginLeft: 10,
+          },
+        }}
+      >
         <Drawer.Screen
           name="Login"
           component={Login}

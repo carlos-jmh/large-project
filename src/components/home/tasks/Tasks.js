@@ -1,54 +1,66 @@
 import { ScrollView, Text, View } from "react-native";
+import { useContext, useState } from "react";
 
 import DatedTasks from "./DatedTasks";
 import HeaderBar from "../HeaderBar";
+import { HouseHoldContext } from "../../HouseHoldContext";
 import Navbar from "../Navbar";
 import UndatedTasks from "./UndatedTasks";
 import data from "../mockData";
 import { getStyles } from "../../styles";
-import { useContext, useState } from "react";
 import { useTheme } from "@react-navigation/native";
-import { HouseHoldContext } from "../../HouseHoldContext";
-import { useTasksData } from "../../../api/hooks";
 
 /* Tasks page */
 export default function Tasks({ navigation, route }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
 
-  // Get actual tasks from the backend here
-  const [tasks, setTasks] = useState(data.tasks);
-
   const { houseHold } = useContext(HouseHoldContext);
 
-  const [taskData, setTaskData] = useTasksData({
-    houseHoldId: houseHold.id,
-  });
+  const tasks = houseHold.tasks;
 
-  // Filters out completed tasks (will be done with query in future? or completed tasks will be deleted)
-  const unfinishedTasks = tasks.filter((task) => !task.completed);
+  console.log(houseHold.events);
+
+  // // Filters out completed tasks (will be done with query in future? or completed tasks will be deleted)
+  // const unfinishedTasks = tasks.filter((task) => !task.completed);
 
   // Undated tasks are those without an attached EventHandler
-  const undatedTasks = unfinishedTasks
-    .filter((task) => !("eventHandlerId" in task))
+  const undatedTasks = tasks
+    .filter((task) => !("eventHandler" in task))
     .map((task) => {
       return {
         ...task,
-        listTitle: "listId" in task ? data.lists[task.listId].title : null,
+        listTitle:
+          "listId" in task
+            ? (
+                houseHold.lists.find((list) => list.id == task.listId) ?? {
+                  title: null,
+                }
+              ).title
+            : null,
       };
     });
-  let datedTasks = [];
 
   // For dated tasks, find every Event associated with its EventHandler
-  for (const task of unfinishedTasks.filter(
-    (task) => "eventHandlerId" in task
-  )) {
-    for (const event of data.eventHandlers[task.eventHandlerId].events) {
+  let datedTasks = [];
+  for (const task of tasks.filter((task) => "eventHandler" in task)) {
+    for (const event of houseHold.events.filter(
+      (event) => event.eventHandlerId == task.eventHandler.id
+    )) {
       datedTasks.push({
         ...task,
+        completed: event.completed,
         eventId: event.id,
+        eventHandlerId: task.eventHandler.id,
         date: new Date(event.date),
-        listTitle: "listId" in task ? data.lists[task.listId].title : null,
+        listTitle:
+          "listId" in task
+            ? (
+                houseHold.lists.find((list) => list.id == task.listId) ?? {
+                  title: null,
+                }
+              ).title
+            : null,
       });
     }
   }
@@ -85,12 +97,7 @@ export default function Tasks({ navigation, route }) {
 
   // Called when a task is checked/unchecked
   function handleCheckTask(isChecked, taskId, eventId) {
-    setTasks((oldTasks) => {
-      let newTasks = [...oldTasks];
-      const newTaskIndex = newTasks.findIndex((task) => task.id == taskId);
-      newTasks[newTaskIndex].completed = !newTasks[newTaskIndex].completed;
-      return newTasks;
-    });
+    console.log("CHECK TASK", isChecked, taskId, eventId);
   }
 
   return (
