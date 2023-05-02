@@ -100,9 +100,6 @@ const Middle = ({theme}) => {
   }
 
   const updateEventHandler = () => {
-    // Find old event handler and replace with new one (in eventHandlerData).
-    // Refresh the calendar.
-
     refreshCalendarData(
       houseHold.calendarId,
       setEventHandlerData,
@@ -238,11 +235,12 @@ const Middle = ({theme}) => {
 
   //This is for adding tasks
   const addTask = async(task) => {
-    let newT = await processTasks([task]);
-    let copy = [...taskData];
-    copy = [...copy, newT[0]];
-    console.log(copy)
-    setTaskData(copy);
+    const processedTask = await processTasks([task]);
+    setTaskData(prevState => {
+      const newTasks = [...prevState];
+      newTasks.push(processedTask[0]);
+      return newTasks;
+    });
   }
 
   //This is for adding events
@@ -282,7 +280,7 @@ const Middle = ({theme}) => {
             <h5 className="sectionHeader">Tasks</h5>
             <div>
               <TaskList tasks={taskData} eventHandlerData={eventHandlerData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme} handler={eventHandlerData}/>
-              <Add setEventHandlerData={setEventHandlerData} handleEventUpdate={updateEventHandler} addTask={addEvent} useState={false} name={"Task"} list={[]} theme={theme}/>
+              <Add setEventHandlerData={setEventHandlerData} handleEventUpdate={updateEventHandler} addTask={addTask} useState={false} name={"Task"} list={[]} theme={theme}/>
               <br/>
             </div>
           <div className="section1">
