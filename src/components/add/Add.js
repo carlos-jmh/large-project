@@ -240,7 +240,6 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       return (
         <form className="addingTask">
           <input required type="text" value={userInput} onChange={handleChange} className="form-control" id="name" placeholder="Event Name" ref={title}/>
-          <input type="text" value={userDesc} onChange={handleChange3} className="form-control" id="name" placeholder="Event Description" ref={desc}/>
 
           <div className="selections">
             <div className="childSelect">
