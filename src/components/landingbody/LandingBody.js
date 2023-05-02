@@ -26,29 +26,13 @@ return(
                 <button> Start now for free! </button>
             </a>
         </span>
-        <br />
-        {/* <div className = "wrapper1">
-            <div className="child">
-                <img src={Dinner} 
-            alt="Group of friends eating dinner"/>
-            </div>
-            <div className="child">
-                <img src={Cleaning} 
-                alt="Roommates cleaning together"/>
-            </div>
-            <div className="child">
-                <img src={Groceries} 
-                    alt="Couple buying groceries together"/>
-            </div>
-        </div> */}
-        {/* <br/>
-        <br/>
-        <br/> */}
+    
         <div className = "wrapper2">
-            <div id="whoarewe">
+            <div className="whoarewe" id="whoarewe">
                 <img src= {AboutWidget} alt = "Who Are We" />
             </div>
-            <div id ="houseswrapper">
+            
+            <div className="houseswrapper" id ="houseswrapper">
                 <div id= "houses">
                     <img src= {Houses} alt = "animation of houses" />
                 </div>
