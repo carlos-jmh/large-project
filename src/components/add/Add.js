@@ -107,7 +107,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       return newListData;
     });
   }
-  
+
   const handleNewList = async(e) => {
     // Refresh forced.
     e.preventDefault();
@@ -140,6 +140,8 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
   };
 
   const addTaskDatabase = async(e) => {
+    setAdd(!add);
+
     const newTask = await createNewTask(
       false,
       false,
@@ -150,12 +152,12 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       "",
       userInput
     );
-        
+
     if (userSDate !== "" && userEDate !== "") {
       const newHandlerId = await generateEventHandler(
         houseHold.calendarId,
         newTask.id,
-        freq.current.value,
+        userFreq,
         toISOStringWithTimezone(new Date(userSDate)),
         toISOStringWithTimezone(new Date (userEDate)),
         "TASK",
@@ -163,17 +165,18 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       )
 
       newTask.eventHandlerId = newHandlerId;
-      
-      const eventHandler = await fetchEventHandlerById(newHandlerId);
-      setEventHandlerData(prevState => {
-        const newEventData = [...prevState];
-        newEventData.push(eventHandler);
-        return newEventData;
-      });
+      // const eventHandler = await fetchEventHandlerById(newHandlerId);
+      // setEventHandlerData(prevState => {
+      //   const newEventData = [...prevState];
+      //   newEventData.push(eventHandler);
+      //   return newEventData;
+      // });
     }
-     
+
     addTask(newTask);
     await updateExistingTask(newTask);
+
+    handleEventUpdate();
   }
 
   // Function to add an Event.
@@ -185,7 +188,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
     const newHandlerId = await generateEventHandler(
       houseHold.calendarId,
       "",
-      freq.current.value,
+      userFreq,
       new Date(userSDate),
       new Date(userEDate),
       "EVENT",
@@ -249,7 +252,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
           
           {/* Repetition: start and end date */}
           <div className="selections">
-            <select id="taskType" className="form-control childSelect" ref={freq}>
+            <select id="taskType" className="form-control childSelect" onChange={(e) => setUserFreq(e.target.value)}>
               <option value="ONCE">Once</option>
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>
@@ -287,7 +290,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
           {/* If List or Item Selected, option for complete source ? */}
           <div className="selections">
             {/* Frequency Type Options: Once, Daily, Weekly, Monthly, Yearly */}
-            <select id="taskType" className="form-control childSelect" ref={freq}>
+            <select id="taskType" className="form-control childSelect" onChange={(e) => setUserFreq(e.target.value)}>
               <option value="ONCE">Once</option>
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>

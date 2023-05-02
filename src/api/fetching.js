@@ -235,3 +235,39 @@ export const getExistingEvent = async (eventId) => {
     return null;
   }
 }
+
+export const fetchTaskById = async (taskId) => {
+  try {
+    const task = await API.graphql({
+      query:
+        `query GetTask($id: ID!) {
+          getTask(id: $id) {
+            id
+            title
+            houseHoldId
+            foreverTask
+            listId
+            itemId
+            completeSourceOnComplete
+            eventHandlerId
+            completed
+            pointValue
+            createdAt
+            updatedAt
+            _version
+            _deleted
+            _lastChangedAt
+          }
+        }`,
+      variables: {
+        id: taskId
+      },
+      authMode: "LAMBDA"
+    });
+
+    return task.data.getTask;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}

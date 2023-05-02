@@ -43,7 +43,7 @@ export const processTasks = async (tasks) => {
 
     let upcomingEvent = null;
 
-    if (eventHandler.upcomingEventId !== null)
+    if (eventHandler.upcomingEventId !== null && eventHandler.upcomingEventId !== '')
       upcomingEvent = await getExistingEvent(eventHandler.upcomingEventId);
 
     return {
@@ -77,6 +77,7 @@ const Middle = ({theme}) => {
   });
 
   const updateTaskHandler = (task) => {
+    console.log("UPDATE TASK", task);
     setTaskData(prevState => {
       const newTaskData = [...prevState];
       let update = newTaskData.findIndex(elem => elem.id === task.id);
@@ -195,7 +196,6 @@ const Middle = ({theme}) => {
       return newListData;
     });
     const deletedItem = deleteExistingItem(item);
-    console.log(deletedItem);
   }
 
   //Handles list completions
@@ -278,7 +278,7 @@ const Middle = ({theme}) => {
         <div className="section1">
             <h5 className="sectionHeader">Tasks</h5>
             <div>
-              <TaskList tasks={taskData} eventHandlerData={eventHandlerData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme} handler={eventHandlerData}/>
+              <TaskList tasks={taskData} eventHandlerData={eventHandlerData} handleCheck={handleTaskCheck} handleDelete={taskDeleteHandler} handleUpdate={updateTaskHandler} theme={theme} handleEventUpdate={updateEventHandler}/>
               <Add setEventHandlerData={setEventHandlerData} handleEventUpdate={updateEventHandler} addTask={addTask} useState={false} name={"Task"} list={[]} theme={theme}/>
               <br/>
             </div>

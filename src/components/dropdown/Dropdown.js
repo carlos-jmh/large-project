@@ -10,7 +10,8 @@ const Dropdown = ({setHouseHolds, theme}) => {
 
     const [houseHoldMember, setHouseHoldMember] = useState({});
     const { houseHold } = useContext(HouseHoldContext);
-    const [nickname, setNickname] = useState(localStorage.getItem('CognitoIdentityServiceProvider.1ncc815mbno6k3oeg06ga39jbe.LastAuthUser'));
+    const [nickname, setNickname] = useState("");
+    const [username, setUsername] = useState("");
 
     const signOutUser = async () => {
         try {
@@ -21,7 +22,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
         }
     }
     
-    // Load on first render.
+    // Load when houseHold changes.
     useEffect(() => {        
         async function loadHouseholdMembers() {
             if (!houseHold.id || houseHold.id === "") {
@@ -30,24 +31,28 @@ const Dropdown = ({setHouseHolds, theme}) => {
             }
 
             const members = await fetchHouseHoldMembers();
+            console.log(members);
 
             const member = members.find(element => element.houseHoldId === houseHold.id);
             
-            if (!ignore) {
-                if (member !== undefined)
-                {
-                    setHouseHoldMember(member);
-                    setNickname(member.nickname);
-                }
+            if (member !== undefined) {
+                setHouseHoldMember(member);
+                setNickname(member.nickname);
             }
         }
 
-        let ignore = false;
         loadHouseholdMembers();
-        return () => {
-            ignore = true;
-        };
     }, [houseHold])
+
+    // Load on first render.
+    useEffect(() => {
+        async function loadUsername() {
+            const user = await CognitoAuth.currentAuthenticatedUser();
+            setUsername(user.username);
+        }
+        loadUsername();
+    }, [])
+
     // Function to edit a user's username.
     // Idea: Bring up popup to edit it? Or edit inhouse and change button to done?
     function editUsername() {
@@ -76,7 +81,6 @@ const Dropdown = ({setHouseHolds, theme}) => {
 
         member.nickname = paragraph.textContent;
 
-        editHouseHoldMember(member);
         
         paragraph.contentEditable = true;
         paragraph.style.border = "none";
@@ -87,6 +91,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
 
         done.style.display = "none";
         edit.style.display = "block";
+        await editHouseHoldMember(member);
     }
 
     function editHouseholdName() {
@@ -113,11 +118,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
         const newHouse = {...houseHold};
 
         newHouse.name = paragraph.textContent;
-        console.log(newHouse.name);
-        console.log(newHouse._version);
 
-        editHouseHold(newHouse);
-        
         paragraph.contentEditable = false;
         paragraph.style.border = "none";
 
@@ -132,7 +133,8 @@ const Dropdown = ({setHouseHolds, theme}) => {
             let current = copy.findIndex(element => element.id === newHouse.id)
             copy[current] = newHouse;
             return copy;
-        }); 
+        });
+        editHouseHold(newHouse);
     }
 
 
@@ -143,7 +145,8 @@ const Dropdown = ({setHouseHolds, theme}) => {
         if (window.confirm("Are you sure you want to leave the current household?"))
         {  
             // Remove: houseHoldId, houseHoldMemberId 
-            removeUser(houseHold.id, houseHoldMember.id);         
+            await removeUser(houseHold.id, houseHoldMember.id);       
+            // window.location.reload();
         }
     }
     
@@ -153,7 +156,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
                 <div className="user-info">
                     <Icon.PersonCircle/>
                     {/* Get's the locally stored username of the last authorized user. */}
-                    <p>{localStorage.getItem('CognitoIdentityServiceProvider.1ncc815mbno6k3oeg06ga39jbe.LastAuthUser')}</p>
+                    <p>{username}</p>
                 </div>
                 <hr/>
                 <div className="edit-info">
@@ -163,7 +166,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
                             {/* Change to be household specific user information: should default to locally stored username */}
                             <p id="username">{nickname}</p>
                             <button id="edit-button" onClick={editUsername}><Icon.GearFill/></button>
-                            <button id="done-button" onClick={submitUsername} style={{"display": "none"}}>done</button>
+                            <button id="done-button" onClick={async () => await submitUsername()} style={{"display": "none"}}>done</button>
                         </div>
                     </div>
                     <div className="grouping">
@@ -171,21 +174,21 @@ const Dropdown = ({setHouseHolds, theme}) => {
                         <div className="child-group">
                             <p id="householdname">{houseHold.name}</p>
                             <button id="edit-button2" onClick={editHouseholdName}><Icon.Pencil/></button>
-                            <button id="done-button2" onClick={submitHouseholdName} style={{"display": "none"}}>done</button>
+                            <button id="done-button2" onClick={async () => await submitHouseholdName()} style={{"display": "none"}}>done</button>
                         </div>
                     </div>
                     <hr/>
                     <div className="grouping">
                         <div className="child-group leave-house">
                             <p>Leave Household</p>
-                            <button id="leave-button" onClick={leaveHousehold}><Icon.ArrowLeftCircle/></button>
+                            <button id="leave-button" onClick={async () => await leaveHousehold()}><Icon.ArrowLeftCircle/></button>
                         </div>
                     </div>
                     <hr/>
                     <div className="grouping">
                         <div className="child-group">
                             <p>Logout</p>
-                            <button id="logout-button" onClick={signOutUser}><Icon.DoorClosedFill/></button>
+                            <button id="logout-button" onClick={async () => await signOutUser()}><Icon.DoorClosedFill/></button>
                         </div>
                     </div>
                 </div>
@@ -207,7 +210,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
                             {/* Change to be household specific user information: should default to locally stored username */}
                             <p id="username">{nickname}</p>
                             <button id="edit-button" onClick={editUsername}><Icon.GearFill/></button>
-                            <button id="done-button" onClick={submitUsername} style={{"display": "none"}}>done</button>
+                            <button id="done-button" onClick={async () => await submitUsername()} style={{"display": "none"}}>done</button>
                         </div>
                     </div>
                     <div className="grouping">
@@ -215,21 +218,21 @@ const Dropdown = ({setHouseHolds, theme}) => {
                         <div className="child-group">
                             <p id="householdname">{houseHold.name}</p>
                             <button id="edit-button2" onClick={editHouseholdName}><Icon.Pencil/></button>
-                            <button id="done-button2" onClick={submitHouseholdName} style={{"display": "none"}}>done</button>
+                            <button id="done-button2" onClick={async () => await submitHouseholdName()} style={{"display": "none"}}>done</button>
                         </div>
                     </div>
                     <hr/>
                     <div className="grouping">
                         <div className="child-group leave-house">
                             <p>Leave Household</p>
-                            <button id="leave-button" onClick={leaveHousehold}><Icon.ArrowLeftCircle/></button>
+                            <button id="leave-button" onClick={async () => await leaveHousehold()}><Icon.ArrowLeftCircle/></button>
                         </div>
                     </div>
                     <hr/>
                     <div className="grouping">
                         <div className="child-group">
                             <p>Logout</p>
-                            <button id="logout-button" onClick={signOutUser}><Icon.DoorClosedFill/></button>
+                            <button id="logout-button" onClick={async () => await signOutUser()}><Icon.DoorClosedFill/></button>
                         </div>
                     </div>
                 </div>

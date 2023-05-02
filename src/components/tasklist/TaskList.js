@@ -1,23 +1,35 @@
 import React from 'react'
 import Task from '../task/Task';
 
-const TaskList = ({tasks, eventHandlerData, handleCheck, handleDelete, theme, handleUpdate, handler}) => {
+const TaskList = ({tasks, eventHandlerData, handleDelete, theme, handleUpdate, handleEventUpdate}) => {
 return (
   <div className="section">
       <hr className="taskLine"></hr>
       <div className="tasks">
-        {tasks?.map((task, index) => {
+        {tasks?.sort(
+          (a, b) => {
+            if (a.completed === b.completed) {
+              if (a.title > b.title) {
+                return 1;
+              }
+              return -1;
+            }
+            if (a.completed === true) {
+              return 1;
+            }
+            return -1;
+          }
+        ).map((task, index) => {
             return (
                 <Task 
                   key={index}
                   task={task}
                   eventHandlerData={eventHandlerData}
                   taskIndex={index}
-                  handleCheck={handleCheck}
                   handleDelete={handleDelete}
                   handleUpdate={handleUpdate}
                   theme={theme}
-                  handlerData={handler}
+                  handleEventUpdate={handleEventUpdate}
                   type="Task"
                 />
             )
