@@ -20,3 +20,13 @@
     padding-right: 12%;
     background-image: linear-gradient(90deg, white 50%, rgb(108, 0, 158) 50%);
 }
+
+.failedLogin {
+    color: darkred;
+}
+
+.failDiv {
+    width: 300px;
+    background-color: rgb(255, 168, 168);
+    border-radius: 5px;
+}
