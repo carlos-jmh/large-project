@@ -12,8 +12,8 @@ import { useEffect } from 'react'
 const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate, handleEventUpdate}) => {
 
   const [show, setShow] = useState(false);
-  const [SDate, setSDate] = useState(task.sDate);
-  const [EDate, setEDate] = useState(task.eDate);
+  const [SDate, setSDate] = useState(task.sourceDate);
+  const [EDate, setEDate] = useState(task.endDate);
   const [select, setSelect] = useState("ONCE");
   const [name, setName] = useState(task.title);
   const [date, setDate] = useState(false);
@@ -328,7 +328,8 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
 
       if (task.upcomingEvent)
         time = updateTime((task.upcomingEvent.date).substring(11, 19));
-        
+
+        console.log("Task", task);
       return (
         <div id={task.id} name="task" value={task.id} className='taskItem'>
           <div className="info">
@@ -337,30 +338,33 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
             {
               task.upcomingEvent ? 
               <label className={task.complete ? "label strike" : "label"}>
-                <p>{task.title}</p>
-                <p>{(task.upcomingEvent.date).substring(0, 10)} @ {time}</p>
+                <p style={{"margin": "0"}}>{task.title}</p>
+                <p style={{"margin": "0"}}>Next occurence: {(task.upcomingEvent.date).substring(0, 10)} @ {time}</p>
+                <p style={{"margin": "0"}}>Ends on: {(task.eventHandler.endDate).substring(0,10)}</p>
+                <p style={{"margin": "0"}}>Occurrence: {task.eventHandler.frequency}</p>
               </label> : 
               <label className={task.complete ? "label strike" : "label"}>
-                <p>{task.title}</p>
+                <p style={{"margin": "0"}}>{task.title}</p>
+                <p style={{"margin": "0"}}>Ocurrence: Once</p>
               </label> 
             }
           </div>
           
           <div className="icons">
             <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
-            <ItemInfo delete={deleteT} title="Edit Task" onClose={() => {setShow(false);}} onSubmit={onItemInfoSubmit} show={show}>
+            <ItemInfo delete={deleteT} title="Edit Task" onClose={onItemInfoSubmit} onSubmit={onItemInfoSubmit} show={show}>
               <div className="popup">
                 <input required={true} onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/>
                 {/* Start and End Date Required */}
                 <div className="selections">
                   <div className="childSelect">
                     <label htmlFor="startDate">Start Date</label>
-                    <input onChange={handleEditSDate} value={task.sDate} type="datetime-local" className="form-control" id="startDate"/>
+                    <input onChange={handleEditSDate} defaultValue={task.eventHandlerId ? task.eventHandler.sourceDate.substring(0,16) : SDate} type="datetime-local" className="form-control" id="startDate"/>
                   </div>
                   
                   <div className="childSelect">
                     <label htmlFor="endDate">End Date</label>
-                    <input onChange={handleEditEDate} value={task.eDate} type="datetime-local" className="form-control" id="endDate"/>
+                    <input onChange={handleEditEDate} defaultValue={task.eventHandler ? task.eventHandler.endDate.substring(0,16) : EDate} type="datetime-local" className="form-control" id="endDate"/>
                   </div>
                 </div>
                 
