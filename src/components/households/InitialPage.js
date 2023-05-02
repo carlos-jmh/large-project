@@ -15,9 +15,10 @@ import { UserContext } from "../UserContext";
 export default function InitialPage({ navigation, route }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
-  const [username, setUsername] = useState(route.params?.user.username ?? "Unknown user");
-  const { houseHold, setHouseHold } = useContext(HouseHoldContext);
   const { user, setUser } = useContext(UserContext);
+  const [username, setUsername] = useState(user ? user.username : 'Guest');
+  const [houseHolds, setHouseHolds] = useState([]);
+  const { houseHold, setHouseHold } = useContext(HouseHoldContext);
 
   const handleHouseHoldPress = (houseHold) => {
     //first fetch events, lists, and tasks
@@ -30,7 +31,7 @@ export default function InitialPage({ navigation, route }) {
         tasks: [],
         events: [],
         eventHandlers: [],
-      };;
+      };
     });
     // console.log(houseHold)
     navigation.navigate("Events")
@@ -41,7 +42,6 @@ export default function InitialPage({ navigation, route }) {
     async function fetchData() {
       if (user) {
         const fetchedHouseHolds = await fetchHouseHolds();
-        if (user) {
         if (isMounted) {
           setHouseHolds(fetchedHouseHolds);
         }
@@ -53,8 +53,7 @@ export default function InitialPage({ navigation, route }) {
 
     return () => {
       isMounted = false
-    }
-  };
+    };
   }, [user]);
 
   return (
