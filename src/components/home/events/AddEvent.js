@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { TextInput, Keyboard , Pressable, View, Text } from 'react-native';
+import { TextInput, Keyboard , Pressable, View, Text, Platform } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { getStyles } from '../../styles';
 import CustomModal from '../../CustomModal';
@@ -9,11 +9,14 @@ import LabeledInput from '../../LabeledInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {HouseHoldContext} from '../../HouseHoldContext';
 import {generateEventHandler} from '../../../api/mutating';
+import {fetchEventHandlerById} from '../../../api/fetching';
+import {refreshCalendar} from './Events';
+
 
 export default function AddEvent({ visible, onClose, onSave }) {
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(startDate);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [frequency, setFrequency] = useState("once"); // default value
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
@@ -29,18 +32,14 @@ export default function AddEvent({ visible, onClose, onSave }) {
         title: title,
         frequency: frequency.toUpperCase(),
         sourceDate: startDate,
-        endDate: endDate,
+        endDate: (frequency.toUpperCase() === "ONCE") ? startDate : endDate,
         eventType: "EVENT",
     }
     console.log("Event created", newEvent)
     const result = await generateEventHandler(
-      newEvent.calendarId, "", newEvent.frequency, newEvent.sourceDate, newEvent.endDate, newEvent.eventType, newEvent.title)
-      setHouseHold((oldHouseHold) => {
-        return {
-          ...oldHouseHold,
-          eventHandlers: [...oldHouseHold.eventHandlers, result],
-        }
-      })
+    newEvent.calendarId, "", newEvent.frequency, newEvent.sourceDate, newEvent.endDate, newEvent.eventType, newEvent.title)
+    const newEventHandler = await fetchEventHandlerById(result)
+    await refreshCalendar(houseHold.calendarId, setHouseHold);
     console.log(result)
     onClose();
   };
@@ -60,7 +59,12 @@ export default function AddEvent({ visible, onClose, onSave }) {
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || startDate;
-    setShowDatePicker(Platform.OS === 'ios');
+    if(Platform.OS === 'ios' ){
+      setShowDatePicker(Platform.OS === 'ios');
+    }
+    if(Platform.OS === 'android' ){
+      setShowDatePicker(false);
+    }
     setStartDate(currentDate);
   };
 

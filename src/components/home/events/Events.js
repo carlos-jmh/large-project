@@ -10,50 +10,18 @@ import { useContext, useState, useEffect } from "react";
 import { HouseHoldContext } from "../../HouseHoldContext";
 import { useEventData, useEventHandlerData } from '../../../api/hooks';
 import { Auth as CognitoAuth } from "aws-amplify";
+import { fetchEventHandlersByCalendarId, fetchEventsByCalendarId } from "../../../api/fetching";
 
 /* Events page */
 export default function Events({ navigation, route }) {
   const { colors } = useTheme();
   const styles = getStyles(colors);
-  const [events, setEvents] = useState();
+  const [events, setEvents] = useState([]);
   const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
   const { houseHold, setHouseHold } = useContext(HouseHoldContext);
 
 
-  const [eventData] = useEventData({
-    calendarId: houseHold.calendarId,
-  })
 
-  const [eventHandlerData] = useEventHandlerData({
-    calendarId: houseHold.calendarId,
-  })
-
-
-
-  useEffect(() => {
-    if( eventData && eventData.length > 0) {
-      setHouseHold((oldHouseHold) => {
-        return {
-          ...oldHouseHold,
-          events: eventData,
-        }
-      })
-    }
-    console.log(eventData)
-  }, [eventData])
-
-  useEffect(() => {
-    if( eventHandlerData && eventHandlerData.length > 0) {
-      setHouseHold((oldHouseHold) => {
-        return {
-          ...oldHouseHold,
-          eventHandlers: eventHandlerData,
-        }
-      })
-    }
-    console.log(eventHandlerData)
-  }, [eventHandlerData])
-  
   function getEventsAndHandlersByDate(today) {
     const eventsToday = [];
     //get eventhandler title,frequency, all events related 
@@ -66,6 +34,14 @@ export default function Events({ navigation, route }) {
     setEvents(eventsToday);
     console.log("Todays events", eventsToday)
   }
+
+
+  useEffect(() => {
+    getEventsAndHandlersByDate(date);
+    return () => {
+      setEvents([]);
+    }
+  }, [date]);
 
   function getTodaysDate(){
     let today = new Date();
@@ -130,8 +106,7 @@ export default function Events({ navigation, route }) {
   const handleCalendarCallback = (date) => {
     console.log("Calendar callback", date)
     setDate(date);
-    getEventsAndHandlersByDate(date);
-  };
+  }; 
 
   function getDaySuffix(day) {
     if (day >= 11 && day <= 13) {
@@ -158,7 +133,7 @@ export default function Events({ navigation, route }) {
         </View>
         <Text style = {[styles.text, {fontSize:25}]}>Events on {formatDate(date)} </Text>
         <ScrollView>
-        {events === undefined ? (
+        {(!houseHold.events || houseHold.events.length === 0 ) ? (
         <Text style = {[styles.p, {fontSize:15, textAlign:'left',paddingLeft:20,paddingTop:20}]}>No events for this date.</Text>
       ) : (
         events.map((event) =>  {
@@ -176,4 +151,17 @@ export default function Events({ navigation, route }) {
       />
     </View>
   );
+}
+
+export async function refreshCalendar(calendarId, setHouseHold) {
+  const eventHandlers = await fetchEventHandlersByCalendarId(calendarId);
+  const events = await fetchEventsByCalendarId(calendarId);
+  setHouseHold((oldHouseHold) => {
+    return {
+      ...oldHouseHold,
+      eventHandlers,
+      events,
+    }
+  }
+  )
 }

@@ -1,5 +1,5 @@
 import React, { useState , useContext, useEffect} from 'react';
-import { TextInput, Keyboard , Pressable, View, Text } from 'react-native';
+import { TextInput, Keyboard , Pressable, View, Text, Platform } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { getStyles } from '../../styles';
 import CustomModal from '../../CustomModal';
@@ -9,6 +9,8 @@ import LabeledInput from '../../LabeledInput';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {HouseHoldContext} from '../../HouseHoldContext';
 import {editEventHandler, editEvent, removeEvent, deleteEventHandler} from  '../../../api/mutating'
+import { refreshCalendar } from './Events';
+
 export default function EditEvent({ event, visible, onClose, onSave }) {
   const [title, setTitle] = useState(event.eventHandler.title);
   const [startDate, setStartDate] = useState(new Date(event.eventHandler.sourceDate));
@@ -17,17 +19,11 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
   const [frequency, setFrequency] = useState(event.eventHandler.frequency); // default value
   const { colors } = useTheme();
-  const {houseHold}= useContext(HouseHoldContext);
+  const {houseHold, setHouseHold}= useContext(HouseHoldContext);
   const styles = getStyles(colors);
 
+
   async function handleSave(){
-    console.log("DATA PASSed to function: ", event.eventHandlerId,
-    event.eventHandler.calendarId,
-    "",
-    frequency.toUpperCase(),
-    startDate,
-    endDate,
-    event.eventType)
 
       const result = await editEventHandler( 
         event.eventHandlerId,
@@ -39,7 +35,9 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
         event.eventType,
         title
         )
+
       console.log("result", result)
+      await refreshCalendar(houseHold.calendarId, setHouseHold);
       onClose();
   }
   
@@ -59,10 +57,15 @@ export default function EditEvent({ event, visible, onClose, onSave }) {
     };
     return date.toLocaleDateString(undefined, options);
   };
-
+  
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || startDate;
-    setShowDatePicker(Platform.OS === 'ios');
+    if(Platform.OS === 'ios' ){
+      setShowDatePicker(Platform.OS === 'ios');
+    }
+    if(Platform.OS === 'android' ){
+      setShowDatePicker(false);
+    }
     setStartDate(currentDate);
   };
 
