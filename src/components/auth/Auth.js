@@ -272,19 +272,25 @@ function Auth(props) {
 
   if (authMode === "confirmSignUp") {
     return (
-      <div>
-        <p>CONFIRM SIGN UP PAGE</p>
-
-        <input
-          name="verificationCode"
-          className="form-control mt-1"
-          placeholder="Code"
-          onChange={ onFormChange }
-        />
-
-        <button className="btn btn-primary" onClick={ confirmUserSignUp }>
-          Submit
-        </button>
+      <div className="forgotPasswordContainer">
+        <div className="form">
+          <div className="form-content">
+            <h3 className="form-title">Account Confirmation</h3>
+            <div className="form-group mt-3">
+              <input
+                    name="verificationCode"
+                    className="form-control mt-1"
+                    placeholder="Code"
+                    onChange={ onFormChange }
+                  />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+            <button className="btn btn-primary" onClick={ confirmUserSignUp }>
+                  Submit
+                </button>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

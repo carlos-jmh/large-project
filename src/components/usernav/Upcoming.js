@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import Task from '../task/Task';
 
 const Upcoming = ({tasks, eventHandlerData, handleCheck, selectedDate, name}) => {
