@@ -2,12 +2,12 @@ import React, {useState, useContext, useRef, useEffect} from 'react'
 import './task.css'
 import * as Icon from 'react-bootstrap-icons'
 import ItemInfo from '../ItemInfo/ItemInfo'
-import { deleteExistingTask, updateExistingTask, editEventHandler, generateEventHandler, removeEventHandler } from '../../api/mutating'
+import { deleteExistingTask, updateExistingTask, editEventHandler, generateEventHandler, removeEventHandler, completeExistingTask } from '../../api/mutating'
 import { processTasks } from '../../containers/middle/Middle'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext'
-import { fetchEventHandlerById } from '../../api/fetching'
+import { fetchTaskById } from '../../api/fetching'
 
-const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate, handleEventUpdate}) => {
+const Task = ({task, eventHandlerData, taskIndex, type, handleDelete, theme, handleUpdate, handleEventUpdate}) => {
 
   const [show, setShow] = useState(false);
   const [SDate, setSDate] = useState(task.sourceDate);
@@ -19,17 +19,22 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
   const title = useRef("");
 
   // Update database as well.
-  const checkOff = () => {
-    handleCheck(taskIndex, !task.complete); 
+  const checkOff = async () => {
+    if (task.completed) return;
+
+    const taskId = await completeExistingTask(task.id);
+    const updatedTask = await fetchTaskById(taskId);
+
+    const processedTask = await processTasks([updatedTask])
+    handleUpdate(processedTask[0]);
+    handleEventUpdate();
   }
 
-  const deleteT = async() => {
+  const deleteT = async () => {
     setShow(false);
     handleDelete(task.id, taskIndex);
     await deleteExistingTask(task.id);
-    if(task.eventHandlerId !== "" && task.eventHandlerId != null) {
-      await removeEventHandler(task.eventHandlerId)
-    }
+    handleEventUpdate();
   }
 
   const deleteEventHandler = async() => {
@@ -111,15 +116,18 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
     task.eventHandlerId = eventHandlerID
     task.title = name;
     let updatedTask = await processTasks([task])
-    await updateExistingTask(updatedTask[0]);
     handleUpdate(updatedTask[0]);
+
+    await updateExistingTask(updatedTask[0]);
+
+    handleEventUpdate();
   } 
 
   const updateEventHandler = async() => {
     setShow(false);
     
     // if data is same, don't update.
-    let update = await editEventHandler(
+    await editEventHandler(
       task.id, 
       task.calendarId,
       task.taskId,
@@ -129,9 +137,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
       "EVENT",
       title.current.value
     );
-
-    let updated = await fetchEventHandlerById(update);
-
     handleEventUpdate();
   }
 
@@ -236,7 +241,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
                     
           <div className="icons">
           <Icon.ThreeDots size="24px" className='edit' onClick={() => {setShow(true)}}/>
-          <ItemInfo delete={deleteEventHandler} title={task.title} onSubmit={updateEventHandler} onClose={updateEventHandler} show={show}>
+          <ItemInfo delete={deleteEventHandler} title={task.title} onSubmit={updateEventHandler} onClose={() => setShow(false)} show={show}>
             <div className="popup">
               {/* Start and End Date Required */}
               <input required={true} onChange={handleEditName} type="text" defaultValue={task.title} className="form-control" id="name" ref={title}/>
@@ -252,7 +257,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
                 </div>
               </div>
               
-              {/* If List or Item Selected, option for complete source ? */}
+              {/* If List or Item Selected, option for completed source ? */}
               <label>Frequency</label>
               <div className="selections">
                 {/* Frequency Type Options: Once, Daily, Weekly, Monthly, Yearly */}
@@ -337,17 +342,17 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
       return (
         <div id={task.id} name="task" value={task.id} className='taskItem'>
           <div className="info">
-            <input className="check" type="checkbox" id={task.id} value = "" onChange={checkOff} checked = {task.complete ? true : false}/>
+            <input className="check" type="checkbox" id={task.id} value = "" onChange={async() => await checkOff()} checked = {task.completed}/>
             {/* Place the date and any links here as well */}
             {
               task.upcomingEvent ? 
-              <label className={task.complete ? "label strike" : "label"}>
+              <label className={task.completed ? "label strike" : "label"}>
                 <p style={{"margin": "0"}}>{task.title}</p>
                 <p style={{"margin": "0"}}>Next occurence: {(toISOStringWithTimezone(task.upcomingEvent.date)).substring(0, 10)} @ {time}</p>
                 <p style={{"margin": "0"}}>Ends on: {(toISOStringWithTimezone(task.eventHandler.endDate)).substring(0,10)}</p>
                 <p style={{"margin": "0"}}>Occurrence: {task.eventHandler.frequency}</p>
               </label> : 
-              <label className={task.complete ? "label strike" : "label"}>
+              <label className={task.completed ? "label strike" : "label"}>
                 <p style={{"margin": "0"}}>{task.title}</p>
                 <p style={{"margin": "0"}}>Ocurrence: Once</p>
               </label> 
@@ -356,7 +361,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
           
           <div className="icons">
             <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
-            <ItemInfo delete={deleteT} title="Edit Task" onClose={onItemInfoSubmit} onSubmit={onItemInfoSubmit} show={show}>
+            <ItemInfo delete={deleteT} title="Edit Task" onClose={() => setShow(false)} onSubmit={onItemInfoSubmit} show={show}>
               <div className="popup">
                 <input required={true} onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/>
                 {/* Start and End Date Required */}
@@ -372,7 +377,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
                   </div>
                 </div>
                 
-                {/* If List or Item Selected, option for complete source ? */}
+                {/* If List or Item Selected, option for completed source ? */}
                 <div className="selections">
                   {/* Frequency Type Options: Once, Daily, Weekly, Monthly, Yearly */}
                   <select defaultValue="ONCE" id="taskType" className="form-control childSelect" onChange={handleSelect}>

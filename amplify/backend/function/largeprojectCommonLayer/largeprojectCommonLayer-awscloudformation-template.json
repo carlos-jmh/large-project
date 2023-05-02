@@ -20,7 +20,7 @@
     }
   },
   "Resources": {
-    "LambdaLayerVersion5a184c2f": {
+    "LambdaLayerVersion6e0d607c": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": {
@@ -51,60 +51,13 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate5a184c2f": {
+    "LambdaLayerPermissionPrivate6e0d607c": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
         "LayerVersionArn": {
-          "Ref": "LambdaLayerVersion5a184c2f"
+          "Ref": "LambdaLayerVersion6e0d607c"
         },
-        "Principal": {
-          "Ref": "AWS::AccountId"
-        }
-      }
-    },
-    "LambdaLayerVersionf312293f": {
-      "Type": "AWS::Lambda::LayerVersion",
-      "Properties": {
-        "CompatibleRuntimes": [
-          "nodejs14.x"
-        ],
-        "Content": {
-          "S3Bucket": {
-            "Ref": "deploymentBucketName"
-          },
-          "S3Key": "amplify-builds/largeprojectCommonLayer-LambdaLayerVersionf312293f-build.zip"
-        },
-        "Description": "Updated layer version 2023-04-29T19:05:23.675Z",
-        "LayerName": {
-          "Fn::Sub": [
-            "largeprojectCommonLayer-${env}",
-            {
-              "env": {
-                "Ref": "env"
-              }
-            }
-          ]
-        }
-      },
-      "DeletionPolicy": "Delete",
-      "UpdateReplacePolicy": "Retain"
-    },
-    "LambdaLayerPermissionPrivatef312293f": {
-      "Type": "AWS::Lambda::LayerVersionPermission",
-      "Properties": {
-        "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-2:737064277081:layer:largeprojectCommonLayer-prod:32",
-        "Principal": {
-          "Ref": "AWS::AccountId"
-        }
-      }
-    },
-    "LambdaLayerPermissionPrivateLegacy31": {
-      "Type": "AWS::Lambda::LayerVersionPermission",
-      "Properties": {
-        "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-2:737064277081:layer:largeprojectCommonLayer-prod:31",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
@@ -114,7 +67,7 @@
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayerVersion5a184c2f"
+        "Ref": "LambdaLayerVersion6e0d607c"
       }
     }
   }

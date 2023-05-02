@@ -16,7 +16,7 @@ const ItemInfo = props => {
             </div>
             <div className="modal-body">{props.children}</div>
             <div className="modal-footer">
-              <button onClick={props.onClose} className="btn btn-light" >
+              <button onClick={props.onSubmit} className="btn btn-light" >
                 Confirm
               </button>
               <button onClick={props.delete} className="btn btn-light">

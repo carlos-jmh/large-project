@@ -10,6 +10,7 @@ import {
   updateEventHandler,
   deleteEventHandler,
   deleteEvent,
+  completeTask,
 } from "../graphql/mutations";
 
 export const createNewList = async (houseHoldId, title) => {
@@ -423,6 +424,9 @@ export const removeUser = async (houseHoldId, houseHoldMemberId) => {
 
 export const editHouseHoldMember = async (houseHoldMember) => {
   try {
+
+    console.log("houseHoldMember: ", houseHoldMember);
+
     const editedHouseHoldMember = await API.graphql({
       query: updateHouseHoldMember,
       variables: {
@@ -584,6 +588,23 @@ export const editEvent = async (
     );
 
     return updatedEvent.data.updateEvent;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export const completeExistingTask = async (taskId) => {
+  try {
+    const completedTaskId = await API.graphql({
+      query: completeTask,
+      variables: {
+        taskId: taskId
+      },
+      authMode: "LAMBDA"
+    });
+
+    return completedTaskId.data.completeTask;
   } catch (error) {
     console.log(error);
     return null;

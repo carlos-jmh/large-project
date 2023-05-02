@@ -22,6 +22,12 @@ const AddHousehold = ({addNewHousehold, theme}) => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+    changeAdd();
+
+    if (!hhName.current.value || hhName.current.value === "") {
+      return;
+    }
+
     const newHouseHoldId = await createHouseHold(hhName.current.value);
     if (!newHouseHoldId || newHouseHoldId === "") {
       return;

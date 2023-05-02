@@ -54,7 +54,7 @@ exports.handler = async (event) => {
 					owner: ownerId,
 					userProfileId: userProfile.id,
 					houseHoldId: houseHoldId,
-					nickname: userProfile.preferredName,
+					nickname: userProfile.preferredName || "HouseHold Member",
 					
 					createdAt: createdAt,
 					updatedAt: createdAt,
@@ -156,7 +156,6 @@ async function validateUserProfile(dynamoDb, sub) {
 		ExpressionAttributeNames: {
 			"#owner_id" : "owner"
 		},
-		ProjectionExpression: "id"
 	};
 
 	const userProfile = await dynamoDb.query(userProfileQuery).promise();

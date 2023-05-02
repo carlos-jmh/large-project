@@ -141,11 +141,13 @@ const Form = () => {
       // Data: Name, Date
     }
     // Add member to household.
-    else 
+    else if (tab === "m")
     {
       e.preventDefault();
       // Data: username to be added
+      closeForm();
       const user = await addUser(houseHold.id, username.current.value);
+      console.log(user);
     }
   }
 
