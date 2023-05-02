@@ -5,7 +5,7 @@ hr {
 }
 
 .eventItem:hover {
-    background-color: #838383;
+    background-color: #c3c3c3;
 }
 
 .taskItem:hover {
@@ -13,7 +13,7 @@ hr {
 }
 
 .eventItem {
-    background-color: #959595;
+    background-color: #d5d5d5;
     padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 10px;
