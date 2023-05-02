@@ -138,10 +138,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
     );
 
     let updated = await fetchEventHandlerById(update);
-<<<<<<< HEAD
-=======
-    console.log(updated);
->>>>>>> f90d5ba (Edit and delete event working.)
 
     handleEventUpdate();
   }
