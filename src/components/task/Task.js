@@ -146,7 +146,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
   {
     //console.log(startTime)
     let time1 = startTime.split(":");
-    console.log(time1)
 
     // fetch
     let hours1 = Number(time1[0]);
@@ -167,7 +166,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
     timeValue1 += (minutes1 < 10) ? ":0" + minutes1 : ":" + minutes1;  // get minutes
     timeValue1 += (seconds1 < 10) ? ":0" + seconds1 : ":" + seconds1;  // get seconds
     timeValue1 += (hours1 >= 12) ? " P.M." : " A.M.";  // get AM/PM
-    console.log(timeValue1)
     return timeValue1;
   }
 
@@ -343,7 +341,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
 
       if (task.upcomingEvent) {
         time = updateTime((toISOStringWithTimezone(task.upcomingEvent.date)).substring(11, 19));
-        console.log(time)
       }
         
       return (
