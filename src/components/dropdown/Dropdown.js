@@ -3,7 +3,7 @@ import './dropdown.css';
 import * as Icon from 'react-bootstrap-icons';
 import { Auth as CognitoAuth } from 'aws-amplify';
 import { editHouseHold, editHouseHoldMember, removeUser } from '../../api/mutating';
-import { fetchHouseHoldMembers, fetchHouseHolds } from '../../api/fetching';
+import { fetchHouseHoldMembers } from '../../api/fetching';
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 
 const Dropdown = ({setHouseHolds, theme}) => {
@@ -193,7 +193,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
         )
     } else {
         return (
-            <div style={{backgroundColor:'black'}} className="dropdown-menu">
+            <div style={{backgroundColor:'darkslategray'}} className="dropdown-menu">
                 <div className="user-info">
                     <Icon.PersonCircle/>
                     {/* Get's the locally stored username of the last authorized user. */}

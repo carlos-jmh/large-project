@@ -7,7 +7,6 @@ import { Auth } from 'aws-amplify';
 import { fetchEventHandlerById } from '../../api/fetching';
 
 const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle, index, handleEventUpdate}) => {
-  // console.log(list);
   const [add, setAdd] = useState(false);
   const [listoritem, setListOrItem] = useState();
   const [ userInput, setUserInput ] = useState('');
@@ -115,7 +114,6 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
 
     // Call that should create a new list.
     const newList = await createNewList(houseHold.id, title.current.value);
-    console.log(newList);
 
     if (newList !== null)
     {
@@ -142,8 +140,6 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
   };
 
   const addTaskDatabase = async(e) => {
-    console.log(freq.current.value);
-
     const newTask = await createNewTask(
       false,
       false,
@@ -154,9 +150,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       "",
       userInput
     );
-    
-    console.log("User Source Date", userSDate);
-    
+        
     if (userSDate !== "" && userEDate !== "") {
       const newHandlerId = await generateEventHandler(
         houseHold.calendarId,
@@ -289,18 +283,6 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
             </div>
           </div>
 
-          {/* Choose to attach to a list or item */}
-          {/* <div className="selections">
-            <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
-              <label htmlFor="chooselist">Attach to list</label>
-              <input type="checkbox" id="chooselist" name="chooselist" onClick={handleClick}></input>
-            </div>
-
-            <div className="childSelect" style={{"display": "flex", "gap": "1rem"}}>
-              <label htmlFor="chooseitem">Attach to item</label>
-              <input type="checkbox" id="chooseitem" name="chooseitem" onClick={handleClick}></input>
-            </div>
-          </div> */}
           
           {/* If List or Item Selected, option for complete source ? */}
           <div className="selections">
@@ -312,40 +294,6 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
               <option value="MONTHLY">Monthly</option>
               <option value="YEARLY">Yearly</option>
             </select>
-
-            { listoritem === 'list' ? 
-              <>
-                <select required id="listList" onChange={handleChange4} className="form-control childSelect" ref={listAttach}>
-                  {/*pulling from JSON file data.json, needs to be connected to list database to retrieve list names*/}
-                  { list.map(d => {
-                    return <option value={d.id}>{d.title}</option>
-                  })}
-                </select>
-                <select id="taskType" className="form-control childSelect">
-                  <option value="true">Complete source on completion</option>
-                  <option value="false">Keep forever</option>
-                </select>
-              </>
-              : <></>
-            }
-
-            { listoritem === "item" ? 
-              <>
-                <select required id="itemList" className="form-control childSelect" ref={itemAttach}>
-                  { list.map(d => {
-                    return d.listItems.map(item => {
-                      return <option value={item.title}>{item.title}</option>
-                    })
-                  })}
-                </select>
-                <select id="taskType" className="form-control childSelect">
-                  <option value="true">Complete source on completion</option>
-                  <option value="false">Keep forever</option>
-                </select>
-              </>
-              :
-              <></>
-            }
           </div>
           
           <hr></hr>

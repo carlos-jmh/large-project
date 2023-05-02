@@ -17,7 +17,6 @@ const List = ({
   const [edit, setEdit] = useState(false);
   
   const newName = useRef('');
-  // console.log(listItems);
 
   const showOrHide = () => {
     setOpen(!open);
@@ -30,7 +29,6 @@ const List = ({
   }
 
   const deleteList = async(e) => {
-    console.log(list);
     // Call API to delete list. Requires listId. 
     
     // Refresh the page.
@@ -50,7 +48,6 @@ const List = ({
   }
 
   const doneList = async(e) => {
-    // console.log(newName.current.value);
 
     // If the name was changed.
     if (list.title !== newName.current.value)

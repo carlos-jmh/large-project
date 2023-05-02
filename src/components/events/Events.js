@@ -7,7 +7,6 @@ const Events = ({events, handleCheck, handleDelete, theme, handleUpdate, handleE
   
   // Filter out events of taskId !== null, meaning they are tasks.
   events = events.filter(element => element.taskId === null);
-  // console.log(events);
 
   return (
     <div className="section">
