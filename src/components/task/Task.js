@@ -197,7 +197,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
           </div>
                     
           <div className="icons">
-          <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
+          {/* <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/> */}
           {/* <ItemInfo delete={deleteEventHandler} title={task.title} onClose={onClose} show={show}>
             <div className="popup">
               <div className="selections">
@@ -250,7 +250,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
           <ItemInfo delete={deleteEventHandler} title={task.title} onSubmit={updateEventHandler} onClose={() => {setShow(false)}} show={show}>
             <div className="popup">
               {/* Start and End Date Required */}
-              <input required={true} onChange={handleEditName} type="text" className="form-control" id="name"/>
+              <input required={true} onChange={handleEditName} type="text" defaultValue={task.title} className="form-control" id="name"/>
               <div className="selections">
                 <div className="childSelect">
                   <label htmlFor="startDate">Start Date</label>
@@ -305,7 +305,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
           </div>
           
           <div className="icons">
-            <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
+            {/* <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/> */}
             {/* <ItemInfo delete={deleteT} title="Edit Task" onClose={onClose} show={show}>
               <div className="popup">
                 <input required onChange={handleEditName} type="text" className="form-control" id="name" defaultValue={task.title}/  >

@@ -115,6 +115,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
 
     // Call that should create a new list.
     const newList = await createNewList(houseHold.id, title.current.value);
+    console.log(newList);
 
     if (newList !== null)
     {

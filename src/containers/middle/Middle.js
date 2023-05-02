@@ -318,7 +318,7 @@ const Middle = ({theme}) => {
             )
           })}
           <hr className="taskLine"></hr>
-          <Add useState={false} handleEventUpdate={updateEventHandler} name={"a New List"} theme={theme} setState={setListData} handle={handleListItemUpdate}/>
+          <Add useState={false} handleEventUpdate={updateEventHandler} name={"List"} theme={theme} setState={setListData} handle={handleListItemUpdate}/>
         </div>
       </div>
     </>
