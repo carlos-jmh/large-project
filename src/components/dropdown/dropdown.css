@@ -5,6 +5,8 @@
     right: 1rem;
     width: 20rem;
     background-color: white;
+    transition: all 0.50s linear;
+
 }
 
 .dropdown-menu-dark {
@@ -14,6 +16,8 @@
     right: 1rem;
     width: 20rem;
     background-color: darkslategray;
+    transition: all 0.50s linear;
+
 }
 
 .user-info {
@@ -42,6 +46,7 @@
     flex-direction: column;
     height: 4rem;
     justify-content: center;
+    margin-left: 15px;
 }
 
 label {
@@ -68,7 +73,8 @@ label {
     color: white;
     font-weight: 600;
     border-radius: .3em;
-    width: 5rem;
+    width: 4rem;
+    margin-right: 25px;
 }
 
 .child-group button:hover {

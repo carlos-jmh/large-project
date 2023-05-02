@@ -5,15 +5,15 @@ hr {
 }
 
 .eventItem:hover {
-    background-color: #299ead;
+    background-color: #838383;
 }
 
 .taskItem:hover {
-    background-color: #cf8150;
+    background-color: #d38ee3;
 }
 
 .eventItem {
-    background-color: #31bacd;
+    background-color: #959595;
     padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 10px;
@@ -28,7 +28,7 @@ hr {
     padding-bottom: 10px;
     border-radius: 10px;
     margin: 5px;
-    background-color: #ef955d;
+    background-color: #e39ef3;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,6 +46,9 @@ hr {
 .info {
     flex-grow: 1;
     align-items: center;
+    float: right;
+    margin-right: 2%;
+    margin-top: 4px;
 }
 
 .eventInfo {
@@ -64,12 +67,6 @@ hr {
 
 .strike {
     text-decoration: line-through;   
-}
-
-.info {
-    float: right;
-    margin-right: 2%;
-    margin-top: 4px;
 }
 
 .info:hover {

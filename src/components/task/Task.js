@@ -1,13 +1,11 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 import './task.css'
 import * as Icon from 'react-bootstrap-icons'
 import ItemInfo from '../ItemInfo/ItemInfo'
-import { render } from '@testing-library/react'
 import { deleteExistingTask, updateExistingTask, editEventHandler, generateEventHandler, removeEventHandler } from '../../api/mutating'
 import { processTasks } from '../../containers/middle/Middle'
 import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext'
-import { fetchEventHandlerById, getExistingEvent } from '../../api/fetching'
-import { useEffect } from 'react'
+import { fetchEventHandlerById } from '../../api/fetching'
 
 const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelete, theme, handleUpdate, handleEventUpdate}) => {
 
@@ -16,12 +14,9 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
   const [EDate, setEDate] = useState(task.endDate);
   const [select, setSelect] = useState("ONCE");
   const [name, setName] = useState(task.title);
-  const [date, setDate] = useState(false);
   const [eventTitle, setTitle] = useState('');
   const { houseHold } = useContext(HouseHoldContext);
   const title = useRef("");
-  let startTime = "";
-  let endTime = "";
 
   // Update database as well.
   const checkOff = () => {
@@ -121,9 +116,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
   } 
 
   const updateEventHandler = async() => {
-    console.log("UPDATING EVENT HANDLER")
     setShow(false);
-    console.log("necessary info", SDate, EDate);
     
     // if data is same, don't update.
     let update = await editEventHandler(
@@ -144,7 +137,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
 
   function updateTime(startTime)
   {
-    //console.log(startTime)
     let time1 = startTime.split(":");
 
     // fetch
@@ -181,7 +173,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
     {
       // Fetch the eventHandler.
       let time = updateTime(toISOStringWithTimezone(task.date).substring(11, 19));
-      // getEventHandler();
       
       return (
         eventTitle ? 

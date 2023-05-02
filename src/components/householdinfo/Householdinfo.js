@@ -15,7 +15,6 @@ const Householdinfo = ({houseHold, houseHoldClickHandler, theme}) => {
         tabs = document.querySelectorAll('button.round-button');
       else
         tabs = document.querySelectorAll('button.round-button-dark');
-      // console.log(tabs);
 
       for (const element of tabs)
       {
@@ -53,7 +52,6 @@ const Householdinfo = ({houseHold, houseHoldClickHandler, theme}) => {
       <div>
         <button
           onClick={(event) => {
-            console.log("CLICKED HOUSEHOLD");
             houseHoldClickHandler(event, houseHold);
             updateHouse();
           }}

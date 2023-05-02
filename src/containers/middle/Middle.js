@@ -72,13 +72,9 @@ const Middle = ({theme}) => {
     calendarId: houseHold.calendarId,
   });
 
-  // console.log(eventData);
-
   const [eventHandlerData, setEventHandlerData] = useEventHandlerData({
     calendarId: houseHold.calendarId,
   });
-
-  // console.log(eventHandlerData);
 
   const updateTaskHandler = (task) => {
     setTaskData(prevState => {

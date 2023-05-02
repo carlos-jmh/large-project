@@ -116,7 +116,6 @@ const Form = () => {
 
   function closeForm()
   {
-    console.log(document.querySelectorAll('div.genform'));
     document.querySelectorAll('div.genform')[0].style.display = "none"
   }
 
@@ -129,7 +128,6 @@ const Form = () => {
     if (tab === "l")
     {
       // Create objects.
-      console.log("Not implemented yet");
     }
       
     // Add event.

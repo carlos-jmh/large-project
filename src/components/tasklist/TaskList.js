@@ -2,7 +2,6 @@ import React from 'react'
 import Task from '../task/Task';
 
 const TaskList = ({tasks, eventHandlerData, handleCheck, handleDelete, theme, handleUpdate, handler}) => {
-  // console.log(eventHandlerData);
 return (
   <div className="section">
       <hr className="taskLine"></hr>
