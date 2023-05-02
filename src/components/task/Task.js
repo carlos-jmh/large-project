@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useRef} from 'react'
 import './task.css'
 import * as Icon from 'react-bootstrap-icons'
 import ItemInfo from '../ItemInfo/ItemInfo'
@@ -19,6 +19,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
   const [date, setDate] = useState(false);
   const [eventTitle, setTitle] = useState('');
   const { houseHold } = useContext(HouseHoldContext);
+  const title = useRef("");
   let startTime = "";
   let endTime = "";
 
@@ -120,11 +121,11 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
   } 
 
   const updateEventHandler = async() => {
+    console.log("UPDATING EVENT HANDLER")
     setShow(false);
-    // console.log(task);
+    console.log("necessary info", SDate, EDate);
     
     // if data is same, don't update.
-
     let update = await editEventHandler(
       task.id, 
       task.calendarId,
@@ -133,7 +134,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
       SDate,
       EDate,
       "EVENT",
-      "dummy else"
+      title.current.value
     );
 
     let updated = await fetchEventHandlerById(update);
@@ -247,10 +248,10 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
                     
           <div className="icons">
           <Icon.ThreeDots size="24px" className='edit' onClick={() => {setShow(true)}}/>
-          <ItemInfo delete={deleteEventHandler} title={task.title} onSubmit={updateEventHandler} onClose={() => {setShow(false)}} show={show}>
+          <ItemInfo delete={deleteEventHandler} title={task.title} onSubmit={updateEventHandler} onClose={updateEventHandler} show={show}>
             <div className="popup">
               {/* Start and End Date Required */}
-              <input required={true} onChange={handleEditName} type="text" defaultValue={task.title} className="form-control" id="name"/>
+              <input required={true} onChange={handleEditName} type="text" defaultValue={task.title} className="form-control" id="name" ref={title}/>
               <div className="selections">
                 <div className="childSelect">
                   <label htmlFor="startDate">Start Date</label>

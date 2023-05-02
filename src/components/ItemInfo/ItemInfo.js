@@ -3,7 +3,6 @@ import { CSSTransition } from "react-transition-group";
 import "./ItemInfo.css";
 
 const ItemInfo = props => {
-    console.log(props.title);
     return (
       <CSSTransition
         in={props.show}
