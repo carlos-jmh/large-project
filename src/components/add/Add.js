@@ -115,6 +115,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
 
     // Call that should create a new list.
     const newList = await createNewList(houseHold.id, title.current.value);
+    console.log(newList);
 
     if (newList !== null)
     {
@@ -141,7 +142,7 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
   };
 
   const addTaskDatabase = async(e) => {
-    alert("Creating New Task!");
+    console.log(freq.current.value);
 
     const newTask = await createNewTask(
       false,
@@ -154,20 +155,29 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       userInput
     );
     
-    const newHandlerId = await generateEventHandler(
-      houseHold.calendarId,
-      newTask.id,
-      freq.current.value,
-      toISOStringWithTimezone(new Date(userSDate)),
-      toISOStringWithTimezone(new Date (userEDate)),
-      "TASK",
-      userInput
-    )
+    console.log("User Source Date", userSDate);
+    
+    if (userSDate !== "" && userEDate !== "") {
+      const newHandlerId = await generateEventHandler(
+        houseHold.calendarId,
+        newTask.id,
+        freq.current.value,
+        toISOStringWithTimezone(new Date(userSDate)),
+        toISOStringWithTimezone(new Date (userEDate)),
+        "TASK",
+        userInput
+      )
 
-    console.log(toISOStringWithTimezone(new Date(userSDate)),
-    toISOStringWithTimezone(new Date(userEDate)))
-
-    newTask.eventHandlerId = newHandlerId;
+      newTask.eventHandlerId = newHandlerId;
+      
+      const eventHandler = await fetchEventHandlerById(newHandlerId);
+      setEventHandlerData(prevState => {
+        const newEventData = [...prevState];
+        newEventData.push(eventHandler);
+        return newEventData;
+      });
+    }
+     
     addTask(newTask);
     await updateExistingTask(newTask);
   }
@@ -188,13 +198,13 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       userInput
     )
 
-    // const eventHandler = await fetchEventHandlerById(newHandlerId);
+    const eventHandler = await fetchEventHandlerById(newHandlerId);
 
-    // setEventHandlerData(prevState => {
-    //   const newEventData = [...prevState];
-    //   newEventData.push(eventHandler);
-    //   return newEventData;
-    // });
+    setEventHandlerData(prevState => {
+      const newEventData = [...prevState];
+      newEventData.push(eventHandler);
+      return newEventData;
+    });
 
     handleEventUpdate();
   }
