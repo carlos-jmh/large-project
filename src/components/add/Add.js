@@ -9,7 +9,7 @@ import { fetchEventHandlerById } from '../../api/fetching';
 const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle, index, handleEventUpdate}) => {
   // console.log(list);
   const [add, setAdd] = useState(false);
-  const [listoritem, setListOrItem] = useState();
+  const [listoritem, setListOrItem] = useState('none');
   const [ userInput, setUserInput ] = useState('');
   const [ userSDate, setSDateInput ] = useState('');
   const [ userEDate, setEDateInput ] = useState('');
@@ -36,9 +36,9 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
   // Get id of list, can get from its parent?
   let iObj = {title: title, description: desc, listId: 1};
 
-  useEffect(() => {
-    setListOrItem('none');
-  }, [])
+  // useEffect(() => {
+  //   setListOrItem('none');
+  // }, [])
 
   function changeAdd() {
     setAdd(!add);
@@ -131,8 +131,8 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
   }
 
   const addTaskDatabase = async(e) => {
-    alert("Creating New Task!");
-
+    setAdd(!add);
+    
     const newTask = await createNewTask(
       false,
       false,
@@ -144,17 +144,22 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       userInput
     );
     
-    const newHandlerId = await generateEventHandler(
-      houseHold.calendarId,
-      newTask.id,
-      freq.current.value,
-      new Date(userSDate),
-      new Date (userEDate),
-      "TASK",
-      userInput
-    )
+    // only create event handler if there was a date selected
+    if (userSDate !== "" && userEDate !== "") {
 
-    newTask.eventHandlerId = newHandlerId;
+      const newHandlerId = await generateEventHandler(
+        houseHold.calendarId,
+        newTask.id,
+        freq.current.value,
+        new Date(userSDate),
+        new Date (userEDate),
+        "TASK",
+        userInput
+      )
+
+      newTask.eventHandlerId = newHandlerId;
+    }
+
     addTask(newTask);
     await updateExistingTask(newTask);
   }
