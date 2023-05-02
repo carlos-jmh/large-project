@@ -309,7 +309,7 @@ const Middle = ({theme}) => {
                   handleListItemDelete={handleListItemDelete}
                   handleListItemUpdate={handleListItemUpdate}
                 />
-                <Add addTask={addListItem} handleEventUpdate={updateEventHandler} useState={false} name={"to" + currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
+                <Add addTask={addListItem} handleEventUpdate={updateEventHandler} useState={false} name={"to " + currList.title} list={currList} theme={theme} setState={setListData} index={index}/>
                 <br/>
               </div>
             )

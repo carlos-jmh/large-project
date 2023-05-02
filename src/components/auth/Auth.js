@@ -272,11 +272,13 @@ function Auth(props) {
 
   if (authMode === "confirmSignUp") {
     return (
-      <div className="forgotPasswordContainer">
+      <div className="confirmation">
         <div className="form">
           <div className="form-content">
             <h3 className="form-title">Account Confirmation</h3>
+            <p className="warning">Please check your email and enter the code you recieved to confirm your account before signing in.</p>
             <div className="form-group mt-3">
+              <label>Verification Code</label>
               <input
                     name="verificationCode"
                     className="form-control mt-1"
