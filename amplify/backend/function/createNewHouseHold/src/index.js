@@ -42,7 +42,6 @@ exports.handler = async (event) => {
 
 	// validate userProfileId
 	const userProfile = await validateUserProfile(dynamoDb, ownerId);
-	console.log(userProfile);
 
 	// create new houseHoldmember
 	try {

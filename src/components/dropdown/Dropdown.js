@@ -146,7 +146,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
         {  
             // Remove: houseHoldId, houseHoldMemberId 
             await removeUser(houseHold.id, houseHoldMember.id);       
-            // window.location.reload();
+            window.location.reload();
         }
     }
     
