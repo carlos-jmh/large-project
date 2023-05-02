@@ -9,8 +9,8 @@ import { HouseHoldContext } from '../../pages/dashboard/HouseHoldContext';
 const Dropdown = ({setHouseHolds, theme}) => {
 
     const [houseHoldMember, setHouseHoldMember] = useState({});
-    const [nickname, setNickname] = useState("");
     const { houseHold } = useContext(HouseHoldContext);
+    const [nickname, setNickname] = useState(localStorage.getItem('CognitoIdentityServiceProvider.1ncc815mbno6k3oeg06ga39jbe.LastAuthUser'));
 
     const signOutUser = async () => {
         try {
@@ -147,7 +147,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
         }
     }
     
-    if(theme == "light") {
+    if(theme === "light") {
         return (
             <div className="dropdown-menu">
                 <div className="user-info">
@@ -158,7 +158,7 @@ const Dropdown = ({setHouseHolds, theme}) => {
                 <hr/>
                 <div className="edit-info">
                     <div className="grouping">
-                        <label htmlFor="username">HOUSEHOLD USERENAME</label>
+                        <label htmlFor="username">HOUSEHOLD USERNAME</label>
                         <div className="child-group">
                             {/* Change to be household specific user information: should default to locally stored username */}
                             <p id="username">{nickname}</p>

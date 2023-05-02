@@ -144,9 +144,8 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
 
   function updateTime(startTime)
   {
-    console.log(startTime)
+    //console.log(startTime)
     let time1 = startTime.split(":");
-    console.log(time1)
 
     // fetch
     let hours1 = Number(time1[0]);
@@ -167,7 +166,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
     timeValue1 += (minutes1 < 10) ? ":0" + minutes1 : ":" + minutes1;  // get minutes
     timeValue1 += (seconds1 < 10) ? ":0" + seconds1 : ":" + seconds1;  // get seconds
     timeValue1 += (hours1 >= 12) ? " P.M." : " A.M.";  // get AM/PM
-    console.log(timeValue1)
     return timeValue1;
   }
 
@@ -179,16 +177,15 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
 
   if (type === "Event" || type === "EVENT") {    
     // Means it's an event not eventHandler
-    console.log("PLS", toISOStringWithTimezone(task.sourceDate))
     if (task.eventType)
     {
       // Fetch the eventHandler.
-      let time = updateTime(toISOStringWithTimezone(task.sourceDate).substring(11, 19));
+      let time = updateTime(toISOStringWithTimezone(task.date).substring(11, 19));
       // getEventHandler();
       
       return (
         eventTitle ? 
-        <div className='eventItem' date={task.sourceDate} id={task.id} name="task" value={task.id}>
+        <div className='eventItem' date={toISOStringWithTimezone(task.date)} id={task.id} name="task" value={task.id}>
           <div className="eventInfo">
             <p>{eventTitle}</p>
             <p>Time: {time}</p>
@@ -344,7 +341,6 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
 
       if (task.upcomingEvent) {
         time = updateTime((toISOStringWithTimezone(task.upcomingEvent.date)).substring(11, 19));
-        console.log(time)
       }
         
       return (
