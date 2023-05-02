@@ -67,16 +67,12 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
   }
 
   const handleChange2 = (e) => {
-    //let date = (e.target.value).split('-')
-    //let dateInput = date[1] + 
-    
     setSDateInput(e.target.value);
     setEDateInput(e.target.value);
   }
 
   const handleChange5 = (e) => {
-    //let date = (e.target.value).split('-')
-    //let dateInput = date[1] + 
+
     setEDateInput(e.target.value);
   }
 
@@ -130,6 +126,20 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
     }
   }
 
+  const toISOStringWithTimezone = (date) => {
+    const tzOffset = -date.getTimezoneOffset();
+    const diff = tzOffset >= 0 ? '+' : '-';
+    const pad = n => `${Math.floor(Math.abs(n))}`.padStart(2, '0');
+    return date.getFullYear() +
+      '-' + pad(date.getMonth() + 1) +
+      '-' + pad(date.getDate()) +
+      'T' + pad(date.getHours()) +
+      ':' + pad(date.getMinutes()) +
+      ':' + pad(date.getSeconds()) +
+      diff + pad(tzOffset / 60) +
+      ':' + pad(tzOffset % 60);
+  };
+
   const addTaskDatabase = async(e) => {
     alert("Creating New Task!");
 
@@ -148,11 +158,14 @@ const Add = ({setEventHandlerData, addTask, name, list, theme, setState, handle,
       houseHold.calendarId,
       newTask.id,
       freq.current.value,
-      new Date(userSDate),
-      new Date (userEDate),
+      toISOStringWithTimezone(new Date(userSDate)),
+      toISOStringWithTimezone(new Date (userEDate)),
       "TASK",
       userInput
     )
+
+    console.log(toISOStringWithTimezone(new Date(userSDate)),
+    toISOStringWithTimezone(new Date(userEDate)))
 
     newTask.eventHandlerId = newHandlerId;
     addTask(newTask);

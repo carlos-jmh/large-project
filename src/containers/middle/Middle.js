@@ -246,9 +246,9 @@ const Middle = ({theme}) => {
   }
 
   //This is for adding events
-  const addEvent = (userInput, name, list, userDate, userDesc) => {
+  const addEvent = (newTask) => {
     let copy = [...events];
-    copy = [...copy, { id: events.length + 1, task: userInput, complete: false, date: userDate, description: userDesc}];
+    copy = [...copy, { newTask}];
     setEvents(copy);
   }
 
