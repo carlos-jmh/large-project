@@ -230,7 +230,7 @@ const Task = ({task, eventHandlerData, taskIndex, handleCheck, type, handleDelet
           </div>
                     
           <div className="icons">
-          <Icon.ThreeDots size="24px" className='edit'onClick={() => setShow(true)}/>
+          <Icon.ThreeDots size="24px" className='edit' onClick={() => {setShow(true)}}/>
           <ItemInfo delete={deleteEventHandler} title={task.title} onSubmit={updateEventHandler} onClose={() => {setShow(false)}} show={show}>
             <div className="popup">
               {/* Start and End Date Required */}
