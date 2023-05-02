@@ -71,18 +71,26 @@ button
 }
 
 #whoarewe img {
-    object-fit: fill !important;
-    height: 40rem;
-    width: 28rem;
+    margin-bottom: 12vh;
+    margin-right: 50px;
+    height: 100%;
+    width: 30rem;
 }
 
 #houses img {
     border-radius: 10px;
-    object-fit: fill !important;
     height: 30rem;
     width: 40rem;
 }
 
 #bodytext .font-bold {
     font-size: 40px;
+}
+
+.houseswrapper {
+    display: inline-block;
+}
+
+.whoarewe {
+    display: inline-block;
 }
