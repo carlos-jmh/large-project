@@ -8,6 +8,9 @@ import { Auth as CognitoAuth } from 'aws-amplify';
 function Auth(props) {
   const [authMode, setAuthMode] = useState(props.auth);
   const [formInput, setFormInput] = useState({ username: '', password: '', email: '', verificationCode: '' })
+  
+  let p;
+  document.getElementById("failDiv") ? document.getElementById("failDiv").style.border = "solid white 2px" : p = '';
 
   const onFormChange = (event) => {
     setFormInput({ ...formInput, [event.target.name]: event.target.value });
@@ -33,8 +36,12 @@ function Auth(props) {
       await CognitoAuth.signIn(formInput.username, formInput.password);
 
       setAuthMode("signedIn");
+      document.getElementById("failedLogin").innerHTML = "";
+
     } catch (error) {
       console.log(error);
+      document.getElementById("failedLogin").innerHTML = "Incorrect username or password.";
+      document.getElementById("failDiv").style.border = "solid red 2px"
     }
   }
 
@@ -78,6 +85,9 @@ function Auth(props) {
               <span className="link-primary" onClick={() => setAuthMode("signUp")}>
                 Sign Up
               </span>
+            </div>
+            <div className="text-center failDiv" id="failDiv">
+              <span className="failedLogin" id="failedLogin"></span>
             </div>
             <div className="form-group mt-3">
               <label>Username</label>
